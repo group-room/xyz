@@ -30,14 +30,18 @@ public class UserSticker extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sequence", nullable = false)
     private Long sequence;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_sequence")
     private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sticker_sequence")
     private Sticker sticker;
+
     @Column(name = "x_location")
     BigDecimal xLocation;
+    
     @Column(name = "y_location")
     BigDecimal yLocation;
 

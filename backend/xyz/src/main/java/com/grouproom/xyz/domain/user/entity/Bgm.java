@@ -28,11 +28,14 @@ public class Bgm extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sequence", nullable = false)
     private Long sequence;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_sequence")
     private User user;
+
     @Column(name = "title", length = 500)
     private String title;
+
     @Column(name = "link", length = 2083)
     private String link;
 

@@ -31,6 +31,7 @@ public class UserModifierID implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_sequence")
     private User user;
+
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modifier_sequence")

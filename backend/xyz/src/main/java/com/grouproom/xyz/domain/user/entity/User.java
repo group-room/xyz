@@ -5,11 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.entity
@@ -36,26 +33,33 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "nickname")
     private String nickname;
+
     @Column(name = "visit_count")
     @ColumnDefault("0")
     private Integer visitCount;
 
-    @Column(name = "profile_image",length = 2083)
+    @Column(name = "profile_image", length = 2083)
     private String profileImage;
 
-    @Column(name = "background_image",length = 2083)
+    @Column(name = "background_image", length = 2083)
     private String backgroundImage;
-    @Column(name = "introduce",length = 100)
+
+    @Column(name = "introduce", length = 100)
     private String introduce;
-    @Column(name = "token",length = 500)
+
+    @Column(name = "token", length = 500)
     private String token;
-    @Column(name = "social_type",length = 100)
+
+    @Column(name = "social_type", length = 100)
     private String socialType;
-    @Column(name = "social_identify",length = 500)
+
+    @Column(name = "social_identify", length = 500)
     private String socialIdentify;
-    @Column(name = "identify",length = 500)
+
+    @Column(name = "identify", length = 500)
     private String identify;
-    @Column(name = "is_deleted",columnDefinition="tinyint(1) default 0")
+    
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private Boolean isDeleted;
 
 
