@@ -1,8 +1,6 @@
 package com.grouproom.xyz.domain.user.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -26,14 +24,10 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@Getter
 public class UserModifierID implements Serializable {
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_sequence")
-    private User user;
+    private Long user;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "modifier_sequence")
-    private Modifier modifier;
+    private Long modifier;
 }
