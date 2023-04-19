@@ -28,14 +28,18 @@ public class Visitor extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sequence", nullable = false)
     private Long sequence;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_sequence")
     private User fromUser;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_sequence")
     private User toUser;
+
     @Column(name = "content", length = 100)
     private String content;
-    @Column(name = "is_deleted",columnDefinition="tinyint(1) default 0")
+
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private Boolean isDeleted;
 }

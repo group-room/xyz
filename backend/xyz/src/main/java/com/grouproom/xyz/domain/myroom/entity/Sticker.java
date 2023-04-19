@@ -1,7 +1,5 @@
 package com.grouproom.xyz.domain.myroom.entity;
 
-import com.grouproom.xyz.domain.user.entity.ModifierColor;
-import com.grouproom.xyz.domain.user.entity.ModifierGrade;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,13 +28,16 @@ public class Sticker extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sequence", nullable = false)
     private Long sequence;
-    @Column(name = "name",length = 300)
+
+    @Column(name = "name", length = 300)
     private String name;
 
-    @Column(name = "image",length = 2083)
+    @Column(name = "image", length = 2083)
     private String image;
+
     @Column(name = "sticker_color")
     private StickerColor stickerColor;
+
     @Column(name = "sticker_grade")
     private StickerGrade stickerGrade;
 

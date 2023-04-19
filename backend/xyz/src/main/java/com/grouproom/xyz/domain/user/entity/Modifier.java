@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.awt.*;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.entity
@@ -29,11 +28,13 @@ public class Modifier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sequence", nullable = false)
     private Long sequence;
-    @Column(name = "name",length = 200)
+
+    @Column(name = "name", length = 200)
     private String name;
 
     @Column(name = "modifier_color")
     private ModifierColor modifierColor;
+
     @Column(name = "modifier_grade")
     private ModifierGrade modifierGrade;
 

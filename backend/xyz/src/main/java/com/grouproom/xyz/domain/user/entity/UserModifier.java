@@ -29,9 +29,11 @@ public class UserModifier extends BaseTimeEntity {
     @Id
     @Column(name = "user_sequence")
     private User user;
+
     @Id
     @Column(name = "modifier_sequence")
     private Modifier modifier;
-    @Column(name = "is_deleted",columnDefinition="tinyint(1) default 0")
+
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private Boolean isDeleted;
 }
