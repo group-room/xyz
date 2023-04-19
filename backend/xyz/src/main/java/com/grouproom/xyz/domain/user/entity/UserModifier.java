@@ -26,12 +26,15 @@ import javax.persistence.*;
 @Table(name = "user_modifier")
 @IdClass(UserModifierID.class)
 public class UserModifier extends BaseTimeEntity {
+
     @Id
-    @Column(name = "user_sequence")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_sequence")
     private User user;
 
     @Id
-    @Column(name = "modifier_sequence")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "modifier_sequence")
     private Modifier modifier;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")

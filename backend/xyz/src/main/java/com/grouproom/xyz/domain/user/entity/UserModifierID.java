@@ -27,7 +27,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Getter
 public class UserModifierID implements Serializable {
-    private Long user;
 
+    private Long user;
     private Long modifier;
 }
