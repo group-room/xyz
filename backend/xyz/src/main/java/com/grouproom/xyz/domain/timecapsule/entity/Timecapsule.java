@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.timecapsule.entity;
 
+import com.grouproom.xyz.domain.group.entity.Group;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -48,6 +49,7 @@ public class Timecapsule extends BaseTimeEntity {
     @JoinColumn(name = "user_sequence")
     private User user;
 
-    @Column(name = "group_sequence")
-    private Long groupSequence;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_sequence")
+    private Group group;
 }
