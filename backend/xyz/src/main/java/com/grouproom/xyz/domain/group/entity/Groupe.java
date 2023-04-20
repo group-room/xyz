@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Group extends BaseTimeEntity {
+public class Groupe extends BaseTimeEntity {
 
     @Id
     @Column(name = "sequence")

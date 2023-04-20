@@ -1,6 +1,6 @@
 package com.grouproom.xyz.domain.album.entity;
 
-import com.grouproom.xyz.domain.group.entity.Group;
+import com.grouproom.xyz.domain.group.entity.Groupe;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -54,5 +53,5 @@ public class Album extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_sequence")
-    private Group group;
+    private Groupe groupe;
 }

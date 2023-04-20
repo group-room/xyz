@@ -24,7 +24,7 @@ public class GroupMember extends BaseTimeEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_sequence")
-    private Group group;
+    private Groupe groupe;
 
     @Column(name = "joined_at")
     @Temporal(TemporalType.DATE)
