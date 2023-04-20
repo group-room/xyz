@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.user.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -60,8 +61,13 @@ public class User extends BaseTimeEntity {
     @Column(name = "identify", length = 500)
     private String identify;
     
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-
+    @Builder
+    public User(SocialType socialType, String socialIdentify) {
+        this.socialType = socialType;
+        this.socialIdentify = socialIdentify;
+        this.isDeleted = false;
+    }
 }
