@@ -1,7 +1,5 @@
 package com.grouproom.xyz.domain.group.entity;
 
-import com.grouproom.xyz.domain.album.entity.Album;
-import com.grouproom.xyz.domain.album.entity.UserAlbumID;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
