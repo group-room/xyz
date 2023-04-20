@@ -50,7 +50,8 @@ public class User extends BaseTimeEntity {
     @Column(name = "token", length = 500)
     private String token;
 
-    @Column(name = "social_type", length = 100)
+    @Enumerated
+    @Column(name = "social_type")
     private SocialType socialType;
 
     @Column(name = "social_identify", length = 500)
