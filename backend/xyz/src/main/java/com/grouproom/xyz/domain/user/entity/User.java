@@ -51,7 +51,7 @@ public class User extends BaseTimeEntity {
     private String token;
 
     @Column(name = "social_type", length = 100)
-    private String socialType;
+    private SocialType socialType;
 
     @Column(name = "social_identify", length = 500)
     private String socialIdentify;
