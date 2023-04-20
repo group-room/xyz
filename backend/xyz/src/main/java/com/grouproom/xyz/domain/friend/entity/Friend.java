@@ -40,8 +40,8 @@ public class Friend extends BaseTimeEntity {
     @Column(name = "is_accepted", columnDefinition = "tinyint(1) default 0")
     private Boolean isAccepted;
 
-    @Column(name = "chat_seq")
-    private Long chatSeq;
+    @Column(name = "chat_sequence")
+    private Long chatSequence;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private Boolean isDeleted;
