@@ -33,7 +33,6 @@ import org.springframework.security.config.annotation.web.configurers.RequestCac
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 /**
  * packageName    : com.grouproom.xyz.global.config
  * fileName       : SecurityConfig
