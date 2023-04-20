@@ -22,13 +22,13 @@ public class BaseResponse<T> {
     private String message;
     private T data;
 
-    BaseResponse(T body) {
+    public BaseResponse(T body) {
         this.statusCode = HttpStatus.OK;
         this.message = "성공";
         this.data = body;
     }
 
-    BaseResponse(HttpStatus statusCode, String message, T body) {
+    public BaseResponse(HttpStatus statusCode, String message, T body) {
         this.statusCode = statusCode;
         this.message = message;
         this.data = body;
