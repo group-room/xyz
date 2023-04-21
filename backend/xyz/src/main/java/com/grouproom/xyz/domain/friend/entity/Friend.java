@@ -46,4 +46,7 @@ public class Friend extends BaseTimeEntity {
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private Boolean isDeleted;
 
+    @Column(name = "is_canceled", columnDefinition = "tinyint(1) default 0")
+    private Boolean isCanceled;
+
 }
