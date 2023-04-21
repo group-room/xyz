@@ -28,5 +28,9 @@ import java.util.Map;
 @Setter
 public class AuthConfig {
 
+    private String serverUrl;
+
+    private String redirectUrl;
+
     private Map<String, Credentials> credentials;
 }

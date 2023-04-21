@@ -1,9 +1,11 @@
 package com.grouproom.xyz.global.auth.preferences;
 
 import com.grouproom.xyz.global.auth.Constants;
+import com.grouproom.xyz.global.config.AuthConfig;
 import com.grouproom.xyz.global.util.CookieUtils;
 import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
@@ -45,6 +47,9 @@ public class CustomOAuth2CookieAuthorizationRepository<T extends OAuth2Authoriza
 
     private final ClientRegistrationRepository clientRegistrationRepository;
 
+    @Autowired
+    private AuthConfig authConfig;
+
     public CustomOAuth2CookieAuthorizationRepository(ClientRegistrationRepository clientRegistrationRepository) {
         this.clientRegistrationRepository = clientRegistrationRepository;
     }
@@ -54,7 +59,7 @@ public class CustomOAuth2CookieAuthorizationRepository<T extends OAuth2Authoriza
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
         CookieUtils.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
                 CookieUtils.serialize(authorizationRequest), cookieExpireSeconds);
-        CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, Constants.SECURITY_AFTER_LOGIN, cookieExpireSeconds);
+        CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, authConfig.getRedirectUrl(), cookieExpireSeconds);
     }
 
     // 인증 쿠키 조회

@@ -68,11 +68,13 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         //허용할 URL
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
         configuration.addAllowedOriginPattern("*");
         //허용할 METHOD (post,get,delete,put...등등 다 허용)
         configuration.addAllowedMethod("*");
         // 자격증명과 함께 요청 여부 ( 내 서버가 응답할 때 json을 JS에서 처리할 수 있게 설정)
-        configuration.setAllowCredentials(true);
+//        configuration.setAllowCredentials(true);
 
         //custom header 설정
         for (String key : Constants.CORS_HEADER_URIS) {
