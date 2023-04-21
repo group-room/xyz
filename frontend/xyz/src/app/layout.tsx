@@ -1,5 +1,6 @@
-import Header from "@/components/Header";
 import "./globals.css";
+import Header from "@/components/Header";
+import TabBar from "@/components/TabBar";
 
 export const metadata = {
   title: "XYZ",
@@ -13,9 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>
+      <body className="h-screen">
         <Header />
         <main className="pt-16 px-5">{children}</main>
+        <TabBar />
       </body>
     </html>
   );

@@ -8,7 +8,7 @@ import NotiIcon from "../assets/icon/notification.svg";
 function Header() {
   return (
     <header>
-      <nav className="fixed flex justify-between top-0 left-0 right-0 px-5 py-4 shadow-sm shadow-slate-50">
+      <nav className="fixed flex items-center justify-between top-0 left-0 right-0 px-5 py-4 shadow-sm shadow-slate-50 h-14">
         <Link href={"/"}>
           <Image src={LogoImg} alt="xyz 로고" width={80} height={24} />
         </Link>
