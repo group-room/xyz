@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <section>
       안뇽 xyz
-      <div>XYZ</div>
+      <div>메인페이지</div>
     </section>
   );
 }
