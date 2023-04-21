@@ -13,10 +13,10 @@ function Header() {
           <Image src={LogoImg} alt="xyz 로고" width={80} height={24} />
         </Link>
         <div className="flex gap-x-4">
-          <Link href={"/"}>
+          <Link href={"/friend"}>
             <Image src={FriendIcon} alt="xyz 로고" width={24} />
           </Link>
-          <Link href={"/"}>
+          <Link href={"/notification"}>
             <Image src={NotiIcon} alt="xyz 로고" width={20} />
           </Link>
         </div>
