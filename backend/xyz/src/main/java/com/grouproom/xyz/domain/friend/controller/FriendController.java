@@ -20,7 +20,7 @@ public class FriendController {
     private final UserBlockService userBlockService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.friend.controller.FriendController");
 
-    @GetMapping("/all")
+    @GetMapping()
     public BaseResponse<?> friendList() {
         logger.info("frinedList 호출");
         Long userSeq = 1L;
