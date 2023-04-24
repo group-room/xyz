@@ -1,12 +1,13 @@
 package com.grouproom.xyz.domain.friend.dto.response;
 
-import com.grouproom.xyz.global.model.BaseResponse;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.List;
 
-public class FriendListResponse extends BaseResponse {
+@Data
+@Builder
+public class FriendListResponse {
 
-    public FriendListResponse(List<FriendUserResponse> friendUserResponseList) {
-        super(friendUserResponseList);
-    }
+    private List<FriendUserResponse> friends;
 }

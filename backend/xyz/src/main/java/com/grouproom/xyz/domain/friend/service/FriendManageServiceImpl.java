@@ -6,13 +6,13 @@ import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.friend.repository.FriendRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class FriendManageServiceImpl implements FriendManageService {
     private final UserRepository userRepository;
 
     @Override
-    public FriendListResponse findFriend(Long loginUserSeq) {
+    public BaseResponse findFriend(Long loginUserSeq) {
 
         log.info("서비스 : findFriend 호출!!");
 
@@ -52,7 +52,11 @@ public class FriendManageServiceImpl implements FriendManageService {
                     .build();
             friendUserResponseList.add(friendUserResponse);
         }
-        FriendListResponse friendListResponse = new FriendListResponse(friendUserResponseList);
+        FriendListResponse friends = FriendListResponse.builder()
+                .friends(friendUserResponseList)
+                .build();
+
+        BaseResponse friendListResponse = new BaseResponse(friends);
 
         return friendListResponse;
     }
