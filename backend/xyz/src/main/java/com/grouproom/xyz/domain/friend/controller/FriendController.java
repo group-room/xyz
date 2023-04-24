@@ -23,8 +23,8 @@ public class FriendController {
     @GetMapping()
     public BaseResponse<?> friendList() {
         logger.info("frinedList 호출");
-        Long userSeq = 1L;
-        return new BaseResponse<>(friendManageService.findFriend(userSeq));
+        Long loginSeq = 1L;
+        return new BaseResponse<>(friendManageService.findFriend(loginSeq));
     }
 
     @DeleteMapping("/{userSeq}")

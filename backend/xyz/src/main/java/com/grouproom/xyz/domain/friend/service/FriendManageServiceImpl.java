@@ -52,9 +52,6 @@ public class FriendManageServiceImpl implements FriendManageService {
                     .build();
             friendUserResponseList.add(friendUserResponse);
         }
-        /*FriendListResponse friends = FriendListResponse.builder()
-                .friends(friendUserResponseList)
-                .build();*/
 
         return FriendListResponse.builder()
                 .friends(friendUserResponseList)
@@ -67,13 +64,12 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("modifyFriendDelete 호출");
 
-        User loginUser = userRepository.findById(loginSeq).get();
-        Optional<User> tempUser = userRepository.findById(userSeq);
-        if(tempUser.isEmpty()){
+        User loginUser = userRepository.findBySequence(loginSeq);
+        User targetUser = userRepository.findBySequence(userSeq);
+        if(null == targetUser){
             logger.severe("targetUser가 존재하지 않음");
             throw new RuntimeException();
         }
-        User targetUser = tempUser.get();
         Friend friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(loginUser, targetUser, true, false);
         if(null == friend) {
             friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(targetUser, loginUser, true, false);
