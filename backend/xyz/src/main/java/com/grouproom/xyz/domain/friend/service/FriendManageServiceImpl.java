@@ -83,6 +83,45 @@ public class FriendManageServiceImpl implements FriendManageService {
     }
 
     @Override
+    public FriendListResponse findFriendByNickname(Long loginSeq, String nickname) {
+
+        logger.info("findFriendByNickname 호출");
+
+        User loginUser = userRepository.findBySequence(loginSeq);
+        List<FriendUserResponse> friendUserResponseList = new ArrayList<>();
+
+        List<User> users = userRepository.findByNickname(nickname);
+        for (User user: users) {
+            Friend friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(loginUser, user, true, false);
+            if (null != friend) {
+                User target = friend.getToUser();
+                FriendUserResponse friendUserResponse = FriendUserResponse.builder()
+                        .userSeq(target.getSequence())
+                        .nickname(target.getNickname())
+                        .profileImage(target.getProfileImage())
+                        .identify(target.getIdentify())
+                        .build();
+                friendUserResponseList.add(friendUserResponse);
+            } else {
+                friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(user, loginUser, true, false);
+                if (null != friend) {
+                    User target = friend.getFromUser();
+                    FriendUserResponse friendUserResponse = FriendUserResponse.builder()
+                            .userSeq(target.getSequence())
+                            .nickname(target.getNickname())
+                            .profileImage(target.getProfileImage())
+                            .identify(target.getIdentify())
+                            .build();
+                    friendUserResponseList.add(friendUserResponse);
+                }
+            }
+        }
+        return  FriendListResponse.builder()
+                .friends(friendUserResponseList)
+                .build();
+    }
+
+    @Override
     public FriendUserResponse findFriendByIdentify(Long loginSeq, String identify) throws RuntimeException {
 
         logger.info("findFriendByIdentify 호출");

@@ -38,6 +38,13 @@ public class FriendController {
         }
     }
 
+    @GetMapping()
+    public BaseResponse<?> findFriendByNickname(@RequestParam String nickname) {
+        logger.info("findFriendByNickname 호출");
+        Long loginSeq = 1L;
+        return new BaseResponse<>(friendManageService.findFriendByNickname(loginSeq, nickname));
+    }
+
     @GetMapping("/{identify}")
     public BaseResponse<?> findFriendByIdentify(@PathVariable("identify") String identify) {
         logger.info("findFriendByIdentify 호출");
