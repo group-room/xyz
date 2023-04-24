@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.friend.controller;
 
+import com.grouproom.xyz.domain.friend.dto.request.FriendRequest;
 import com.grouproom.xyz.domain.friend.service.FriendManageService;
 import com.grouproom.xyz.domain.friend.service.FriendRegisterService;
 import com.grouproom.xyz.domain.friend.service.UserBlockService;
@@ -51,6 +52,17 @@ public class FriendController {
         Long loginSeq = 1L;
         try {
             return new BaseResponse<>(friendManageService.findFriendByIdentify(loginSeq, identify));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
+    @PostMapping()
+    public BaseResponse<?> saveFriendRequest(@RequestBody FriendRequest friendRequest) {
+        logger.info("saveFriendRequest 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendRegisterService.saveFriendRequest(loginSeq, friendRequest.getUserSeq()));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }

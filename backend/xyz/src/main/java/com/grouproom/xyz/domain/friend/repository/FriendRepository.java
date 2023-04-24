@@ -13,4 +13,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     List<Friend> findByFromUserAndIsAcceptedAndIsDeleted(User user, Boolean isAccepted, Boolean isDeleted);
     List<Friend> findByToUserAndIsAcceptedAndIsDeleted(User user, Boolean isAccepted, Boolean isDeleted);
     Friend findByFromUserAndToUserAndIsAcceptedAndIsDeleted(User from, User to, Boolean isAccepted, Boolean isDeleted);
+
+    Friend findByFromUserAndToUser(User from, User to);
 }

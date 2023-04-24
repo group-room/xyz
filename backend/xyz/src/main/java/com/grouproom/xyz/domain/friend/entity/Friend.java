@@ -2,10 +2,7 @@ package com.grouproom.xyz.domain.friend.entity;
 
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -51,4 +48,9 @@ public class Friend extends BaseTimeEntity {
     @Column(name = "is_canceled", columnDefinition = "tinyint(1) default 0")
     private Boolean isCanceled;
 
+    @Builder
+    public Friend(User fromUser, User toUser) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+    }
 }
