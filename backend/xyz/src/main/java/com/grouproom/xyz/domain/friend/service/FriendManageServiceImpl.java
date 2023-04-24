@@ -81,4 +81,43 @@ public class FriendManageServiceImpl implements FriendManageService {
         }
         return "";
     }
+
+    @Override
+    public FriendUserResponse findFriendByIdentify(Long loginSeq, String identify) throws RuntimeException {
+
+        logger.info("findFriendByIdentify 호출");
+
+        FriendUserResponse friendUserResponse;
+        User loginUser = userRepository.findBySequence(loginSeq);
+        User targetUser = userRepository.findByIdentify(identify);
+        if(null == targetUser) {
+            logger.severe("없는 사용자");
+            throw new RuntimeException();
+        }
+        Friend friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(loginUser, targetUser, true, false);
+        if(null != friend) {
+            User target = friend.getToUser();
+            friendUserResponse = FriendUserResponse.builder()
+                    .userSeq(target.getSequence())
+                    .nickname(target.getNickname())
+                    .profileImage(target.getProfileImage())
+                    .identify(target.getIdentify())
+                    .build();
+        } else {
+            friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(targetUser, loginUser, true, false);
+            if(null != friend) {
+                User target = friend.getFromUser();
+                friendUserResponse = FriendUserResponse.builder()
+                        .userSeq(target.getSequence())
+                        .nickname(target.getNickname())
+                        .profileImage(target.getProfileImage())
+                        .identify(target.getIdentify())
+                        .build();
+            } else {
+                logger.severe("친구 아님");
+                throw new RuntimeException();
+            }
+        }
+        return friendUserResponse;
+    }
 }

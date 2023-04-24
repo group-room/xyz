@@ -38,4 +38,14 @@ public class FriendController {
         }
     }
 
+    @GetMapping("/{identify}")
+    public BaseResponse<?> findFriendByIdentify(@PathVariable("identify") String identify) {
+        logger.info("findFriendByIdentify 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendManageService.findFriendByIdentify(loginSeq, identify));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
 }
