@@ -66,12 +66,16 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         logger.info(friend2.getIsCanceled().toString());
         logger.info(friend2.getIsDeleted().toString());
             logger.info("요청 취소 상태 또는 친구 삭제 상태 : 과거 신청 주체가 타겟 유저");
-            friend2.setFromUser(loginUser);
-            friend2.setToUser(targetUser);
-            friend2.setCreatedAt(LocalDateTime.now());
-            friend2.setIsAccepted(false);
-            friend2.setIsCanceled(false);
-            friend2.setIsDeleted(false);
+            friendRepository.delete(friend2);
+            Friend friend = Friend.builder()
+                    .fromUser(loginUser)
+                    .toUser(targetUser)
+                    .isAccepted(false)
+                    .isCanceled(false)
+                    .isDeleted(false)
+                    .build();
+            friend.setCreatedAt(LocalDateTime.now());
+            friendRepository.save(friend);
         } else {
             logger.severe("이미 친구");
             throw new RuntimeException();
