@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -25,8 +25,7 @@ public class Album extends BaseTimeEntity {
     private String content;
 
     @Column(name = "date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDateTime date;
 
     @Column(name = "latitude")
     private BigDecimal latitude;
