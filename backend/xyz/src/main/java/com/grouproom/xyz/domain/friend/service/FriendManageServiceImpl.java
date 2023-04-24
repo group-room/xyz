@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("findFriend 호출");
 
-        User user = userRepository.findById(loginUserSeq).get();
+        User user = userRepository.findBySequence(loginUserSeq);
         List<FriendUserResponse> friendUserResponseList = new ArrayList<>();
         List<Friend> fromList = friendRepository.findByFromUserAndIsAcceptedAndIsDeleted(user, true, false);
         List<Friend> toList = friendRepository.findByToUserAndIsAcceptedAndIsDeleted(user, true, false);
