@@ -8,24 +8,24 @@ import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FriendManageServiceImpl implements FriendManageService {
 
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.friend.service.FriendManageServiceImpl");
 
     @Override
     public BaseResponse findFriend(Long loginUserSeq) {
 
-        log.info("서비스 : findFriend 호출!!");
+        logger.info("findFriend 호출");
 
         User user = userRepository.findById(loginUserSeq).get();
         List<FriendUserResponse> friendUserResponseList = new ArrayList<>();
@@ -33,7 +33,6 @@ public class FriendManageServiceImpl implements FriendManageService {
         List<Friend> toList = friendRepository.findByToUserAndIsAcceptedAndIsDeleted(user, true, false);
         for (Friend friend : fromList) {
             User f = friend.getToUser();
-            log.info(f.getNickname());
             FriendUserResponse friendUserResponse = FriendUserResponse.builder()
                     .userSeq(f.getSequence())
                     .nickname(f.getNickname())
