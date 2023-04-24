@@ -6,14 +6,13 @@ import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.friend.repository.FriendRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
-import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class FriendManageServiceImpl implements FriendManageService {
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.friend.service.FriendManageServiceImpl");
 
     @Override
-    public BaseResponse findFriend(Long loginUserSeq) {
+    public FriendListResponse findFriend(Long loginUserSeq) {
 
         logger.info("findFriend 호출");
 
@@ -53,34 +52,38 @@ public class FriendManageServiceImpl implements FriendManageService {
                     .build();
             friendUserResponseList.add(friendUserResponse);
         }
-        FriendListResponse friends = FriendListResponse.builder()
+        /*FriendListResponse friends = FriendListResponse.builder()
+                .friends(friendUserResponseList)
+                .build();*/
+
+        return FriendListResponse.builder()
                 .friends(friendUserResponseList)
                 .build();
-
-        BaseResponse friendListResponse = new BaseResponse(friends);
-
-        return friendListResponse;
     }
 
     @Override
     @Transactional
-    public BaseResponse modifyFriendDelete(Long loginSeq, Long userSeq) {
+    public String modifyFriendDelete(Long loginSeq, Long userSeq) throws RuntimeException {
 
         logger.info("modifyFriendDelete 호출");
 
-        BaseResponse response;
         User loginUser = userRepository.findById(loginSeq).get();
-        User targetUser = userRepository.findById(userSeq).get();
+        Optional<User> tempUser = userRepository.findById(userSeq);
+        if(tempUser.isEmpty()){
+            logger.severe("targetUser가 존재하지 않음");
+            throw new RuntimeException();
+        }
+        User targetUser = tempUser.get();
         Friend friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(loginUser, targetUser, true, false);
         if(null == friend) {
             friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(targetUser, loginUser, true, false);
         }
         if(null == friend) {
-            response = new BaseResponse(HttpStatus.BAD_REQUEST, "친구 관계 아님",null);
+            logger.severe("친구 관계가 아님");
+            throw new RuntimeException();
         } else {
             friend.setIsDeleted(true);
-            response = new BaseResponse(null);
         }
-        return response;
+        return "";
     }
 }

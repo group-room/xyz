@@ -3,9 +3,9 @@ package com.grouproom.xyz.domain.friend.controller;
 import com.grouproom.xyz.domain.friend.service.FriendManageService;
 import com.grouproom.xyz.domain.friend.service.FriendRegisterService;
 import com.grouproom.xyz.domain.friend.service.UserBlockService;
+import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
@@ -21,18 +21,21 @@ public class FriendController {
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.friend.controller.FriendController");
 
     @GetMapping("/all")
-    public ResponseEntity<?> friendList() {
+    public BaseResponse<?> friendList() {
         logger.info("frinedList 호출");
         Long userSeq = 1L;
-        return new ResponseEntity<>(friendManageService.findFriend(userSeq), HttpStatus.OK);
+        return new BaseResponse<>(friendManageService.findFriend(userSeq));
     }
 
     @DeleteMapping("/{userSeq}")
-    public ResponseEntity<?> modifyFriendDelete(@PathVariable("userSeq") Long userSeq) {
+    public BaseResponse<?> modifyFriendDelete(@PathVariable("userSeq") Long userSeq) {
         logger.info("modifyFriendDelete 호출");
         Long loginSeq = 1L;
-        return new ResponseEntity<>(friendManageService.modifyFriendDelete(loginSeq, userSeq), HttpStatus.OK);
+        try {
+            return new BaseResponse<>(friendManageService.modifyFriendDelete(loginSeq, userSeq));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
     }
-
 
 }
