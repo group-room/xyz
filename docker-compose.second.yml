@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  spring:
+  spring_second:
     container_name: spring_second
     build: ./backend/xyz
     ports:
@@ -9,7 +9,7 @@ services:
     volumes:
       - /spring:/image
     restart: on-failure
-  react:
+  nestJS_second:
     container_name: nextJS_second
     build: ./frontend/xyz
     ports:
