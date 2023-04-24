@@ -5,6 +5,7 @@ import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -24,6 +25,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @IdClass(FriendID.class)
 public class Friend extends BaseTimeEntity {
 

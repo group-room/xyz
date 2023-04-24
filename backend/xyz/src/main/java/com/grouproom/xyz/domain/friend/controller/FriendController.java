@@ -6,9 +6,7 @@ import com.grouproom.xyz.domain.friend.service.UserBlockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 
@@ -27,6 +25,13 @@ public class FriendController {
         logger.info("frinedList 호출");
         Long userSeq = 1L;
         return new ResponseEntity<>(friendManageService.findFriend(userSeq), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userSeq}")
+    public ResponseEntity<?> modifyFriendDelete(@PathVariable("userSeq") Long userSeq) {
+        logger.info("modifyFriendDelete 호출");
+        Long loginSeq = 1L;
+        return new ResponseEntity<>(friendManageService.modifyFriendDelete(loginSeq, userSeq), HttpStatus.OK);
     }
 
 

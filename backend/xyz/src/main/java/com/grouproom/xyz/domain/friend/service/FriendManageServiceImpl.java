@@ -8,8 +8,10 @@ import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -58,5 +60,27 @@ public class FriendManageServiceImpl implements FriendManageService {
         BaseResponse friendListResponse = new BaseResponse(friends);
 
         return friendListResponse;
+    }
+
+    @Override
+    @Transactional
+    public BaseResponse modifyFriendDelete(Long loginSeq, Long userSeq) {
+
+        logger.info("modifyFriendDelete 호출");
+
+        BaseResponse response;
+        User loginUser = userRepository.findById(loginSeq).get();
+        User targetUser = userRepository.findById(userSeq).get();
+        Friend friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(loginUser, targetUser, true, false);
+        if(null == friend) {
+            friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(targetUser, loginUser, true, false);
+        }
+        if(null == friend) {
+            response = new BaseResponse(HttpStatus.BAD_REQUEST, "친구 관계 아님",null);
+        } else {
+            friend.setIsDeleted(true);
+            response = new BaseResponse(null);
+        }
+        return response;
     }
 }
