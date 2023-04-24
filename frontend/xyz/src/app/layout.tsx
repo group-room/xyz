@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 const pixelFont = localFont({
-  src: "../assets/font/NeoDunggeunmoPro-Regular.woff",
+  src: "../../public/font/NeoDunggeunmoPro-Regular.woff",
   display: "swap",
 });
 
@@ -20,9 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={pixelFont.className}>
-      <body className="h-screen">
+      <body>
         <Header />
-        <main className="pt-16 px-5">{children}</main>
+        <main className="px-5 my-16">{children}</main>
         <TabBar />
       </body>
     </html>
