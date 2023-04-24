@@ -9,7 +9,7 @@ services:
     volumes:
       - /spring:/image
     restart: on-failure
-  nestjs_second:
+  nestjs_first:
     container_name: nextJS_first
     build: ./frontend/xyz
     ports:
