@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="ko" className={pixelFont.className}>
       <body className="h-screen">
         <Header />
-        <main className="pt-16 px-5">{children}</main>
+        <main className="px-5 py-16">{children}</main>
         <TabBar />
       </body>
     </html>
