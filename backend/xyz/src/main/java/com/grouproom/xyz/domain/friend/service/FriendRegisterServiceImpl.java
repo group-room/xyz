@@ -48,6 +48,9 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             Friend friend = Friend.builder()
                     .fromUser(loginUser)
                     .toUser(targetUser)
+                    .isAccepted(false)
+                    .isCanceled(false)
+                    .isDeleted(false)
                     .build();
             friend.setCreatedAt(LocalDateTime.now());
             friendRepository.save(friend);

@@ -38,6 +38,6 @@ public class UserBlock extends BaseTimeEntity {
     @JoinColumn(name = "to_user")
     private User toUser;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
     private Boolean isDeleted;
 }
