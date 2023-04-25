@@ -9,4 +9,5 @@ public interface FriendRegisterService {
     UserListResponse findUserByNickname(Long loginSeq, String nickname);
     UserResponse findUserByIdentify(Long loginSeq, String identify);
     String saveFriendRequest(Long loginSeq, Long userSeq);
+    String cancelFriendRequest(Long loginSeq, Long userSeq);
 }

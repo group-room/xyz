@@ -202,4 +202,27 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         return "";
     }
 
+    @Override
+    @Transactional
+    public String cancelFriendRequest(Long loginSeq, Long userSeq) {
+
+        logger.info("cancelFriendRequest 호출");
+
+        User loginUser = userRepository.findBySequence(loginSeq);
+        User targetUser = userRepository.findBySequence(userSeq);
+        if(null == targetUser) {
+            logger.severe("없는 사용자");
+            throw new RuntimeException();
+        }
+        Friend friend = friendRepository.findByFromUserAndToUser(loginUser, targetUser);
+        if (!friend.getIsCanceled() && !friend.getIsAccepted() && !friend.getIsDeleted()) {
+            friend.setIsCanceled(true);
+            friend.setUpdatedAt(LocalDateTime.now());
+        } else {
+            logger.severe("이미 취소되었거나 수락되었거나 삭제된 상황");
+            throw new RuntimeException();
+        }
+        return "";
+    }
+
 }

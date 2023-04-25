@@ -85,4 +85,16 @@ public class FriendController {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
+
+    @PutMapping("/cancel")
+    public BaseResponse<?> cancelFriendRequest(@RequestBody FriendRequest friendRequest) {
+        logger.info("cancelFriendRequest 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendRegisterService.cancelFriendRequest(loginSeq, friendRequest.getUserSeq()));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
 }
