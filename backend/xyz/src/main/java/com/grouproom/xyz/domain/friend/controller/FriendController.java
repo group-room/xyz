@@ -57,6 +57,13 @@ public class FriendController {
         }
     }
 
+    @GetMapping("/user")
+    public BaseResponse<?> findUserByNickname(@RequestParam String nickname) {
+        logger.info("findUserByNickname 호출");
+        Long loginSeq = 1L;
+        return new BaseResponse<>(friendRegisterService.findUserByNickname(loginSeq, nickname));
+    }
+
     @PostMapping()
     public BaseResponse<?> saveFriendRequest(@RequestBody FriendRequest friendRequest) {
         logger.info("saveFriendRequest 호출");

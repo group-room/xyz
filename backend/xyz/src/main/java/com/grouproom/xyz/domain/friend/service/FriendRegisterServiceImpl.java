@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.friend.service;
 
+import com.grouproom.xyz.domain.friend.dto.response.UserListResponse;
+import com.grouproom.xyz.domain.friend.dto.response.UserResponse;
 import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.friend.entity.UserBlock;
 import com.grouproom.xyz.domain.friend.repository.FriendRepository;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -22,6 +26,68 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
     private final FriendRepository friendRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.friend.service.FriendRegisterServiceImpl");
 
+
+    @Override
+    public UserListResponse findUserByNickname(Long loginSeq, String nickname) {
+
+        logger.info("findUserByNickname 호출");
+
+        User loginUser = userRepository.findBySequence(loginSeq);
+        List<UserResponse> userResponseList = new ArrayList<>();
+
+        List<User> users = userRepository.findByNickname(nickname);
+
+        for (User user: users) {
+            UserResponse userResponse = new UserResponse();
+            userResponse.setUserSeq(user.getSequence());
+            userResponse.setNickname(user.getNickname());
+            userResponse.setProfileImage(user.getProfileImage());
+            userResponse.setIdentify(user.getIdentify());
+
+            UserBlock block1 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(user, loginUser, false);
+            if(null != block1) {
+                logger.info(user.getSequence() + "로부터 차단된 상태");
+                continue;
+            }
+            UserBlock block2 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(loginUser, user, false);
+            if (null != block2) {
+                logger.info(user.getSequence() + "를 차단한 상태");
+                userResponse.setRelation("차단함");
+                userResponseList.add(userResponse);
+            } else {
+                Friend friend1 = friendRepository.findByFromUserAndToUser(user, loginUser);
+                Friend friend2 = friendRepository.findByFromUserAndToUser(loginUser, user);
+                if (null != friend1 && !friend1.getIsDeleted() && !friend1.getIsCanceled()) {
+                    if(!friend1.getIsAccepted()) {
+                        logger.info(user.getSequence() + "에게 요청 받음");
+                        userResponse.setRelation("요청 받음");
+                        userResponseList.add(userResponse);
+                    } else {
+                        logger.info(user.getSequence() + "와 친구");
+                        userResponse.setRelation("친구");
+                        userResponseList.add(userResponse);
+                    }
+                } else if (null != friend2 && !friend2.getIsDeleted() && !friend2.getIsCanceled()) {
+                    if (!friend2.getIsAccepted()) {
+                        logger.info(user.getSequence() + "의 수락 대기 중");
+                        userResponse.setRelation("요청 함");
+                        userResponseList.add(userResponse);
+                    } else {
+                        logger.info(user.getSequence() + "와 친구");
+                        userResponse.setRelation("친구");
+                        userResponseList.add(userResponse);
+                    }
+                } else {
+                    logger.info("관계 없음");
+                    userResponse.setRelation("관계 없음");
+                    userResponseList.add(userResponse);
+                }
+            }
+        }
+        return UserListResponse.builder()
+                .users(userResponseList)
+                .build();
+    }
 
     @Override
     @Transactional
