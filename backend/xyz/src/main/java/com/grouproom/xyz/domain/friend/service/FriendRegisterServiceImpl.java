@@ -90,6 +90,59 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
     }
 
     @Override
+    public UserResponse findUserByIdentify(Long loginSeq, String identify) {
+
+        logger.info("findUserByIdentify 호출");
+
+        User loginUser = userRepository.findBySequence(loginSeq);
+        UserResponse userResponse = new UserResponse();
+        User targetUser = userRepository.findByIdentify(identify);
+        if(null == targetUser) {
+            logger.severe("없는 사용자");
+            throw new RuntimeException();
+        }
+
+        UserBlock block1 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(targetUser, loginUser, false);
+        if(null != block1) {
+            logger.info(targetUser.getSequence() + "로부터 차단된 상태");
+            throw new RuntimeException();
+        }
+        userResponse.setUserSeq(targetUser.getSequence());
+        userResponse.setNickname(targetUser.getNickname());
+        userResponse.setProfileImage(targetUser.getProfileImage());
+        userResponse.setIdentify(targetUser.getIdentify());
+        UserBlock block2 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(loginUser, targetUser, false);
+        if (null != block2) {
+            logger.info(targetUser.getSequence() + "를 차단한 상태");
+            userResponse.setRelation("차단함");
+        } else {
+            Friend friend1 = friendRepository.findByFromUserAndToUser(targetUser, loginUser);
+            Friend friend2 = friendRepository.findByFromUserAndToUser(loginUser, targetUser);
+            if (null != friend1 && !friend1.getIsDeleted() && !friend1.getIsCanceled()) {
+                if(!friend1.getIsAccepted()) {
+                    logger.info(targetUser.getSequence() + "에게 요청 받음");
+                    userResponse.setRelation("요청 받음");
+                } else {
+                    logger.info(targetUser.getSequence() + "와 친구");
+                    userResponse.setRelation("친구");
+                }
+            } else if (null != friend2 && !friend2.getIsDeleted() && !friend2.getIsCanceled()) {
+                if (!friend2.getIsAccepted()) {
+                    logger.info(targetUser.getSequence() + "의 수락 대기 중");
+                    userResponse.setRelation("요청 함");
+                } else {
+                    logger.info(targetUser.getSequence() + "와 친구");
+                    userResponse.setRelation("친구");
+                }
+            } else {
+                logger.info("관계 없음");
+                userResponse.setRelation("관계 없음");
+            }
+        }
+        return userResponse;
+    }
+
+    @Override
     @Transactional
     public String saveFriendRequest(Long loginSeq, Long userSeq) {
 
@@ -144,6 +197,29 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             friendRepository.save(friend);
         } else {
             logger.severe("이미 친구");
+            throw new RuntimeException();
+        }
+        return "";
+    }
+
+    @Override
+    @Transactional
+    public String cancelFriendRequest(Long loginSeq, Long userSeq) {
+
+        logger.info("cancelFriendRequest 호출");
+
+        User loginUser = userRepository.findBySequence(loginSeq);
+        User targetUser = userRepository.findBySequence(userSeq);
+        if(null == targetUser) {
+            logger.severe("없는 사용자");
+            throw new RuntimeException();
+        }
+        Friend friend = friendRepository.findByFromUserAndToUser(loginUser, targetUser);
+        if (!friend.getIsCanceled() && !friend.getIsAccepted() && !friend.getIsDeleted()) {
+            friend.setIsCanceled(true);
+            friend.setUpdatedAt(LocalDateTime.now());
+        } else {
+            logger.severe("이미 취소되었거나 수락되었거나 삭제된 상황");
             throw new RuntimeException();
         }
         return "";

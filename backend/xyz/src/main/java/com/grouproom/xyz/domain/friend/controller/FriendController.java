@@ -64,6 +64,17 @@ public class FriendController {
         return new BaseResponse<>(friendRegisterService.findUserByNickname(loginSeq, nickname));
     }
 
+    @GetMapping("/user/{identify}")
+    public BaseResponse<?> findUserByIdentify(@PathVariable("identify") String identify) {
+        logger.info("findUserByIdentify 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendRegisterService.findUserByIdentify(loginSeq, identify));
+        } catch (RuntimeException re) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
     @PostMapping()
     public BaseResponse<?> saveFriendRequest(@RequestBody FriendRequest friendRequest) {
         logger.info("saveFriendRequest 호출");
@@ -74,4 +85,16 @@ public class FriendController {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
+
+    @PutMapping("/cancel")
+    public BaseResponse<?> cancelFriendRequest(@RequestBody FriendRequest friendRequest) {
+        logger.info("cancelFriendRequest 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendRegisterService.cancelFriendRequest(loginSeq, friendRequest.getUserSeq()));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
 }
