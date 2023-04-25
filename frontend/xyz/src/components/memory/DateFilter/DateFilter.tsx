@@ -35,9 +35,9 @@ function DateFilter() {
 
   return (
     // <div className="w-3/6 border border-black drop-shadow-md">
-    <div className="flex basis-6/12">
-      <div className="flex align-middle px-1 border border-r-0 border-black">
-        <Image src={calendarIcon} alt="캘린더 아이콘" width={12} />
+    <div className="flex basis-6/12 shadow-md">
+      <div className="flex align-middle px-2 border border-r-0 border-black">
+        <Image src={calendarIcon} alt="캘린더 아이콘" width={15} />
       </div>
       <DatePicker
         locale={ko}
