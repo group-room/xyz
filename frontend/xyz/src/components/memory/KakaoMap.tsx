@@ -74,7 +74,7 @@ function KakaoMap() {
   }, []);
 
   const successHandler = (response: any) => {
-    console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+    // console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setCurrLocation({ lat: latitude, lng: longitude });
   };

@@ -1,0 +1,10 @@
+.datePicker {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  box-sizing: border-box;
+  text-align: center;
+  padding: .3em 0;
+  cursor: pointer;
+  width: 80%;
+}
