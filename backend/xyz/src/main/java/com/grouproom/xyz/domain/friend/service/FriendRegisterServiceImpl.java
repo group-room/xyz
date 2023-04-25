@@ -196,7 +196,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             friend.setCreatedAt(LocalDateTime.now());
             friendRepository.save(friend);
         } else {
-            logger.severe("이미 친구");
+            logger.severe("친구 요청 후 수락 대기 상태 혹은 친구 상태");
             throw new RuntimeException();
         }
         return "";
@@ -222,6 +222,19 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             logger.severe("이미 취소되었거나 수락되었거나 삭제된 상황");
             throw new RuntimeException();
         }
+        return "";
+    }
+
+    @Override
+    @Transactional
+    public String modifyFriendToAccept(Long loginSeq, Long userSeq) {
+        Friend friend = friendRepository.findByFromUserAndToUser1(userSeq, loginSeq);
+        if(null == friend) {
+            logger.severe("수락할 수 있는 대상이 아님");
+            throw new RuntimeException();
+        }
+        friend.setIsAccepted(true);
+        friend.setUpdatedAt(LocalDateTime.now());
         return "";
     }
 
