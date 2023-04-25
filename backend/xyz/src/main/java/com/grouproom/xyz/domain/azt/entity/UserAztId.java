@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.group.entity;
+package com.grouproom.xyz.domain.azt.entity;
 
 import lombok.*;
 
@@ -9,8 +9,8 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserGroupId implements Serializable {
+public class UserAztId implements Serializable {
 
     private Long user;
-    private Long groupe;
+    private Long azt;
 }
