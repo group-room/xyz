@@ -144,7 +144,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
     @Override
     @Transactional
-    public String saveFriendRequest(Long loginSeq, Long userSeq) {
+    public String saveFriend(Long loginSeq, Long userSeq) {
 
         logger.info("saveFriendRequest 호출");
 
@@ -204,7 +204,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
     @Override
     @Transactional
-    public String cancelFriendRequest(Long loginSeq, Long userSeq) {
+    public String modifyFriendToCancel(Long loginSeq, Long userSeq) {
 
         logger.info("cancelFriendRequest 호출");
 

@@ -59,7 +59,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
     @Override
     @Transactional
-    public String modifyFriendIsDelete(Long loginSeq, Long userSeq) throws RuntimeException {
+    public String modifyFriendIsDeleted(Long loginSeq, Long userSeq) throws RuntimeException {
 
         logger.info("modifyFriendDelete 호출");
 
