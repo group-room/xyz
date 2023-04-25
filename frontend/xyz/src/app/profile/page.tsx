@@ -1,5 +1,6 @@
 "use client";
 import Modal from "@/components/Modal";
+import Tab from "@/components/Tab";
 import React from "react";
 import { useState } from "react";
 
@@ -17,6 +18,8 @@ function ProfilePage() {
           {<div>친구하실래요?</div>}
         </Modal>
       )}
+
+      <Tab />
     </div>
   );
 }
