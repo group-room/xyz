@@ -109,8 +109,8 @@ function AztFilter() {
       >
         <div className="grow">
           {currAzt.length === 1
-            ? currAzt[0].name.length > 30
-              ? currAzt[0].name.slice(0, 30) + "..."
+            ? currAzt[0].name.length > 12
+              ? currAzt[0].name.slice(0, 12) + "..."
               : currAzt[0].name
             : "전체 아지트 보기"}
         </div>
