@@ -1,6 +1,6 @@
 package com.grouproom.xyz.domain.album.entity;
 
-import com.grouproom.xyz.domain.group.entity.Groupe;
+import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -51,6 +51,6 @@ public class Album extends BaseTimeEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_sequence")
-    private Groupe groupe;
+    @JoinColumn(name = "azt_sequence")
+    private Azt azt;
 }

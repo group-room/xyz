@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.group.entity;
+package com.grouproom.xyz.domain.azt.entity;
 
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
@@ -11,10 +11,10 @@ import java.util.Date;
 
 @Getter
 @Entity
-@IdClass(UserGroupId.class)
-@Table(name = "group_memeber")
+@IdClass(UserAztId.class)
+@Table(name = "azt_memeber")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroupMember extends BaseTimeEntity {
+public class AztMember extends BaseTimeEntity {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,8 +23,8 @@ public class GroupMember extends BaseTimeEntity {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_sequence")
-    private Groupe groupe;
+    @JoinColumn(name = "azt_sequence")
+    private Azt azt;
 
     @Column(name = "joined_at")
     @Temporal(TemporalType.DATE)
