@@ -60,7 +60,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "identify", length = 500)
     private String identify;
-    
+
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
@@ -69,5 +69,10 @@ public class User extends BaseTimeEntity {
         this.socialType = socialType;
         this.socialIdentify = socialIdentify;
         this.isDeleted = false;
+    }
+
+    public void changeIsDeleted(Boolean isDeleted) {
+        this.socialIdentify = this.socialIdentify +"delete";
+        this.isDeleted = isDeleted;
     }
 }

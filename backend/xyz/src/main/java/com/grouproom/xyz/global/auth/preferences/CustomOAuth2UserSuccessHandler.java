@@ -46,7 +46,7 @@ public class CustomOAuth2UserSuccessHandler extends SimpleUrlAuthenticationSucce
         CustomAuthenticatedUser customAuthenticatedUser = CustomAuthenticatedUser.mapToObj(((DefaultOAuth2User) authentication.getPrincipal()).getAttributes());
 
         //jwt 토큰을 생성한다.
-        JsonWebToken jwtTokenInfo = JwtTokenUtils.allocateToken(customAuthenticatedUser.getUserSeqence(), customAuthenticatedUser.getRole());
+        JsonWebToken jwtTokenInfo = JwtTokenUtils.allocateToken(customAuthenticatedUser.getUserSequence(), customAuthenticatedUser.getRole());
 
         //cookie에서 redirectUrl을 추출하고, redirect 주소를 생성한다.
         String baseUrl = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME).getValue();
