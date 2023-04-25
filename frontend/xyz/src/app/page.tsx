@@ -1,5 +1,6 @@
 import DateFilter from "@/components/memory/DateFilter/DateFilter";
 import KakaoMap from "@/components/memory/KakaoMap";
+import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       </div>
       <div>현재 위치 기준으로 보기</div>
       <KakaoMap />
+      <MemoryCreateBtn />
     </section>
   );
 }
