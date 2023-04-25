@@ -225,4 +225,17 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         return "";
     }
 
+    @Override
+    @Transactional
+    public String modifyFriendToAccept(Long loginSeq, Long userSeq) {
+        Friend friend = friendRepository.findByFromUserAndToUser1(userSeq, loginSeq);
+        if(null == friend) {
+            logger.severe("수락할 수 있는 대상이 아님");
+            throw new RuntimeException();
+        }
+        friend.setIsAccepted(true);
+        friend.setUpdatedAt(LocalDateTime.now());
+        return "";
+    }
+
 }
