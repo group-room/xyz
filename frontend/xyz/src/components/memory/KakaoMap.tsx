@@ -11,8 +11,8 @@ function KakaoMap() {
       albumImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "PUBLIC",
-      groupSeq: 0,
-      groupName: "그룹명",
+      aztSeq: 0,
+      aztName: "그룹명",
       date: "날짜",
       latitude: 33.450705,
       longitude: 126.570677,
@@ -23,8 +23,8 @@ function KakaoMap() {
       albumImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
-      groupSeq: 0,
-      groupName: "그룹명",
+      aztSeq: 0,
+      aztName: "그룹명",
       date: "날짜",
       latitude: 33.450936,
       longitude: 126.569477,
@@ -35,8 +35,8 @@ function KakaoMap() {
       albumImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
-      groupSeq: 0,
-      groupName: "그룹명",
+      aztSeq: 0,
+      aztName: "그룹명",
       date: "날짜",
       latitude: 33.450936,
       longitude: 126.569477,
@@ -47,8 +47,8 @@ function KakaoMap() {
       albumImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
-      groupSeq: 0,
-      groupName: "그룹명",
+      aztSeq: 0,
+      aztName: "그룹명",
       date: "날짜",
       latitude: 33.450879,
       longitude: 126.56994,
@@ -59,8 +59,8 @@ function KakaoMap() {
       albumImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
-      groupSeq: 0,
-      groupName: "그룹명",
+      aztSeq: 0,
+      aztName: "그룹명",
       date: "날짜",
       latitude: 33.451393,
       longitude: 126.570738,
@@ -74,7 +74,7 @@ function KakaoMap() {
   }, []);
 
   const successHandler = (response: any) => {
-    console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+    // console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setCurrLocation({ lat: latitude, lng: longitude });
   };
