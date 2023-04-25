@@ -29,19 +29,19 @@ import java.util.Map;
 @Setter
 public class CustomAuthenticatedUser extends AbstractAuthenticationToken {
 
-    private Long userSeqence;
+    private Long userSequence;
 
-    public CustomAuthenticatedUser(Collection<? extends GrantedAuthority> authorities, Long userSeqence, boolean isAuthenticated) {
+    public CustomAuthenticatedUser(Collection<? extends GrantedAuthority> authorities, Long userSequence, boolean isAuthenticated) {
         super(authorities);
         this.setAuthenticated(isAuthenticated);
-        this.userSeqence = userSeqence;
+        this.userSequence = userSequence;
     }
 
 
     public Map<String, Object> objToMap() {
         Map<String, Object> attributes = new HashMap<>();
 
-        attributes.put("userSeqence", userSeqence);
+        attributes.put("userSequence", userSequence);
         attributes.put("role", this.getAuthorities().stream()
                 .findFirst()
                 .orElseGet(() -> new SimpleGrantedAuthority("ROLE_USER"))
@@ -52,7 +52,7 @@ public class CustomAuthenticatedUser extends AbstractAuthenticationToken {
 
     public static CustomAuthenticatedUser mapToObj(Map<String, Object> attributes) {
         return new CustomAuthenticatedUser(Collections.singleton(new SimpleGrantedAuthority(String.valueOf(attributes.get("role")))),
-                Long.valueOf(attributes.get("userSeqence").toString()),
+                Long.valueOf(attributes.get("userSequence").toString()),
                 true);
     }
 
@@ -63,7 +63,7 @@ public class CustomAuthenticatedUser extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return this.userSeqence;
+        return this.userSequence;
     }
 
     public String getRole() {

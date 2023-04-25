@@ -1,6 +1,7 @@
 package com.grouproom.xyz.global.auth.jwt;
 
 import com.grouproom.xyz.global.util.JwtTokenUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.Collections;
  * <p>
  * 2023-04-20        SSAFY       최초 생성
  */
+@Slf4j
 @Service
 public class JsonWebTokenProvider {
 
@@ -28,10 +30,11 @@ public class JsonWebTokenProvider {
     public Authentication getAuthentication(String token) {
 
         String role = JwtTokenUtils.getClaimAttribute(token, "role");
+        log.info("role : {}",role);
         Collection<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(role));
-        String userSeq = JwtTokenUtils.getClaimAttribute(token, "userSeqence");
+        String userSequence = JwtTokenUtils.getClaimAttribute(token, "sequence");
 
-        CustomAuthenticatedUser customAuthenticatedUser = new CustomAuthenticatedUser(authorities, Long.valueOf(userSeq), true);
+        CustomAuthenticatedUser customAuthenticatedUser = new CustomAuthenticatedUser(authorities, Long.valueOf(userSequence), true);
         return customAuthenticatedUser;
     }
 }
