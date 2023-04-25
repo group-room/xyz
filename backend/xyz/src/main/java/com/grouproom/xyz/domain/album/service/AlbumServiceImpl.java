@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -26,19 +25,13 @@ public class AlbumServiceImpl implements AlbumService {
     public List<AlbumResponse> findAlbum(Long loginUserSeq, AlbumListRequest albumListRequest) {
         logger.info("findAlbum 호출");
 
+        // TODO: date 처리 필요
         if (albumListRequest.getIsLocationBased() == false) {
             logger.info("isLocationBased == false");
             return albumRepository.findAlbumsByUserSeq(loginUserSeq, albumListRequest.getAztSeq(), null);
         }
 
         logger.info("isLocationBased == true");
-
-//        groupSeq 없으면 모든 public 글 + 해당 유저가 가입된 그룹의 group 글 + 해당 유저의 private 글
-//        groupSeq 있으면 해당 그룹의 public, group 글 + 해당 그룹에서 작성한 해당 유저의 private 글
-//        date 있으면 해당 날짜 글만 필터링
-//        date 없으면 최신순
-//        isLocationBased true면 위도, 경도로 필터링
-//        isLocationBased false면 전체
-        return null;
+        return albumRepository.findAlbumsByUserSeqAndCoordinate(loginUserSeq, albumListRequest.getAztSeq(), albumListRequest.getLatitude(), albumListRequest.getLongitude(), null);
     }
 }
