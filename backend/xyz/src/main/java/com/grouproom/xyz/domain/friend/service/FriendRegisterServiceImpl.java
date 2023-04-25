@@ -196,7 +196,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             friend.setCreatedAt(LocalDateTime.now());
             friendRepository.save(friend);
         } else {
-            logger.severe("이미 친구");
+            logger.severe("친구 요청 후 수락 대기 상태 혹은 친구 상태");
             throw new RuntimeException();
         }
         return "";
