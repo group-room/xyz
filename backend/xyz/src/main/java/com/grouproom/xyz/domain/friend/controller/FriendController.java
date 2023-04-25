@@ -33,7 +33,7 @@ public class FriendController {
         logger.info("modifyFriendDelete 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(friendManageService.modifyFriendDelete(loginSeq, userSeq));
+            return new BaseResponse<>(friendManageService.modifyFriendIsDelete(loginSeq, userSeq));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
