@@ -28,7 +28,7 @@ public class AlbumServiceImpl implements AlbumService {
 
         if (albumListRequest.getIsLocationBased() == false) {
             logger.info("isLocationBased == false");
-            return albumRepository.findAlbumsByUserSeq(loginUserSeq, null);
+            return albumRepository.findAlbumsByUserSeq(loginUserSeq, albumListRequest.getAztSeq(), null);
         }
 
         logger.info("isLocationBased == true");

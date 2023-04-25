@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class AlbumListRequest {
 
     private String date;
-    private Long groupSeq;
+    private Long aztSeq;
     private Long albumSeq;
     private Boolean isLocationBased;
     private BigDecimal latitude;
