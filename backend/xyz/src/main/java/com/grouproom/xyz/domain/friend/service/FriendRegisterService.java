@@ -10,4 +10,5 @@ public interface FriendRegisterService {
     UserResponse findUserByIdentify(Long loginSeq, String identify);
     String saveFriendRequest(Long loginSeq, Long userSeq);
     String cancelFriendRequest(Long loginSeq, Long userSeq);
+    String modifyFriendToAccept(Long loginSeq, Long userSeq);
 }

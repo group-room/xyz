@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FriendRepository extends JpaRepository<Friend, Long> {
+public interface FriendRepository extends JpaRepository<Friend, Long>, FriendRepositoryCustom {
 
     List<Friend> findByFromUserAndIsAcceptedAndIsDeleted(User user, Boolean isAccepted, Boolean isDeleted);
     List<Friend> findByToUserAndIsAcceptedAndIsDeleted(User user, Boolean isAccepted, Boolean isDeleted);
