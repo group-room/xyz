@@ -13,11 +13,7 @@ function ProfilePage() {
     <div>
       <div onClick={handleClick}> ProfilePage</div>
       {isModal && (
-        <Modal
-          backgroundOpacity="20"
-          parentClasses="w-full mx-5 p-5 rounded bg-white bg-opacity-30 hover:bg-opacity-50"
-          closeModal={() => setIsModal(false)}
-        >
+        <Modal closeModal={() => setIsModal(false)}>
           {<div>친구하실래요?</div>}
         </Modal>
       )}
