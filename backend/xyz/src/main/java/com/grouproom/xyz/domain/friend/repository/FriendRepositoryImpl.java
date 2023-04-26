@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.friend.repository;
 
 import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
 import com.grouproom.xyz.domain.friend.entity.Friend;
+import com.grouproom.xyz.domain.user.entity.QUser;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,13 +17,16 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    private static final QUser fromUser = friend.fromUser;
+    private static final QUser toUser = friend.toUser;
+
     @Override
     public Friend findByFromUserAndToUser1(Long from, Long to) {
         return jpaQueryFactory
                 .select(friend)
                 .from(friend)
-                .where(friend.fromUser.sequence.eq(from),
-                        friend.toUser.sequence.eq(to),
+                .where(fromUser.sequence.eq(from),
+                        toUser.sequence.eq(to),
                         friend.isAccepted.eq(false),
                         friend.isCanceled.eq(false),
                         friend.isDeleted.eq(false))
@@ -31,28 +35,29 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
 
    @Override
     public List<FriendUserResponse> findByFromUserOrToUser(Long userSeq, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
+
         return jpaQueryFactory
                 .select(Projections.fields(FriendUserResponse.class,
                         new CaseBuilder()
-                                .when(friend.fromUser.sequence.eq(userSeq))
-                                .then(friend.toUser.sequence)
-                                .otherwise(friend.fromUser.sequence).as("userSeq"),
+                                .when(fromUser.sequence.eq(userSeq))
+                                .then(toUser.sequence)
+                                .otherwise(fromUser.sequence).as("userSeq"),
                         new CaseBuilder()
-                                .when(friend.fromUser.sequence.eq(userSeq))
-                                .then(friend.toUser.nickname)
-                                .otherwise(friend.fromUser.nickname).as("nickname"),
+                                .when(fromUser.sequence.eq(userSeq))
+                                .then(toUser.nickname)
+                                .otherwise(fromUser.nickname).as("nickname"),
                         new CaseBuilder()
-                                .when(friend.fromUser.sequence.eq(userSeq))
-                                .then(friend.toUser.identify)
-                                .otherwise(friend.fromUser.identify).as("identify"),
+                                .when(fromUser.sequence.eq(userSeq))
+                                .then(toUser.identify)
+                                .otherwise(fromUser.identify).as("identify"),
                         new CaseBuilder()
-                                .when(friend.fromUser.sequence.eq(userSeq))
-                                .then(friend.toUser.profileImage)
-                                .otherwise(friend.fromUser.profileImage).as("profileImage")
+                                .when(fromUser.sequence.eq(userSeq))
+                                .then(toUser.profileImage)
+                                .otherwise(fromUser.profileImage).as("profileImage")
                         )
                 )
                 .from(friend)
-                .where(friend.fromUser.sequence.eq(userSeq).or(friend.toUser.sequence.eq(userSeq))
+                .where(fromUser.sequence.eq(userSeq).or(toUser.sequence.eq(userSeq))
                         , friend.isAccepted.eq(isAccepted)
                         , friend.isCanceled.eq(isCanceled)
                         , friend.isDeleted.eq(isDeleted))
@@ -71,5 +76,37 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                         , friend.isCanceled.eq(isCanceled)
                         , friend.isDeleted.eq(isDeleted))
                 .fetchFirst();
+    }
+
+    @Override
+    public List<FriendUserResponse> findByFromUserOrToUser(Long userSeq, String nickname, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
+
+        return jpaQueryFactory
+                .select(Projections.fields(FriendUserResponse.class,
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.sequence)
+                                        .otherwise(fromUser.sequence).as("userSeq"),
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.nickname)
+                                        .otherwise(fromUser.nickname).as("nickname"),
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.identify)
+                                        .otherwise(fromUser.identify).as("identify"),
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.profileImage)
+                                        .otherwise(fromUser.profileImage).as("profileImage")
+                        )
+                )
+                .from(friend)
+                .where(fromUser.sequence.eq(userSeq).and(toUser.nickname.eq(nickname))
+                        .or(toUser.sequence.eq(userSeq).and(fromUser.nickname.eq(nickname)))
+                        , friend.isAccepted.eq(isAccepted)
+                        , friend.isCanceled.eq(isCanceled)
+                        , friend.isDeleted.eq(isDeleted))
+                .fetch();
     }
 }
