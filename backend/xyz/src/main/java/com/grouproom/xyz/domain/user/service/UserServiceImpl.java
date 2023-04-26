@@ -3,7 +3,11 @@ package com.grouproom.xyz.domain.user.service;
 import com.grouproom.xyz.domain.user.dto.response.FriendshipResponse;
 import com.grouproom.xyz.domain.user.dto.response.ModifierResponse;
 import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
+import com.grouproom.xyz.domain.user.entity.Modifier;
 import com.grouproom.xyz.domain.user.entity.User;
+import com.grouproom.xyz.domain.user.entity.UserModifier;
+import com.grouproom.xyz.domain.user.repository.ModifierRepository;
+import com.grouproom.xyz.domain.user.repository.UserModifierRepository;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +39,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final UserModifierRepository userModifierRepository;
+    private final ModifierRepository modifierRepository;
 
     @Override
     @Transactional
@@ -76,5 +82,21 @@ public class UserServiceImpl implements UserService{
         profileResponse.setBgms(userRepository.selectBgmByUserSeq(myUser));
 
         return profileResponse;
+    }
+
+    @Override
+    @Transactional
+    public void modifyProfile(Long userSeq, String nickname, String profileImagePath, String backgroundImagePath, String introduce, Long modifierSeq) {
+        User user = userRepository.findBySequence(userSeq);
+        user.changeProfile(nickname, profileImagePath, backgroundImagePath, introduce);
+
+        if(modifierSeq!=null){
+            UserModifier userModifier = userModifierRepository.findByUser_SequenceAndModifier_Sequence(userSeq,modifierSeq);
+            if(userModifier == null) {
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST,"소유하지 않은 수식어를 선택했습니다.");
+            }else{
+                userModifier.changeIsSelected(true);
+            }
+        }
     }
 }

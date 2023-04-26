@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.controller
@@ -64,4 +65,20 @@ public class UserController {
             return new BaseResponse(userService.findProfileByUserSeq(fromSeq,userSeq));
     }
 
+    @PostMapping("/profile")
+    BaseResponse profileDetails(@RequestPart(required = false)String nickname,@RequestPart(required = false) MultipartFile profileImage,
+                                @RequestPart(required = false)MultipartFile backgroundImage,@RequestPart(required = false)String introduce,
+                                @RequestPart(required = false)Long modifierSequence){
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        String profileImagePath = null,backgroundImagePath = null;
+
+        if(null!=profileImage && !profileImage.isEmpty())
+            profileImagePath = s3UploadService.upload(profileImage, "user");
+        if(null!=backgroundImage && !backgroundImage.isEmpty())
+            backgroundImagePath = s3UploadService.upload(backgroundImage, "user");
+
+        userService.modifyProfile(userSeq,nickname,profileImagePath,backgroundImagePath,introduce,modifierSequence);
+
+        return new BaseResponse(null);
+    }
 }

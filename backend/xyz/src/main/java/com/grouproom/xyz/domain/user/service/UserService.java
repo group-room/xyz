@@ -12,7 +12,9 @@ public interface UserService {
 
     List<ModifierResponse> findModifierByUserSequence(Long userSequence);
 
-    ProfileResponse findProfileByUserSeq(Long fromUserSeq,Long toUserSeq);
+    ProfileResponse findProfileByUserSeq(Long fromUserSeq, Long toUserSeq);
 
     ProfileResponse findProfileByUserSeq(Long myUserSeq);
+
+    void modifyProfile(Long userSeq, String nickname, String profileImagePath, String backgroundImagePath, String introduce, Long modifierSeq);
 }
