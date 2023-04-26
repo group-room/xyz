@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
 import { BgColors } from "@/constants/style";
 import React from "react";
 
-type BtnProps = {
-  width: stirng;
+interface BtnProps {
+  width: string;
   bgColor: string;
   text: string;
   btnFunc: () => void;
-};
+}
 
 /**
  *
