@@ -5,15 +5,7 @@ import DateFilter from "@/components/memory/DateFilter";
 import AztFilter from "@/components/memory/AztFilter";
 import KakaoMap from "@/components/memory/KakaoMap";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
-
-export type AztTypes = {
-  aztSeq?: number | null;
-  name: string;
-  image?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  chatSeq?: string;
-};
+import { AztTypes, MemoriesTypes, PositionTypes } from "@/types/memory";
 
 function MemoryPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -48,9 +40,78 @@ function MemoryPage() {
   const seeAllOption = [{ name: "전체 아지트 보기", aztSeq: null }];
   // 셀렉트박스 내 들어갈 초기값 설정
   const [currAzt, setCurrAzt] = useState<AztTypes[]>(seeAllOption);
-
   // 토글설정은 false 로 셀렉트 박스를 닫아놓기
   const [toggle, setToggle] = useState<boolean>(false);
+
+  const [currLocation, setCurrLocation] = useState<PositionTypes>({
+    lat: 0,
+    lng: 0,
+  }); // 현재 위치
+  const [position, setPosition] = useState<PositionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
+  const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
+  const [memories, setMemories] = useState<MemoriesTypes[]>([
+    {
+      memorySeq: 0,
+      memoryImage:
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+      accessibility: "PUBLIC",
+      aztSeq: 0,
+      aztName: "그룹명",
+      date: "날짜",
+      latitude: 37.513,
+      longitude: 127.02929,
+      location: "카카오",
+    },
+    {
+      memorySeq: 1,
+      memoryImage:
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+      accessibility: "GROUP",
+      aztSeq: 0,
+      aztName: "그룹명",
+      date: "날짜",
+      latitude: 37.514,
+      longitude: 127.0293,
+      location: "생태연못",
+    },
+    {
+      memorySeq: 2,
+      memoryImage:
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+      accessibility: "GROUP",
+      aztSeq: 0,
+      aztName: "그룹명",
+      date: "날짜",
+      latitude: 37.515,
+      longitude: 127.02931,
+      location: "생태연못",
+    },
+    {
+      memorySeq: 3,
+      memoryImage:
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+      accessibility: "GROUP",
+      aztSeq: 0,
+      aztName: "그룹명",
+      date: "날짜",
+      latitude: 37.516,
+      longitude: 127.02932,
+      location: "텃밭",
+    },
+    {
+      memorySeq: 4,
+      memoryImage:
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+      accessibility: "GROUP",
+      aztSeq: 0,
+      aztName: "그룹명",
+      date: "날짜",
+      latitude: 37.517,
+      longitude: 127.02933,
+      location: "근린공원",
+    },
+  ]);
+
   const handleTitleClick = () => setToggle((prev) => !prev);
   const handleItemClick = (currAztSeq: number | null) => {
     if (currAztSeq == null) {
@@ -85,7 +146,15 @@ function MemoryPage() {
           seeAllOption={seeAllOption}
         />
       </div>
-      <KakaoMap />
+      <KakaoMap
+        position={position}
+        setPosition={setPosition}
+        currLocation={currLocation}
+        setCurrLocation={setCurrLocation}
+        address={address}
+        setAddress={setAddress}
+        locations={memories}
+      />
       <MemoryCreateBtn />
     </section>
   );

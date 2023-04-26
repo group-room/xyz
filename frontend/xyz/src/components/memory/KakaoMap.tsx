@@ -1,78 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import pinIcon from "../../../public/icons/pin.svg";
 import Image from "next/image";
 import { convertAddress } from "@/app/api/kakao";
+import { KakaoMapProps } from "@/types/memory";
 
-function KakaoMap() {
-  const [currLocation, setCurrLocation] = useState({ lat: 0, lng: 0 }); // 현재 위치
-  const [position, setPosition] = useState({ lat: 0, lng: 0 }); // 마커 찍는 위치
-  const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
-  const [locations, setLocations] = useState([
-    {
-      memorySeq: 0,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "PUBLIC",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 33.450705,
-      longitude: 126.570677,
-      location: "카카오",
-    },
-    {
-      memorySeq: 1,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 33.450936,
-      longitude: 126.569477,
-      location: "생태연못",
-    },
-    {
-      memorySeq: 2,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 33.450936,
-      longitude: 126.569477,
-      location: "생태연못",
-    },
-    {
-      memorySeq: 3,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 33.450879,
-      longitude: 126.56994,
-      location: "텃밭",
-    },
-    {
-      memorySeq: 4,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 33.451393,
-      longitude: 126.570738,
-      location: "근린공원",
-    },
-  ]);
-
+function KakaoMap({
+  height,
+  position,
+  setPosition,
+  currLocation,
+  setCurrLocation,
+  address,
+  setAddress,
+  locations,
+}: KakaoMapProps) {
   // 위도, 경도를 주소로 변환하는 함수
   const getConvertedAddress = (x: string, y: string) => {
     convertAddress(x, y)
@@ -119,7 +63,7 @@ function KakaoMap() {
           lat: currLocation?.lat,
           lng: currLocation?.lng,
         }}
-        style={{ width: "100%", height: "220px" }}
+        style={{ width: "100%", height: `${height?.toString() || "220"}px` }}
         level={3}
         onClick={(_t, mouseEvent) =>
           setPosition({
@@ -138,7 +82,7 @@ function KakaoMap() {
             😉내위치!
           </div>
         </CustomOverlayMap>
-        {locations.map(({ memorySeq, memoryImage, latitude, longitude }) => (
+        {locations?.map(({ memorySeq, memoryImage, latitude, longitude }) => (
           <MapMarker
             key={memorySeq}
             position={{ lat: latitude, lng: longitude }}

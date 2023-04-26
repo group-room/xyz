@@ -1,11 +1,11 @@
 import { BgColors } from "@/constants/style";
 import React from "react";
 
-type BtnProps = {
+interface BtnProps {
   bgColor: string;
   text: string;
   btnFunc: () => void;
-};
+}
 
 /**
  *
