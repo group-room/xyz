@@ -79,7 +79,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
     }
 
     @Override
-    public List<FriendUserResponse> findByFromUserOrToUser(Long userSeq, String nickname, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
+    public List<FriendUserResponse> findNicknameOfFromUserOrToUser(Long userSeq, String nickname, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
 
         return jpaQueryFactory
                 .select(Projections.fields(FriendUserResponse.class,
@@ -108,5 +108,36 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                         , friend.isCanceled.eq(isCanceled)
                         , friend.isDeleted.eq(isDeleted))
                 .fetch();
+    }
+
+    @Override
+    public FriendUserResponse findByIdentifyOfFromUserOrToUser(Long userSeq, String identify, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
+        return jpaQueryFactory
+                .select(Projections.fields(FriendUserResponse.class,
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.sequence)
+                                        .otherwise(fromUser.sequence).as("userSeq"),
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.nickname)
+                                        .otherwise(fromUser.nickname).as("nickname"),
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.identify)
+                                        .otherwise(fromUser.identify).as("identify"),
+                                new CaseBuilder()
+                                        .when(fromUser.sequence.eq(userSeq))
+                                        .then(toUser.profileImage)
+                                        .otherwise(fromUser.profileImage).as("profileImage")
+                        )
+                )
+                .from(friend)
+                .where(fromUser.sequence.eq(userSeq).and(toUser.identify.eq(identify))
+                                .or(toUser.sequence.eq(userSeq).and(fromUser.identify.eq(identify)))
+                        , friend.isAccepted.eq(isAccepted)
+                        , friend.isCanceled.eq(isCanceled)
+                        , friend.isDeleted.eq(isDeleted))
+                .fetchFirst();
     }
 }
