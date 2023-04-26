@@ -39,16 +39,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("modifyFriendDelete 호출");
 
-        User loginUser = userRepository.findBySequence(loginSeq);
-        User targetUser = userRepository.findBySequence(userSeq);
-        if(null == targetUser){
-            logger.severe("targetUser가 존재하지 않음");
-            throw new RuntimeException();
-        }
-        Friend friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(loginUser, targetUser, true, false);
-        if(null == friend) {
-            friend = friendRepository.findByFromUserAndToUserAndIsAcceptedAndIsDeleted(targetUser, loginUser, true, false);
-        }
+        Friend friend = friendRepository.findByFromUserAndToUser(loginSeq, userSeq, true, false, false);
         if(null == friend) {
             logger.severe("친구 관계가 아님");
             throw new RuntimeException();
