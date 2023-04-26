@@ -86,6 +86,7 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom {
                 .from(album)
                 .join(album.azt, azt)
                 .where(builder)
+                .where(eqAzt(aztSeq))
                 .orderBy(distanceOrderSpecifier)
                 .fetch();
     }
