@@ -1,9 +1,11 @@
 package com.grouproom.xyz.domain.memory.entity;
 
 import com.grouproom.xyz.domain.azt.entity.Azt;
+import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,10 +42,10 @@ public class Memory extends BaseTimeEntity {
     @Column(name = "accessibility")
     private Accessibility accessibility;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_deleted")
     private Boolean isDeleated;
 
-    @Column(name = "is_blinded", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_blinded")
     private boolean isBlinded;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,4 +55,18 @@ public class Memory extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "azt_sequence")
     private Azt azt;
+
+    @Builder
+    public Memory(User user, AddMemoryRequest addMemoryRequest) {
+        this.content = addMemoryRequest.getContent();
+        this.date = addMemoryRequest.getDate().atStartOfDay();
+        this.latitude = addMemoryRequest.getLatitude();
+        this.longitude = addMemoryRequest.getLongitude();
+        this.location = addMemoryRequest.getLocation();
+        this.accessibility = Accessibility.valueOf(addMemoryRequest.getAccessibility());
+        this.isDeleated = false;
+        this.isBlinded = false;
+        this.user = user;
+//        this.azt = azt;
+    }
 }
