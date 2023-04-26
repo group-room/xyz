@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import pinIcon from "../../../public/icons/pin.svg";
 import Image from "next/image";
-import { convertAddress } from "@/app/api/memory_api";
+import { convertAddress } from "@/app/api/kakao";
 
 function KakaoMap() {
   const [currLocation, setCurrLocation] = useState({ lat: 0, lng: 0 }); // 현재 위치
