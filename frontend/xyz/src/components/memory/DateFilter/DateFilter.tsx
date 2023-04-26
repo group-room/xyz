@@ -9,14 +9,8 @@ import calendarIcon from "../../../../public/icons/calendar.svg";
 import Image from "next/image";
 
 function DateFilter() {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  // const [endDate, setEndDate] = useState<Date | null>(null);
-  const handleChange = (date: Date) => setStartDate(date);
-  // const handleChange = (dates: Date[]) => {
-  //   const [start, end] = dates;
-  //   setStartDate(start);
-  //   setEndDate(end);
-  // };
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const handleChange = (date: Date) => setSelectedDate(date);
   // const years = range(1990, getYear(new Date()) + 1, 1);
   // const months = [
   //   "January",
@@ -42,11 +36,8 @@ function DateFilter() {
       <DatePicker
         locale={ko}
         dateFormat="yyyy년 MM월 dd일"
-        selected={startDate}
-        // startDate={startDate}
-        // endDate={endDate}
+        selected={selectedDate}
         onChange={handleChange}
-        // selectsRange
         popperClassName="z-10" // 지도에 겹쳐지는 것 방지
         className={styles.datePicker}
         // wrapperClassName="w-3/6"

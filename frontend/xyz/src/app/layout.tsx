@@ -14,9 +14,7 @@ const pixelFont = localFont({
   display: "swap",
 });
 
-// TODO: 나중에 주석 해제
-// const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&libraries=services,clusterer&autoload=false`;
-const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=e4372545b130db09a68686ad494610a1&libraries=services,clusterer&autoload=false`;
+const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&libraries=services,clusterer&autoload=false`;
 
 export default function RootLayout({
   children,
