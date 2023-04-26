@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.user.service;
 
 import com.grouproom.xyz.domain.user.dto.response.ModifierResponse;
 import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
+import com.grouproom.xyz.domain.user.dto.response.VisitorResponse;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface UserService {
     void addVisitor(Long fromUserSeq,Long toUserSeq,String content);
 
     void removeVisitor(Long userSeq,Long visitorSeq);
+
+    List<VisitorResponse> findVisitorByUserSequence(Long toUserSeq);
 }

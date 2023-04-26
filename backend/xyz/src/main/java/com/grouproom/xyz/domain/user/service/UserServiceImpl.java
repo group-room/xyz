@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.user.service;
 import com.grouproom.xyz.domain.user.dto.response.FriendshipResponse;
 import com.grouproom.xyz.domain.user.dto.response.ModifierResponse;
 import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
+import com.grouproom.xyz.domain.user.dto.response.VisitorResponse;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.entity.UserModifier;
 import com.grouproom.xyz.domain.user.entity.Visitor;
@@ -117,6 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void removeVisitor(Long userSeq, Long visitorSeq) {
         User user = userRepository.getReferenceById(userSeq);
         Visitor visitor = visitorRepository.findBySequence(visitorSeq);
@@ -126,7 +128,13 @@ public class UserServiceImpl implements UserService {
         if (!visitor.getToUser().equals(user) && !visitor.getFromUser().equals(user)) {
             throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
         }
-        
+
         visitor.changeIsDeleted(true);
+    }
+
+    @Override
+    public List<VisitorResponse> findVisitorByUserSequence(Long toUserSeq) {
+        User toUser = userRepository.getReferenceById(toUserSeq);
+        return visitorRepository.selectVisitorByUserSeq(toUser);
     }
 }

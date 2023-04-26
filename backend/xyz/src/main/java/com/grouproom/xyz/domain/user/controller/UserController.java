@@ -91,7 +91,13 @@ public class UserController {
 
     @DeleteMapping("/visitor/{visitorSeq}")
     BaseResponse removeVisitor(@PathVariable("visitorSeq") Long visitorSeq){
-
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        userService.removeVisitor(userSeq,visitorSeq);
         return new BaseResponse(null);
+    }
+
+    @GetMapping("/visitor")
+    BaseResponse visitorList(Long userSeq) {
+        return new BaseResponse(userService.findVisitorByUserSequence(userSeq));
     }
 }
