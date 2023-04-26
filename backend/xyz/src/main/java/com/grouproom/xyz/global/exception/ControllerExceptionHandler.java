@@ -32,7 +32,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders resHeaders = new HttpHeaders();
         resHeaders.add("Content-Type", "application/json;charset=UTF-8");
 
-        return new ResponseEntity(e.getMessage(), resHeaders, e.getStatus());
+        return new ResponseEntity(e.getMessage(), resHeaders, e.getStatusCode());
     }
 
     @ExceptionHandler({Exception.class})

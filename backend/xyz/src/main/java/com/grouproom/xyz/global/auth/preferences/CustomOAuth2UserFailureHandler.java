@@ -51,7 +51,7 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
         // CustomOAuth2UserService에서 발생한 SIGN_UP_REQUIRED 에러가 아닌 경우
         if (!(exception instanceof OAuth2LoginException)) {
             log.error("Uncatched Error occurs {}", exception.getMessage());
-            JsonUtils.writeJsonExceptionResponse(response, HttpStatus.BAD_REQUEST);
+            JsonUtils.writeJsonExceptionResponse(response, HttpStatus.BAD_REQUEST,"소셜 로그인 부분 오류");
             return;
         }
 

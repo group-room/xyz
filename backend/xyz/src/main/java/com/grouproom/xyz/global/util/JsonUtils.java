@@ -25,13 +25,13 @@ public class JsonUtils {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static void writeJsonExceptionResponse(HttpServletResponse response, HttpStatus httpStatus)
+    public static void writeJsonExceptionResponse(HttpServletResponse response, HttpStatus httpStatus,String msg)
             throws IOException {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
 
-        ErrorResponse baseResponseDto = new ErrorResponse(httpStatus,"소셜 로그인 부분 오류");
+        ErrorResponse baseResponseDto = new ErrorResponse(httpStatus,msg);
 
         //json으로 변환하여 response에 저장
         String stringResponseData = objectMapper.writeValueAsString(baseResponseDto);

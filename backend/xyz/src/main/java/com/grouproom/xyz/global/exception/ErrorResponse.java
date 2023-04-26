@@ -20,12 +20,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ErrorResponse extends RuntimeException {
 
-    private HttpStatus status;
+    private int statusCode;
 
     private String message;
 
     public ErrorResponse(HttpStatus status, String message) {
-        this.status = status;
+        this.statusCode = status.value();
         this.message = message;
     }
 
