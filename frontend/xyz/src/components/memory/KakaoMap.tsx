@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import pinIcon from "../../../public/icons/pin.svg";
 import Image from "next/image";
-import { convertAddress } from "@/app/api/memory_api";
+import { convertAddress } from "@/app/api/kakao";
 
 function KakaoMap() {
   const [currLocation, setCurrLocation] = useState({ lat: 0, lng: 0 }); // 현재 위치
@@ -12,8 +12,8 @@ function KakaoMap() {
   const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
   const [locations, setLocations] = useState([
     {
-      albumSeq: 0,
-      albumImage:
+      memorySeq: 0,
+      memoryImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "PUBLIC",
       aztSeq: 0,
@@ -24,8 +24,8 @@ function KakaoMap() {
       location: "카카오",
     },
     {
-      albumSeq: 1,
-      albumImage:
+      memorySeq: 1,
+      memoryImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
       aztSeq: 0,
@@ -36,8 +36,8 @@ function KakaoMap() {
       location: "생태연못",
     },
     {
-      albumSeq: 2,
-      albumImage:
+      memorySeq: 2,
+      memoryImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
       aztSeq: 0,
@@ -48,8 +48,8 @@ function KakaoMap() {
       location: "생태연못",
     },
     {
-      albumSeq: 3,
-      albumImage:
+      memorySeq: 3,
+      memoryImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
       aztSeq: 0,
@@ -60,8 +60,8 @@ function KakaoMap() {
       location: "텃밭",
     },
     {
-      albumSeq: 4,
-      albumImage:
+      memorySeq: 4,
+      memoryImage:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
       accessibility: "GROUP",
       aztSeq: 0,
@@ -139,12 +139,12 @@ function KakaoMap() {
             😉내위치!
           </div>
         </CustomOverlayMap>
-        {locations.map(({ albumSeq, albumImage, latitude, longitude }) => (
+        {locations.map(({ memorySeq, memoryImage, latitude, longitude }) => (
           <MapMarker
-            key={albumSeq}
+            key={memorySeq}
             position={{ lat: latitude, lng: longitude }}
             image={{
-              src: albumImage,
+              src: memoryImage,
               size: { width: 24, height: 35 },
             }}
           />
