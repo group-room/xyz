@@ -6,10 +6,10 @@ import com.grouproom.xyz.domain.album.entity.QAlbum;
 import com.grouproom.xyz.domain.azt.entity.QAzt;
 import com.grouproom.xyz.domain.azt.entity.QAztMember;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -51,7 +51,7 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom {
                 .and(album.user.sequence.eq(userSeq)));
 
         return jpaQueryFactory.select(Projections.constructor(AlbumResponse.class,
-                        album.sequence.as("albumSeq"), album.accessibility, album.azt.sequence.as("aztSeq"), album.azt.aztName))
+                        album.sequence.as("albumSeq"), album.accessibility, album.azt.sequence.as("aztSeq"), album.azt.aztName, album.latitude, album.longitude))
                 .from(album)
                 .join(album.azt, azt)
                 .where(builder)
@@ -61,6 +61,7 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom {
 
     @Override
     public List<AlbumResponse> findAlbumsByUserSeqAndCoordinate(Long userSeq, Long aztSeq, BigDecimal latitude, BigDecimal longitude, LocalDateTime date) {
+
         NumberExpression<Double> distanceExpression = acos(sin(radians(Expressions.constant(latitude)))
                 .multiply(sin(radians(album.latitude)))
                 .add(cos(radians(Expressions.constant(latitude)))
@@ -68,7 +69,8 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom {
                         .multiply(cos(radians(Expressions.constant(longitude)).subtract(
                                 radians(album.longitude))))
                 )).multiply(6371000);
-        Path<Double> distancePath = Expressions.numberPath(Double.class, "distance");
+
+        OrderSpecifier<Double> distanceOrderSpecifier = new OrderSpecifier<>(Order.ASC, distanceExpression);
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.or(album.accessibility.eq(Accessibility.PUBLIC));
@@ -80,11 +82,11 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom {
                 .and(album.user.sequence.eq(userSeq)));
 
         return jpaQueryFactory.select(Projections.constructor(AlbumResponse.class,
-                        album.sequence.as("albumSeq"), album.accessibility, album.azt.sequence.as("aztSeq"), album.azt.aztName))
+                        album.sequence.as("albumSeq"), album.accessibility, album.azt.sequence.as("aztSeq"), album.azt.aztName, album.latitude, album.longitude))
                 .from(album)
                 .join(album.azt, azt)
                 .where(builder)
-                .orderBy(((ComparableExpressionBase<Double>) distancePath).asc())
+                .orderBy(distanceOrderSpecifier)
                 .fetch();
     }
 }
