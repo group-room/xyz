@@ -2,6 +2,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import Header from "@/components/Header";
 import TabBar from "@/components/TabBar";
+import Script from "next/script";
 
 export const metadata = {
   title: "XYZ",
@@ -9,9 +10,11 @@ export const metadata = {
 };
 
 const pixelFont = localFont({
-  src: "../assets/font/NeoDunggeunmoPro-Regular.woff",
+  src: "../../public/font/NeoDunggeunmoPro-Regular.woff",
   display: "swap",
 });
+
+const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&libraries=services,clusterer&autoload=false`;
 
 export default function RootLayout({
   children,
@@ -20,10 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={pixelFont.className}>
-      <body className="h-screen">
-        <Header />
-        <main className="pt-16 px-5">{children}</main>
-        <TabBar />
+      <body>
+        <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
+        <main className="px-5 my-16">{children}</main>
       </body>
     </html>
   );
