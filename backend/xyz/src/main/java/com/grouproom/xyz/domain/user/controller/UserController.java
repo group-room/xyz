@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    BaseResponse profileDetails(@RequestPart(required = false)String nickname,@RequestPart(required = false) MultipartFile profileImage,
+    BaseResponse saveProfile(@RequestPart(required = false)String nickname,@RequestPart(required = false) MultipartFile profileImage,
                                 @RequestPart(required = false)MultipartFile backgroundImage,@RequestPart(required = false)String introduce,
                                 @RequestPart(required = false)Long modifierSequence){
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
@@ -79,6 +79,13 @@ public class UserController {
 
         userService.modifyProfile(userSeq,nickname,profileImagePath,backgroundImagePath,introduce,modifierSequence);
 
+        return new BaseResponse(null);
+    }
+
+    @PostMapping("/visitor")
+    BaseResponse saveVisitor(Long userSeq,String content){
+        Long fromUserSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        userService.addVisitor(fromUserSeq,userSeq,content);
         return new BaseResponse(null);
     }
 }

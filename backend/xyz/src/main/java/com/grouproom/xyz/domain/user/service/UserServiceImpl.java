@@ -3,12 +3,10 @@ package com.grouproom.xyz.domain.user.service;
 import com.grouproom.xyz.domain.user.dto.response.FriendshipResponse;
 import com.grouproom.xyz.domain.user.dto.response.ModifierResponse;
 import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
-import com.grouproom.xyz.domain.user.entity.Modifier;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.entity.UserModifier;
-import com.grouproom.xyz.domain.user.repository.ModifierRepository;
-import com.grouproom.xyz.domain.user.repository.UserModifierRepository;
-import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.domain.user.entity.Visitor;
+import com.grouproom.xyz.domain.user.repository.*;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.service
@@ -36,11 +33,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserModifierRepository userModifierRepository;
-    private final ModifierRepository modifierRepository;
+    private final VisitorRepository visitorRepository;
 
     @Override
     @Transactional
@@ -56,15 +53,17 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public ProfileResponse findProfileByUserSeq(Long fromUserSeq,Long toUserSeq){
+    public ProfileResponse findProfileByUserSeq(Long fromUserSeq, Long toUserSeq) {
         User fromUser = userRepository.getReferenceById(fromUserSeq);
         User toUser = userRepository.findBySequence(toUserSeq);
 
-        toUser.changeVisitCount(toUser.getVisitCount()+1);
+        if (toUser == null) throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 유저는 없는 유저입니다.");
 
-        ProfileResponse profileResponse =  userRepository.selectProfileByUserSeq(toUser)
-                        .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저는 없는 유저입니다."));
-        profileResponse.setFriend(userRepository.selectFriendshipByUserSeq(fromUser,toUser).orElse(null));
+        toUser.changeVisitCount(toUser.getVisitCount() + 1);
+
+        ProfileResponse profileResponse = userRepository.selectProfileByUserSeq(toUser)
+                .orElseThrow(() -> new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 유저는 없는 유저입니다."));
+        profileResponse.setFriend(userRepository.selectFriendshipByUserSeq(fromUser, toUser).orElse(null));
         profileResponse.setBgms(userRepository.selectBgmByUserSeq(toUser));
 
         return profileResponse;
@@ -75,10 +74,10 @@ public class UserServiceImpl implements UserService{
     public ProfileResponse findProfileByUserSeq(Long myUserSeq) {
         User myUser = userRepository.findBySequence(myUserSeq);
 
-        myUser.changeVisitCount(myUser.getVisitCount()+1);
+        myUser.changeVisitCount(myUser.getVisitCount() + 1);
 
-        ProfileResponse profileResponse =  userRepository.selectProfileByUserSeq(myUser)
-                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"내 정보를 읽을 수 없습니다. 문의 부탁드립니다."));
+        ProfileResponse profileResponse = userRepository.selectProfileByUserSeq(myUser)
+                .orElseThrow(() -> new ErrorResponse(HttpStatus.BAD_REQUEST, "내 정보를 읽을 수 없습니다. 문의 부탁드립니다."));
         profileResponse.setBgms(userRepository.selectBgmByUserSeq(myUser));
 
         return profileResponse;
@@ -90,13 +89,28 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findBySequence(userSeq);
         user.changeProfile(nickname, profileImagePath, backgroundImagePath, introduce);
 
-        if(modifierSeq!=null){
-            UserModifier userModifier = userModifierRepository.findByUser_SequenceAndModifier_Sequence(userSeq,modifierSeq);
-            if(userModifier == null) {
-                throw new ErrorResponse(HttpStatus.BAD_REQUEST,"소유하지 않은 수식어를 선택했습니다.");
-            }else{
+        if (modifierSeq != null) {
+            UserModifier userModifier = userModifierRepository.findByUser_SequenceAndModifier_Sequence(userSeq, modifierSeq);
+            if (userModifier == null) {
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST, "소유하지 않은 수식어를 선택했습니다.");
+            } else {
                 userModifier.changeIsSelected(true);
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void addVisitor(Long fromUserSeq, Long toUserSeq, String content) {
+        User fromUser = userRepository.getReferenceById(fromUserSeq);
+        User toUser = userRepository.getReferenceById(toUserSeq);
+
+        if (toUser == null) throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 유저는 없는 유저입니다.");
+
+        FriendshipResponse friendshipResponse = userRepository.selectFriendshipByUserSeq(fromUser, toUser)
+                .orElseThrow(() -> new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다."));
+        if(!friendshipResponse.getFriend()) throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다.");
+
+        visitorRepository.save(Visitor.builder().fromUser(fromUser).toUser(toUser).content(content).build());
     }
 }

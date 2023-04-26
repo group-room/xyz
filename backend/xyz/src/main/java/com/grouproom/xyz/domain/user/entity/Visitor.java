@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.user.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,4 +44,12 @@ public class Visitor extends BaseTimeEntity {
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private Boolean isDeleted;
+
+    @Builder
+    public Visitor(User fromUser, User toUser, String content) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.content = content;
+        this.isDeleted = false;
+    }
 }

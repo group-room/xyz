@@ -17,4 +17,6 @@ public interface UserService {
     ProfileResponse findProfileByUserSeq(Long myUserSeq);
 
     void modifyProfile(Long userSeq, String nickname, String profileImagePath, String backgroundImagePath, String introduce, Long modifierSeq);
+
+    void addVisitor(Long fromUserSeq,Long toUserSeq,String content);
 }
