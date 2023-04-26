@@ -50,7 +50,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("findFriendByNickname 호출");
 
-        List<FriendUserResponse> friendUserResponseList = friendRepository.findNicknameOfFromUserOrToUser(loginSeq, nickname, true,false,false);
+        List<FriendUserResponse> friendUserResponseList = friendRepository.findNicknameByFromUserOrToUser(loginSeq, nickname, true,false,false);
         return FriendListResponse.builder()
                 .friends(friendUserResponseList)
                 .build();
