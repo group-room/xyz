@@ -27,10 +27,10 @@ public class Album extends BaseTimeEntity {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", precision = 10, scale = 6)
     private BigDecimal latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", precision = 10, scale = 6)
     private BigDecimal longitude;
 
     @Column(name = "location")
