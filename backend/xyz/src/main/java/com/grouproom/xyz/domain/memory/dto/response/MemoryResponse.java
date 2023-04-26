@@ -1,14 +1,14 @@
-package com.grouproom.xyz.domain.album.dto.response;
+package com.grouproom.xyz.domain.memory.dto.response;
 
-import com.grouproom.xyz.domain.album.entity.Accessibility;
+import com.grouproom.xyz.domain.memory.entity.Accessibility;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class AlbumResponse {
-    private Long albumSeq;
-    //    private String albumImage;
+public class MemoryResponse {
+    private Long memorySeq;
+    //    private String memoryImage;
     private String accessibility;
     private Long aztSeq;
     private String aztName;
@@ -17,9 +17,9 @@ public class AlbumResponse {
     private BigDecimal longitude;
 //    private String location;
 
-    public AlbumResponse(Long albumSeq, Accessibility accessibility, Long aztSeq, String aztName, BigDecimal latitude, BigDecimal longitude) {
-        this.albumSeq = albumSeq;
-//        this.albumImage = album.
+    public MemoryResponse(Long memorySeq, Accessibility accessibility, Long aztSeq, String aztName, BigDecimal latitude, BigDecimal longitude) {
+        this.memorySeq = memorySeq;
+//        this.memoryImage = memoryImage
         this.accessibility = accessibility.toString();
         this.aztSeq = aztSeq;
         this.aztName = aztName;
