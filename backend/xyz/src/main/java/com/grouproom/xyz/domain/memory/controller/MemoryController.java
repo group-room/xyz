@@ -7,6 +7,7 @@ import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
@@ -42,8 +43,12 @@ public class MemoryController {
         logger.info("removeMemory 호출");
 
         Long loginSeq = 1L;
-        memoryService.removeMemory(loginSeq, memorySeq);
+        Boolean removeSuccess = memoryService.removeMemory(loginSeq, memorySeq);
 
-        return new BaseResponse("성공적으로 삭제되었습니다.");
+        if (removeSuccess == true) {
+            return new BaseResponse("성공적으로 삭제되었습니다.");
+        }
+
+        return new BaseResponse(HttpStatus.BAD_REQUEST, "실패", "삭제 실패");
     }
 }
