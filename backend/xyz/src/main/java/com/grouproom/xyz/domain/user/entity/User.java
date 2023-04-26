@@ -75,4 +75,8 @@ public class User extends BaseTimeEntity {
         this.socialIdentify = this.socialIdentify +"delete";
         this.isDeleted = isDeleted;
     }
+
+    public void changeVisitCount(Integer visitCount){
+        this.visitCount = visitCount;
+    }
 }
