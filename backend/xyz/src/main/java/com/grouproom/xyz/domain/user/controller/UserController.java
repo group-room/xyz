@@ -88,4 +88,10 @@ public class UserController {
         userService.addVisitor(fromUserSeq,userSeq,content);
         return new BaseResponse(null);
     }
+
+    @DeleteMapping("/visitor/{visitorSeq}")
+    BaseResponse removeVisitor(@PathVariable("visitorSeq") Long visitorSeq){
+
+        return new BaseResponse(null);
+    }
 }

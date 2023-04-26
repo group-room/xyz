@@ -6,7 +6,9 @@ import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.entity.UserModifier;
 import com.grouproom.xyz.domain.user.entity.Visitor;
-import com.grouproom.xyz.domain.user.repository.*;
+import com.grouproom.xyz.domain.user.repository.UserModifierRepository;
+import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.domain.user.repository.VisitorRepository;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -109,8 +111,22 @@ public class UserServiceImpl implements UserService {
 
         FriendshipResponse friendshipResponse = userRepository.selectFriendshipByUserSeq(fromUser, toUser)
                 .orElseThrow(() -> new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다."));
-        if(!friendshipResponse.getFriend()) throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다.");
+        if (!friendshipResponse.getFriend()) throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다.");
 
         visitorRepository.save(Visitor.builder().fromUser(fromUser).toUser(toUser).content(content).build());
+    }
+
+    @Override
+    public void removeVisitor(Long userSeq, Long visitorSeq) {
+        User user = userRepository.getReferenceById(userSeq);
+        Visitor visitor = visitorRepository.findBySequence(visitorSeq);
+
+        if (visitor == null) throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 방명록은 없습니다.");
+
+        if (!visitor.getToUser().equals(user) && !visitor.getFromUser().equals(user)) {
+            throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
+        }
+        
+        visitor.changeIsDeleted(true);
     }
 }

@@ -19,4 +19,6 @@ public interface UserService {
     void modifyProfile(Long userSeq, String nickname, String profileImagePath, String backgroundImagePath, String introduce, Long modifierSeq);
 
     void addVisitor(Long fromUserSeq,Long toUserSeq,String content);
+
+    void removeVisitor(Long userSeq,Long visitorSeq);
 }

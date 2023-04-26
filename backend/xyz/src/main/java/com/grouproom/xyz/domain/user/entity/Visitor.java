@@ -52,4 +52,8 @@ public class Visitor extends BaseTimeEntity {
         this.content = content;
         this.isDeleted = false;
     }
+
+    public void changeIsDeleted(Boolean isDeleted){
+        this.isDeleted = isDeleted;
+    }
 }
