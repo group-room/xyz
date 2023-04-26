@@ -2,15 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html, body {
   height: 100vh;
-  width: 100vw;
-
-  padding: 0;
-  margin: 0;
-
-  box-sizing: border-box;
-  outline: none;
+  overflow-y: auto;
 }
 
 *::-webkit-scrollbar {
@@ -32,3 +26,6 @@ body {
 body::-webkit-scrollbar {
   display: none;
 } */
+
+
+
