@@ -2,6 +2,7 @@ package com.grouproom.xyz.global.auth.jwt;
 
 import com.grouproom.xyz.global.auth.Constants;
 import com.grouproom.xyz.global.exception.ErrorResponse;
+import com.grouproom.xyz.global.util.JsonUtils;
 import com.grouproom.xyz.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static com.grouproom.xyz.global.auth.Constants.SECURITY_HTTP_EXCLUDE_URIS;
 
 /**
  * packageName    : com.grouproom.xyz.global.auth
@@ -44,9 +47,15 @@ public class JsonWebTokenCheckFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         //login 요청의 경우 다음 필터로
-        if (antPathMatcher.match(excludeUrl, request.getRequestURI())) {
-            filterChain.doFilter(request, response);
-            return;
+//        if (antPathMatcher.match("/**", request.getRequestURI())) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+        for(String str : SECURITY_HTTP_EXCLUDE_URIS){
+            if (antPathMatcher.match(str, request.getRequestURI())) {
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
 
         try {
@@ -60,7 +69,10 @@ public class JsonWebTokenCheckFilter extends OncePerRequestFilter {
                 }
             }
         } catch (ErrorResponse e) {
-            request.setAttribute("exception", e.getStatus().name());
+            request.setAttribute("exception", e.getStatusCode());
+//            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(),"유효하지 X");
+            JsonUtils.writeJsonExceptionResponse(response,HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
+            return;
         }
         doFilter(request, response, filterChain);
     }

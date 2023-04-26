@@ -18,18 +18,18 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 public class BaseResponse<T> {
-    private HttpStatus statusCode;
+    private int statusCode;
     private String message;
     private T data;
 
     public BaseResponse(T body) {
-        this.statusCode = HttpStatus.OK;
+        this.statusCode = HttpStatus.OK.value();
         this.message = "성공";
         this.data = body;
     }
 
     public BaseResponse(HttpStatus statusCode, String message, T body) {
-        this.statusCode = statusCode;
+        this.statusCode = statusCode.value();
         this.message = message;
         this.data = body;
     }

@@ -59,7 +59,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .antMatchers(Constants.SECURITY_WEB_EXCLUDE_URIS);
+                .antMatchers(Constants.SECURITY_HTTP_EXCLUDE_URIS);
     }
 
     //(1) CORS 세팅 부분 (CORS_HEADER_URIS에서 세팅한 값들은 CORS를 허용한다)

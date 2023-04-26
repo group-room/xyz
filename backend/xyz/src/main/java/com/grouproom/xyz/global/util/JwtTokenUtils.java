@@ -39,13 +39,13 @@ public class JwtTokenUtils {
     public static final long REFRESH_PERIOD = 1000L * 60L * 60L * 24L;
 
     //userSequence & role 토큰 발급
-    public static JsonWebToken allocateToken(Long userSeq, String role) throws RuntimeException {
+    public static JsonWebToken allocateToken(Long userSequence, String role) throws RuntimeException {
         try {
             JwtBuilder jwtBuilder = Jwts.builder()
                     .setHeaderParam("alg", "HS256")
                     .setHeaderParam("typ", "JWT");
 
-            jwtBuilder.claim("userSequence", userSeq);                                    //JWT의 body
+            jwtBuilder.claim("sequence", userSequence);                                    //JWT의 body
             jwtBuilder.claim("role", role);                                          //JWT의 body
 
             Date now = new Date();

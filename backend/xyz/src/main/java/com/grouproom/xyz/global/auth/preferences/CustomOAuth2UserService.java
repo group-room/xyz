@@ -53,7 +53,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         //db에 존재하지 않는 유저에 대해 -> failure handler로 보낸다.
         log.error("getRegistrationId : {}",customOAuth2User.getRegistrationId());
         Long userSequence = userRepository
-                .findUserBySocialId(customOAuth2User.getRegistrationId(),
+                .selectUserBySocialId(customOAuth2User.getRegistrationId(),
                         customOAuth2User.getSocialId())
                 .orElseThrow(() -> {
                     throw new OAuth2LoginException(HttpStatus.UNAUTHORIZED, customOAuth2User);

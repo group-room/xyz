@@ -55,7 +55,6 @@ public class CustomOAuth2User {
         return CustomOAuth2User.builder()
                 .registrationId(SocialType.KAKAO)
                 .socialId(attributes.get("id").toString())
-                .profileImg(properties.get("profile_image").toString())
                 .nameAttributeKey(nameAttributeKey)
                 .build();
     }
@@ -64,7 +63,6 @@ public class CustomOAuth2User {
         return CustomOAuth2User.builder()
                 .registrationId(SocialType.GOOGLE)
                 .socialId(attributes.get(nameAttributeKey).toString())
-                .profileImg(attributes.get("picture").toString())
                 .nameAttributeKey(nameAttributeKey)
                 .build();
     }
@@ -75,7 +73,6 @@ public class CustomOAuth2User {
         return CustomOAuth2User.builder()
                 .registrationId(SocialType.NAVER)
                 .socialId(properties.get("id").toString())
-                .profileImg(properties.get("profile_image").toString())
                 .nameAttributeKey(nameAttributeKey)
                 .build();
     }

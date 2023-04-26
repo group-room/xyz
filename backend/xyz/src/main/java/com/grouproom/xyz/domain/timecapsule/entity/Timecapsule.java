@@ -1,6 +1,6 @@
 package com.grouproom.xyz.domain.timecapsule.entity;
 
-import com.grouproom.xyz.domain.group.entity.Groupe;
+import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -22,21 +23,18 @@ public class Timecapsule extends BaseTimeEntity {
     private Long sequence;
 
     @Column(name = "open_start")
-    @Temporal(TemporalType.DATE)
-    private Date openStart;
+    private LocalDateTime openStart;
 
     @Column(name = "open_end")
-    @Temporal(TemporalType.DATE)
-    private Date openEnd;
+    private LocalDateTime openEnd;
 
     @Column(name = "update_end")
-    @Temporal(TemporalType.DATE)
-    private Date updateEnd;
+    private LocalDateTime updateEnd;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", precision = 10, scale = 6)
     private BigDecimal latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", precision = 10, scale = 6)
     private BigDecimal longitude;
 
     @Column(name = "location")
@@ -50,6 +48,6 @@ public class Timecapsule extends BaseTimeEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_sequence")
-    private Groupe groupe;
+    @JoinColumn(name = "azt_sequence")
+    private Azt azt;
 }

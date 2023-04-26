@@ -2,9 +2,7 @@ package com.grouproom.xyz.domain.friend.entity;
 
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -24,6 +22,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @IdClass(FriendID.class)
 public class Friend extends BaseTimeEntity {
 
@@ -37,13 +36,24 @@ public class Friend extends BaseTimeEntity {
     @JoinColumn(name = "to_user")
     private User toUser;
 
-    @Column(name = "is_accepted", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_accepted", columnDefinition = "tinyint(1)")
     private Boolean isAccepted;
 
     @Column(name = "chat_sequence")
     private Long chatSequence;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
     private Boolean isDeleted;
 
+    @Column(name = "is_canceled", columnDefinition = "tinyint(1)")
+    private Boolean isCanceled;
+
+    @Builder
+    public Friend(User fromUser, User toUser, Boolean isAccepted, Boolean isDeleted, Boolean isCanceled) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.isAccepted = isAccepted;
+        this.isDeleted = isDeleted;
+        this.isCanceled = isCanceled;
+    }
 }

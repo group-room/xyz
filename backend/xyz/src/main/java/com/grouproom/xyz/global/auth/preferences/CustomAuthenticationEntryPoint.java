@@ -33,7 +33,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         authException.printStackTrace();
 
         if (authException instanceof InsufficientAuthenticationException) {
-            JsonUtils.writeJsonExceptionResponse(response, HttpStatus.BAD_REQUEST);
+            JsonUtils.writeJsonExceptionResponse(response, HttpStatus.BAD_REQUEST,"소셜 로그인 부분 오류");
         }
 
     }
