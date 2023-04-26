@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { PropsWithChildren } from "react";
+
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -10,7 +12,13 @@ interface TabProps {
   SecondMenu: string;
 }
 
-function Tab({ FirstLink, SecondLink, FirstMenu, SecondMenu }: TabProps) {
+function Tab({
+  FirstLink,
+  SecondLink,
+  FirstMenu,
+  SecondMenu,
+  children,
+}: PropsWithChildren<TabProps>) {
   const router = useRouter();
   const pathname = usePathname();
   const defaultClass =

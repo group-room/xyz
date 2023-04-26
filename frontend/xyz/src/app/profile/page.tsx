@@ -1,6 +1,7 @@
 "use client";
 import Modal from "@/components/Modal";
 import Tab from "@/components/Tab";
+import Textbox from "@/components/Textbox";
 import React from "react";
 import { useState } from "react";
 
@@ -18,6 +19,7 @@ function ProfilePage() {
           {<div>친구하실래요?</div>}
         </Modal>
       )}
+      <Textbox text="하이하이하이하이 이게너무궁금해" />
       <div className=" overscroll-y-auto">
         MyroomPage Lorem ipsum dolor sit amet consectetur, adipisicing elit.
         Cumque praesentium placeat, sed voluptatem excepturi accusantium
