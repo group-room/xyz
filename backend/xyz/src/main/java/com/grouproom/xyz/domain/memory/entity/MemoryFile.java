@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.memory.entity;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import com.grouproom.xyz.global.model.FileType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,8 +29,16 @@ public class MemoryFile extends BaseTimeEntity {
     private FileType fileType;
 
     @Column(name = "file_path")
-    private boolean filePath;
+    private String filePath;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_deleted")
     private Boolean isDeleated;
+
+    @Builder
+    public MemoryFile(Memory memory, FileType fileType, String filePath) {
+        this.memory = memory;
+        this.fileType = fileType;
+        this.filePath = filePath;
+        this.isDeleated = false;
+    }
 }
