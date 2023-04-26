@@ -1,6 +1,7 @@
 package com.grouproom.xyz.domain.memory.service;
 
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
+import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryResponse;
 import com.grouproom.xyz.domain.memory.repository.MemoryRepository;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
@@ -22,16 +23,22 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<MemoryResponse> findMemory(Long loginUserSeq, MemoryListRequest memoryListRequest) {
+    public MemoryListResponse findMemory(Long loginUserSeq, MemoryListRequest memoryListRequest) {
         logger.info("findMemory 호출");
 
-        // TODO: date 처리 필요
+        // TODO: date 처리 필요, 무한스크롤 구현 필요
         if (memoryListRequest.getIsLocationBased() == false) {
             logger.info("isLocationBased == false");
-            return memoryRepository.findByUserSeq(loginUserSeq, memoryListRequest.getAztSeq(), null);
+            List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeq(loginUserSeq, memoryListRequest.getAztSeq(), null);
+            return MemoryListResponse.builder()
+                    .memories(memoryResponseList)
+                    .build();
         }
 
         logger.info("isLocationBased == true");
-        return memoryRepository.findByUserSeqAndCoordinate(loginUserSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), null);
+        List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeqAndCoordinate(loginUserSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), null);
+        return MemoryListResponse.builder()
+                .memories(memoryResponseList)
+                .build();
     }
 }
