@@ -37,6 +37,8 @@ public class MemoryServiceImpl implements MemoryService {
     @Override
     @Transactional
     public void saveMemoryFiles(Memory memory, FileType fileType, List<String> filePaths) {
+        logger.info("saveMemoryFiles 호출");
+
         filePaths.stream().forEach(
                 (filePath) -> {
                     memoryFileRepository.save(MemoryFile.builder()
