@@ -6,3 +6,26 @@ html, body {
   height: 100vh;
   overflow-y: auto;
 }
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(243, 159, 191, 1);
+  border-radius: 10px;
+  height: 10%;
+  max-width: 1px;
+}
+*::-webkit-scrollbar-track {
+  background-color: rgba(249, 240, 234, 1);
+  border-radius: 10px;
+  padding: 1px;
+}
+/* 
+body::-webkit-scrollbar {
+  display: none;
+} */
+
+
+
