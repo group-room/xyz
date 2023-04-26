@@ -25,9 +25,7 @@ export default function RootLayout({
     <html lang="ko" className={pixelFont.className}>
       <body>
         <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
-        <Header />
         <main className="px-5 my-16">{children}</main>
-        <TabBar />
       </body>
     </html>
   );
