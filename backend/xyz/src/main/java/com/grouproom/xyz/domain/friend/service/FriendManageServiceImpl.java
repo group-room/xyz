@@ -37,7 +37,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         Friend friend = friendRepository.findByFromUserAndToUser(loginSeq, userSeq, true, false, false);
         if(null == friend) {
-            logger.severe("친구 관계가 아님");
+            logger.severe("친구 아님");
             throw new RuntimeException();
         } else {
             friend.setIsDeleted(true);
@@ -63,6 +63,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         FriendUserResponse friendUserResponse = friendRepository.findByIdentifyOfFromUserOrToUser(loginSeq, identify, true, false, false);
         if(null == friendUserResponse) {
+            logger.severe("친구 아님");
             throw new RuntimeException();
         }
         return friendUserResponse;
