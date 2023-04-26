@@ -29,11 +29,11 @@ public class FriendController {
     }
 
     @DeleteMapping("/{userSeq}")
-    public BaseResponse<?> modifyFriendDelete(@PathVariable("userSeq") Long userSeq) {
+    public BaseResponse<?> modifyFriendIsDeleted(@PathVariable("userSeq") Long userSeq) {
         logger.info("modifyFriendDelete 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(friendManageService.modifyFriendDelete(loginSeq, userSeq));
+            return new BaseResponse<>(friendManageService.modifyFriendIsDeleted(loginSeq, userSeq));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
@@ -57,12 +57,52 @@ public class FriendController {
         }
     }
 
+    @GetMapping("/user")
+    public BaseResponse<?> findUserByNickname(@RequestParam String nickname) {
+        logger.info("findUserByNickname 호출");
+        Long loginSeq = 1L;
+        return new BaseResponse<>(friendRegisterService.findUserByNickname(loginSeq, nickname));
+    }
+
+    @GetMapping("/user/{identify}")
+    public BaseResponse<?> findUserByIdentify(@PathVariable("identify") String identify) {
+        logger.info("findUserByIdentify 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendRegisterService.findUserByIdentify(loginSeq, identify));
+        } catch (RuntimeException re) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
     @PostMapping()
-    public BaseResponse<?> saveFriendRequest(@RequestBody FriendRequest friendRequest) {
+    public BaseResponse<?> saveFriend(@RequestBody FriendRequest friendRequest) {
         logger.info("saveFriendRequest 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(friendRegisterService.saveFriendRequest(loginSeq, friendRequest.getUserSeq()));
+            return new BaseResponse<>(friendRegisterService.saveFriend(loginSeq, friendRequest.getUserSeq()));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
+    @PutMapping("/cancel")
+    public BaseResponse<?> modifyFriendToCancel(@RequestBody FriendRequest friendRequest) {
+        logger.info("cancelFriendRequest 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendRegisterService.modifyFriendToCancel(loginSeq, friendRequest.getUserSeq()));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
+    @PutMapping("/accept")
+    public BaseResponse<?> modifyFriendToAccept(@RequestBody FriendRequest friendRequest) {
+        logger.info("modifyFriendToAccept 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(friendRegisterService.modifyFriendToAccept(loginSeq, friendRequest.getUserSeq()));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }

@@ -27,31 +27,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("findFriend 호출");
 
-        User user = userRepository.findBySequence(loginUserSeq);
-        List<FriendUserResponse> friendUserResponseList = new ArrayList<>();
-        List<Friend> fromList = friendRepository.findByFromUserAndIsAcceptedAndIsDeleted(user, true, false);
-        List<Friend> toList = friendRepository.findByToUserAndIsAcceptedAndIsDeleted(user, true, false);
-        for (Friend friend : fromList) {
-            User f = friend.getToUser();
-            FriendUserResponse friendUserResponse = FriendUserResponse.builder()
-                    .userSeq(f.getSequence())
-                    .nickname(f.getNickname())
-                    .profileImage(f.getProfileImage())
-                    .identify(f.getIdentify())
-                    .build();
-            friendUserResponseList.add(friendUserResponse);
-        }
-        for (Friend friend : toList) {
-            User f = friend.getFromUser();
-            FriendUserResponse friendUserResponse = FriendUserResponse.builder()
-                    .userSeq(f.getSequence())
-                    .nickname(f.getNickname())
-                    .profileImage(f.getProfileImage())
-                    .identify(f.getIdentify())
-                    .build();
-            friendUserResponseList.add(friendUserResponse);
-        }
-
+        List<FriendUserResponse> friendUserResponseList = friendRepository.findByFromUserOrToUser(loginUserSeq, true, false, false);
         return FriendListResponse.builder()
                 .friends(friendUserResponseList)
                 .build();
@@ -59,7 +35,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
     @Override
     @Transactional
-    public String modifyFriendDelete(Long loginSeq, Long userSeq) throws RuntimeException {
+    public String modifyFriendIsDeleted(Long loginSeq, Long userSeq) throws RuntimeException {
 
         logger.info("modifyFriendDelete 호출");
 
