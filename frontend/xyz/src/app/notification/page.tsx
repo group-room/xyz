@@ -2,7 +2,7 @@
 
 import React from "react";
 import Btn from './../../components/common/Btn';
-import Notification from './../../components/notification/Notification';
+import Notification from './../../components/common/Notification';
 
 type BtnType = {
   name: string;
