@@ -144,7 +144,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
     @Override
     @Transactional
-    public String saveFriendRequest(Long loginSeq, Long userSeq) {
+    public String saveFriend(Long loginSeq, Long userSeq) {
 
         logger.info("saveFriendRequest 호출");
 
@@ -204,37 +204,31 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
     @Override
     @Transactional
-    public String cancelFriendRequest(Long loginSeq, Long userSeq) {
+    public String modifyFriendToCancel(Long loginSeq, Long userSeq) {
 
         logger.info("cancelFriendRequest 호출");
 
-        User loginUser = userRepository.findBySequence(loginSeq);
-        User targetUser = userRepository.findBySequence(userSeq);
-        if(null == targetUser) {
-            logger.severe("없는 사용자");
+        Friend friend = friendRepository.findByFromUserAndToUser1(loginSeq, userSeq);
+        if(null == friend) {
+            logger.severe("취소할 수 있는 대상이 아님");
             throw new RuntimeException();
         }
-        Friend friend = friendRepository.findByFromUserAndToUser(loginUser, targetUser);
-        if (!friend.getIsCanceled() && !friend.getIsAccepted() && !friend.getIsDeleted()) {
-            friend.setIsCanceled(true);
-            friend.setUpdatedAt(LocalDateTime.now());
-        } else {
-            logger.severe("이미 취소되었거나 수락되었거나 삭제된 상황");
-            throw new RuntimeException();
-        }
+        friend.setIsCanceled(true);
         return "";
     }
 
     @Override
     @Transactional
     public String modifyFriendToAccept(Long loginSeq, Long userSeq) {
+
+        logger.info("modifyFriendToAccept 호출");
+
         Friend friend = friendRepository.findByFromUserAndToUser1(userSeq, loginSeq);
         if(null == friend) {
             logger.severe("수락할 수 있는 대상이 아님");
             throw new RuntimeException();
         }
         friend.setIsAccepted(true);
-        friend.setUpdatedAt(LocalDateTime.now());
         return "";
     }
 
