@@ -79,7 +79,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
     }
 
     @Override
-    public List<FriendUserResponse> findNicknameOfFromUserOrToUser(Long userSeq, String nickname, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
+    public List<FriendUserResponse> findNicknameByFromUserOrToUser(Long userSeq, String nickname, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
 
         return jpaQueryFactory
                 .select(Projections.fields(FriendUserResponse.class,
