@@ -79,4 +79,11 @@ public class User extends BaseTimeEntity {
     public void changeVisitCount(Integer visitCount){
         this.visitCount = visitCount;
     }
+
+    public void changeProfile( String nickname, String profileImage, String backgroundImage, String introduce){
+        if(nickname!=null) this.nickname=nickname;
+        if(profileImage!=null) this.profileImage=profileImage;
+        if(backgroundImage!=null) this.backgroundImage=backgroundImage;
+        if(introduce!=null) this.introduce=introduce;
+    }
 }

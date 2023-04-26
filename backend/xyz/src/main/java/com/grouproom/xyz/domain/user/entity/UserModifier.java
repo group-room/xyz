@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.user.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,6 +38,17 @@ public class UserModifier extends BaseTimeEntity {
     @JoinColumn(name = "modifier_sequence")
     private Modifier modifier;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private Boolean isDeleted;
+    @Column(name = "is_selected", columnDefinition = "tinyint(1) default 0")
+    private Boolean isSelected;
+
+    @Builder
+    public UserModifier(User user, Modifier modifier, Boolean isSelected) {
+        this.user = user;
+        this.modifier = modifier;
+        this.isSelected = isSelected;
+    }
+
+    public void changeIsSelected(Boolean isSelected){
+        this.isSelected = isSelected;
+    }
 }

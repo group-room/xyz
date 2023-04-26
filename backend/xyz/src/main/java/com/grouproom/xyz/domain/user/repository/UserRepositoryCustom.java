@@ -4,7 +4,6 @@ import com.grouproom.xyz.domain.user.dto.response.BgmResponse;
 import com.grouproom.xyz.domain.user.dto.response.FriendshipResponse;
 import com.grouproom.xyz.domain.user.dto.response.ModifierResponse;
 import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
-import com.grouproom.xyz.domain.user.entity.Bgm;
 import com.grouproom.xyz.domain.user.entity.SocialType;
 import com.grouproom.xyz.domain.user.entity.User;
 
@@ -21,4 +20,5 @@ public interface UserRepositoryCustom {
     Optional<ProfileResponse> selectProfileByUserSeq(User targetUser);
 
     List<BgmResponse> selectBgmByUserSeq(User targetUser);
+
 }
