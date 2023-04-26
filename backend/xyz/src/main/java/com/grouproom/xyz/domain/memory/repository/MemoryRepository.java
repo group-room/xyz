@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemoryRepository extends JpaRepository<Memory, Long>, MemoryRepositoryCustom {
+
+    Memory findBySequence(Long memorySeq);
 }

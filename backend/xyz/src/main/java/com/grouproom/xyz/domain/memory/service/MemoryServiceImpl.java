@@ -7,6 +7,7 @@ import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryResponse;
 import com.grouproom.xyz.domain.memory.entity.Memory;
 import com.grouproom.xyz.domain.memory.entity.MemoryFile;
+import com.grouproom.xyz.domain.memory.repository.MemoryCommentRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryFileRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryRepository;
 import com.grouproom.xyz.domain.user.entity.User;
@@ -30,6 +31,7 @@ public class MemoryServiceImpl implements MemoryService {
     //    private final AztRepository aztRepository;
     private final MemoryRepository memoryRepository;
     private final MemoryFileRepository memoryFileRepository;
+    private final MemoryCommentRepository memoryCommentRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.memory.service.MemoryServiceImpl");
 
     @Override
@@ -96,5 +98,15 @@ public class MemoryServiceImpl implements MemoryService {
         return AddMemoryResponse.builder()
                 .memorySeq(memory.getSequence())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void removeMemory(Long loginSeq, Long memorySeq) {
+        User user = userRepository.findBySequence(loginSeq);
+        Memory memory = memoryRepository.findBySequence(memorySeq);
+        if (user.equals(memory.getUser())) {
+            memory.updateIsDeleted(true);
+        }
     }
 }
