@@ -4,13 +4,20 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import styles from "./DateFilter.module.css";
-import calendarIcon from "../../../../public/icons/calendar.svg";
+import calendarIcon from "../../../public/icons/calendar.svg";
 import Image from "next/image";
 
-function DateFilter() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const handleChange = (date: Date) => setSelectedDate(date);
+interface DateFilterProps {
+  selectedDate: Date | null;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  handleMarkerChange: (date: Date) => void;
+}
+
+function DateFilter({
+  selectedDate,
+  setSelectedDate,
+  handleMarkerChange,
+}: DateFilterProps) {
   // const years = range(1990, getYear(new Date()) + 1, 1);
   // const months = [
   //   "January",
@@ -37,9 +44,10 @@ function DateFilter() {
         locale={ko}
         dateFormat="yyyy년 MM월 dd일"
         selected={selectedDate}
-        onChange={handleChange}
+        onChange={handleMarkerChange}
         popperClassName="z-10" // 지도에 겹쳐지는 것 방지
-        className={styles.datePicker}
+        // className={styles.datePicker}
+        className="flex align-middle border border-black text-center py-1 cursor-pointer w-full"
         // wrapperClassName="w-3/6"
       />
     </div>

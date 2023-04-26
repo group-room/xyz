@@ -87,7 +87,6 @@ function KakaoMap() {
   useEffect(() => {
     // 현재 위치 조회하기
     navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수 실행
-    // TODO: 현재 or 마커 위치 기준 추억들 조회하기
   }, []);
 
   // 마커 찍을 때마다 위치 가져와서 변환하기
