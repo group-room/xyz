@@ -55,7 +55,12 @@ function MemoryCreatePage() {
           setAddress={setAddress}
           isPhotoUpload
         />
-        <Btn bgColor="yellow" text="등 록" btnFunc={createMemory} />
+        <Btn
+          width="w-full"
+          bgColor="yellow"
+          text="등 록"
+          btnFunc={createMemory}
+        />
       </form>
     </div>
   );
