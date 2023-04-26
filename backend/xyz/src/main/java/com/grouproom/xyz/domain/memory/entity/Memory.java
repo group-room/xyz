@@ -43,7 +43,7 @@ public class Memory extends BaseTimeEntity {
     private Accessibility accessibility;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleated;
+    private Boolean isDeleted;
 
     @Column(name = "is_blinded")
     private boolean isBlinded;
@@ -64,9 +64,13 @@ public class Memory extends BaseTimeEntity {
         this.longitude = addMemoryRequest.getLongitude();
         this.location = addMemoryRequest.getLocation();
         this.accessibility = Accessibility.valueOf(addMemoryRequest.getAccessibility());
-        this.isDeleated = false;
+        this.isDeleted = false;
         this.isBlinded = false;
         this.user = user;
 //        this.azt = azt;
+    }
+
+    public void updateIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

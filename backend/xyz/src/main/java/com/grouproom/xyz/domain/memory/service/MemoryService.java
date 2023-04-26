@@ -16,4 +16,6 @@ public interface MemoryService {
     MemoryListResponse findMemory(Long loginUserSeq, MemoryListRequest memoryListRequest);
 
     AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest);
+
+    void removeMemory(Long loginSeq, Long memorySeq);
 }
