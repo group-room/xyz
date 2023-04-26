@@ -6,12 +6,17 @@ import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryResponse;
 import com.grouproom.xyz.domain.memory.entity.Memory;
+import com.grouproom.xyz.domain.memory.entity.MemoryFile;
+import com.grouproom.xyz.domain.memory.repository.MemoryFileRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.model.FileType;
+import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -21,10 +26,25 @@ import java.util.logging.Logger;
 public class MemoryServiceImpl implements MemoryService {
 
     private final UserRepository userRepository;
+    private final S3UploadService s3UploadService;
     //    private final AztRepository aztRepository;
     private final MemoryRepository memoryRepository;
+    private final MemoryFileRepository memoryFileRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.memory.service.MemoryServiceImpl");
 
+    @Override
+    @Transactional
+    public void saveMemoryFiles(Memory memory, FileType fileType, List<String> filePaths) {
+        filePaths.stream().forEach(
+                (filePath) -> {
+                    memoryFileRepository.save(MemoryFile.builder()
+                            .memory(memory)
+                            .fileType(fileType)
+                            .filePath(filePath)
+                            .build());
+                }
+        );
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -60,6 +80,19 @@ public class MemoryServiceImpl implements MemoryService {
                 .addMemoryRequest(addMemoryRequest)
                 .build();
         memoryRepository.save(memory);
+
+        List<MultipartFile> images = addMemoryRequest.getImages();
+        if (images != null) {
+            List<String> imagePaths = s3UploadService.upload(images, "memory");
+            saveMemoryFiles(memory, FileType.IMAGE, imagePaths);
+        }
+
+        List<MultipartFile> audios = addMemoryRequest.getAudios();
+        if (audios != null) {
+            List<String> audioPaths = s3UploadService.upload(audios, "memory");
+            saveMemoryFiles(memory, FileType.AUDIO, audioPaths);
+        }
+
         return AddMemoryResponse.builder()
                 .memorySeq(memory.getSequence())
                 .build();
