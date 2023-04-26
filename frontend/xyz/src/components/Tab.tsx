@@ -1,26 +1,44 @@
 "use client";
 import React from "react";
-// import { useRouter } from "next/router";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 
-function Tab() {
+interface TabProps {
+  FirstLink: string;
+  SecondLink: string;
+  FirstMenu: string;
+  SecondMenu: string;
+}
+
+function Tab({ FirstLink, SecondLink, FirstMenu, SecondMenu }: TabProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const defaultClass =
     "flex-1 flex justify-center items-center px-3 py-0.5 bg-opacity-[0.78] text-[32px] whitespace-nowrap duration-[0.22s] ";
-  // NavLink 활성 시 tailwind Class
-  const activeClass = "bg-orange-500 text-white font-hopang-black";
-  // NavLink 비활성 시 tailwind Class
+  // Link 활성 시 tailwind Class
+  const activeClass =
+    "bg-white text-black text-base border-black border-l-2 border-t-2 border-r-2 pt-4 pb-2";
+  // Link 비활성 시 tailwind Class
   const inactiveClass =
-    "border-orange-400 border-b-2 bg-white bg-opacity-80 text-orange-500 font-hopang-white ";
-
-  //   const router = useRouter();
+    "border-black border-b-2 bg-slate-300 text-black text-base pt-4 pb-2";
 
   return (
-    <div className={`flex flex-nowrap sticky left-0 top-0 w-full`}>
-      <Link href={"/profile"} className={defaultClass + inactiveClass}>
-        학습 진행도
+    <div className={`flex flex-nowrap left-0 top-0 w-full`}>
+      <Link
+        href={FirstLink}
+        className={`${defaultClass} ${
+          pathname === FirstLink ? activeClass : inactiveClass
+        }`}
+      >
+        {FirstMenu}
       </Link>
-      <Link href={"/profile"} className={defaultClass + activeClass}>
-        학습 진행도
+      <Link
+        href={SecondLink}
+        className={`${defaultClass} ${
+          pathname === SecondLink ? activeClass : inactiveClass
+        }`}
+      >
+        {SecondMenu}
       </Link>
     </div>
   );
