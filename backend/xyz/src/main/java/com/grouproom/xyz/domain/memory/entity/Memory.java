@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.album.entity;
+package com.grouproom.xyz.domain.memory.entity;
 
 import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.user.entity.User;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Album extends BaseTimeEntity {
+public class Memory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

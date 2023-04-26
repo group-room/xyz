@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.album.entity;
+package com.grouproom.xyz.domain.memory.entity;
 
 import lombok.*;
 
@@ -9,8 +9,8 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAlbumID implements Serializable {
+public class UserMemoryID implements Serializable {
 
     private Long user;
-    private Long album;
+    private Long memory;
 }

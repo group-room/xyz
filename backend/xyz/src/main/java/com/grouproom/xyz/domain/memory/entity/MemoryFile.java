@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.album.entity;
+package com.grouproom.xyz.domain.memory.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import com.grouproom.xyz.global.model.FileType;
@@ -10,9 +10,9 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "album_file")
+@Table(name = "memory_file")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlbumFile extends BaseTimeEntity {
+public class MemoryFile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,8 @@ public class AlbumFile extends BaseTimeEntity {
     private Long sequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "album_sequence")
-    private Album album;
+    @JoinColumn(name = "memory_sequence")
+    private Memory memory;
 
     @Enumerated
     @Column(name = "file_type")

@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.album.entity;
+package com.grouproom.xyz.domain.memory.entity;
 
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
@@ -10,23 +10,21 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "album_comment")
+@IdClass(UserMemoryID.class)
+@Table(name = "memory_like")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlbumComment extends BaseTimeEntity {
+public class MemoryLike extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sequence")
-    private Long sequence;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_sequence")
     private User user;
 
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "album_sequence")
-    private Album album;
+    @JoinColumn(name = "memory_sequence")
+    private Memory memory;
 
-    @Column(length = 100, name = "content")
-    private String content;
+    @Column(name = "is_selected", columnDefinition = "tinyint(1) default 1")
+    private Boolean isSelected;
 }
