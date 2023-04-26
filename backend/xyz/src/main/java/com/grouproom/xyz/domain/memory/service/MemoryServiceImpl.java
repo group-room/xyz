@@ -29,14 +29,14 @@ public class MemoryServiceImpl implements MemoryService {
         // TODO: date 처리 필요, 무한스크롤 구현 필요
         if (memoryListRequest.getIsLocationBased() == false) {
             logger.info("isLocationBased == false");
-            List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeq(loginUserSeq, memoryListRequest.getAztSeq(), null);
+            List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeq(loginUserSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
             return MemoryListResponse.builder()
                     .memories(memoryResponseList)
                     .build();
         }
 
         logger.info("isLocationBased == true");
-        List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeqAndCoordinate(loginUserSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), null);
+        List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeqAndCoordinate(loginUserSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
         return MemoryListResponse.builder()
                 .memories(memoryResponseList)
                 .build();

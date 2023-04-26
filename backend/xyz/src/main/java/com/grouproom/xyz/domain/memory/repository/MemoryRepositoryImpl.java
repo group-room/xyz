@@ -17,13 +17,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
-import static com.querydsl.core.types.dsl.MathExpressions.acos;
-import static com.querydsl.core.types.dsl.MathExpressions.cos;
-import static com.querydsl.core.types.dsl.MathExpressions.radians;
-import static com.querydsl.core.types.dsl.MathExpressions.sin;
+import static com.querydsl.core.types.dsl.MathExpressions.*;
 @RequiredArgsConstructor
 public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
 
@@ -40,8 +38,15 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
         return memory.azt.sequence.eq(aztSeq);
     }
 
+    private BooleanExpression eqDate(LocalDate date) {
+        if (date == null) {
+            return null;
+        }
+        return memory.date.between(date.atStartOfDay(), date.atTime(LocalTime.MAX));
+    }
+
     @Override
-    public List<MemoryResponse> findByUserSeq(Long userSeq, Long aztSeq, LocalDateTime date) {
+    public List<MemoryResponse> findByUserSeq(Long userSeq, Long aztSeq, LocalDate date) {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.or(memory.accessibility.eq(Accessibility.PUBLIC));
@@ -53,16 +58,17 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
                 .and(memory.user.sequence.eq(userSeq)));
 
         return jpaQueryFactory.select(Projections.constructor(MemoryResponse.class,
-                        memory.sequence.as("memorySeq"), memory.accessibility, memory.azt.sequence.as("aztSeq"), memory.azt.aztName, memory.latitude, memory.longitude))
+                        memory.sequence.as("memorySeq"), memory.accessibility, memory.azt.sequence.as("aztSeq"), memory.azt.aztName, memory.date, memory.latitude, memory.longitude, memory.location))
                 .from(memory)
                 .join(memory.azt, azt)
                 .where(builder)
                 .where(eqAzt(aztSeq))
+                .where(eqDate(date))
                 .fetch();
     }
 
     @Override
-    public List<MemoryResponse> findByUserSeqAndCoordinate(Long userSeq, Long aztSeq, BigDecimal latitude, BigDecimal longitude, LocalDateTime date) {
+    public List<MemoryResponse> findByUserSeqAndCoordinate(Long userSeq, Long aztSeq, BigDecimal latitude, BigDecimal longitude, LocalDate date) {
 
         NumberExpression<Double> distanceExpression = acos(sin(radians(Expressions.constant(latitude)))
                 .multiply(sin(radians(memory.latitude)))
@@ -84,11 +90,12 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
                 .and(memory.user.sequence.eq(userSeq)));
 
         return jpaQueryFactory.select(Projections.constructor(MemoryResponse.class,
-                        memory.sequence.as("memorySeq"), memory.accessibility, memory.azt.sequence.as("aztSeq"), memory.azt.aztName, memory.latitude, memory.longitude))
+                        memory.sequence.as("memorySeq"), memory.accessibility, memory.azt.sequence.as("aztSeq"), memory.azt.aztName, memory.date, memory.latitude, memory.longitude, memory.location))
                 .from(memory)
                 .join(memory.azt, azt)
                 .where(builder)
                 .where(eqAzt(aztSeq))
+                .where(eqDate(date))
                 .orderBy(distanceOrderSpecifier)
                 .fetch();
     }
