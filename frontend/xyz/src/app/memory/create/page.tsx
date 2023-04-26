@@ -2,7 +2,7 @@
 
 import Btn from "@/components/common/Btn";
 import KakaoMap from "@/components/memory/KakaoMap";
-import { PositionTypes } from "@/types/memory";
+import { Photo, PhotoMetadata, PositionTypes } from "@/types/memory";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import PhotoUpload from "@/components/memory/PhotoUpload";
@@ -15,6 +15,8 @@ function MemoryCreatePage() {
   }); // 현재 위치
   const [position, setPosition] = useState<PositionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
   const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [metadata, setMetadata] = useState<PhotoMetadata | null>(null);
 
   // TODO: 추억 생성 요청
   const createMemory = () => {};
@@ -37,7 +39,13 @@ function MemoryCreatePage() {
         className="flex flex-col justify-center align-middle gap-y-5"
         onSubmit={handleSubmitMemory}
       >
-        <PhotoUpload />
+        <PhotoUpload
+          photos={photos}
+          setPhotos={setPhotos}
+          metadata={metadata}
+          setMetadata={setMetadata}
+          setPosition={setPosition}
+        />
         <KakaoMap
           currLocation={currLocation}
           setCurrLocation={setCurrLocation}
@@ -45,6 +53,7 @@ function MemoryCreatePage() {
           setPosition={setPosition}
           address={address}
           setAddress={setAddress}
+          isPhotoUpload
         />
         <Btn bgColor="yellow" text="등 록" btnFunc={createMemory} />
       </form>

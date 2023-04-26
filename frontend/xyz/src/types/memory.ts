@@ -33,4 +33,18 @@ export interface KakaoMapProps {
   address: string;
   setAddress: React.Dispatch<React.SetStateAction<string>>;
   locations?: MemoriesTypes[];
+  isPhotoUpload?: boolean;
 }
+
+export interface Photo {
+  file: File;
+  preview: string;
+}
+
+export type PhotoMetadata = {
+  location?: {
+    latitude: number;
+    longitude: number;
+  };
+  dateTaken: string;
+};
