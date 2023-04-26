@@ -37,6 +37,8 @@ public class MemoryServiceImpl implements MemoryService {
     @Override
     @Transactional
     public void saveMemoryFiles(Memory memory, FileType fileType, List<String> filePaths) {
+        logger.info("saveMemoryFiles 호출");
+
         filePaths.stream().forEach(
                 (filePath) -> {
                     memoryFileRepository.save(MemoryFile.builder()
@@ -102,11 +104,15 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional
-    public void removeMemory(Long loginSeq, Long memorySeq) {
+    public Boolean removeMemory(Long loginSeq, Long memorySeq) {
+        logger.info("removeMemory 호출");
+
         User user = userRepository.findBySequence(loginSeq);
         Memory memory = memoryRepository.findBySequence(memorySeq);
         if (user.equals(memory.getUser())) {
             memory.updateIsDeleted(true);
+            return true;
         }
+        return false;
     }
 }
