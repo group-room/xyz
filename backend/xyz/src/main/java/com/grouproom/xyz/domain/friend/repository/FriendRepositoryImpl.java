@@ -111,7 +111,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
     }
 
     @Override
-    public FriendUserResponse findByIdentifyOfFromUserOrToUser(Long userSeq, String identify, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
+    public FriendUserResponse findIdentifyBYFromUserOrToUser(Long userSeq, String identify, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
         return jpaQueryFactory
                 .select(Projections.fields(FriendUserResponse.class,
                                 new CaseBuilder()

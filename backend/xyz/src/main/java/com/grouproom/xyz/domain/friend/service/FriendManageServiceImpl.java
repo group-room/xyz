@@ -61,7 +61,7 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("findFriendByIdentify 호출");
 
-        FriendUserResponse friendUserResponse = friendRepository.findByIdentifyOfFromUserOrToUser(loginSeq, identify, true, false, false);
+        FriendUserResponse friendUserResponse = friendRepository.findIdentifyBYFromUserOrToUser(loginSeq, identify, true, false, false);
         if(null == friendUserResponse) {
             logger.severe("친구 아님");
             throw new RuntimeException();
