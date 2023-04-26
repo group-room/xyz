@@ -1,6 +1,7 @@
 package com.grouproom.xyz.domain.user.service;
 
 import com.grouproom.xyz.domain.user.dto.response.ModifierResponse;
+import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
 
 import java.util.List;
 
@@ -11,4 +12,7 @@ public interface UserService {
 
     List<ModifierResponse> findModifierByUserSequence(Long userSequence);
 
+    ProfileResponse findProfileByUserSeq(Long fromUserSeq,Long toUserSeq);
+
+    ProfileResponse findProfileByUserSeq(Long myUserSeq);
 }
