@@ -12,4 +12,6 @@ public interface FriendRepositoryCustom {
     Friend findByFromUserAndToUser(Long from, Long to, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted);
     List<FriendUserResponse> findNicknameByFromUserOrToUser(Long userSeq, String nickname, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted);
     FriendUserResponse findIdentifyBYFromUserOrToUser(Long userSeq, String identify, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted);
+
+    Friend findByFromUserOrToUser(Long loginSeq, Long userSeq);
 }

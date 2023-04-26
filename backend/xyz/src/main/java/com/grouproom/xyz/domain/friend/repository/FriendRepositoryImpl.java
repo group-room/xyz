@@ -140,4 +140,14 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                         , friend.isDeleted.eq(isDeleted))
                 .fetchFirst();
     }
+
+    @Override
+    public Friend findByFromUserOrToUser(Long loginSeq, Long userSeq) {
+        return jpaQueryFactory
+                .select(friend)
+                .from(friend)
+                .where(fromUser.sequence.eq(loginSeq).and(toUser.sequence.eq(userSeq))
+                        .or(fromUser.sequence.eq(userSeq).and(toUser.sequence.eq(loginSeq))))
+                .fetchFirst();
+    }
 }
