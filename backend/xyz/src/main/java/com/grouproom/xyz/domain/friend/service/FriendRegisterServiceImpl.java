@@ -148,56 +148,52 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
         logger.info("saveFriendRequest 호출");
 
-        User loginUser = userRepository.findBySequence(loginSeq);
-        User targetUser = userRepository.findBySequence(userSeq);
-        if(null == targetUser) {
-            logger.severe("없는 유저");
+        UserBlock block = userBlockRepository.findNicknameByFromUserOrToUser(loginSeq, userSeq, false);
+        if(null != block) {
+            if(block.getFromUser().getSequence().equals(loginSeq)) {
+                logger.severe("차단 상태이므로 요청 불가");
+            } else {
+                logger.severe("차단 당함");
+            }
             throw new RuntimeException();
         }
-        UserBlock block1 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(loginUser, targetUser, false);
-        UserBlock block2 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(targetUser, loginUser, false);
-        if(null != block1 || null != block2) {
-            logger.severe("차단 상태이므로 요청 불가");
-            throw new RuntimeException();
-        }
-        Friend friend1 = friendRepository.findByFromUserAndToUser(loginUser, targetUser);
-        Friend friend2 = friendRepository.findByFromUserAndToUser(targetUser, loginUser);
-        if(null == friend1 && null == friend2) {
+        Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, userSeq);
+//        Friend friend = friendRepository.findByFromUserAndToUserOrToUserAndFromUser(loginSeq, userSeq, loginSeq, userSeq);
+        if(null == friend) {
             logger.info("최초 요청");
-            Friend friend = Friend.builder()
-                    .fromUser(loginUser)
-                    .toUser(targetUser)
+            Friend newFriend = Friend.builder()
+                    .fromUser(userRepository.findBySequence(loginSeq))
+                    .toUser(userRepository.findBySequence(userSeq))
                     .isAccepted(false)
                     .isCanceled(false)
                     .isDeleted(false)
                     .build();
-            friend.setCreatedAt(LocalDateTime.now());
-            friendRepository.save(friend);
-        } else if(null != friend1 && (friend1.getIsCanceled() || friend1.getIsDeleted())) {
-        logger.info(friend1.getIsCanceled().toString());
-        logger.info(friend1.getIsDeleted().toString());
-            logger.info("요청 취소 상태 또는 친구 삭제 상태 : 과거 신청 주체가 로그인 유저");
-            friend1.setCreatedAt(LocalDateTime.now());
-            friend1.setIsAccepted(false);
-            friend1.setIsCanceled(false);
-            friend1.setIsDeleted(false);
-        } else if(null != friend2 && (friend2.getIsCanceled() || friend2.getIsDeleted())) {
-        logger.info(friend2.getIsCanceled().toString());
-        logger.info(friend2.getIsDeleted().toString());
-            logger.info("요청 취소 상태 또는 친구 삭제 상태 : 과거 신청 주체가 타겟 유저");
-            friendRepository.delete(friend2);
-            Friend friend = Friend.builder()
-                    .fromUser(loginUser)
-                    .toUser(targetUser)
-                    .isAccepted(false)
-                    .isCanceled(false)
-                    .isDeleted(false)
-                    .build();
-            friend.setCreatedAt(LocalDateTime.now());
-            friendRepository.save(friend);
+            friendRepository.save(newFriend);
         } else {
-            logger.severe("친구 요청 후 수락 대기 상태 혹은 친구 상태");
-            throw new RuntimeException();
+            if(friend.getIsCanceled() || friend.getIsDeleted()){
+                if(friend.getFromUser().getSequence().equals(loginSeq) && friend.getToUser().getSequence().equals(userSeq)) {
+                    logger.info("요청 취소 상태 또는 친구 삭제 상태 : 과거 신청 주체가 로그인 유저");
+                    friend.setCreatedAt(LocalDateTime.now());
+                    friend.setUpdatedAt(null);
+                    friend.setIsAccepted(false);
+                    friend.setIsCanceled(false);
+                    friend.setIsDeleted(false);
+                } else if (friend.getFromUser().getSequence().equals(userSeq) && friend.getToUser().getSequence().equals(loginSeq)) {
+                    logger.info("요청 취소 상태 또는 친구 삭제 상태 : 과거 신청 주체가 타겟 유저");
+                    Friend newFriend = Friend.builder()
+                            .fromUser(friend.getToUser())
+                            .toUser(friend.getFromUser())
+                            .isAccepted(false)
+                            .isCanceled(false)
+                            .isDeleted(false)
+                            .build();
+                    friendRepository.save(newFriend);
+                    friendRepository.delete(friend);
+                }
+            } else {
+                logger.severe("친구 요청 후 수락 대기 상태 혹은 친구 상태");
+                throw new RuntimeException();
+            }
         }
         return "";
     }
