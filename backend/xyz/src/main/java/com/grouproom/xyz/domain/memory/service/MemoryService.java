@@ -19,6 +19,8 @@ public interface MemoryService {
 
     Boolean removeMemory(Long userSeq, Long memorySeq);
 
+    MemoryListResponse findLikedMemory(Long userSeq);
+
     Boolean addMemoryLike(Long userSeq, Long memorySeq);
 
     Boolean removeMemoryLike(Long userSeq, Long memorySeq);

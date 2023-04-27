@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -60,16 +61,16 @@ public class MemoryServiceImpl implements MemoryService {
         // TODO: 무한스크롤 구현 필요
         if (memoryListRequest.getIsLocationBased() == false) {
             logger.info("isLocationBased == false");
-            List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
+            List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
             return MemoryListResponse.builder()
-                    .memories(memoryResponseList)
+                    .memories(memoryResponses)
                     .build();
         }
 
         logger.info("isLocationBased == true");
-        List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeqAndCoordinate(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
+        List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeqAndCoordinate(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
         return MemoryListResponse.builder()
-                .memories(memoryResponseList)
+                .memories(memoryResponses)
                 .build();
     }
 
@@ -116,6 +117,34 @@ public class MemoryServiceImpl implements MemoryService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MemoryListResponse findLikedMemory(Long userSeq) {
+        logger.info("findLikedMemory 호출");
+
+        List<MemoryLike> memoryLikes = memoryLikeRepository.findLikedMemoriesByUserSeq(userSeq);
+        List<MemoryResponse> memoryResponses = new ArrayList<>();
+        for (MemoryLike memoryLike : memoryLikes) {
+            Memory memory = memoryLike.getMemory();
+            MemoryResponse memoryResponse = new MemoryResponse(
+                    memory.getSequence(),
+                    memory.getAzt().getSequence(),
+                    memory.getAzt().getAztName(),
+                    memory.getDate(),
+                    memory.getLatitude(),
+                    memory.getLongitude(),
+                    memory.getLocation()
+            );
+            memoryResponses.add(memoryResponse);
+        }
+
+        logger.info(memoryResponses.toString());
+
+        return MemoryListResponse.builder()
+                .memories(memoryResponses)
+                .build();
     }
 
     @Override
