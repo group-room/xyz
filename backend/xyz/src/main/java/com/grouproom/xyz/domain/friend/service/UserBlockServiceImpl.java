@@ -48,4 +48,20 @@ public class UserBlockServiceImpl implements UserBlockService {
 
         return "";
     }
+
+    @Override
+    @Transactional
+    public String modifySaveBlock(Long loginSeq, Long userSeq) {
+
+        logger.info("modifySaveBlock 호출");
+
+        UserBlock userBlock = userBlockRepository.findByFromUser_SequenceAndToUser_SequenceAndIsDeleted(loginSeq, userSeq, false);
+        if(null == userBlock) {
+            logger.severe("차단한 대상이 아님");
+            throw new RuntimeException();
+        } else {
+            userBlock.setIsDeleted(true);
+        }
+        return "";
+    }
 }

@@ -2,10 +2,7 @@ package com.grouproom.xyz.domain.friend.entity;
 
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -24,6 +21,7 @@ import javax.persistence.*;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
 @Getter
 @IdClass(UserBlockID.class)
 @Table(name = "user_block")
