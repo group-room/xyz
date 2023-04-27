@@ -1,11 +1,15 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LogoImg from "../../public/images/logo.svg";
 import FriendIcon from "../../public/icons/user_plus.svg";
 import NotiIcon from "../../public/icons/notification.svg";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function Header() {
+  const { data: session } = useSession();
   return (
     <header>
       <nav className="fixed flex items-center justify-between top-0 left-0 right-0 bg-white px-5 py-4 shadow-sm shadow-slate-50 h-14 z-50">
@@ -20,6 +24,11 @@ function Header() {
             <Image src={NotiIcon} alt="xyz 로고" width={20} />
           </Link>
         </div>
+        {session ? (
+          <button onClick={() => signOut()}>sign out</button>
+        ) : (
+          <button onClick={() => signIn()}>sign in</button>
+        )}
       </nav>
     </header>
   );
