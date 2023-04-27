@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  spring_first:
+    container_name: spring_first
+    build: ./backend/xyz
+    ports:
+      - "8081:8081"
+    volumes:
+      - /spring:/image
+    restart: on-failure
+  nestjs_first:
+    container_name: nextJS_first
+    build: ./frontend/xyz
+    ports:
+      - "3000:3000"
+    volumes:
+      - /nextJS:/image
+    restart: on-failure
