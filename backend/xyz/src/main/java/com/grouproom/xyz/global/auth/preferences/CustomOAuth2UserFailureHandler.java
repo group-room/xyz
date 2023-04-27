@@ -64,10 +64,11 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
 //                .socialId(customOAuth2User.getSocialId())
 //                .nickname(customOAuth2User.getNickname())
 //                .profileImage(customOAuth2User.getProfileImg())
-//                .build();`
+//                .build();`\
         User user = User.builder()
                 .socialType(customOAuth2User.getRegistrationId())
                 .socialIdentify(customOAuth2User.getSocialId())
+                .nickname( userRepository.selectNicknameByRandom().orElse("기본 닉네임"))
                 .build();
 
         userRepository.save(user);
