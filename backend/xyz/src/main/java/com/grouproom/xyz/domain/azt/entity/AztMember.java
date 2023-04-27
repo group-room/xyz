@@ -2,12 +2,12 @@ package com.grouproom.xyz.domain.azt.entity;
 
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
+@AllArgsConstructor
 @Getter
 @Entity
 @IdClass(AztMemberId.class)
