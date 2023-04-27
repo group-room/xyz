@@ -20,19 +20,6 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
     private static final QUser fromUser = friend.fromUser;
     private static final QUser toUser = friend.toUser;
 
-    @Override
-    public Friend findByFromUserAndToUser1(Long from, Long to) {
-        return jpaQueryFactory
-                .select(friend)
-                .from(friend)
-                .where(fromUser.sequence.eq(from),
-                        toUser.sequence.eq(to),
-                        friend.isAccepted.eq(false),
-                        friend.isCanceled.eq(false),
-                        friend.isDeleted.eq(false))
-                .fetchFirst();
-    }
-
    @Override
     public List<FriendUserResponse> findByFromUserOrToUser(Long userSeq, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
 
