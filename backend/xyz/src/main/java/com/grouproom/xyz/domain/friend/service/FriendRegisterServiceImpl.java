@@ -148,17 +148,18 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
         logger.info("saveFriendRequest 호출");
 
-        UserBlock block = userBlockRepository.findNicknameByFromUserOrToUser(loginSeq, userSeq, false);
-        if(null != block) {
-            if(block.getFromUser().getSequence().equals(loginSeq)) {
-                logger.severe("차단 상태이므로 요청 불가");
-            } else {
-                logger.severe("차단 당함");
+        List<UserBlock> blocks = userBlockRepository.findNicknameByFromUserOrToUser(loginSeq, userSeq, false);
+        for (UserBlock block: blocks) {
+            if(null != block) {
+                if(block.getFromUser().getSequence().equals(loginSeq)) {
+                    logger.severe("차단 상태이므로 요청 불가");
+                } else {
+                    logger.severe("차단 당함");
+                }
+                throw new RuntimeException();
             }
-            throw new RuntimeException();
         }
         Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, userSeq);
-//        Friend friend = friendRepository.findByFromUserAndToUserOrToUserAndFromUser(loginSeq, userSeq, loginSeq, userSeq);
         if(null == friend) {
             logger.info("최초 요청");
             Friend newFriend = Friend.builder()
