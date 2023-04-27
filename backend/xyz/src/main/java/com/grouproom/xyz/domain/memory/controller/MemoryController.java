@@ -8,6 +8,7 @@ import com.grouproom.xyz.domain.memory.service.MemoryService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
@@ -50,5 +51,19 @@ public class MemoryController {
         }
 
         return new BaseResponse(HttpStatus.BAD_REQUEST, "실패", "삭제 실패");
+    }
+
+    @PostMapping("/like/{memorySeq}")
+    public BaseResponse<?> addLike(@PathVariable("memorySeq") Long memorySeq) {
+        logger.info("addLike 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        Boolean success = memoryService.addMemoryLike(userSeq, memorySeq);
+
+        if (success == true) {
+            return new BaseResponse("좋아요 목록에 추가되었습니다.");
+        }
+
+        return new BaseResponse(HttpStatus.BAD_REQUEST, "실패", "이미 좋아요한 memory입니다.");
     }
 }
