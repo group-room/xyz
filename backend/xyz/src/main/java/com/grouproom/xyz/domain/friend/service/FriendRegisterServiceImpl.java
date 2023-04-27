@@ -94,50 +94,44 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
         logger.info("findUserByIdentify 호출");
 
-        User loginUser = userRepository.findBySequence(loginSeq);
-        UserResponse userResponse = new UserResponse();
         User targetUser = userRepository.findByIdentify(identify);
         if(null == targetUser) {
             logger.severe("없는 사용자");
             throw new RuntimeException();
         }
-
-        UserBlock block1 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(targetUser, loginUser, false);
-        if(null != block1) {
-            logger.info(targetUser.getSequence() + "로부터 차단된 상태");
-            throw new RuntimeException();
-        }
+        UserResponse userResponse = new UserResponse();
         userResponse.setUserSeq(targetUser.getSequence());
         userResponse.setNickname(targetUser.getNickname());
         userResponse.setProfileImage(targetUser.getProfileImage());
         userResponse.setIdentify(targetUser.getIdentify());
-        UserBlock block2 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(loginUser, targetUser, false);
-        if (null != block2) {
-            logger.info(targetUser.getSequence() + "를 차단한 상태");
-            userResponse.setRelation("차단함");
-        } else {
-            Friend friend1 = friendRepository.findByFromUserAndToUser(targetUser, loginUser);
-            Friend friend2 = friendRepository.findByFromUserAndToUser(loginUser, targetUser);
-            if (null != friend1 && !friend1.getIsDeleted() && !friend1.getIsCanceled()) {
-                if(!friend1.getIsAccepted()) {
-                    logger.info(targetUser.getSequence() + "에게 요청 받음");
-                    userResponse.setRelation("요청 받음");
+
+        List<UserBlock> blocks = userBlockRepository.findNicknameByFromUserOrToUser(loginSeq, targetUser.getSequence(), false);
+        if(blocks.size() != 0) {
+            for (UserBlock block: blocks) {
+                if(block.getFromUser().equals(targetUser)) {
+                    logger.info(targetUser.getSequence() + "로부터 차단된 상태");
+                    throw new RuntimeException();
                 } else {
-                    logger.info(targetUser.getSequence() + "와 친구");
-                    userResponse.setRelation("친구");
+                    logger.info(targetUser.getSequence() + "를 차단한 상태");
+                    userResponse.setRelation("차단함");
                 }
-            } else if (null != friend2 && !friend2.getIsDeleted() && !friend2.getIsCanceled()) {
-                if (!friend2.getIsAccepted()) {
-                    logger.info(targetUser.getSequence() + "의 수락 대기 중");
-                    userResponse.setRelation("요청 함");
-                } else {
-                    logger.info(targetUser.getSequence() + "와 친구");
-                    userResponse.setRelation("친구");
-                }
-            } else {
-                logger.info("관계 없음");
-                userResponse.setRelation("관계 없음");
             }
+            return userResponse;
+        }
+
+        Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, targetUser.getSequence());
+        if(null == friend || friend.getIsDeleted() || friend.getIsCanceled()) {
+            logger.info("관계 없음");
+            userResponse.setRelation("관계 없음");
+        } else if(friend.getIsAccepted()) {
+            logger.info(targetUser.getSequence() + "와 친구");
+            userResponse.setRelation("친구");
+        } else if(friend.getFromUser().equals(targetUser)) {
+            logger.info(targetUser.getSequence() + "에게 요청 받음");
+            userResponse.setRelation("요청 받음");
+        } else {
+            logger.info(targetUser.getSequence() + "의 수락 대기 중");
+            userResponse.setRelation("요청 함");
         }
         return userResponse;
     }
