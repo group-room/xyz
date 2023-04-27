@@ -1,14 +1,14 @@
 package com.grouproom.xyz.domain.azt.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Azt extends BaseTimeEntity {
 

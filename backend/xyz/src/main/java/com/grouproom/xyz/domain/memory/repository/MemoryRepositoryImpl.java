@@ -28,8 +28,8 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    QMemory memory = QMemory.memory;
     QAzt azt = QAzt.azt;
+    QMemory memory = QMemory.memory;
     QAztMember aztMember = QAztMember.aztMember;
 
     private BooleanExpression eqAzt(Long aztSeq) {

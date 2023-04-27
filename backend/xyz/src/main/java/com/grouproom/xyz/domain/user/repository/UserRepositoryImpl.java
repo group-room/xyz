@@ -10,6 +10,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +21,10 @@ import java.util.Optional;
 import static com.grouproom.xyz.domain.friend.entity.QFriend.friend;
 import static com.grouproom.xyz.domain.user.entity.QBgm.bgm;
 import static com.grouproom.xyz.domain.user.entity.QModifier.modifier;
+import static com.grouproom.xyz.domain.user.entity.QNickname.nickname1;
 import static com.grouproom.xyz.domain.user.entity.QUser.user;
 import static com.grouproom.xyz.domain.user.entity.QUserModifier.userModifier;
+
 /**
  * packageName    : com.grouproom.xyz.domain.user.repository
  * fileName       : UserRepositoryImpl
@@ -112,6 +116,17 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .from(bgm)
                 .where(bgm.user.eq(targetUser))
                 .fetch();
+    }
+
+    @Override
+    public Optional<String> selectNicknameByRandom() {
+        return Optional.ofNullable(
+                jpaQueryFactory
+                        .select(nickname1.nickname)
+                        .from(nickname1)
+                        .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                        .fetchFirst()
+        );
     }
 
 }

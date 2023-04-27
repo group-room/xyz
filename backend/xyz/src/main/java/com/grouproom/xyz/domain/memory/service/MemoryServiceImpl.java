@@ -2,23 +2,29 @@ package com.grouproom.xyz.domain.memory.service;
 
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
-import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
-import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
-import com.grouproom.xyz.domain.memory.dto.response.MemoryResponse;
+import com.grouproom.xyz.domain.memory.dto.response.*;
 import com.grouproom.xyz.domain.memory.entity.Memory;
+import com.grouproom.xyz.domain.memory.entity.MemoryComment;
 import com.grouproom.xyz.domain.memory.entity.MemoryFile;
+import com.grouproom.xyz.domain.memory.entity.MemoryLike;
+import com.grouproom.xyz.domain.memory.repository.MemoryCommentRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryFileRepository;
+import com.grouproom.xyz.domain.memory.repository.MemoryLikeRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.FileType;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -30,6 +36,8 @@ public class MemoryServiceImpl implements MemoryService {
     //    private final AztRepository aztRepository;
     private final MemoryRepository memoryRepository;
     private final MemoryFileRepository memoryFileRepository;
+    private final MemoryLikeRepository memoryLikeRepository;
+    private final MemoryCommentRepository memoryCommentRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.memory.service.MemoryServiceImpl");
 
     @Override
@@ -50,22 +58,22 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public MemoryListResponse findMemory(Long loginUserSeq, MemoryListRequest memoryListRequest) {
+    public MemoryListResponse findMemory(Long userSeq, MemoryListRequest memoryListRequest) {
         logger.info("findMemory 호출");
 
         // TODO: 무한스크롤 구현 필요
         if (memoryListRequest.getIsLocationBased() == false) {
             logger.info("isLocationBased == false");
-            List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeq(loginUserSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
+            List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
             return MemoryListResponse.builder()
-                    .memories(memoryResponseList)
+                    .memories(memoryResponses)
                     .build();
         }
 
         logger.info("isLocationBased == true");
-        List<MemoryResponse> memoryResponseList = memoryRepository.findByUserSeqAndCoordinate(loginUserSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
+        List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeqAndCoordinate(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
         return MemoryListResponse.builder()
-                .memories(memoryResponseList)
+                .memories(memoryResponses)
                 .build();
     }
 
@@ -102,15 +110,153 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional
-    public Boolean removeMemory(Long loginSeq, Long memorySeq) {
+    public Boolean removeMemory(Long userSeq, Long memorySeq) {
         logger.info("removeMemory 호출");
 
-        User user = userRepository.findBySequence(loginSeq);
+        User user = userRepository.findBySequence(userSeq);
         Memory memory = memoryRepository.findBySequence(memorySeq);
         if (user.equals(memory.getUser())) {
             memory.updateIsDeleted(true);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public MemoryListResponse findMyMemory(Long userSeq) {
+        logger.info("findMyMemory 호출");
+
+        List<Memory> memories = memoryRepository.findByUser_Sequence(userSeq);
+        List<MemoryResponse> memoryResponses = new ArrayList<>();
+
+        for (Memory memory : memories) {
+            MemoryResponse memoryResponse = new MemoryResponse(
+                    memory.getSequence(),
+                    memory.getAzt().getSequence(),
+                    memory.getAzt().getAztName(),
+                    memory.getDate(),
+                    memory.getLatitude(),
+                    memory.getLongitude(),
+                    memory.getLocation()
+            );
+            memoryResponses.add(memoryResponse);
+        }
+
+        return MemoryListResponse.builder()
+                .memories(memoryResponses)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MemoryListResponse findLikedMemory(Long userSeq) {
+        logger.info("findLikedMemory 호출");
+
+        List<MemoryLike> memoryLikes = memoryLikeRepository.findLikedMemoriesByUserSeq(userSeq);
+        List<MemoryResponse> memoryResponses = new ArrayList<>();
+
+        for (MemoryLike memoryLike : memoryLikes) {
+            Memory memory = memoryLike.getMemory();
+            MemoryResponse memoryResponse = new MemoryResponse(
+                    memory.getSequence(),
+                    memory.getAzt().getSequence(),
+                    memory.getAzt().getAztName(),
+                    memory.getDate(),
+                    memory.getLatitude(),
+                    memory.getLongitude(),
+                    memory.getLocation()
+            );
+            memoryResponses.add(memoryResponse);
+        }
+
+        return MemoryListResponse.builder()
+                .memories(memoryResponses)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public void addMemoryLike(Long userSeq, Long memorySeq) {
+        logger.info("addMemoryLike 호출");
+
+        Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
+
+        if (memoryLike.isPresent()) {
+            if (memoryLike.get().getIsSelected()) {
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST, "이미 좋아요한 추억입니다.");
+            }
+
+            memoryLike.get().updateIsSelected(true);
+            return;
+        }
+
+        User user = userRepository.findBySequence(userSeq);
+        Memory memory = memoryRepository.findBySequence(memorySeq);
+
+        if (memory.getIsDeleted()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
+        }
+
+        memoryLikeRepository.save(MemoryLike.builder()
+                .user(user)
+                .memory(memory)
+                .build());
+
+        return;
+    }
+
+    @Override
+    @Transactional
+    public void removeMemoryLike(Long userSeq, Long memorySeq) {
+        logger.info("removeMemorylike 호출");
+
+        Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
+
+        if (memoryLike.isPresent() & memoryLike.get().getIsSelected()) {
+            memoryLike.get().updateIsSelected(false);
+            return;
+        }
+
+        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "이미 좋아요 하지 않은 상태입니다.");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MemoryDetailResponse findMemoryDetail(Long memorySeq) {
+        logger.info("findMemoryDetail 호출");
+
+        Memory memory = memoryRepository.findBySequence(memorySeq);
+
+        if (memory.getIsDeleted()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
+        }
+
+        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_Sequence(memorySeq);
+        List<MemoryFileResponse> memoryFileResponses = new ArrayList<>();
+
+        if (memoryFiles != null) {
+            for (MemoryFile memoryFile : memoryFiles) {
+                MemoryFileResponse memoryFileResponse = new MemoryFileResponse(memoryFile);
+                memoryFileResponses.add(memoryFileResponse);
+            }
+        }
+
+        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_Sequence(memorySeq);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+
+        for (MemoryComment memoryComment : memoryComments) {
+            CommentResponse commentResponse = new CommentResponse(memoryComment);
+            commentResponses.add(commentResponse);
+        }
+
+        MemoryInfoResponse memoryInfoResponse = MemoryInfoResponse.builder()
+                .memory(memory)
+                .files(memoryFileResponses)
+                .build();
+
+        return MemoryDetailResponse.builder()
+                .comments(commentResponses)
+                .memory(memoryInfoResponse)
+                .build();
     }
 }

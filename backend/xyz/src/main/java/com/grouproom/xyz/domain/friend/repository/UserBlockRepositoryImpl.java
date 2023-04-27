@@ -4,6 +4,8 @@ import com.grouproom.xyz.domain.friend.entity.UserBlock;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import static com.grouproom.xyz.domain.friend.entity.QUserBlock.userBlock;
 
 @RequiredArgsConstructor
@@ -12,7 +14,7 @@ public class UserBlockRepositoryImpl implements UserBlockRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public UserBlock findNicknameByFromUserOrToUser(Long loginSeq, Long userSeq, Boolean isDeleted) {
+    public List<UserBlock> findNicknameByFromUserOrToUser(Long loginSeq, Long userSeq, Boolean isDeleted) {
         return jpaQueryFactory
                 .select(userBlock)
                 .from(userBlock)
@@ -20,6 +22,6 @@ public class UserBlockRepositoryImpl implements UserBlockRepositoryCustom {
                         .or(userBlock.fromUser.sequence.eq(userSeq).and(userBlock.toUser.sequence.eq(loginSeq))
                         )
                 , userBlock.isDeleted.eq(isDeleted))
-                .fetchFirst();
+                .fetch();
     }
 }

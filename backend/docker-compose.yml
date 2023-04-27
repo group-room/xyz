@@ -1,0 +1,10 @@
+version: "3"
+services:
+  spring_test:
+    container_name: spring_test
+    build: ./xyz
+    ports:
+      - "8083:8081"
+    volumes:
+      - /spring_test:/image
+    restart: on-failure
