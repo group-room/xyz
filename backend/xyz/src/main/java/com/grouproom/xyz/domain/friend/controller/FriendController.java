@@ -118,4 +118,15 @@ public class FriendController {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
+
+    @DeleteMapping("/block/{userSeq}")
+    public BaseResponse<?> modifyUserBlock(@PathVariable("userSeq") Long userSeq) {
+        logger.info("modifyUserBlock 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(userBlockService.modifySaveBlock(loginSeq, userSeq));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
 }
