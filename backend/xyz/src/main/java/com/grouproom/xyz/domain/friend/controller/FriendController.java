@@ -70,7 +70,7 @@ public class FriendController {
         Long loginSeq = 1L;
         try {
             return new BaseResponse<>(friendRegisterService.findUserByIdentify(loginSeq, identify));
-        } catch (RuntimeException re) {
+        } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
