@@ -55,4 +55,26 @@ public class AztServiceImpl implements AztService {
         }
         return "";
     }
+
+    @Override
+    @Transactional
+    public String modifyAzt(Long loginSeq, AztRequest aztRequest) {
+
+        logger.info("modifyAzt 호출");
+
+        AztMember aztMember = aztMemberRepository.findByAzt_SequenceAndUser_Sequence(aztRequest.getAztSeq(), loginSeq);
+        if(null != aztMember) {
+            logger.info("요청한 유저가 해당 아지트에 소속됨");
+            Azt azt = aztRepository.findBySequence(aztRequest.getAztSeq());
+            azt.setAztName(aztRequest.getName());
+            azt.setAztImage(aztRequest.getImage());
+        } else {
+            logger.severe("소속된 아지트가 아님");
+            throw new RuntimeException();
+        }
+
+        // 추후 상세 조회 호출
+
+        return null;
+    }
 }
