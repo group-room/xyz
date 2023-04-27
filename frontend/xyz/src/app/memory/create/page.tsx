@@ -54,6 +54,7 @@ function MemoryCreatePage() {
           address={address}
           setAddress={setAddress}
           isPhotoUpload
+          height={200}
         />
         <Btn
           width="w-full"
