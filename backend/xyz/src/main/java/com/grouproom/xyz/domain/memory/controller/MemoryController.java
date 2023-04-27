@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.memory.controller;
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
+import com.grouproom.xyz.domain.memory.dto.response.MemoryDetailResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
 import com.grouproom.xyz.global.exception.ErrorResponse;
@@ -30,6 +31,15 @@ public class MemoryController {
         MemoryListResponse memoryListResponse = memoryService.findMemory(userSeq, memoryListRequest);
 
         return new BaseResponse(memoryListResponse);
+    }
+
+    @GetMapping("/{memorySeq}")
+    public BaseResponse<?> memoryDetail(@PathVariable("memorySeq") Long memorySeq) {
+        logger.info("memoryDetail 호출");
+
+        MemoryDetailResponse memoryDetail = memoryService.findMemoryDetail(memorySeq);
+
+        return new BaseResponse(memoryDetail);
     }
 
     @PostMapping()

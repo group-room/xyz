@@ -29,4 +29,11 @@ public class MemoryComment extends BaseTimeEntity {
 
     @Column(length = 100, name = "content")
     private String content;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
+    public void updateIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

@@ -2,12 +2,12 @@ package com.grouproom.xyz.domain.memory.service;
 
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
-import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
-import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
-import com.grouproom.xyz.domain.memory.dto.response.MemoryResponse;
+import com.grouproom.xyz.domain.memory.dto.response.*;
 import com.grouproom.xyz.domain.memory.entity.Memory;
+import com.grouproom.xyz.domain.memory.entity.MemoryComment;
 import com.grouproom.xyz.domain.memory.entity.MemoryFile;
 import com.grouproom.xyz.domain.memory.entity.MemoryLike;
+import com.grouproom.xyz.domain.memory.repository.MemoryCommentRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryFileRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryLikeRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryRepository;
@@ -37,6 +37,7 @@ public class MemoryServiceImpl implements MemoryService {
     private final MemoryRepository memoryRepository;
     private final MemoryFileRepository memoryFileRepository;
     private final MemoryLikeRepository memoryLikeRepository;
+    private final MemoryCommentRepository memoryCommentRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.memory.service.MemoryServiceImpl");
 
     @Override
@@ -217,5 +218,45 @@ public class MemoryServiceImpl implements MemoryService {
         }
 
         throw new ErrorResponse(HttpStatus.BAD_REQUEST, "이미 좋아요 하지 않은 상태입니다.");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MemoryDetailResponse findMemoryDetail(Long memorySeq) {
+        logger.info("findMemoryDetail 호출");
+
+        Memory memory = memoryRepository.findBySequence(memorySeq);
+
+        if (memory.getIsDeleted()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
+        }
+
+        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_Sequence(memorySeq);
+        List<MemoryFileResponse> memoryFileResponses = new ArrayList<>();
+
+        if (memoryFiles != null) {
+            for (MemoryFile memoryFile : memoryFiles) {
+                MemoryFileResponse memoryFileResponse = new MemoryFileResponse(memoryFile);
+                memoryFileResponses.add(memoryFileResponse);
+            }
+        }
+
+        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_Sequence(memorySeq);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+
+        for (MemoryComment memoryComment : memoryComments) {
+            CommentResponse commentResponse = new CommentResponse(memoryComment);
+            commentResponses.add(commentResponse);
+        }
+
+        MemoryInfoResponse memoryInfoResponse = MemoryInfoResponse.builder()
+                .memory(memory)
+                .files(memoryFileResponses)
+                .build();
+
+        return MemoryDetailResponse.builder()
+                .comments(commentResponses)
+                .memory(memoryInfoResponse)
+                .build();
     }
 }
