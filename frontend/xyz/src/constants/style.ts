@@ -3,7 +3,7 @@
 type BgColorType = {
   blue: string;
   pink: string;
-  yellow: string;
+  yellow: string; 
 }
 
 export const BgColors: BgColorType = {
