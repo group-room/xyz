@@ -25,6 +25,6 @@ public class MemoryLike extends BaseTimeEntity {
     @JoinColumn(name = "memory_sequence")
     private Memory memory;
 
-    @Column(name = "is_selected", columnDefinition = "tinyint(1) default 1")
+    @Column(name = "is_selected")
     private Boolean isSelected;
 }
