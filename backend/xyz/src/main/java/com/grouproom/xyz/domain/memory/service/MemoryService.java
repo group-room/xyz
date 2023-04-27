@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.memory.service;
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
+import com.grouproom.xyz.domain.memory.dto.response.MemoryDetailResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.entity.Memory;
 import com.grouproom.xyz.global.model.FileType;
@@ -19,9 +20,14 @@ public interface MemoryService {
 
     Boolean removeMemory(Long userSeq, Long memorySeq);
 
+    MemoryListResponse findMyMemory(Long userSeq);
+
     MemoryListResponse findLikedMemory(Long userSeq);
 
-    Boolean addMemoryLike(Long userSeq, Long memorySeq);
+    void addMemoryLike(Long userSeq, Long memorySeq);
 
-    Boolean removeMemoryLike(Long userSeq, Long memorySeq);
+    void removeMemoryLike(Long userSeq, Long memorySeq);
+
+    MemoryDetailResponse findMemoryDetail(Long memorySeq);
+
 }
