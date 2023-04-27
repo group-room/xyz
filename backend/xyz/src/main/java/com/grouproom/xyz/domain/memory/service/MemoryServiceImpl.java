@@ -155,7 +155,7 @@ public class MemoryServiceImpl implements MemoryService {
         Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
 
         if (memoryLike.isPresent()) {
-            if (memoryLike.get().getIsSelected() == true) {
+            if (memoryLike.get().getIsSelected()) {
                 return false;
             }
 
@@ -165,6 +165,10 @@ public class MemoryServiceImpl implements MemoryService {
 
         User user = userRepository.findBySequence(userSeq);
         Memory memory = memoryRepository.findBySequence(memorySeq);
+
+        if (memory.getIsDeleted()) {
+            return false;
+        }
 
         memoryLikeRepository.save(MemoryLike.builder()
                 .user(user)
