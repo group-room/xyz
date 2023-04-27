@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.HashMap;
+
 /**
  * packageName    : com.grouproom.xyz.global.exception
  * fileName       : ControllerExceptionHandler
@@ -32,7 +34,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders resHeaders = new HttpHeaders();
         resHeaders.add("Content-Type", "application/json;charset=UTF-8");
 
-        return new ResponseEntity(e.getMessage(), resHeaders, e.getStatusCode());
+        HashMap<String,Object> map = new HashMap<String, Object>();
+        map.put("statusCode",e.getStatusCode());
+        map.put("message",e.getMessage());
+
+        return new ResponseEntity(map, resHeaders, e.getStatusCode());
     }
 
     @ExceptionHandler({Exception.class})
