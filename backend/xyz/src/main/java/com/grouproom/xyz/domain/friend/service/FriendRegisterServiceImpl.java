@@ -204,7 +204,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
         logger.info("cancelFriendRequest 호출");
 
-        Friend friend = friendRepository.findByFromUserAndToUser1(loginSeq, userSeq);
+        Friend friend = friendRepository.findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(loginSeq, userSeq, false, false, false);
         if(null == friend) {
             logger.severe("취소할 수 있는 대상이 아님");
             throw new RuntimeException();
