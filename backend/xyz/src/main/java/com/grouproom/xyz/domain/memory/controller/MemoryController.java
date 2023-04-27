@@ -25,8 +25,8 @@ public class MemoryController {
     public BaseResponse<?> memoryList(@ModelAttribute MemoryListRequest memoryListRequest) {
         logger.info("memoryList 호출");
 
-        Long loginSeq = 1L;
-        MemoryListResponse memoryListResponse = memoryService.findMemory(loginSeq, memoryListRequest);
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        MemoryListResponse memoryListResponse = memoryService.findMemory(userSeq, memoryListRequest);
         return new BaseResponse(memoryListResponse);
     }
 
@@ -34,8 +34,8 @@ public class MemoryController {
     public BaseResponse<?> addMemory(@ModelAttribute AddMemoryRequest addMemoryRequest) {
         logger.info("addMemory 호출");
 
-        Long loginSeq = 1L;
-        AddMemoryResponse addMemoryResponse = memoryService.addMemory(loginSeq, addMemoryRequest);
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        AddMemoryResponse addMemoryResponse = memoryService.addMemory(userSeq, addMemoryRequest);
         return new BaseResponse(addMemoryResponse);
     }
 
@@ -43,8 +43,8 @@ public class MemoryController {
     public BaseResponse<?> removeMemory(@PathVariable("memorySeq") Long memorySeq) {
         logger.info("removeMemory 호출");
 
-        Long loginSeq = 1L;
-        Boolean removeSuccess = memoryService.removeMemory(loginSeq, memorySeq);
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        Boolean removeSuccess = memoryService.removeMemory(userSeq, memorySeq);
 
         if (removeSuccess == true) {
             return new BaseResponse("성공적으로 삭제되었습니다.");
