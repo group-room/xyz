@@ -38,8 +38,9 @@ public class SwaagerConfig {
     public Docket api() {
         Server serverLocal = new Server("local", "http://localhost:9090", "for local usages", Collections.emptyList(), Collections.emptyList());
         Server realServer = new Server("test", "https://xyz-gen.com", "for testing", Collections.emptyList(), Collections.emptyList());
+        Server backendServer = new Server("test", "https://xyz-gen.com/backend", "for backend testing", Collections.emptyList(), Collections.emptyList());
         return new Docket(DocumentationType.OAS_30)
-                .servers(serverLocal,realServer)
+                .servers(serverLocal,realServer,backendServer)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.grouproom.xyz.domain"))
                 .paths(PathSelectors.any())
