@@ -54,6 +54,15 @@ public class MemoryController {
         throw new ErrorResponse(HttpStatus.BAD_REQUEST, "추억앨범 삭제 실패");
     }
 
+    @GetMapping("/like")
+    public BaseResponse<?> likedMemoryList(@RequestParam(name = "memorySeq", required = false) Long memorySeq) {
+        logger.info("likedMemoryList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        MemoryListResponse memoryListResponse = memoryService.findLikedMemory(userSeq);
+        return new BaseResponse(memoryListResponse);
+    }
+
     @PostMapping("/like/{memorySeq}")
     public BaseResponse<?> addMemoryLike(@PathVariable("memorySeq") Long memorySeq) {
         logger.info("addMemoryLike 호출");
