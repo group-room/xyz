@@ -13,9 +13,11 @@ import com.grouproom.xyz.domain.memory.repository.MemoryLikeRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.FileType;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -149,25 +151,25 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional
-    public Boolean addMemoryLike(Long userSeq, Long memorySeq) {
+    public void addMemoryLike(Long userSeq, Long memorySeq) {
         logger.info("addMemoryLike 호출");
 
         Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
 
         if (memoryLike.isPresent()) {
             if (memoryLike.get().getIsSelected()) {
-                return false;
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST, "이미 좋아요한 추억입니다.");
             }
 
             memoryLike.get().updateIsSelected(true);
-            return true;
+            return;
         }
 
         User user = userRepository.findBySequence(userSeq);
         Memory memory = memoryRepository.findBySequence(memorySeq);
 
         if (memory.getIsDeleted()) {
-            return false;
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
         }
 
         memoryLikeRepository.save(MemoryLike.builder()
@@ -175,21 +177,21 @@ public class MemoryServiceImpl implements MemoryService {
                 .memory(memory)
                 .build());
 
-        return true;
+        return;
     }
 
     @Override
     @Transactional
-    public Boolean removeMemoryLike(Long userSeq, Long memorySeq) {
+    public void removeMemoryLike(Long userSeq, Long memorySeq) {
         logger.info("removeMemorylike 호출");
 
         Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
 
         if (memoryLike.isPresent() & memoryLike.get().getIsSelected()) {
             memoryLike.get().updateIsSelected(false);
-            return true;
+            return;
         }
 
-        return false;
+        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "이미 좋아요 하지 않은 상태입니다.");
     }
 }

@@ -68,13 +68,9 @@ public class MemoryController {
         logger.info("addMemoryLike 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Boolean success = memoryService.addMemoryLike(userSeq, memorySeq);
+        memoryService.addMemoryLike(userSeq, memorySeq);
 
-        if (success == true) {
-            return new BaseResponse("좋아요 등록 성공");
-        }
-
-        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "좋아요 등록 실패");
+        return new BaseResponse("좋아요 등록 성공");
     }
 
     @DeleteMapping("/like/{memorySeq}")
@@ -82,12 +78,8 @@ public class MemoryController {
         logger.info("removeMemoryLike 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Boolean success = memoryService.removeMemoryLike(userSeq, memorySeq);
+        memoryService.removeMemoryLike(userSeq, memorySeq);
 
-        if (success == true) {
-            return new BaseResponse("좋아요 삭제 성공");
-        }
-
-        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "좋아요 삭제 실패");
+        return new BaseResponse("좋아요 삭제 성공");
     }
 }

@@ -21,7 +21,7 @@ public interface MemoryService {
 
     MemoryListResponse findLikedMemory(Long userSeq);
 
-    Boolean addMemoryLike(Long userSeq, Long memorySeq);
+    void addMemoryLike(Long userSeq, Long memorySeq);
 
-    Boolean removeMemoryLike(Long userSeq, Long memorySeq);
+    void removeMemoryLike(Long userSeq, Long memorySeq);
 }
