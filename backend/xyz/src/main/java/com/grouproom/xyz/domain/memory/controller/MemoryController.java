@@ -5,6 +5,7 @@ import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,26 +45,40 @@ public class MemoryController {
         logger.info("removeMemory 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Boolean removeSuccess = memoryService.removeMemory(userSeq, memorySeq);
+        Boolean success = memoryService.removeMemory(userSeq, memorySeq);
 
-        if (removeSuccess == true) {
-            return new BaseResponse("성공적으로 삭제되었습니다.");
+        if (success == true) {
+            return new BaseResponse("추억앨범 삭제 성공");
         }
 
-        return new BaseResponse(HttpStatus.BAD_REQUEST, "실패", "삭제 실패");
+        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "추억앨범 삭제 실패");
     }
 
     @PostMapping("/like/{memorySeq}")
-    public BaseResponse<?> addLike(@PathVariable("memorySeq") Long memorySeq) {
-        logger.info("addLike 호출");
+    public BaseResponse<?> addMemoryLike(@PathVariable("memorySeq") Long memorySeq) {
+        logger.info("addMemoryLike 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         Boolean success = memoryService.addMemoryLike(userSeq, memorySeq);
 
         if (success == true) {
-            return new BaseResponse("좋아요 목록에 추가되었습니다.");
+            return new BaseResponse("좋아요 등록 성공");
         }
 
-        return new BaseResponse(HttpStatus.BAD_REQUEST, "실패", "이미 좋아요한 memory입니다.");
+        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "좋아요 등록 실패");
+    }
+
+    @DeleteMapping("/like/{memorySeq}")
+    public BaseResponse<?> removeMemoryLike(@PathVariable("memorySeq") Long memorySeq) {
+        logger.info("removeMemoryLike 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        Boolean success = memoryService.removeMemoryLike(userSeq, memorySeq);
+
+        if (success == true) {
+            return new BaseResponse("좋아요 삭제 성공");
+        }
+
+        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "좋아요 삭제 실패");
     }
 }

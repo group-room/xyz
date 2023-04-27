@@ -20,4 +20,6 @@ public interface MemoryService {
     Boolean removeMemory(Long userSeq, Long memorySeq);
 
     Boolean addMemoryLike(Long userSeq, Long memorySeq);
+
+    Boolean removeMemoryLike(Long userSeq, Long memorySeq);
 }

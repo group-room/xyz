@@ -119,6 +119,7 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    @Transactional
     public Boolean addMemoryLike(Long userSeq, Long memorySeq) {
         logger.info("addMemoryLike 호출");
 
@@ -142,5 +143,20 @@ public class MemoryServiceImpl implements MemoryService {
                 .build());
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean removeMemoryLike(Long userSeq, Long memorySeq) {
+        logger.info("removeMemorylike 호출");
+
+        Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
+
+        if (memoryLike.isPresent() & memoryLike.get().getIsSelected()) {
+            memoryLike.get().updateIsSelected(false);
+            return true;
+        }
+
+        return false;
     }
 }
