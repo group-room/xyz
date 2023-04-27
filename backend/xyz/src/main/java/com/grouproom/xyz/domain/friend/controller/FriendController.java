@@ -29,11 +29,11 @@ public class FriendController {
     }
 
     @DeleteMapping("/{userSeq}")
-    public BaseResponse<?> modifyFriendDelete(@PathVariable("userSeq") Long userSeq) {
+    public BaseResponse<?> modifyFriendIsDeleted(@PathVariable("userSeq") Long userSeq) {
         logger.info("modifyFriendDelete 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(friendManageService.modifyFriendIsDelete(loginSeq, userSeq));
+            return new BaseResponse<>(friendManageService.modifyFriendIsDeleted(loginSeq, userSeq));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
@@ -70,28 +70,28 @@ public class FriendController {
         Long loginSeq = 1L;
         try {
             return new BaseResponse<>(friendRegisterService.findUserByIdentify(loginSeq, identify));
-        } catch (RuntimeException re) {
+        } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
 
     @PostMapping()
-    public BaseResponse<?> saveFriendRequest(@RequestBody FriendRequest friendRequest) {
+    public BaseResponse<?> saveFriend(@RequestBody FriendRequest friendRequest) {
         logger.info("saveFriendRequest 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(friendRegisterService.saveFriendRequest(loginSeq, friendRequest.getUserSeq()));
+            return new BaseResponse<>(friendRegisterService.saveFriend(loginSeq, friendRequest.getUserSeq()));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
 
     @PutMapping("/cancel")
-    public BaseResponse<?> cancelFriendRequest(@RequestBody FriendRequest friendRequest) {
+    public BaseResponse<?> modifyFriendToCancel(@RequestBody FriendRequest friendRequest) {
         logger.info("cancelFriendRequest 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(friendRegisterService.cancelFriendRequest(loginSeq, friendRequest.getUserSeq()));
+            return new BaseResponse<>(friendRegisterService.modifyFriendToCancel(loginSeq, friendRequest.getUserSeq()));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
