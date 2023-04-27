@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  spring:
+    container_name: spring
+    build: ./backend/xyz
+    ports:
+      - "8081:8081"
+    volumes:
+      - /spring:/image
+    restart: on-failure
+  react:
+    container_name: nextJS
+    build: ./frontend/xyz
+    ports:
+      - "3000:3000"
+    volumes:
+      - /nextJS:/image
+    restart: on-failure
