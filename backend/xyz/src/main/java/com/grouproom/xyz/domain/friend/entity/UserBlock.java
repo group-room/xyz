@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.friend.entity;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,4 +41,11 @@ public class UserBlock extends BaseTimeEntity {
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
     private Boolean isDeleted;
+
+    @Builder
+    public UserBlock(User fromUser, User toUser, Boolean isDeleted) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.isDeleted = isDeleted;
+    }
 }
