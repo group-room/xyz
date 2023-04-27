@@ -13,9 +13,15 @@ public interface MemoryService {
 
     void saveMemoryFiles(Memory memory, FileType fileType, List<String> filePaths);
 
-    MemoryListResponse findMemory(Long loginUserSeq, MemoryListRequest memoryListRequest);
+    MemoryListResponse findMemory(Long userSeq, MemoryListRequest memoryListRequest);
 
     AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest);
 
-    Boolean removeMemory(Long loginSeq, Long memorySeq);
+    Boolean removeMemory(Long userSeq, Long memorySeq);
+
+    MemoryListResponse findLikedMemory(Long userSeq);
+
+    Boolean addMemoryLike(Long userSeq, Long memorySeq);
+
+    Boolean removeMemoryLike(Long userSeq, Long memorySeq);
 }
