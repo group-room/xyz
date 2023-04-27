@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Getter
 @Entity
-@IdClass(UserAztId.class)
+@IdClass(AztMemberId.class)
 @Table(name = "azt_memeber")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AztMember extends BaseTimeEntity {
