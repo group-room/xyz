@@ -32,11 +32,8 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
         logger.info("findUserByNickname 호출");
 
-        User loginUser = userRepository.findBySequence(loginSeq);
         List<UserResponse> userResponseList = new ArrayList<>();
-
         List<User> users = userRepository.findByNickname(nickname);
-
         for (User user: users) {
             UserResponse userResponse = new UserResponse();
             userResponse.setUserSeq(user.getSequence());
@@ -44,46 +41,36 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             userResponse.setProfileImage(user.getProfileImage());
             userResponse.setIdentify(user.getIdentify());
 
-            UserBlock block1 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(user, loginUser, false);
-            if(null != block1) {
-                logger.info(user.getSequence() + "로부터 차단된 상태");
+            List<UserBlock> blocks = userBlockRepository.findNicknameByFromUserOrToUser(loginSeq, user.getSequence(), false);
+            if(blocks.size() != 0) {
+                for (UserBlock block: blocks) {
+                    if(block.getFromUser().equals(user)) {
+                        logger.info(user.getSequence() + "로부터 차단된 상태");
+                    } else {
+                        logger.info(user.getSequence() + "를 차단한 상태");
+                        userResponse.setRelation("차단함");
+                    }
+                }
+                userResponseList.add(userResponse);
                 continue;
             }
-            UserBlock block2 = userBlockRepository.findByFromUserAndToUserAndIsDeleted(loginUser, user, false);
-            if (null != block2) {
-                logger.info(user.getSequence() + "를 차단한 상태");
-                userResponse.setRelation("차단함");
-                userResponseList.add(userResponse);
+            Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, user.getSequence());
+            if(null == friend || friend.getIsDeleted() || friend.getIsCanceled()) {
+                logger.info("관계 없음");
+                userResponse.setRelation("관계 없음");
+            } else if(friend.getIsAccepted()) {
+                logger.info(user.getSequence() + "와 친구");
+                userResponse.setRelation("친구");
+            } else if(friend.getFromUser().equals(user)) {
+                logger.info(user.getSequence() + "에게 요청 받음");
+                userResponse.setRelation("요청 받음");
             } else {
-                Friend friend1 = friendRepository.findByFromUserAndToUser(user, loginUser);
-                Friend friend2 = friendRepository.findByFromUserAndToUser(loginUser, user);
-                if (null != friend1 && !friend1.getIsDeleted() && !friend1.getIsCanceled()) {
-                    if(!friend1.getIsAccepted()) {
-                        logger.info(user.getSequence() + "에게 요청 받음");
-                        userResponse.setRelation("요청 받음");
-                        userResponseList.add(userResponse);
-                    } else {
-                        logger.info(user.getSequence() + "와 친구");
-                        userResponse.setRelation("친구");
-                        userResponseList.add(userResponse);
-                    }
-                } else if (null != friend2 && !friend2.getIsDeleted() && !friend2.getIsCanceled()) {
-                    if (!friend2.getIsAccepted()) {
-                        logger.info(user.getSequence() + "의 수락 대기 중");
-                        userResponse.setRelation("요청 함");
-                        userResponseList.add(userResponse);
-                    } else {
-                        logger.info(user.getSequence() + "와 친구");
-                        userResponse.setRelation("친구");
-                        userResponseList.add(userResponse);
-                    }
-                } else {
-                    logger.info("관계 없음");
-                    userResponse.setRelation("관계 없음");
-                    userResponseList.add(userResponse);
-                }
+                logger.info(user.getSequence() + "의 수락 대기 중");
+                userResponse.setRelation("요청 함");
             }
+            userResponseList.add(userResponse);
         }
+
         return UserListResponse.builder()
                 .users(userResponseList)
                 .build();
