@@ -1,7 +1,7 @@
 /*eslint quote-props: ["error", "consistent"]*/
 
 type BgColorType = {
-  blue: string;
+  [blue: string]: string;
   pink: string;
   yellow: string; 
 }
