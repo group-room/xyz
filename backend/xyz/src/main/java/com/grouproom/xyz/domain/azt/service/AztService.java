@@ -6,4 +6,5 @@ public interface AztService {
 
     String addAzt(Long loginSeq, AztRequest aztRequest);
     String modifyAzt(Long loginSeq, AztRequest aztRequest);
+    String addAztMember(Long loginSeq, AztRequest aztRequest);
 }

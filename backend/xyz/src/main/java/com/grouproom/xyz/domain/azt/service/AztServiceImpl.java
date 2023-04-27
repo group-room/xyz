@@ -51,7 +51,7 @@ public class AztServiceImpl implements AztService {
                             .user(user)
                             .isDeleated(false)
                     .build());
-            logger.info("멤버 가입");
+            logger.info(user.getSequence() + " 멤버 가입");
         }
         return "";
     }
@@ -76,5 +76,31 @@ public class AztServiceImpl implements AztService {
         // 추후 상세 조회 호출
 
         return null;
+    }
+
+    @Override
+    public String addAztMember(Long loginSeq, AztRequest aztRequest) {
+
+        logger.info("addAztMember 호출");
+
+        AztMember aztMember = aztMemberRepository.findByAzt_SequenceAndUser_Sequence(aztRequest.getAztSeq(), loginSeq);
+        if(null != aztMember) {
+            logger.info("요청한 유저가 해당 아지트에 소속됨");
+            Azt azt = aztRepository.findBySequence(aztRequest.getAztSeq());
+            for (MemberRequest member : aztRequest.getMembers()) {
+                User user = userRepository.findBySequence(member.getUserSeq());
+                aztMemberRepository.save(AztMember.builder()
+                        .azt(azt)
+                        .user(user)
+                        .isDeleated(false)
+                        .build());
+                logger.info(user.getSequence() + " 멤버 가입");
+            }
+        } else {
+            logger.severe("소속된 아지트가 아님");
+            throw new RuntimeException();
+        }
+
+        return "";
     }
 }

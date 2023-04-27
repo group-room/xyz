@@ -38,4 +38,15 @@ public class AztController {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
+
+    @PostMapping("/member")
+    public BaseResponse<?> addAztMember(@RequestBody AztRequest aztRequest) {
+        logger.info("addAztMember 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(aztService.addAztMember(loginSeq, aztRequest));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
 }
