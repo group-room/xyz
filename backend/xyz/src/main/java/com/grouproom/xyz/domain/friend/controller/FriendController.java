@@ -107,4 +107,15 @@ public class FriendController {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
+
+    @PostMapping("/block")
+    public BaseResponse<?> saveUserBlock(@RequestBody FriendRequest friendRequest) {
+        logger.info("saveUserBlock 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(userBlockService.saveUserBlock(loginSeq, friendRequest.getUserSeq()));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
 }
