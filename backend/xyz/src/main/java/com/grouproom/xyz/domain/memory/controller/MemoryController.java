@@ -28,6 +28,7 @@ public class MemoryController {
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         MemoryListResponse memoryListResponse = memoryService.findMemory(userSeq, memoryListRequest);
+
         return new BaseResponse(memoryListResponse);
     }
 
@@ -37,6 +38,7 @@ public class MemoryController {
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         AddMemoryResponse addMemoryResponse = memoryService.addMemory(userSeq, addMemoryRequest);
+
         return new BaseResponse(addMemoryResponse);
     }
 
@@ -54,12 +56,23 @@ public class MemoryController {
         throw new ErrorResponse(HttpStatus.BAD_REQUEST, "추억앨범 삭제 실패");
     }
 
+    @GetMapping("/mymemories")
+    public BaseResponse<?> myMemoryList(@RequestParam(name = "memorySeq", required = false) Long memorySeq) {
+        logger.info("myMemoryList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        MemoryListResponse memoryListResponse = memoryService.findMyMemory(userSeq);
+
+        return new BaseResponse(memoryListResponse);
+    }
+
     @GetMapping("/like")
     public BaseResponse<?> likedMemoryList(@RequestParam(name = "memorySeq", required = false) Long memorySeq) {
         logger.info("likedMemoryList 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         MemoryListResponse memoryListResponse = memoryService.findLikedMemory(userSeq);
+
         return new BaseResponse(memoryListResponse);
     }
 

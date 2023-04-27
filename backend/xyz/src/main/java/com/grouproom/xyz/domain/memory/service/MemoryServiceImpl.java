@@ -122,12 +122,38 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    public MemoryListResponse findMyMemory(Long userSeq) {
+        logger.info("findMyMemory 호출");
+
+        List<Memory> memories = memoryRepository.findByUser_Sequence(userSeq);
+        List<MemoryResponse> memoryResponses = new ArrayList<>();
+
+        for (Memory memory : memories) {
+            MemoryResponse memoryResponse = new MemoryResponse(
+                    memory.getSequence(),
+                    memory.getAzt().getSequence(),
+                    memory.getAzt().getAztName(),
+                    memory.getDate(),
+                    memory.getLatitude(),
+                    memory.getLongitude(),
+                    memory.getLocation()
+            );
+            memoryResponses.add(memoryResponse);
+        }
+
+        return MemoryListResponse.builder()
+                .memories(memoryResponses)
+                .build();
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public MemoryListResponse findLikedMemory(Long userSeq) {
         logger.info("findLikedMemory 호출");
 
         List<MemoryLike> memoryLikes = memoryLikeRepository.findLikedMemoriesByUserSeq(userSeq);
         List<MemoryResponse> memoryResponses = new ArrayList<>();
+
         for (MemoryLike memoryLike : memoryLikes) {
             Memory memory = memoryLike.getMemory();
             MemoryResponse memoryResponse = new MemoryResponse(
@@ -141,8 +167,6 @@ public class MemoryServiceImpl implements MemoryService {
             );
             memoryResponses.add(memoryResponse);
         }
-
-        logger.info(memoryResponses.toString());
 
         return MemoryListResponse.builder()
                 .memories(memoryResponses)
