@@ -23,7 +23,7 @@ function PhotoUpload({
     setPosition({ lat: 0, lng: 0 });
     setMetadata(null);
 
-    const fileList = event.target.files;
+    const fileList:any = event.target.files;
     if (fileList) {
       if (fileList.length > 10) {
         alert("사진은 최대 10장까지 업로드 가능합니다.");
@@ -33,7 +33,7 @@ function PhotoUpload({
       // 사진 10장까지만 저장하기
       const selectedPhotos: Photo[] = [];
       for (let i = 0; i < Math.min(fileList.length, 10); i++) {
-        const photo = fileList[i];
+        const photo:File = fileList[i];
         selectedPhotos.push({
           file: photo,
           preview: URL.createObjectURL(photo),

@@ -26,7 +26,8 @@ function Container({
     <div className="border rounded border-black">
       {title && (
         <div
-          className={`${BgColors[titleBgColor]} px-2 py-1 rounded-t border-black border-b`}
+        // 💛 Build 시, TypeError 발생해서 default에 임의로 "yello" 넣음
+          className={`${titleBgColor === undefined ? BgColors["yello"] : BgColors[titleBgColor]} px-2 py-1 rounded-t border-black border-b`}
         >
           {titleText}
         </div>
