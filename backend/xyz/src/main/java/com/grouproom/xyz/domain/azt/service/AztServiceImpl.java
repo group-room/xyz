@@ -40,7 +40,7 @@ public class AztServiceImpl implements AztService {
         aztMemberRepository.save(AztMember.builder()
                 .azt(azt)
                 .user(loginUser)
-                .isDeleated(false)
+                .isDeleted(false)
                 .build());
         logger.info("본인 가입");
 
@@ -49,7 +49,7 @@ public class AztServiceImpl implements AztService {
             aztMemberRepository.save(AztMember.builder()
                             .azt(azt)
                             .user(user)
-                            .isDeleated(false)
+                            .isDeleted(false)
                     .build());
             logger.info(user.getSequence() + " 멤버 가입");
         }
@@ -92,7 +92,7 @@ public class AztServiceImpl implements AztService {
                 aztMemberRepository.save(AztMember.builder()
                         .azt(azt)
                         .user(user)
-                        .isDeleated(false)
+                        .isDeleted(false)
                         .build());
                 logger.info(user.getSequence() + " 멤버 가입");
             }

@@ -26,5 +26,5 @@ public class AztMember extends BaseTimeEntity {
     private Azt azt;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private Boolean isDeleated;
+    private Boolean isDeleted;
 }
