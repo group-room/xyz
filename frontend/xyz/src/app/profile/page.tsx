@@ -2,17 +2,22 @@
 import Modal from "@/components/Modal";
 import Tab from "@/components/Tab";
 import Textbox from "@/components/Textbox";
+import Btn from "@/components/common/Btn";
 import React from "react";
 import { useState } from "react";
+import ProfileMain from "./ProfileMain";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
+  const buttonClick = () => {};
 
   const handleClick = () => {
     setIsModal(true);
   };
   return (
-    <div>
+    <div className="overflow-x-auto scrollbar-hide">
+      <ProfileMain />
+
       <div onClick={handleClick}> ProfilePage</div>
       {isModal && (
         <Modal closeModal={() => setIsModal(false)}>
@@ -20,6 +25,14 @@ function ProfilePage() {
         </Modal>
       )}
       <Textbox text="하이하이하이하이 이게너무궁금해" />
+      <div className="flex">
+        <div className="ml-5 mr-10">
+          <Btn width="full" bgColor="blue" text="친구" btnFunc={buttonClick} />
+        </div>
+        <div>
+          <Btn width="full" bgColor="blue" text="친구" btnFunc={buttonClick} />
+        </div>
+      </div>
       <div className=" overscroll-y-auto">
         MyroomPage Lorem ipsum dolor sit amet consectetur, adipisicing elit.
         Cumque praesentium placeat, sed voluptatem excepturi accusantium
