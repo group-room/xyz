@@ -118,24 +118,28 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public String modifyAzt(Long loginSeq, AztRequest aztRequest) {
+    public AztResponse modifyAzt(Long loginSeq, AztRequest aztRequest) {
 
         logger.info("modifyAzt 호출");
 
         AztMember aztMember = aztMemberRepository.findByAzt_SequenceAndUser_Sequence(aztRequest.getAztSeq(), loginSeq);
         if(null != aztMember) {
             logger.info("요청한 유저가 해당 아지트에 소속됨");
-            Azt azt = aztRepository.findBySequence(aztRequest.getAztSeq());
-            azt.setAztName(aztRequest.getName());
-            azt.setAztImage(aztRequest.getImage());
+            Azt azt = aztMember.getAzt();
+            if(azt.getIsDeleted()) {
+                logger.severe("삭제된 아지트");
+                throw new RuntimeException();
+            } else {
+                azt.setAztName(aztRequest.getName());
+                azt.setAztImage(aztRequest.getImage());
+            }
         } else {
             logger.severe("소속된 아지트가 아님");
             throw new RuntimeException();
         }
 
-        // 추후 상세 조회 호출
-
-        return null;
+        logger.info("아지트 상세 조회 호출");
+        return findAzt(loginSeq, aztRequest.getAztSeq());
     }
 
     @Override
