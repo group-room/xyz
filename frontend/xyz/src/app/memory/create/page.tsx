@@ -13,7 +13,7 @@ function MemoryCreatePage() {
   const [currAzt, setCurrAzt] = useState<AztTypes[]>([]);
   const [aztList, setAztList] = useState<AztTypes[]>([]);
   const [rangeOption, setRangeOption] = useState<string>("전체 공개");
-
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [currLocation, setCurrLocation] = useState<PositionTypes>({
     lat: 0,
     lng: 0,
@@ -66,6 +66,8 @@ function MemoryCreatePage() {
     // }).catch(err => console.log(err));
   };
 
+  const handleDateChange = (date: Date) => setSelectedDate(date);
+
   return (
     <div>
       <h2 className="text-xl">추억 만들기</h2>
@@ -82,16 +84,18 @@ function MemoryCreatePage() {
           setCurrAzt={setCurrAzt}
         />
         <DropDown
-          iconSrc="/icons/lockFill.svg"
+          iconSrc="/icons/lock-fill.svg"
           rangeOption={rangeOption}
           setRangeOption={setRangeOption}
         />
         <PhotoUpload
+          selectedDate={selectedDate}
           photos={photos}
           setPhotos={setPhotos}
           metadata={metadata}
           setMetadata={setMetadata}
           setPosition={setPosition}
+          handleDateChange={handleDateChange}
         />
         <KakaoMap
           currLocation={currLocation}

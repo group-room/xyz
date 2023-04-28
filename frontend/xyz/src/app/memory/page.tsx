@@ -41,7 +41,7 @@ function MemoryPage() {
     }
     handleToggle();
   };
-  const handleMarkerChange = (date: Date) => setSelectedDate(date);
+  const handleDateChange = (date: Date) => setSelectedDate(date);
 
   useEffect(() => {
     // TODO: 그룹 목록 불러오기
@@ -154,7 +154,7 @@ function MemoryPage() {
         <DateFilter
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
-          handleMarkerChange={handleMarkerChange}
+          handleDateChange={handleDateChange}
         />
         <AztFilter
           aztList={aztList}
