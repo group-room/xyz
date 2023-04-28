@@ -17,6 +17,17 @@ public class AztController {
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.azt.controller.AztController");
     private final AztService aztService;
 
+    @GetMapping ("/{aztSeq}")
+    public BaseResponse<?> aztDetails(@PathVariable("aztSeq") Long aztSeq) {
+        logger.info("aztDetails 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(aztService.findAzt(loginSeq, aztSeq));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
     @PostMapping
     public BaseResponse<?> addAzt(@RequestBody AztRequest aztRequest) {
         logger.info("addAzt 호출");

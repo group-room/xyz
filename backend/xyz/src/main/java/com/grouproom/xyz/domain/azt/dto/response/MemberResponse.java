@@ -13,6 +13,6 @@ public class MemberResponse {
 
     private Long userSeq;
     private String nickname;
-    private String profileImage;
     private String identify;
+    private String profileImage;
 }

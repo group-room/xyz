@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.azt.service;
 
 import com.grouproom.xyz.domain.azt.dto.request.AztRequest;
 import com.grouproom.xyz.domain.azt.dto.request.MemberRequest;
+import com.grouproom.xyz.domain.azt.dto.response.AztResponse;
 import com.grouproom.xyz.domain.azt.dto.response.MemberListResponse;
 import com.grouproom.xyz.domain.azt.dto.response.MemberResponse;
 import com.grouproom.xyz.domain.azt.entity.Azt;
@@ -30,6 +31,45 @@ public class AztServiceImpl implements AztService {
     private final AztMemberRepository aztMemberRepository;
     private final UserRepository userRepository;
     private final FriendManageService friendManageService;
+
+    @Override
+    public AztResponse findAzt(Long loginSeq, Long aztSeq) {
+
+        logger.info("findAzt 호출");
+
+        AztMember loginMember = aztMemberRepository.findByAzt_SequenceAndUser_SequenceAndIsDeleted(aztSeq, loginSeq, false);
+        if(null == loginMember) {
+            logger.severe("아지트 멤버가 아님");
+            throw new RuntimeException();
+        }
+        List<MemberResponse> memberResponses = new ArrayList<>();
+        List<AztMember> aztMembers = aztMemberRepository.findByAzt_SequenceAndIsDeleted(aztSeq, false);
+        logger.info("멤버 수 : " + aztMembers.size());
+        for (AztMember aztMember:aztMembers) {
+            User user = aztMember.getUser();
+            memberResponses.add(MemberResponse.builder()
+                            .userSeq(user.getSequence())
+                            .nickname(user.getNickname())
+                            .identify(user.getIdentify())
+                            .profileImage(user.getProfileImage())
+                    .build());
+        }
+        logger.info("아지트 정보");
+        Azt azt = aztRepository.findBySequenceAndIsDeleted(aztSeq, false);
+        if(null == azt) {
+            logger.severe("삭제된 아지트");
+            throw new RuntimeException();
+        }
+        return AztResponse.builder()
+                .aztSeq(azt.getSequence())
+                .image(azt.getAztImage())
+                .name(azt.getAztName())
+                .createdAt(azt.getCreatedAt())
+                .updatedAt(azt.getUpdatedAt())
+                .chatSeq(azt.getChatSequence())
+                .members(memberResponses)
+                .build();
+    }
 
     @Override
     @Transactional
