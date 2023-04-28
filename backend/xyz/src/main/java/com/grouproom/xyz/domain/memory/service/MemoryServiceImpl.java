@@ -64,15 +64,18 @@ public class MemoryServiceImpl implements MemoryService {
         logger.info("findMemory 호출");
 
         // TODO: 무한스크롤 구현 필요
-        if (memoryListRequest.getIsLocationBased() == false) {
-            logger.info("isLocationBased == false");
+        if (memoryListRequest.getLatitude() == null | memoryListRequest.getLongitude() == null) {
+            logger.info("위치 정보 없음");
             List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
+
+            logger.info(memoryResponses.toString());
+
             return MemoryListResponse.builder()
                     .memories(memoryResponses)
                     .build();
         }
 
-        logger.info("isLocationBased == true");
+        logger.info("위치 정보 있음");
         List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeqAndCoordinate(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
         return MemoryListResponse.builder()
                 .memories(memoryResponses)

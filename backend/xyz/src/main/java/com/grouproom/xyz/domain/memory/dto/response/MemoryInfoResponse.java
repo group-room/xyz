@@ -28,7 +28,7 @@ public class MemoryInfoResponse {
         this.aztSeq = memory.getAzt().getSequence();
         this.aztName = memory.getAzt().getAztName();
         this.content = memory.getContent();
-        this.date = memory.getDate().toLocalDate().toString();
+        this.date = memory.getDate().toString();
         this.latitude = memory.getLatitude();
         this.longitude = memory.getLongitude();
         this.location = memory.getLocation();
