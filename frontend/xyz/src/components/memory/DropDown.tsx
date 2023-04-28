@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import arrowDownIcon from "../../../public/icons/arrow-down.svg";
 import { AztTypes } from "@/types/memory";
+import { options } from "@/constants/option";
 
 interface DropDownProps {
   isAzt?: boolean;
@@ -32,11 +33,9 @@ function DropDown({
     (azt) => azt.aztSeq !== currAzt![0].aztSeq
   );
 
-  const optionListForDropDown = [
-    "전체 공개",
-    "아지트 공개",
-    "나만 보기",
-  ].filter((opt) => opt !== rangeOption);
+  const optionListForDropDown = Object.keys(options).filter(
+    (opt) => opt !== rangeOption
+  );
 
   const handleAzitClick = (selected: AztTypes[]) => {
     setCurrAzt!(selected);
@@ -65,7 +64,9 @@ function DropDown({
                 : currAzt![0]?.name}
             </div>
           ) : (
-            <div className="grow">{rangeOption}</div>
+            <div className="grow">
+              {options[rangeOption as keyof typeof options]}
+            </div>
           )}
 
           <div
@@ -97,7 +98,7 @@ function DropDown({
                       onClick={() => handleOptionClick(item)}
                       className="truncate text-center px-2 py-2"
                     >
-                      {item}
+                      {options[item as keyof typeof options]}
                     </div>
                   );
                 })}
