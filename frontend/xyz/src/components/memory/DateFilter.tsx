@@ -10,13 +10,13 @@ import Image from "next/image";
 interface DateFilterProps {
   selectedDate: Date | null;
   setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
-  handleMarkerChange: (date: Date) => void;
+  handleDateChange: (date: Date) => void;
 }
 
 function DateFilter({
   selectedDate,
   setSelectedDate,
-  handleMarkerChange,
+  handleDateChange,
 }: DateFilterProps) {
   // const years = range(1990, getYear(new Date()) + 1, 1);
   // const months = [
@@ -44,7 +44,7 @@ function DateFilter({
         locale={ko}
         dateFormat="yyyy년 MM월 dd일"
         selected={selectedDate}
-        onChange={handleMarkerChange}
+        onChange={handleDateChange}
         popperClassName="z-10" // 지도에 겹쳐지는 것 방지
         // className={styles.datePicker}
         className="flex align-middle border border-black text-center py-1 cursor-pointer w-full"
