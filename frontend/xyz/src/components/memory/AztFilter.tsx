@@ -9,7 +9,7 @@ interface AztFilterProps {
   aztList: AztTypes[];
   currAzt: AztTypes[];
   toggle: boolean;
-  handleTitleClick: () => void;
+  handleToggle: () => void;
   handleItemClick: (currAztSeq: number | null) => void;
   seeAllOption: AztTypes[];
 }
@@ -18,7 +18,7 @@ function AztFilter({
   aztList,
   currAzt,
   toggle,
-  handleTitleClick,
+  handleToggle,
   handleItemClick,
   seeAllOption,
 }: AztFilterProps) {
@@ -33,7 +33,7 @@ function AztFilter({
     <div className="relative basis-8/12 border border-black shadow-md">
       <div
         className="flex w-full h-full truncate leading-8 text-center"
-        onClick={handleTitleClick}
+        onClick={handleToggle}
       >
         <div className="grow">
           {currAzt.length === 1
