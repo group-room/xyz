@@ -67,20 +67,25 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         //허용할 URL
-        configuration.addAllowedOrigin("*");
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedOriginPattern("*");
-        //허용할 METHOD (post,get,delete,put...등등 다 허용)
-        configuration.addAllowedMethod("*");
-        // 자격증명과 함께 요청 여부 ( 내 서버가 응답할 때 json을 JS에서 처리할 수 있게 설정)
+//        configuration.addAllowedOrigin("*");
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedOriginPattern("*");
+//        //허용할 METHOD (post,get,delete,put...등등 다 허용)
+//        configuration.addAllowedMethod("*");
+//        // 자격증명과 함께 요청 여부 ( 내 서버가 응답할 때 json을 JS에서 처리할 수 있게 설정)
+//        configuration.setAllowCredentials(true);
+
         configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
 
         //custom header 설정
-        for (String key : Constants.CORS_HEADER_URIS) {
-            configuration.addAllowedHeader(key);
-            configuration.addExposedHeader(key);
-        }
+//        for (String key : Constants.CORS_HEADER_URIS) {
+//            configuration.addAllowedHeader(key);
+//            configuration.addExposedHeader(key);
+//        }
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
