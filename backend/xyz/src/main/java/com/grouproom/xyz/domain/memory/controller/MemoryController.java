@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -43,11 +45,11 @@ public class MemoryController {
     }
 
     @PostMapping()
-    public BaseResponse<?> addMemory(@ModelAttribute AddMemoryRequest addMemoryRequest) {
+    public BaseResponse<?> addMemory(@RequestPart AddMemoryRequest addMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) {
         logger.info("addMemory 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        AddMemoryResponse addMemoryResponse = memoryService.addMemory(userSeq, addMemoryRequest);
+        AddMemoryResponse addMemoryResponse = memoryService.addMemory(userSeq, addMemoryRequest, images, audios);
 
         return new BaseResponse(addMemoryResponse);
     }
@@ -104,5 +106,15 @@ public class MemoryController {
         memoryService.removeMemoryLike(userSeq, memorySeq);
 
         return new BaseResponse("좋아요 삭제 성공");
+    }
+
+    @PostMapping("/comment/{memorySeq}")
+    public BaseResponse<?> addMemoryComment(@PathVariable("memorySeq") Long memorySeq, @RequestBody String content) {
+        logger.info("addMemoryComment 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        memoryService.addMemoryComment(userSeq, memorySeq, content);
+
+        return new BaseResponse("댓글 작성 성공");
     }
 }
