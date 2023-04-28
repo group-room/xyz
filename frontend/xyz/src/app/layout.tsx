@@ -1,9 +1,10 @@
+"use client";
+
 import "./globals.css";
 import localFont from "next/font/local";
 import Header from "@/components/Header";
 import TabBar from "@/components/TabBar";
 import Script from "next/script";
-import AuthContext from "@/context/AuthContext";
 
 export const metadata = {
   title: "XYZ",
@@ -25,12 +26,10 @@ export default function RootLayout({
   return (
     <html lang="ko" className={pixelFont.className}>
       <body>
-        <AuthContext>
-          <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
-          <Header />
-          <main className="px-5 my-16">{children}</main>
-          <TabBar />
-        </AuthContext>
+        <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
+        <Header />
+        <main className="px-5 my-16">{children}</main>
+        <TabBar />
       </body>
     </html>
   );
