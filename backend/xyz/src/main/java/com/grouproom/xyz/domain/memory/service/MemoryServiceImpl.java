@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.memory.service;
 
+import com.grouproom.xyz.domain.azt.entity.Azt;
+import com.grouproom.xyz.domain.azt.repository.AztRepository;
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.response.*;
@@ -33,7 +35,7 @@ public class MemoryServiceImpl implements MemoryService {
 
     private final UserRepository userRepository;
     private final S3UploadService s3UploadService;
-    //    private final AztRepository aztRepository;
+    private final AztRepository aztRepository;
     private final MemoryRepository memoryRepository;
     private final MemoryFileRepository memoryFileRepository;
     private final MemoryLikeRepository memoryLikeRepository;
@@ -82,11 +84,11 @@ public class MemoryServiceImpl implements MemoryService {
     public AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest) {
         logger.info("addMemory 호출");
 
-        // TODO: Azt repository 생기면 수정
         User user = userRepository.findBySequence(userSeq);
-//        Azt azt = aztRepository.findBySequence(addMemoryRequest.getAztSeq());
+        Azt azt = aztRepository.findBySequence(addMemoryRequest.getAztSeq());
         Memory memory = Memory.builder()
                 .user(user)
+                .azt(azt)
                 .addMemoryRequest(addMemoryRequest)
                 .build();
         memoryRepository.save(memory);
