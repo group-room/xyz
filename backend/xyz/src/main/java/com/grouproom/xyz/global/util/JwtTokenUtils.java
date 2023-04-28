@@ -2,13 +2,12 @@ package com.grouproom.xyz.global.util;
 
 import com.grouproom.xyz.global.auth.jwt.JsonWebToken;
 import com.grouproom.xyz.global.exception.ErrorResponse;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.http.HttpStatus;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 
@@ -30,13 +29,14 @@ public class JwtTokenUtils {
     //우리 프로젝트 만의 시크릿 키
     private static final String SECRET_KEY = Base64.getEncoder().encodeToString("xyz-jwt-secret-key".getBytes());
 
-    //배포용 access 토큰 30분
-    //public static final long ACCESS_PERIOD = 1000L * 60L * 30L;
-    //개발용 access 토큰 30일
-    public static final long ACCESS_PERIOD = 1000L * 60L * 60L * 24L * 30L;
+//    // access 토큰 1시간 실제
+//    public static final long ACCESS_PERIOD = 1000L * 60L * 60L * 1L;
 
-    // refresh 토큰 하루 (보통 2주)
-    public static final long REFRESH_PERIOD = 1000L * 60L * 60L * 24L;
+    // access 토큰 5일 개발용
+    public static final long ACCESS_PERIOD = 1000L * 60L * 60L * 24L * 5L;
+
+    // refresh 토큰 보통 2주
+    public static final long REFRESH_PERIOD = 1000L * 60L * 60L * 24L * 2L;
 
     //userSequence & role 토큰 발급
     public static JsonWebToken allocateToken(Long userSequence, String role) throws RuntimeException {
@@ -64,6 +64,25 @@ public class JwtTokenUtils {
         }
     }
 
+    public static String changeAccessToken(Long userSequence, String role) throws RuntimeException {
+        try {
+            JwtBuilder jwtBuilder = Jwts.builder()
+                    .setHeaderParam("alg", "HS256")
+                    .setHeaderParam("typ", "JWT");
+
+            jwtBuilder.claim("sequence", userSequence);                                    //JWT의 body
+            jwtBuilder.claim("role", role);                                          //JWT의 body
+
+            Date now = new Date();
+            return jwtBuilder.setIssuedAt(now)
+                    .setExpiration(new Date(now.getTime() + ACCESS_PERIOD))
+                    .signWith(SignatureAlgorithm.HS256, SECRET_KEY)                //암호화. JWT에는 권한까지 되어있기 때문에 중요.
+                    .compact();
+        } catch (Exception e) {
+            throw new ErrorResponse(HttpStatus.FORBIDDEN, "잘못된 토큰입니다.");
+        }
+    }
+
     public static Claims getClaims(String token) throws RuntimeException {
         try {
             return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
@@ -77,19 +96,44 @@ public class JwtTokenUtils {
     }
 
     //토큰 유효 시간 검사
-    public static boolean isValidToken(String token) {
-        return getClaims(token)
-                .getExpiration()
-                .after(new Date());
+    public static boolean isValidToken(String token) {//throws RuntimeException
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            if (Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration().before(new Date())) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (ExpiredJwtException e) {
+            return false;
+        } catch (Exception e) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "잘못된 토큰입니다.");
+        }
     }
 
     public static String resolveAccessToken(HttpServletRequest req) throws RuntimeException {
+
         String accessToken = req.getHeader("Authorization");
-        if (accessToken == null) {
-            throw new ErrorResponse(HttpStatus.FORBIDDEN, "토큰이 담겨있지 않습니다.");
-        }
+        if (accessToken == null) throw new ErrorResponse(HttpStatus.FORBIDDEN, "로그인 되어 있지 않습니다.");
+
         return accessToken;
 
+//        Cookie[] cookies = req.getCookies();
+//        Cookie accessToken = Arrays.stream(cookies)
+//                .filter(c -> c.getName().equals("access"))
+//                .findAny()
+//                .orElseThrow( () -> new ErrorResponse(HttpStatus.FORBIDDEN, "로그인 되어 있지 않습니다."));
+//
+//        return accessToken.getValue();
     }
 
+    public static String resolveRefreshToken(HttpServletRequest req) throws RuntimeException {
+        Cookie[] cookies = req.getCookies();
+        Cookie accessToken = Arrays.stream(cookies)
+                .filter(c -> c.getName().equals("Refresh"))
+                .findAny()
+                .orElse(new Cookie("void", null));
+
+        return accessToken.getValue();
+    }
 }

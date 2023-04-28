@@ -3,7 +3,6 @@ package com.grouproom.xyz.global.config;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.auth.Constants;
 import com.grouproom.xyz.global.auth.jwt.JsonWebTokenCheckFilter;
-import com.grouproom.xyz.global.auth.jwt.JsonWebTokenProvider;
 import com.grouproom.xyz.global.auth.oauth.CustomOAuth2Provider;
 import com.grouproom.xyz.global.auth.preferences.*;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -21,14 +23,9 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +130,7 @@ public class SecurityConfig {
     //JWT에 시퀀스, role넣기. 그리고 SECURITY_AFTER_LOGIN로 설정된 URL로 이동
     @Bean
     public CustomOAuth2UserSuccessHandler customOAuth2UserSuccessHandler() {
-        return new CustomOAuth2UserSuccessHandler();
+        return new CustomOAuth2UserSuccessHandler(userRepository);
     }
 
     //(2-5) OAuth2 설정[실패시]  -- 해당 class는 만든 것

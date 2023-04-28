@@ -23,4 +23,6 @@ public interface UserRepositoryCustom {
 
     Optional<String> selectNicknameByRandom();
 
+    Optional<String> selectTokenByUserSeq(Long userSeq);
+
 }

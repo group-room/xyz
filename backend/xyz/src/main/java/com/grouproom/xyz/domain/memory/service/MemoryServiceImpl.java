@@ -84,11 +84,16 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional
-    public AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest) {
+    public AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest, List<MultipartFile> images, List<MultipartFile> audios) {
         logger.info("addMemory 호출");
 
         User user = userRepository.findBySequence(userSeq);
         Azt azt = aztRepository.findBySequence(addMemoryRequest.getAztSeq());
+
+        if (azt == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 azt입니다.");
+        }
+
         Memory memory = Memory.builder()
                 .user(user)
                 .azt(azt)
@@ -96,13 +101,11 @@ public class MemoryServiceImpl implements MemoryService {
                 .build();
         memoryRepository.save(memory);
 
-        List<MultipartFile> images = addMemoryRequest.getImages();
         if (images != null) {
             List<String> imagePaths = s3UploadService.upload(images, "memory");
             saveMemoryFiles(memory, FileType.IMAGE, imagePaths);
         }
 
-        List<MultipartFile> audios = addMemoryRequest.getAudios();
         if (audios != null) {
             List<String> audioPaths = s3UploadService.upload(audios, "memory");
             saveMemoryFiles(memory, FileType.AUDIO, audioPaths);
@@ -263,5 +266,29 @@ public class MemoryServiceImpl implements MemoryService {
                 .comments(commentResponses)
                 .memory(memoryInfoResponse)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void addMemoryComment(Long userSeq, Long memorySeq, String content) {
+        logger.info("addMemoryComment 호출");
+
+        User user = userRepository.findBySequence(userSeq);
+        Memory memory = memoryRepository.findBySequence(memorySeq);
+
+        if (memory.getIsDeleted()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
+        }
+
+        MemoryComment memoryComment = MemoryComment
+                .builder()
+                .user(user)
+                .memory(memory)
+                .content(content)
+                .build();
+
+        memoryCommentRepository.save(memoryComment);
+
+        return;
     }
 }
