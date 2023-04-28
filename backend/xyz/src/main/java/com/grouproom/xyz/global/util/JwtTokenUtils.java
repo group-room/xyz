@@ -129,6 +129,7 @@ public class JwtTokenUtils {
 
     public static String resolveRefreshToken(HttpServletRequest req) throws RuntimeException {
         Cookie[] cookies = req.getCookies();
+        if(null == cookies) return null;
         Cookie accessToken = Arrays.stream(cookies)
                 .filter(c -> c.getName().equals("Refresh"))
                 .findAny()
