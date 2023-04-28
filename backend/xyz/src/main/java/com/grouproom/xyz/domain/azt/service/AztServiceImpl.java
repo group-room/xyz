@@ -40,7 +40,7 @@ public class AztServiceImpl implements AztService {
         Azt azt = aztRepository.save(Azt.builder()
                         .aztName(aztRequest.getName())
                         .aztImage(aztRequest.getImage())
-                        .isDeleated(false)
+                        .isDeleted(false)
                 .build());
         logger.info("아지트 생성");
 
