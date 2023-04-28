@@ -129,4 +129,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         );
     }
 
+    @Override
+    public Optional<String> selectTokenByUserSeq(Long userSeq) {
+        return Optional.ofNullable(
+                jpaQueryFactory
+                        .select(user.token)
+                        .from(user)
+                        .where(user.sequence.eq(userSeq))
+                        .fetchFirst()
+        );
+    }
+
 }
