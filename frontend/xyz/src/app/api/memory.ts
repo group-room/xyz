@@ -3,15 +3,15 @@ import { axiosInstance } from "./instance";
 const MEMORY = "/memory";
 
 export const getMemories = async (
-  date: Date | null,
-  groupSeq?: number,
+  date: string,
+  aztSeq?: number,
   latitude?: number,
   longitude?: number
 ) => {
   const res = await axiosInstance.get(MEMORY, {
     params: {
       date,
-      groupSeq,
+      aztSeq,
       latitude,
       longitude,
     },
