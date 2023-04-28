@@ -96,4 +96,8 @@ public class User extends BaseTimeEntity {
         if (backgroundImage != null) this.backgroundImage = backgroundImage;
         if (introduce != null) this.introduce = introduce;
     }
+
+    public void changeToken(String token){
+        this.token = token;
+    }
 }
