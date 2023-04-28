@@ -9,4 +9,5 @@ public interface AztService {
     String modifyAzt(Long loginSeq, AztRequest aztRequest);
     String addAztMember(Long loginSeq, AztRequest aztRequest);
     MemberListResponse findFriendForMembers(Long loginSeq, Long aztSeq);
+    String modifyAztMemberToDelete(Long loginSeq, Long aztSeq);
 }

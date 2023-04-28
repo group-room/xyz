@@ -139,4 +139,34 @@ public class AztServiceImpl implements AztService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public String modifyAztMemberToDelete(Long loginSeq, Long aztSeq) {
+
+        logger.info("modifyAztMemberToDelete 호출");
+
+        boolean withdraw = false;
+        List<AztMember> aztMembers = aztMemberRepository.findByAzt_SequenceAndIsDeleted(aztSeq, false);
+        for (AztMember aztMember: aztMembers) {
+            if(aztMember.getUser().getSequence().equals(loginSeq)){
+                aztMember.setIsDeleted(true);
+                withdraw = true;
+                logger.info("탈퇴 성공");
+                break;
+            }
+        }
+
+        if(withdraw) {
+            if(aztMembers.size() == 1) {
+                aztMembers.get(0).getAzt().setIsDeleted(true);
+                logger.info("그룹 삭제");
+            }
+        } else {
+            logger.severe("해당 아지트에 소속되지 않음");
+            throw new RuntimeException();
+        }
+
+        return "";
+    }
+
 }
