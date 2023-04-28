@@ -32,13 +32,17 @@ public class MemoryFile extends BaseTimeEntity {
     private String filePath;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleated;
+    private Boolean isDeleted;
 
     @Builder
     public MemoryFile(Memory memory, FileType fileType, String filePath) {
         this.memory = memory;
         this.fileType = fileType;
         this.filePath = filePath;
-        this.isDeleated = false;
+        this.isDeleted = false;
+    }
+
+    public void updateIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

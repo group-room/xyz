@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.memory.controller;
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
+import com.grouproom.xyz.domain.memory.dto.response.MemoryDetailResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
 import com.grouproom.xyz.global.exception.ErrorResponse;
@@ -28,7 +29,17 @@ public class MemoryController {
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         MemoryListResponse memoryListResponse = memoryService.findMemory(userSeq, memoryListRequest);
+
         return new BaseResponse(memoryListResponse);
+    }
+
+    @GetMapping("/{memorySeq}")
+    public BaseResponse<?> memoryDetail(@PathVariable("memorySeq") Long memorySeq) {
+        logger.info("memoryDetail 호출");
+
+        MemoryDetailResponse memoryDetail = memoryService.findMemoryDetail(memorySeq);
+
+        return new BaseResponse(memoryDetail);
     }
 
     @PostMapping()
@@ -37,6 +48,7 @@ public class MemoryController {
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         AddMemoryResponse addMemoryResponse = memoryService.addMemory(userSeq, addMemoryRequest);
+
         return new BaseResponse(addMemoryResponse);
     }
 
@@ -54,12 +66,23 @@ public class MemoryController {
         throw new ErrorResponse(HttpStatus.BAD_REQUEST, "추억앨범 삭제 실패");
     }
 
+    @GetMapping("/mymemories")
+    public BaseResponse<?> myMemoryList(@RequestParam(name = "memorySeq", required = false) Long memorySeq) {
+        logger.info("myMemoryList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        MemoryListResponse memoryListResponse = memoryService.findMyMemory(userSeq);
+
+        return new BaseResponse(memoryListResponse);
+    }
+
     @GetMapping("/like")
     public BaseResponse<?> likedMemoryList(@RequestParam(name = "memorySeq", required = false) Long memorySeq) {
         logger.info("likedMemoryList 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         MemoryListResponse memoryListResponse = memoryService.findLikedMemory(userSeq);
+
         return new BaseResponse(memoryListResponse);
     }
 
@@ -68,13 +91,9 @@ public class MemoryController {
         logger.info("addMemoryLike 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Boolean success = memoryService.addMemoryLike(userSeq, memorySeq);
+        memoryService.addMemoryLike(userSeq, memorySeq);
 
-        if (success == true) {
-            return new BaseResponse("좋아요 등록 성공");
-        }
-
-        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "좋아요 등록 실패");
+        return new BaseResponse("좋아요 등록 성공");
     }
 
     @DeleteMapping("/like/{memorySeq}")
@@ -82,12 +101,8 @@ public class MemoryController {
         logger.info("removeMemoryLike 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Boolean success = memoryService.removeMemoryLike(userSeq, memorySeq);
+        memoryService.removeMemoryLike(userSeq, memorySeq);
 
-        if (success == true) {
-            return new BaseResponse("좋아요 삭제 성공");
-        }
-
-        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "좋아요 삭제 실패");
+        return new BaseResponse("좋아요 삭제 성공");
     }
 }
