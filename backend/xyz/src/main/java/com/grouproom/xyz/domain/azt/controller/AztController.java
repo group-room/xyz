@@ -17,6 +17,13 @@ public class AztController {
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.azt.controller.AztController");
     private final AztService aztService;
 
+    @GetMapping ("/all")
+    public BaseResponse<?> aztList() {
+        logger.info("aztList 호출");
+        Long loginSeq = 1L;
+        return new BaseResponse<>(aztService.findAztList(loginSeq));
+    }
+
     @GetMapping ("/{aztSeq}")
     public BaseResponse<?> aztDetails(@PathVariable("aztSeq") Long aztSeq) {
         logger.info("aztDetails 호출");

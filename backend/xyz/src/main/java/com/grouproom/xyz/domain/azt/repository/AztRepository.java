@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AztRepository extends JpaRepository<Azt, Long> {
+public interface AztRepository extends JpaRepository<Azt, Long>, AztRepositoryCustom {
     Azt findBySequence(Long aztSeq);
     Azt findBySequenceAndIsDeleted(Long aztSeq, Boolean isDeleted);
 }

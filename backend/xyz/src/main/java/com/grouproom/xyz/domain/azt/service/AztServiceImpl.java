@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.azt.service;
 
 import com.grouproom.xyz.domain.azt.dto.request.AztRequest;
 import com.grouproom.xyz.domain.azt.dto.request.MemberRequest;
+import com.grouproom.xyz.domain.azt.dto.response.AztListResponse;
 import com.grouproom.xyz.domain.azt.dto.response.AztResponse;
 import com.grouproom.xyz.domain.azt.dto.response.MemberListResponse;
 import com.grouproom.xyz.domain.azt.dto.response.MemberResponse;
@@ -31,6 +32,17 @@ public class AztServiceImpl implements AztService {
     private final AztMemberRepository aztMemberRepository;
     private final UserRepository userRepository;
     private final FriendManageService friendManageService;
+
+    @Override
+    public AztListResponse findAztList(Long loginSeq) {
+
+        logger.info("findAztList 호출");
+
+        List<AztResponse> aztResponses = aztRepository.selectAzt(loginSeq, false);
+        return AztListResponse.builder()
+                .azts(aztResponses)
+                .build();
+    }
 
     @Override
     public AztResponse findAzt(Long loginSeq, Long aztSeq) {
