@@ -21,7 +21,7 @@ public class MemoryResponse {
 //        this.memoryImage = memoryImage
         this.aztSeq = aztSeq;
         this.aztName = aztName;
-        this.date = date.toLocalDate().toString();
+        this.date = date.toString();
         this.latitude = latitude;
         this.longitude = longitude;
         this.location = location;

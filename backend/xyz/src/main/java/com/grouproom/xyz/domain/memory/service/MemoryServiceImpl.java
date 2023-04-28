@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.memory.service;
 
+import com.grouproom.xyz.domain.azt.entity.Azt;
+import com.grouproom.xyz.domain.azt.repository.AztRepository;
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.response.*;
@@ -33,7 +35,7 @@ public class MemoryServiceImpl implements MemoryService {
 
     private final UserRepository userRepository;
     private final S3UploadService s3UploadService;
-    //    private final AztRepository aztRepository;
+    private final AztRepository aztRepository;
     private final MemoryRepository memoryRepository;
     private final MemoryFileRepository memoryFileRepository;
     private final MemoryLikeRepository memoryLikeRepository;
@@ -62,15 +64,18 @@ public class MemoryServiceImpl implements MemoryService {
         logger.info("findMemory 호출");
 
         // TODO: 무한스크롤 구현 필요
-        if (memoryListRequest.getIsLocationBased() == false) {
-            logger.info("isLocationBased == false");
+        if (memoryListRequest.getLatitude() == null | memoryListRequest.getLongitude() == null) {
+            logger.info("위치 정보 없음");
             List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
+
+            logger.info(memoryResponses.toString());
+
             return MemoryListResponse.builder()
                     .memories(memoryResponses)
                     .build();
         }
 
-        logger.info("isLocationBased == true");
+        logger.info("위치 정보 있음");
         List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeqAndCoordinate(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
         return MemoryListResponse.builder()
                 .memories(memoryResponses)
@@ -82,11 +87,11 @@ public class MemoryServiceImpl implements MemoryService {
     public AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest) {
         logger.info("addMemory 호출");
 
-        // TODO: Azt repository 생기면 수정
         User user = userRepository.findBySequence(userSeq);
-//        Azt azt = aztRepository.findBySequence(addMemoryRequest.getAztSeq());
+        Azt azt = aztRepository.findBySequence(addMemoryRequest.getAztSeq());
         Memory memory = Memory.builder()
                 .user(user)
+                .azt(azt)
                 .addMemoryRequest(addMemoryRequest)
                 .build();
         memoryRepository.save(memory);
