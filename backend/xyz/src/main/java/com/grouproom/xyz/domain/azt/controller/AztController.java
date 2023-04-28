@@ -5,10 +5,7 @@ import com.grouproom.xyz.domain.azt.service.AztService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 
@@ -30,4 +27,45 @@ public class AztController {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
     }
+
+    @PutMapping
+    public BaseResponse<?> modifyAzt(@RequestBody AztRequest aztRequest) {
+        logger.info("modifyAzt 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(aztService.modifyAzt(loginSeq, aztRequest));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
+    @GetMapping("")
+    public BaseResponse<?> friendList(@RequestParam Long aztSeq) {
+        logger.info("friendList 호출");
+        Long loginSeq = 1L;
+        return new BaseResponse<>(aztService.findFriendForMembers(loginSeq, aztSeq));
+    }
+
+    @PostMapping("/member")
+    public BaseResponse<?> addAztMember(@RequestBody AztRequest aztRequest) {
+        logger.info("addAztMember 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(aztService.addAztMember(loginSeq, aztRequest));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
+    @DeleteMapping("/member/{aztSeq}")
+    public BaseResponse<?> modifyAztMemberToDelete(@PathVariable("aztSeq") Long aztSeq) {
+        logger.info("modifyAztMemberToDelete 호출");
+        Long loginSeq = 1L;
+        try {
+            return new BaseResponse<>(aztService.modifyAztMemberToDelete(loginSeq, aztSeq));
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
+        }
+    }
+
 }
