@@ -22,6 +22,8 @@ export type MemoriesTypes = {
   latitude: number;
   longitude: number;
   location: string;
+  likeCnt: number;
+  isLiked: boolean;
 };
 
 export interface KakaoMapProps {
