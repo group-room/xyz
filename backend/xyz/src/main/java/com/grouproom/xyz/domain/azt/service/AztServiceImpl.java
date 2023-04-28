@@ -87,6 +87,7 @@ public class AztServiceImpl implements AztService {
     }
 
     @Override
+    @Transactional
     public String addAztMember(Long loginSeq, AztRequest aztRequest) {
 
         logger.info("addAztMember 호출");
