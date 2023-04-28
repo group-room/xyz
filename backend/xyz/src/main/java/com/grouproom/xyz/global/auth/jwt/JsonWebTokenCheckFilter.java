@@ -3,7 +3,6 @@ package com.grouproom.xyz.global.auth.jwt;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.auth.Constants;
 import com.grouproom.xyz.global.exception.ErrorResponse;
-import com.grouproom.xyz.global.util.JsonUtils;
 import com.grouproom.xyz.global.util.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -105,13 +104,10 @@ public class JsonWebTokenCheckFilter extends OncePerRequestFilter {
             }
 
         } catch (ErrorResponse e) {
-            JsonUtils.writeJsonExceptionResponse(response, e.getHttpStatus(), e.getMessage());
+//            JsonUtils.writeJsonExceptionResponse(response, e.getHttpStatus(), e.getMessage());
+            response.sendError(e.getStatusCode(), e.getMessage());
             return;
         }
-//        catch (Exception e) {
-//            JsonUtils.writeJsonExceptionResponse(response, HttpStatus.CONFLICT, e.getMessage());
-//            return;
-//        }
         doFilter(request, response, filterChain);
     }
 }
