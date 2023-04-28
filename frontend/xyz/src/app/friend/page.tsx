@@ -1,7 +1,5 @@
 import React from "react";
 
-function FriendPage() {
-  return <div>FriendPage</div>;
+export default function FriendPage() {
+  return <div>친구목록</div>;
 }
-
-export default FriendPage;
