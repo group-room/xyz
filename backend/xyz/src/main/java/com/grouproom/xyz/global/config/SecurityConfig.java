@@ -27,7 +27,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 /**
@@ -66,13 +68,14 @@ public class SecurityConfig {
 
         //허용할 URL
         configuration.addAllowedOrigin("*");
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedOriginPattern("*");
         //허용할 METHOD (post,get,delete,put...등등 다 허용)
         configuration.addAllowedMethod("*");
         // 자격증명과 함께 요청 여부 ( 내 서버가 응답할 때 json을 JS에서 처리할 수 있게 설정)
         configuration.setAllowCredentials(true);
-        
+
         //custom header 설정
         for (String key : Constants.CORS_HEADER_URIS) {
             configuration.addAllowedHeader(key);
