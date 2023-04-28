@@ -144,14 +144,18 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public String addAztMember(Long loginSeq, AztRequest aztRequest) {
+    public AztResponse addAztMember(Long loginSeq, AztRequest aztRequest) {
 
         logger.info("addAztMember 호출");
 
         AztMember aztMember = aztMemberRepository.findByAzt_SequenceAndUser_Sequence(aztRequest.getAztSeq(), loginSeq);
         if(null != aztMember) {
             logger.info("요청한 유저가 해당 아지트에 소속됨");
-            Azt azt = aztRepository.findBySequence(aztRequest.getAztSeq());
+            Azt azt = aztMember.getAzt();
+            if(azt.getIsDeleted()) {
+                logger.severe("삭제된 아지트");
+                throw new RuntimeException();
+            }
             for (MemberRequest member : aztRequest.getMembers()) {
                 User user = userRepository.findBySequence(member.getUserSeq());
                 aztMemberRepository.save(AztMember.builder()
@@ -166,7 +170,8 @@ public class AztServiceImpl implements AztService {
             throw new RuntimeException();
         }
 
-        return "";
+        logger.info("아지트 상세 조회 호출");
+        return findAzt(loginSeq, aztRequest.getAztSeq());
     }
 
     @Override
