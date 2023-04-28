@@ -48,12 +48,12 @@ public class AztController {
         }
     }
 
-    @PutMapping
-    public BaseResponse<?> modifyAzt(@RequestBody AztRequest aztRequest) {
+    @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseResponse<?> modifyAzt(@RequestPart AztRequest aztRequest, @RequestPart(required = false) MultipartFile image) {
         logger.info("modifyAzt 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(aztService.modifyAzt(loginSeq, aztRequest));
+            return new BaseResponse<>(aztService.modifyAzt(loginSeq, aztRequest, image));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }
