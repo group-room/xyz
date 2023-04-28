@@ -88,7 +88,12 @@ public class MemoryServiceImpl implements MemoryService {
         logger.info("addMemory 호출");
 
         User user = userRepository.findBySequence(userSeq);
-        Azt azt = aztRepository.findBySequence(addMemoryRequest.getAztSeq());
+        Azt azt = aztRepository.findBySequence(addMemoryRequest.getAztSeq()).orElse(null);
+
+        if (azt == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 azt입니다.");
+        }
+
         Memory memory = Memory.builder()
                 .user(user)
                 .azt(azt)
