@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+@Setter
 @Getter
 @Entity
 @Builder
@@ -26,6 +27,6 @@ public class Azt extends BaseTimeEntity {
     @Column(name = "chat_sequence")
     private Long chatSequence;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private Boolean isDeleated;
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
+    private Boolean isDeleted;
 }
