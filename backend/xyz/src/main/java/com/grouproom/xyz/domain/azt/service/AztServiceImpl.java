@@ -136,7 +136,7 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public AztResponse modifyAzt(Long loginSeq, AztRequest aztRequest) {
+    public AztResponse modifyAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image) {
 
         logger.info("modifyAzt 호출");
 
@@ -149,7 +149,13 @@ public class AztServiceImpl implements AztService {
                 throw new RuntimeException();
             } else {
                 azt.setAztName(aztRequest.getName());
-//                azt.setAztImage(aztRequest.getImage());
+                if(null != image) {
+                    logger.info("사진 변경");
+                    String imagePath = s3UploadService.upload(image, "azt");
+                    azt.setAztImage(imagePath);
+                } else {
+                    logger.info("사진 변경 안함");
+                }
             }
         } else {
             logger.severe("소속된 아지트가 아님");
