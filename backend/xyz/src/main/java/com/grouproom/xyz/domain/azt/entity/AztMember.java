@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 @IdClass(AztMemberId.class)
 @Table(name = "azt_member")
@@ -25,6 +26,6 @@ public class AztMember extends BaseTimeEntity {
     @JoinColumn(name = "azt_sequence")
     private Azt azt;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
     private Boolean isDeleted;
 }
