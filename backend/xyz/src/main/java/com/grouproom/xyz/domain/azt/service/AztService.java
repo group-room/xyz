@@ -4,14 +4,15 @@ import com.grouproom.xyz.domain.azt.dto.request.AztRequest;
 import com.grouproom.xyz.domain.azt.dto.response.AztListResponse;
 import com.grouproom.xyz.domain.azt.dto.response.AztResponse;
 import com.grouproom.xyz.domain.azt.dto.response.MemberListResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface AztService {
 
     AztListResponse findAztList(Long loginSeq);
     AztResponse findAzt(Long loginSeq, Long aztSeq);
-    String addAzt(Long loginSeq, AztRequest aztRequest);
-    String modifyAzt(Long loginSeq, AztRequest aztRequest);
-    String addAztMember(Long loginSeq, AztRequest aztRequest);
+    String addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image);
+    AztResponse modifyAzt(Long loginSeq, AztRequest aztRequest);
+    AztResponse addAztMember(Long loginSeq, AztRequest aztRequest);
     MemberListResponse findFriendForMembers(Long loginSeq, Long aztSeq);
     String modifyAztMemberToDelete(Long loginSeq, Long aztSeq);
 }

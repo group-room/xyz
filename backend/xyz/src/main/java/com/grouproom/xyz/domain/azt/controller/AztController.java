@@ -5,7 +5,9 @@ import com.grouproom.xyz.domain.azt.service.AztService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.logging.Logger;
 
@@ -35,12 +37,12 @@ public class AztController {
         }
     }
 
-    @PostMapping
-    public BaseResponse<?> addAzt(@RequestBody AztRequest aztRequest) {
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseResponse<?> addAzt(@RequestPart AztRequest aztRequest, @RequestPart(required = false) MultipartFile image) {
         logger.info("addAzt 호출");
         Long loginSeq = 1L;
         try {
-            return new BaseResponse<>(aztService.addAzt(loginSeq, aztRequest));
+            return new BaseResponse<>(aztService.addAzt(loginSeq, aztRequest, image));
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST, "실패", "");
         }

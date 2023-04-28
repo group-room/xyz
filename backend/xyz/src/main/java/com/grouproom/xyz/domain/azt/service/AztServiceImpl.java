@@ -15,12 +15,15 @@ import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
 import com.grouproom.xyz.domain.friend.service.FriendManageService;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class AztServiceImpl implements AztService {
     private final AztMemberRepository aztMemberRepository;
     private final UserRepository userRepository;
     private final FriendManageService friendManageService;
+    private final S3UploadService s3UploadService;
 
     @Override
     public AztListResponse findAztList(Long loginSeq) {
@@ -85,16 +89,30 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public String addAzt(Long loginSeq, AztRequest aztRequest) {
+    public String addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image) {
 
         logger.info("addAzt 호출");
 
+        if(null == aztRequest.getName()) {
+            logger.severe("이름 미설정");
+            throw new RuntimeException();
+        }
+
+        String imagePath;
+        if(null == image){
+            logger.info("이미지 등록 안함");
+            String number = String.format("%02d", new Random().nextInt(50) + 1);
+            imagePath = new StringBuilder().append("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/background/").append(number).append("_PixelSky_1920x1080.png").toString();
+        } else {
+            imagePath = s3UploadService.upload(image, "azt");
+        }
+
         Azt azt = aztRepository.save(Azt.builder()
                         .aztName(aztRequest.getName())
-                        .aztImage(aztRequest.getImage())
+                        .aztImage(imagePath)
                         .isDeleted(false)
                 .build());
-        logger.info("아지트 생성");
+        logger.info("아지트 생성 성공");
 
         User loginUser = userRepository.findBySequence(loginSeq);
         aztMemberRepository.save(AztMember.builder()
@@ -102,7 +120,7 @@ public class AztServiceImpl implements AztService {
                 .user(loginUser)
                 .isDeleted(false)
                 .build());
-        logger.info("본인 가입");
+        logger.info("본인 가입 성공");
 
         for (MemberRequest member : aztRequest.getMembers()) {
             User user = userRepository.findBySequence(member.getUserSeq());
@@ -111,43 +129,51 @@ public class AztServiceImpl implements AztService {
                             .user(user)
                             .isDeleted(false)
                     .build());
-            logger.info(user.getSequence() + " 멤버 가입");
+            logger.info(user.getSequence() + " 멤버 가입 성공");
         }
         return "";
     }
 
     @Override
     @Transactional
-    public String modifyAzt(Long loginSeq, AztRequest aztRequest) {
+    public AztResponse modifyAzt(Long loginSeq, AztRequest aztRequest) {
 
         logger.info("modifyAzt 호출");
 
         AztMember aztMember = aztMemberRepository.findByAzt_SequenceAndUser_Sequence(aztRequest.getAztSeq(), loginSeq);
         if(null != aztMember) {
             logger.info("요청한 유저가 해당 아지트에 소속됨");
-            Azt azt = aztRepository.findBySequence(aztRequest.getAztSeq());
-            azt.setAztName(aztRequest.getName());
-            azt.setAztImage(aztRequest.getImage());
+            Azt azt = aztMember.getAzt();
+            if(azt.getIsDeleted()) {
+                logger.severe("삭제된 아지트");
+                throw new RuntimeException();
+            } else {
+                azt.setAztName(aztRequest.getName());
+//                azt.setAztImage(aztRequest.getImage());
+            }
         } else {
             logger.severe("소속된 아지트가 아님");
             throw new RuntimeException();
         }
 
-        // 추후 상세 조회 호출
-
-        return null;
+        logger.info("아지트 상세 조회 호출");
+        return findAzt(loginSeq, aztRequest.getAztSeq());
     }
 
     @Override
     @Transactional
-    public String addAztMember(Long loginSeq, AztRequest aztRequest) {
+    public AztResponse addAztMember(Long loginSeq, AztRequest aztRequest) {
 
         logger.info("addAztMember 호출");
 
         AztMember aztMember = aztMemberRepository.findByAzt_SequenceAndUser_Sequence(aztRequest.getAztSeq(), loginSeq);
         if(null != aztMember) {
             logger.info("요청한 유저가 해당 아지트에 소속됨");
-            Azt azt = aztRepository.findBySequence(aztRequest.getAztSeq());
+            Azt azt = aztMember.getAzt();
+            if(azt.getIsDeleted()) {
+                logger.severe("삭제된 아지트");
+                throw new RuntimeException();
+            }
             for (MemberRequest member : aztRequest.getMembers()) {
                 User user = userRepository.findBySequence(member.getUserSeq());
                 aztMemberRepository.save(AztMember.builder()
@@ -162,7 +188,8 @@ public class AztServiceImpl implements AztService {
             throw new RuntimeException();
         }
 
-        return "";
+        logger.info("아지트 상세 조회 호출");
+        return findAzt(loginSeq, aztRequest.getAztSeq());
     }
 
     @Override
