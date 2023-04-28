@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Entity
@@ -31,10 +30,10 @@ public class Timecapsule extends BaseTimeEntity {
     @Column(name = "update_end")
     private LocalDateTime updateEnd;
 
-    @Column(name = "latitude", precision = 10, scale = 6)
+    @Column(name = "latitude", precision = 10, scale = 7)
     private BigDecimal latitude;
 
-    @Column(name = "longitude", precision = 10, scale = 6)
+    @Column(name = "longitude", precision = 10, scale = 7)
     private BigDecimal longitude;
 
     @Column(name = "location")

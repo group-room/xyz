@@ -29,10 +29,10 @@ public class Memory extends BaseTimeEntity {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "latitude", precision = 10, scale = 6)
+    @Column(name = "latitude", precision = 10, scale = 7)
     private BigDecimal latitude;
 
-    @Column(name = "longitude", precision = 10, scale = 6)
+    @Column(name = "longitude", precision = 10, scale = 7)
     private BigDecimal longitude;
 
     @Column(name = "location")
@@ -59,7 +59,7 @@ public class Memory extends BaseTimeEntity {
     @Builder
     public Memory(User user, Azt azt, AddMemoryRequest addMemoryRequest) {
         this.content = addMemoryRequest.getContent();
-        this.date = addMemoryRequest.getDate().atStartOfDay();
+        this.date = addMemoryRequest.getDate();
         this.latitude = addMemoryRequest.getLatitude();
         this.longitude = addMemoryRequest.getLongitude();
         this.location = addMemoryRequest.getLocation();
