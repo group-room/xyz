@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface AztMemberRepository extends JpaRepository<AztMember, AztMemberId> {
 
     AztMember findByAzt_SequenceAndUser_Sequence(Long aztSeq, Long userSeq);
+    AztMember findByAzt_SequenceAndUser_SequenceAndIsDeleted(Long aztSeq, Long userSeq, Boolean isDeleted);
 }

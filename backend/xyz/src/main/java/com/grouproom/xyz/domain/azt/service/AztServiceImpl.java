@@ -2,16 +2,23 @@ package com.grouproom.xyz.domain.azt.service;
 
 import com.grouproom.xyz.domain.azt.dto.request.AztRequest;
 import com.grouproom.xyz.domain.azt.dto.request.MemberRequest;
+import com.grouproom.xyz.domain.azt.dto.response.MemberListResponse;
+import com.grouproom.xyz.domain.azt.dto.response.MemberResponse;
 import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.azt.entity.AztMember;
 import com.grouproom.xyz.domain.azt.repository.AztMemberRepository;
 import com.grouproom.xyz.domain.azt.repository.AztRepository;
+import com.grouproom.xyz.domain.friend.dto.response.FriendListResponse;
+import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
+import com.grouproom.xyz.domain.friend.service.FriendManageService;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @RequiredArgsConstructor
@@ -22,6 +29,7 @@ public class AztServiceImpl implements AztService {
     private final AztRepository aztRepository;
     private final AztMemberRepository aztMemberRepository;
     private final UserRepository userRepository;
+    private final FriendManageService friendManageService;
 
     @Override
     @Transactional
@@ -103,4 +111,31 @@ public class AztServiceImpl implements AztService {
 
         return "";
     }
+
+    @Override
+    public MemberListResponse findFriendForMembers(Long loginSeq, Long aztSeq) {
+
+        logger.info("findFriendForMembers 호출");
+
+        FriendListResponse friendList = friendManageService.findFriend(loginSeq);
+        List<MemberResponse> memberResponses = new ArrayList<>();
+        for (FriendUserResponse friend : friendList.getFriends()) {
+            AztMember aztMember = aztMemberRepository.findByAzt_SequenceAndUser_SequenceAndIsDeleted(aztSeq, friend.getUserSeq(), false);
+            if(null != aztMember) {
+                logger.info("아지트 멤버");
+            } else {
+                logger.info(friend.getUserSeq() + " 초대 가능");
+                memberResponses.add(MemberResponse.builder()
+                                .userSeq(friend.getUserSeq())
+                                .profileImage(friend.getProfileImage())
+                                .identify(friend.getIdentify())
+                                .nickname(friend.getNickname())
+                        .build());
+            }
+        }
+        return MemberListResponse.builder()
+                .members(memberResponses)
+                .build();
+    }
+
 }

@@ -39,6 +39,13 @@ public class AztController {
         }
     }
 
+    @GetMapping("")
+    public BaseResponse<?> friendList(@RequestParam Long aztSeq) {
+        logger.info("friendList 호출");
+        Long loginSeq = 1L;
+        return new BaseResponse<>(aztService.findFriendForMembers(loginSeq, aztSeq));
+    }
+
     @PostMapping("/member")
     public BaseResponse<?> addAztMember(@RequestBody AztRequest aztRequest) {
         logger.info("addAztMember 호출");
