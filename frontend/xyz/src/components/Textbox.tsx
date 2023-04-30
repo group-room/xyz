@@ -1,25 +1,23 @@
 import React from "react";
+import Image from "next/image";
 
 type TextboxProps = {
   text?: string;
-  icon?: string;
+  icon: string;
+  alt: string;
+  maintext?: string;
 };
 
-function Textbox({ text, icon }: TextboxProps) {
-  // /**
-  //  *
-  //  * @param title 제목여부
-  //  * @param titleBgColor 제목영역 색상
-  //  * @param titleText 제목
-  //  * @param children 내용 부분에 넣을 element
-  //  */
-
+function Textbox({ icon, alt, text, maintext }: TextboxProps) {
   return (
-    <div className=" border-2 border-black flex">
-      <div className="px-2 w-8 border-black border-r-2">
-        <img src={icon} alt="" />
+    <div className=" border-2 border-black flex h-8 mb-2 mr-1 ml-1 mt-2">
+      <div className="flex items-center justify-center mx-1 pr-1 border-black border-r-2 h-full">
+        <Image src={icon} alt={alt} width={20} height={20} />
+        <div className="ml-1">{text}</div>
       </div>
-      <div className={`pl-2`}>{text}</div>
+      <div className={`flex items-center justify-center text-lg`}>
+        {maintext}
+      </div>
     </div>
   );
 }
