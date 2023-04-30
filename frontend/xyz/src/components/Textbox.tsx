@@ -15,9 +15,7 @@ function Textbox({ icon, alt, text, maintext }: TextboxProps) {
         <Image src={icon} alt={alt} width={20} height={20} />
         <div className="ml-1">{text}</div>
       </div>
-      <div className={`flex items-center justify-center text-lg`}>
-        {maintext}
-      </div>
+      <div className={`flex items-center justify-center`}>{maintext}</div>
     </div>
   );
 }

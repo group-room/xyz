@@ -20,7 +20,7 @@ function ProfileMain() {
             icon="/icons/edit.svg"
             alt="pretty"
             text="수식어"
-            maintext="나를 수식할수"
+            maintext="나를 수식할수없"
           />
           <Textbox
             icon="/icons/avatar.svg"
@@ -35,6 +35,10 @@ function ProfileMain() {
             maintext="30289"
           />
         </div>
+      </div>
+      <div className="border-2 border-black m-2 h-[92px] shadow-lg">
+        <div className="border-black border-b-2">자기소개 한 마디</div>
+        <div className="">사랑이란 마법을 믿어볼래</div>
       </div>
     </div>
   );

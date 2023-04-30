@@ -16,11 +16,10 @@ function ProfilePage() {
   };
   return (
     <div className="w-full h-full">
-      <div
-        className={`box-content w-[90%] h-[35%] fixed bg-yellow -z-50`}
-      ></div>
-      <ProfileMain />
-      <div onClick={handleClick}> ProfilePage</div>
+      <div className={`box-content w-[90%] h-[35%] fixed bg-yellow -z-50`}>
+        <ProfileMain />
+      </div>
+      {/* <div onClick={handleClick}> ProfilePage</div> */}
       {isModal && (
         <Modal closeModal={() => setIsModal(false)}>
           {<div>친구하실래요?</div>}
