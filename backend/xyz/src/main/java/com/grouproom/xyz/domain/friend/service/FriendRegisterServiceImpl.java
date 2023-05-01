@@ -204,7 +204,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
         logger.info("modifyFriendToAccept 호출");
 
-        Friend friend = friendRepository.findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(loginSeq, userSeq, false, false, false);
+        Friend friend = friendRepository.findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(userSeq, loginSeq, false, false, false);
         if(null == friend) {
             logger.severe("수락할 수 있는 대상이 아님");
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수락할 수 있는 대상이 아님");
