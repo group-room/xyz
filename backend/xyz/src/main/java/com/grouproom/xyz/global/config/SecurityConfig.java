@@ -1,5 +1,6 @@
 package com.grouproom.xyz.global.config;
 
+import com.grouproom.xyz.domain.user.repository.BgmRepository;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.auth.Constants;
 import com.grouproom.xyz.global.auth.jwt.JsonWebTokenCheckFilter;
@@ -53,6 +54,8 @@ public class SecurityConfig {
     private final AuthConfig authConfig;
 
     private final UserRepository userRepository;
+
+    private final BgmRepository bgmRepository;
 
     // (0)[Constants] SECURITY_WEB_EXCLUDE_URIS에 설정한 url들은 스프링 시큐리티를 적용하지 않는다.
     @Bean
@@ -148,7 +151,7 @@ public class SecurityConfig {
     //회원가입까지 무사히 되면 -> JWT에 시퀀스, role넣기. 그리고 SECURITY_AFTER_LOGIN로 설정된 URL로 이동
     @Bean
     public CustomOAuth2UserFailureHandler customOAuth2UserFailureHandler() {
-        return new CustomOAuth2UserFailureHandler(userRepository);
+        return new CustomOAuth2UserFailureHandler(userRepository,bgmRepository);
     }
 
 
