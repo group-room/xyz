@@ -40,7 +40,8 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                         new CaseBuilder()
                                 .when(fromUser.sequence.eq(userSeq))
                                 .then(toUser.profileImage)
-                                .otherwise(fromUser.profileImage).as("profileImage")
+                                .otherwise(fromUser.profileImage).as("profileImage"),
+                        friend.chatSequence.as("chatSeq")
                         )
                 )
                 .from(friend)
@@ -85,7 +86,8 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                 new CaseBuilder()
                                         .when(fromUser.sequence.eq(userSeq))
                                         .then(toUser.profileImage)
-                                        .otherwise(fromUser.profileImage).as("profileImage")
+                                        .otherwise(fromUser.profileImage).as("profileImage"),
+                        friend.chatSequence.as("chatSeq")
                         )
                 )
                 .from(friend)
@@ -116,7 +118,8 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                 new CaseBuilder()
                                         .when(fromUser.sequence.eq(userSeq))
                                         .then(toUser.profileImage)
-                                        .otherwise(fromUser.profileImage).as("profileImage")
+                                        .otherwise(fromUser.profileImage).as("profileImage"),
+                        friend.chatSequence.as("chatSeq")
                         )
                 )
                 .from(friend)
