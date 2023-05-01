@@ -61,13 +61,9 @@ public class MemoryController {
         logger.info("removeMemory 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Boolean success = memoryService.removeMemory(userSeq, memorySeq);
+        memoryService.removeMemory(userSeq, memorySeq);
 
-        if (success == true) {
-            return new BaseResponse("추억앨범 삭제 성공");
-        }
-
-        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "추억앨범 삭제 실패");
+        return new BaseResponse("추억앨범 삭제 성공");
     }
 
     @GetMapping("/mymemories")
@@ -122,11 +118,20 @@ public class MemoryController {
 
     @PutMapping("/comment/{commentSeq}")
     public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @RequestBody String content) {
-        logger.info("addMemoryComment 호출");
+        logger.info("modifyMemoryComment 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         memoryService.modifyMemoryComment(userSeq, commentSeq, content);
 
         return new BaseResponse("댓글 수정 성공");
     }
-}
+
+    @DeleteMapping("/comment/{commentSeq}")
+    public BaseResponse<?> removeMemoryComment(@PathVariable("commentSeq") Long commentSeq) {
+        logger.info("removeMemoryComment 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        memoryService.removeMemoryComment(userSeq, commentSeq);
+
+        return new BaseResponse("댓글 삭제 성공");
+    }}
