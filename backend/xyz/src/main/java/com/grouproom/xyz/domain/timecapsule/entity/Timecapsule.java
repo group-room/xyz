@@ -57,6 +57,10 @@ public class Timecapsule extends BaseTimeEntity {
 
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     @Transactional
-    public void updateIsOpened() {
+    public void updateIsUpdatable() {
+        LocalDateTime now = LocalDateTime.now();
+        if (updateEnd.isBefore(now)) {
+            isUpdatable = false;
+        }
     }
 }
