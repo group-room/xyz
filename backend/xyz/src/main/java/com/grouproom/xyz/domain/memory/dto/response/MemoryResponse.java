@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class MemoryResponse {
     private Long memorySeq;
-    //    private String memoryImage;
+    private String memoryImage;
     private Long aztSeq;
     private String aztName;
     private String date;
@@ -21,7 +21,6 @@ public class MemoryResponse {
 
     public MemoryResponse(Long memorySeq, Long aztSeq, String aztName, LocalDateTime date, BigDecimal latitude, BigDecimal longitude, String location) {
         this.memorySeq = memorySeq;
-//        this.memoryImage = memoryImage
         this.aztSeq = aztSeq;
         this.aztName = aztName;
         this.date = date.toString();
