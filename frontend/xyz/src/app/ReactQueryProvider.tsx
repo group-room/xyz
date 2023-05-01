@@ -9,7 +9,8 @@ import {
 import { PropsWithChildren, useState } from "react";
 
 function ReactQueryProvider({ children }: PropsWithChildren) {
-  const [queryClient] = useState(() => new QueryClient());
+  // const [queryClient] = useState(() => new QueryClient());
+  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
