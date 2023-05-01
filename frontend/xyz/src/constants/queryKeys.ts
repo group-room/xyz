@@ -1,4 +1,4 @@
-const KEYS = {
+export const KEYS = {
   user: ["user"],
   memory: ["memory"],
   timecapsule: ["timecapsule"],
