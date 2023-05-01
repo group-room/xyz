@@ -1,7 +1,5 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-
 export const axiosInstance = axios.create({
   baseURL: "https://xyz-gen.com/backend/api",
   headers: {
@@ -10,5 +8,3 @@ export const axiosInstance = axios.create({
   }, // 나중에 토큰 넣어주기
   withCredentials: true,
 });
-
-axiosInstance.defaults.withCredentials = true;
