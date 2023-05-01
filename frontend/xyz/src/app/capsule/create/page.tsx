@@ -100,7 +100,7 @@ export default function TimeCapsuleCreatePage() {
 
   return (
     <div>
-      <h2 className="text-xl">추억 만들기</h2>
+      <h2 className="text-xl">타임캡슐 만들기</h2>
       <form
         action=""
         className="flex flex-col justify-center align-middle gap-y-5 mt-5"
