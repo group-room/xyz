@@ -99,7 +99,7 @@ public class AztServiceImpl implements AztService {
         }
 
         String imagePath;
-        if(null == image){
+        if(image.isEmpty()){
             logger.info("이미지 등록 안함");
             String number = String.format("%02d", new Random().nextInt(50) + 1);
             imagePath = new StringBuilder().append("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/background/").append(number).append("_PixelSky_1920x1080.png").toString();
@@ -149,12 +149,12 @@ public class AztServiceImpl implements AztService {
                 throw new RuntimeException();
             } else {
                 azt.setAztName(aztRequest.getName());
-                if(null != image) {
+                if(image.isEmpty()) {
+                    logger.info("사진 변경 안함");
+                } else {
                     logger.info("사진 변경");
                     String imagePath = s3UploadService.upload(image, "azt");
                     azt.setAztImage(imagePath);
-                } else {
-                    logger.info("사진 변경 안함");
                 }
             }
         } else {
