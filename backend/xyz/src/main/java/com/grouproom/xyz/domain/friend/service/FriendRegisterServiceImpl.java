@@ -8,7 +8,9 @@ import com.grouproom.xyz.domain.friend.repository.FriendRepository;
 import com.grouproom.xyz.domain.friend.repository.UserBlockRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -84,7 +86,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         User targetUser = userRepository.findByIdentify(identify);
         if(null == targetUser) {
             logger.severe("없는 사용자");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "없는 사용자");
         }
         UserResponse userResponse = new UserResponse();
         userResponse.setUserSeq(targetUser.getSequence());
@@ -133,12 +135,13 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         if(blocks.size() != 0) {
             for (UserBlock block: blocks) {
                 if(block.getFromUser().getSequence().equals(loginSeq)) {
-                    logger.severe("차단 상태이므로 요청 불가");
+                    logger.severe("차단힌 상태이므로 요청 불가");
+                    throw new ErrorResponse(HttpStatus.BAD_REQUEST, "차단힌 상태이므로 요청 불가");
                 } else {
                     logger.severe("차단 당함");
+                    throw new ErrorResponse(HttpStatus.BAD_REQUEST, "차단 당함");
                 }
             }
-            throw new RuntimeException();
         }
         Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, userSeq);
         if(null == friend) {
@@ -174,7 +177,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
                 }
             } else {
                 logger.severe("친구 요청 후 수락 대기 상태 혹은 친구 상태");
-                throw new RuntimeException();
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST, "친구 요청 후 수락 대기 상태 혹은 친구 상태");
             }
         }
         return "";
@@ -189,7 +192,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         Friend friend = friendRepository.findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(loginSeq, userSeq, false, false, false);
         if(null == friend) {
             logger.severe("취소할 수 있는 대상이 아님");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "취소할 수 있는 대상이 아님");
         }
         friend.setIsCanceled(true);
         return "";
@@ -204,7 +207,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         Friend friend = friendRepository.findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(loginSeq, userSeq, false, false, false);
         if(null == friend) {
             logger.severe("수락할 수 있는 대상이 아님");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수락할 수 있는 대상이 아님");
         }
         friend.setIsAccepted(true);
         return "";
