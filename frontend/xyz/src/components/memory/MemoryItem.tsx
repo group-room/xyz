@@ -80,9 +80,15 @@ function MemoryItem({ memory }: MemoryItemProps) {
   // }, [isLiked, likeCnt]);
 
   return (
-    <Container title={true} titleBgColor="blue" titleText={aztName}>
+    <Container
+      title={true}
+      titleBgColor="blue"
+      titleText={aztName}
+      titleImgSrc="/icons/users.svg"
+      titleImgAlt="그룹 아이콘"
+    >
       <Link href={`memory/${memorySeq}`}>
-        <div className="flex gap-x-2 mb-1">
+        <div className="flex gap-x-3 mb-1">
           <div className="flex-none">
             <img
               src={memoryImage}
