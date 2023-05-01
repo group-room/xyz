@@ -14,5 +14,5 @@ public interface AztService {
     AztResponse modifyAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image);
     AztResponse addAztMember(Long loginSeq, AztRequest aztRequest);
     MemberListResponse findFriendForMembers(Long loginSeq, Long aztSeq);
-    String modifyAztMemberToDelete(Long loginSeq, Long aztSeq);
+    AztListResponse modifyAztMemberToDelete(Long loginSeq, Long aztSeq);
 }

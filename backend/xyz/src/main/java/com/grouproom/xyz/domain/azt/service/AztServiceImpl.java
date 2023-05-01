@@ -229,7 +229,7 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public String modifyAztMemberToDelete(Long loginSeq, Long aztSeq) {
+    public AztListResponse modifyAztMemberToDelete(Long loginSeq, Long aztSeq) {
 
         logger.info("modifyAztMemberToDelete 호출");
 
@@ -254,7 +254,7 @@ public class AztServiceImpl implements AztService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 아지트에 소속되지 않음");
         }
 
-        return "";
+        return findAztList(loginSeq);
     }
 
 }
