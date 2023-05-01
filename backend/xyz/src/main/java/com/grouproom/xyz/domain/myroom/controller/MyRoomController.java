@@ -1,10 +1,13 @@
 package com.grouproom.xyz.domain.myroom.controller;
 
 import com.grouproom.xyz.domain.myroom.service.MyRoomService;
+import com.grouproom.xyz.domain.myroom.dto.request.StickerRequest;
 import com.grouproom.xyz.global.model.BaseResponse;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,4 +48,13 @@ public class MyRoomController {
     BaseResponse stickerList() {
         return new BaseResponse(myRoomService.findSticker());
     }
+
+    @PostMapping("/sticker")
+    BaseResponse saveSticker(StickerRequest stickerRequest) {
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.addSticker(userSequence,stickerRequest);
+
+        return new BaseResponse(null);
+    }
+
 }

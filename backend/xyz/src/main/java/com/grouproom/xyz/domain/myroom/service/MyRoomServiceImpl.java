@@ -2,11 +2,18 @@ package com.grouproom.xyz.domain.myroom.service;
 
 import com.grouproom.xyz.domain.myroom.dto.response.StickerResponse;
 import com.grouproom.xyz.domain.myroom.entity.Sticker;
+import com.grouproom.xyz.domain.myroom.entity.UserSticker;
 import com.grouproom.xyz.domain.myroom.repository.StickerRepository;
+import com.grouproom.xyz.domain.myroom.dto.request.StickerRequest;
+import com.grouproom.xyz.domain.myroom.repository.UserStickerRepository;
+import com.grouproom.xyz.domain.user.entity.User;
+import com.grouproom.xyz.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +36,8 @@ import java.util.List;
 public class MyRoomServiceImpl implements MyRoomService {
 
     private final StickerRepository stickerRepository;
+    private final UserStickerRepository userStickerRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -50,5 +59,21 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Override
     public List<StickerResponse> findSticker() {
         return stickerRepository.selectSticker();
+    }
+
+    @Override
+    @Transactional
+    public void addSticker(Long userSeq, StickerRequest stickerRequest) {
+        User user = userRepository.getReferenceById(userSeq);
+        Sticker sticker = stickerRepository.getReferenceById(stickerRequest.getStickerSeq());
+
+        userStickerRepository.save(
+            UserSticker.builder()
+                    .user(user)
+                    .sticker(sticker)
+                    .xLocation(BigDecimal.valueOf(stickerRequest.getX()))
+                    .yLocation(BigDecimal.valueOf(stickerRequest.getY()))
+                    .build()
+        );
     }
 }
