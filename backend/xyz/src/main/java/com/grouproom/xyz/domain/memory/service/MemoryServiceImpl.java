@@ -73,6 +73,7 @@ public class MemoryServiceImpl implements MemoryService {
             for (MemoryResponse memoryResponse : memoryResponses) {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+                memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
             }
 
             return MemoryListResponse.builder()
@@ -86,6 +87,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
         }
 
         return MemoryListResponse.builder()
@@ -172,6 +174,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
         }
 
         return MemoryListResponse.builder()
@@ -204,6 +207,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
         }
 
         return MemoryListResponse.builder()
