@@ -1,8 +1,7 @@
 import "./globals.css";
 import localFont from "next/font/local";
-import Header from "@/components/Header";
-import TabBar from "@/components/TabBar";
 import Script from "next/script";
+import ReactQueryProvider from "./ReactQueryProvider";
 
 export const metadata = {
   title: "XYZ",
@@ -25,7 +24,9 @@ export default function RootLayout({
     <html lang="ko" className={pixelFont.className}>
       <body>
         <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
-        <main className="px-5 my-16">{children}</main>
+        <ReactQueryProvider>
+          <main className="px-5 my-16">{children}</main>
+        </ReactQueryProvider>
       </body>
     </html>
   );

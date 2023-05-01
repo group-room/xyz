@@ -2,23 +2,6 @@ import { axiosInstance } from "./instance";
 
 const MEMORY = "/memory";
 
-export const getMemories = async (
-  date: string,
-  aztSeq?: number,
-  latitude?: number,
-  longitude?: number
-) => {
-  const res = await axiosInstance.get(MEMORY, {
-    params: {
-      date,
-      aztSeq,
-      latitude,
-      longitude,
-    },
-  });
-  return res.data;
-};
-
 export const createMemory = async (
   content: string,
   accessibility: string,

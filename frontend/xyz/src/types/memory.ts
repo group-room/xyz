@@ -7,6 +7,13 @@ export type AztTypes = {
   chatSeq?: string;
 };
 
+export type MemoryListParams = {
+  date: string;
+  aztSeq?: number;
+  latitude?: number;
+  longitude?: number;
+};
+
 export type PositionTypes = {
   lat: number;
   lng: number;
