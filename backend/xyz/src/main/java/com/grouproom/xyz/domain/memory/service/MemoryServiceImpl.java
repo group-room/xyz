@@ -4,6 +4,7 @@ import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.azt.repository.AztRepository;
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
+import com.grouproom.xyz.domain.memory.dto.request.ModifyMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.response.*;
 import com.grouproom.xyz.domain.memory.entity.Memory;
 import com.grouproom.xyz.domain.memory.entity.MemoryComment;
@@ -129,6 +130,39 @@ public class MemoryServiceImpl implements MemoryService {
         return AddMemoryResponse.builder()
                 .memorySeq(memory.getSequence())
                 .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void modifyMemory(Long userSeq, Long memorySeq, ModifyMemoryRequest modifyMemoryRequest, List<MultipartFile> images, List<MultipartFile> audios) {
+        logger.info("modifyMemory 호출");
+
+        User user = userRepository.findBySequence(userSeq);
+        Memory memory = memoryRepository.findBySequence(memorySeq);
+
+        if (memory.getUser() != user) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수정 권한이 없는 추억앨범입니다.");
+        }
+
+        memory.updateMemory(modifyMemoryRequest);
+
+        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
+
+        for (MemoryFile memoryFile : memoryFiles) {
+            memoryFile.updateIsDeleted(true);
+        }
+
+        if (images != null) {
+            List<String> imagePaths = s3UploadService.upload(images, "memory");
+            saveMemoryFiles(memory, FileType.IMAGE, imagePaths);
+        }
+
+        if (audios != null) {
+            List<String> audioPaths = s3UploadService.upload(audios, "memory");
+            saveMemoryFiles(memory, FileType.AUDIO, audioPaths);
+        }
+
+        return;
     }
 
     @Override
