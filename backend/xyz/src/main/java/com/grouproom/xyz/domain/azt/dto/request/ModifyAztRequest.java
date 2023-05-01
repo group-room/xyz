@@ -3,8 +3,7 @@ package com.grouproom.xyz.domain.azt.dto.request;
 import lombok.Getter;
 
 @Getter
-public class AztRequest {
+public class ModifyAztRequest extends AztRequest {
 
-    private Long aztSeq;
-
+    private String name;
 }
