@@ -6,7 +6,7 @@ import AztFilter from "@/components/memory/AztFilter";
 import KakaoMap from "@/components/memory/KakaoMap";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
 import { AztTypes, MemoriesTypes, PositionTypes } from "@/types/memory";
-import { addMemoryLike, getMemories } from "../api/memory";
+import { getMemories } from "../api/memory";
 import MemoryItem from "@/components/memory/MemoryItem";
 
 function MemoryPage() {
@@ -90,6 +90,7 @@ function MemoryPage() {
     // TODO: 추억 목록 불러오기
     getMemories(
       newDateString,
+      newDateString,
       currAzt[0].aztSeq!,
       +position.lat.toFixed(7),
       +position.lng.toFixed(7)
@@ -103,9 +104,11 @@ function MemoryPage() {
           {
             memorySeq: 0,
             memoryImage: "/images/photos/img2.jpg",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "PUBLIC",
             aztSeq: 0,
             aztName: "그룹명",
+            date: "2023-04-28",
             date: "2023-04-28",
             latitude: 37.513,
             longitude: 127.02929,
@@ -117,9 +120,11 @@ function MemoryPage() {
           {
             memorySeq: 1,
             memoryImage: "/images/photos/img2.jpg",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
+            date: "2023-04-28",
             date: "2023-04-28",
             latitude: 37.514,
             longitude: 127.0293,
@@ -131,9 +136,11 @@ function MemoryPage() {
           {
             memorySeq: 2,
             memoryImage: "/images/photos/img2.jpg",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
+            date: "2023-04-28",
             date: "2023-04-28",
             latitude: 37.515,
             longitude: 127.02931,
@@ -145,9 +152,11 @@ function MemoryPage() {
           {
             memorySeq: 3,
             memoryImage: "/images/photos/img2.jpg",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
+            date: "2023-04-28",
             date: "2023-04-28",
             latitude: 37.516,
             longitude: 127.02932,
@@ -159,9 +168,11 @@ function MemoryPage() {
           {
             memorySeq: 4,
             memoryImage: "/images/photos/img2.jpg",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
+            date: "2023-04-28",
             date: "2023-04-28",
             latitude: 37.517,
             longitude: 127.02933,
@@ -201,6 +212,11 @@ function MemoryPage() {
         locations={memories}
       />
       <MemoryCreateBtn />
+      <div className="flex flex-col mt-4 gap-y-4">
+        {memories?.map((memory, idx) => {
+          return <MemoryItem memory={memory} key={idx} />;
+        })}
+      </div>
       <div className="flex flex-col mt-4 gap-y-4">
         {memories?.map((memory, idx) => {
           return <MemoryItem memory={memory} key={idx} />;
