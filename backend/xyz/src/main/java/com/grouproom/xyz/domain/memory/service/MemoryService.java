@@ -19,7 +19,7 @@ public interface MemoryService {
 
     AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest, List<MultipartFile> images, List<MultipartFile> audios);
 
-    Boolean removeMemory(Long userSeq, Long memorySeq);
+    void removeMemory(Long userSeq, Long memorySeq);
 
     MemoryListResponse findMyMemory(Long userSeq);
 
@@ -36,4 +36,8 @@ public interface MemoryService {
     Boolean checkIsLiked(Long userSeq, Long memorySeq);
 
     Integer countMemoryLikes(Long memorySeq);
+
+    void modifyMemoryComment(Long userSeq, Long commentSeq, String content);
+
+    void removeMemoryComment(Long userSeq, Long commentSeq);
 }

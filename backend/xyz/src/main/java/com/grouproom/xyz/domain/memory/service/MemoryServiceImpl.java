@@ -73,6 +73,7 @@ public class MemoryServiceImpl implements MemoryService {
             for (MemoryResponse memoryResponse : memoryResponses) {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+                memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
             }
 
             return MemoryListResponse.builder()
@@ -86,6 +87,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
         }
 
         return MemoryListResponse.builder()
@@ -129,16 +131,23 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional
-    public Boolean removeMemory(Long userSeq, Long memorySeq) {
+    public void removeMemory(Long userSeq, Long memorySeq) {
         logger.info("removeMemory 호출");
 
         User user = userRepository.findBySequence(userSeq);
         Memory memory = memoryRepository.findBySequence(memorySeq);
-        if (user.equals(memory.getUser())) {
-            memory.updateIsDeleted(true);
-            return true;
+
+        if (memory == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 추억앨범입니다.");
         }
-        return false;
+
+        if (memory.getUser() != user) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제 권한이 없는 추억앨범입니다.");
+        }
+
+        memory.updateIsDeleted(true);
+
+        return;
     }
 
     @Override
@@ -165,6 +174,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
         }
 
         return MemoryListResponse.builder()
@@ -197,6 +207,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
         }
 
         return MemoryListResponse.builder()
@@ -318,6 +329,7 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Boolean checkIsLiked(Long userSeq, Long memorySeq) {
         Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
         if (memoryLike.isPresent() && memoryLike.get().getIsSelected()) {
@@ -327,7 +339,54 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Integer countMemoryLikes(Long memorySeq) {
         return memoryLikeRepository.findByMemory_Sequence(memorySeq).size();
+    }
+
+    @Override
+    @Transactional
+    public void modifyMemoryComment(Long userSeq, Long commentSeq, String content) {
+        logger.info("modifyMemoryComment 호출");
+
+        User user = userRepository.findBySequence(userSeq);
+        MemoryComment comment = memoryCommentRepository.findBySequence(commentSeq);
+
+        if (comment == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
+        }
+
+        if (comment.getUser() != user) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수정 권한이 없는 댓글입니다.");
+        }
+
+        if (comment.getIsDeleted()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 댓글입니다.");
+        }
+
+        comment.updateContent(content);
+
+        return;
+    }
+
+    @Override
+    @Transactional
+    public void removeMemoryComment(Long userSeq, Long commentSeq) {
+        logger.info("removeMemoryComment 호출");
+
+        User user = userRepository.findBySequence(userSeq);
+        MemoryComment comment = memoryCommentRepository.findBySequence(commentSeq);
+
+        if (comment == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
+        }
+
+        if (comment.getUser() != user) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제 권한이 없는 댓글입니다.");
+        }
+
+        comment.updateIsDeleted(true);
+
+        return;
     }
 }
