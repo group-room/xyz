@@ -71,7 +71,7 @@ function MemoryItem({ memory }: MemoryItemProps) {
             <div className="flex justify-between mb-1">
               <div className="flex gap-x-2">
                 <img src="/icons/calendar.svg" alt="캘린더 아이콘" />
-                <span>{date}</span>
+                <span>{date.slice(0, 10)}</span>
               </div>
             </div>
             <div className="flex items-start gap-x-2">
