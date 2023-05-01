@@ -1,6 +1,8 @@
 package com.grouproom.xyz.global.auth.preferences;
 
+import com.grouproom.xyz.domain.user.entity.Bgm;
 import com.grouproom.xyz.domain.user.entity.User;
+import com.grouproom.xyz.domain.user.repository.BgmRepository;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.auth.jwt.JsonWebToken;
 import com.grouproom.xyz.global.auth.oauth.CustomOAuth2User;
@@ -42,6 +44,7 @@ import static com.grouproom.xyz.global.util.JwtTokenUtils.REFRESH_PERIOD;
 public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private final UserRepository userRepository;
+    private final BgmRepository bgmRepository;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -72,6 +75,28 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
                 .build());
 
         Long userSeq = user.getSequence();
+
+        bgmRepository.save(
+                Bgm.builder()
+                        .user(user)
+                        .title("Bumper Tag - John Deley")
+                        .link("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/music/Bumper+Tag+-+John+Deley.mp3")
+                        .build()
+        );
+        bgmRepository.save(
+                Bgm.builder()
+                        .user(user)
+                        .title("Whistling Down the Road - Silent Partner")
+                        .link("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/music/Whistling+Down+the+Road+-+Silent+Partner.mp3")
+                        .build()
+        );
+        bgmRepository.save(
+                Bgm.builder()
+                        .user(user)
+                        .title("Sabana Havana - Jimmy Fontanez_Media Right Productions")
+                        .link("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/music/Sabana+Havana+-+Jimmy+Fontanez_Media+Right+Productions.mp3")
+                        .build()
+        );
 
         //jwt 토큰을 발급한다.
         JsonWebToken jsonWebToken = JwtTokenUtils.allocateToken(userSeq, "ROLE_USER");
