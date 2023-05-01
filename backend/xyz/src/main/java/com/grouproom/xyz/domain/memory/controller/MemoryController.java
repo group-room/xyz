@@ -55,14 +55,14 @@ public class MemoryController {
         return new BaseResponse(addMemoryResponse);
     }
 
-    @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/{memorySeq}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public BaseResponse<?> modifyMemory(@PathVariable("memorySeq") Long memorySeq, @RequestPart ModifyMemoryRequest modifyMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
         logger.info("modifyMemory 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         memoryService.modifyMemory(userSeq, memorySeq, modifyMemoryRequest, images, audios);
 
-        return new BaseResponse(null);
+        return new BaseResponse("추억앨범 수정 성공");
     }
 
     @DeleteMapping("/{memorySeq}")

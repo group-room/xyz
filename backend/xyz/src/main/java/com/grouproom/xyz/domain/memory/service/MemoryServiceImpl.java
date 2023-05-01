@@ -133,7 +133,7 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public void modifyMemory(Long userSeq, Long memorySeq, ModifyMemoryRequest modifyMemoryRequest, List<MultipartFile> images, List<MultipartFile> audios) {
         logger.info("modifyMemory 호출");
 
