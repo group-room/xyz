@@ -17,5 +17,6 @@ export const queryKeys = {
       latitude?: number,
       longitude?: number
     ) => [...KEYS.memory, { date }, { aztSeq }, { latitude }, { longitude }],
+    memoryDetail: (memorySeq: number) => [...KEYS.memory, { memorySeq }],
   },
 };

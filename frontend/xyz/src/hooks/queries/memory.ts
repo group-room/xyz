@@ -18,3 +18,14 @@ export const useMemoryList = (
     },
   });
 };
+
+export const useMemoryDetail = (memorySeq: number) => {
+  return useQuery<MemoriesTypes[]>({
+    queryKey: queryKeys.memory.memoryDetail(memorySeq),
+    queryFn: async () => {
+      return axiosInstance
+        .get(`${MEMORY}/${memorySeq}`)
+        .then((res) => res.data.data.memory);
+    },
+  });
+};
