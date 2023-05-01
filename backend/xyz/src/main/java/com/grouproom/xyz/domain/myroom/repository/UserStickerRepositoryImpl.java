@@ -1,13 +1,11 @@
 package com.grouproom.xyz.domain.myroom.repository;
 
-import com.grouproom.xyz.domain.myroom.dto.response.StickerResponse;
-import com.querydsl.core.types.Projections;
+import com.grouproom.xyz.domain.myroom.entity.Sticker;
+import com.grouproom.xyz.domain.user.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
-import static com.grouproom.xyz.domain.myroom.entity.QSticker.sticker;
+import static com.grouproom.xyz.domain.myroom.entity.QUserSticker.userSticker;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.repository
@@ -26,4 +24,12 @@ import static com.grouproom.xyz.domain.myroom.entity.QSticker.sticker;
 public class UserStickerRepositoryImpl implements UserStickerRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    @Override
+    public void deleteUserStickerByUser(User user) {
+        jpaQueryFactory.delete(userSticker)
+                .where(userSticker.user.eq(user))
+                .execute();
+
+    }
 }

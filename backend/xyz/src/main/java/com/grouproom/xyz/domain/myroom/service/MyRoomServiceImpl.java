@@ -8,8 +8,10 @@ import com.grouproom.xyz.domain.myroom.dto.request.StickerRequest;
 import com.grouproom.xyz.domain.myroom.repository.UserStickerRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class MyRoomServiceImpl implements MyRoomService {
 
     private final StickerRepository stickerRepository;
@@ -65,7 +68,9 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Transactional
     public void addSticker(Long userSeq, StickerRequest stickerRequest) {
         User user = userRepository.getReferenceById(userSeq);
+        if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
         Sticker sticker = stickerRepository.getReferenceById(stickerRequest.getStickerSeq());
+        if(null==sticker) throw new ErrorResponse(HttpStatus.BAD_REQUEST,"없는 스티커입니다.");
 
         userStickerRepository.save(
             UserSticker.builder()
@@ -75,5 +80,31 @@ public class MyRoomServiceImpl implements MyRoomService {
                     .yLocation(BigDecimal.valueOf(stickerRequest.getY()))
                     .build()
         );
+    }
+
+    @Override
+    @Transactional
+    public void removeMyRoomByStickerSeq(Long userSeq, Long userStickerSeq) {
+        log.error("removeMyRoomByStickerSeq -1");
+        User user = userRepository.getReferenceById(userSeq);
+        log.error("removeMyRoomByStickerSeq 0");
+        if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
+log.error("removeMyRoomByStickerSeq 1");
+        UserSticker userSticker = userStickerRepository
+                .findById(userStickerSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"없는 스티커입니다."));
+        log.error("removeMyRoomByStickerSeq 2");
+        if(!user.equals(userSticker.getUser())) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"삭제 권한이 없습니다.");
+        log.error("removeMyRoomByStickerSeq 3");
+        userStickerRepository.delete(userSticker);
+    }
+
+    @Override
+    @Transactional
+    public void removeMyRoom(Long userSeq) {
+        User user = userRepository.getReferenceById(userSeq);
+        if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
+        userStickerRepository.deleteUserStickerByUser(user);
+
     }
 }

@@ -11,4 +11,6 @@ public interface MyRoomService {
     void addStickersFromS3Asset(List<HashMap> assets);
     List<StickerResponse> findSticker();
     void addSticker(Long userSeq, StickerRequest stickerRequest);
+    void removeMyRoomByStickerSeq(Long userSeq,Long stickerSeq);
+    void removeMyRoom(Long userSeq);
 }

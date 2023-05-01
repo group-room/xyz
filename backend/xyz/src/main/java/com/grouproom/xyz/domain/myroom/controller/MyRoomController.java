@@ -6,10 +6,7 @@ import com.grouproom.xyz.global.model.BaseResponse;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,4 +54,17 @@ public class MyRoomController {
         return new BaseResponse(null);
     }
 
+    @DeleteMapping("/sticker/{userStickerSeq}")
+    BaseResponse removeMyRoomByStickerSeq(@PathVariable("userStickerSeq") Long userStickerSeq) {
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.removeMyRoomByStickerSeq(userSequence,userStickerSeq);
+        return new BaseResponse(null);
+    }
+
+    @DeleteMapping("/sticker")
+    BaseResponse removeMyRoom() {
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.removeMyRoom(userSequence);
+        return new BaseResponse(null);
+    }
 }
