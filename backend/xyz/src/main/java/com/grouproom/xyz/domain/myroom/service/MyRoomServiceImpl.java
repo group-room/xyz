@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.myroom.service;
 
+import com.grouproom.xyz.domain.myroom.dto.response.StickerResponse;
 import com.grouproom.xyz.domain.myroom.entity.Sticker;
 import com.grouproom.xyz.domain.myroom.repository.StickerRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,10 @@ public class MyRoomServiceImpl implements MyRoomService {
                     .name((String) asset.get("name"))
                     .build());
         }
+    }
+
+    @Override
+    public List<StickerResponse> findSticker() {
+        return stickerRepository.selectSticker();
     }
 }

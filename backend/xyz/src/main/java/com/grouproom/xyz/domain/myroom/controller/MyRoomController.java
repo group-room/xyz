@@ -43,8 +43,6 @@ public class MyRoomController {
 
     @GetMapping("/sticker")
     BaseResponse stickerList() {
-//        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-
-        return new BaseResponse(null);
+        return new BaseResponse(myRoomService.findSticker());
     }
 }
