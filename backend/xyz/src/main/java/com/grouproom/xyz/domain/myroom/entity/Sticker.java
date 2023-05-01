@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.myroom.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,10 +37,9 @@ public class Sticker extends BaseTimeEntity {
     @Column(name = "image", length = 2083)
     private String image;
 
-    @Column(name = "sticker_color")
-    private StickerColor stickerColor;
-
-    @Column(name = "sticker_grade")
-    private StickerGrade stickerGrade;
-
+    @Builder
+    public Sticker(String name, String image) {
+        this.name = name;
+        this.image = image;
+    }
 }
