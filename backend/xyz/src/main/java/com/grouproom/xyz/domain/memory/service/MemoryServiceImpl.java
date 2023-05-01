@@ -74,6 +74,7 @@ public class MemoryServiceImpl implements MemoryService {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
                 memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+                memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
             }
 
             return MemoryListResponse.builder()
@@ -88,6 +89,7 @@ public class MemoryServiceImpl implements MemoryService {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
             memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+            memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
         }
 
         return MemoryListResponse.builder()
@@ -175,6 +177,7 @@ public class MemoryServiceImpl implements MemoryService {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
             memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+            memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
         }
 
         return MemoryListResponse.builder()
@@ -208,6 +211,7 @@ public class MemoryServiceImpl implements MemoryService {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
             memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+            memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
         }
 
         return MemoryListResponse.builder()
@@ -343,6 +347,20 @@ public class MemoryServiceImpl implements MemoryService {
     @Transactional(readOnly = true)
     public Integer countMemoryLikes(Long memorySeq) {
         return memoryLikeRepository.findByMemory_Sequence(memorySeq).size();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public String findFilePath(Long memorySeq) {
+        MemoryFile memoryFile = memoryFileRepository.findFirstByMemory_SequenceAndIsDeleted(memorySeq, false);
+
+        if (memoryFile != null) {
+            return memoryFile.getFilePath();
+        }
+
+        Memory memory = memoryRepository.findBySequence(memorySeq);
+
+        return memory.getAzt().getAztImage();
     }
 
     @Override
