@@ -89,7 +89,7 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public String addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image) {
+    public AztResponse addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image) {
 
         logger.info("addAzt 호출");
 
@@ -131,7 +131,7 @@ public class AztServiceImpl implements AztService {
                     .build());
             logger.info(user.getSequence() + " 멤버 가입 성공");
         }
-        return "";
+        return findAzt(loginSeq, azt.getSequence());
     }
 
     @Override

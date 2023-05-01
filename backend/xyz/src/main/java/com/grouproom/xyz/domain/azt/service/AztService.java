@@ -10,7 +10,7 @@ public interface AztService {
 
     AztListResponse findAztList(Long loginSeq);
     AztResponse findAzt(Long loginSeq, Long aztSeq);
-    String addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image);
+    AztResponse addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image);
     AztResponse modifyAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image);
     AztResponse addAztMember(Long loginSeq, AztRequest aztRequest);
     MemberListResponse findFriendForMembers(Long loginSeq, Long aztSeq);
