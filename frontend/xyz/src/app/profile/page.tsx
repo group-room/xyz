@@ -1,7 +1,7 @@
 "use client";
-import Modal from "@/components/Modal";
-import Tab from "@/components/Tab";
-import Textbox from "@/components/Textbox";
+import Modal from "@/components/common/Modal";
+import Tab from "@/components/common/Tab";
+import Textbox from "@/components/common/Textbox";
 import Btn from "@/components/common/Btn";
 import { BgColors } from "@/constants/style";
 import React from "react";

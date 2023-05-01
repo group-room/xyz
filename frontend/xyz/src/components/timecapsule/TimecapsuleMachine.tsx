@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Image from "next/image";
-import Modal from '../Modal';
-import AbleTimecaplsuleModal from './AbleTimecaplsuleModal';
+import Modal from "../common/Modal";
+import AbleTimecaplsuleModal from "./AbleTimecaplsuleModal";
 
 export default function TimecapsuleMachine() {
   const [isModal, setIsModal] = useState(false);
@@ -22,8 +22,8 @@ export default function TimecapsuleMachine() {
             height={140}
           />
         </div>
-        <div onClick={handleClick} >
-        <Image
+        <div onClick={handleClick}>
+          <Image
             src="/images/capsule.svg"
             alt="capsule"
             width={100}
@@ -31,8 +31,11 @@ export default function TimecapsuleMachine() {
           />
         </div>
         {/* 캡슐 잠김 여부에 따라  AbleTimecaplsuleModal or UnAbleTimecaplsuleModal*/}
-        {isModal && <Modal closeModal={() => setIsModal(false)}>
-            <AbleTimecaplsuleModal /></Modal>}
+        {isModal && (
+          <Modal closeModal={() => setIsModal(false)}>
+            <AbleTimecaplsuleModal />
+          </Modal>
+        )}
       </div>
     </div>
   );
