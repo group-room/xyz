@@ -22,7 +22,7 @@ function ProfilePage() {
       </div>
       <div className="flex pt-5">
         <div>
-          <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={buttonClick} />
+          <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={handleClick} />
         </div>
         <div className=" pl-7">
           <Btn
