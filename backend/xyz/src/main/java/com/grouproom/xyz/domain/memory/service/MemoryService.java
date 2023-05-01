@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.memory.service;
 
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
+import com.grouproom.xyz.domain.memory.dto.request.ModifyMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryDetailResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
@@ -19,6 +20,8 @@ public interface MemoryService {
     MemoryListResponse findMemory(Long userSeq, MemoryListRequest memoryListRequest);
 
     AddMemoryResponse addMemory(Long userSeq, AddMemoryRequest addMemoryRequest, List<MultipartFile> images, List<MultipartFile> audios);
+
+    void modifyMemory(Long userSeq, Long memorySeq, ModifyMemoryRequest modifyMemoryRequest, List<MultipartFile> images, List<MultipartFile> audios);
 
     void removeMemory(Long userSeq, Long memorySeq);
 
@@ -44,4 +47,5 @@ public interface MemoryService {
     void modifyMemoryComment(Long userSeq, Long commentSeq, String content);
 
     void removeMemoryComment(Long userSeq, Long commentSeq);
+
 }

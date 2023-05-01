@@ -7,11 +7,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class AddMemoryRequest {
+public class ModifyMemoryRequest {
 
     private String content;
-    private String accessibility;
-    private Long aztSeq;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime date;
     private BigDecimal latitude;

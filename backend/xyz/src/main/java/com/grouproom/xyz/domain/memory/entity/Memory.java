@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.memory.entity;
 
 import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
+import com.grouproom.xyz.domain.memory.dto.request.ModifyMemoryRequest;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -72,5 +73,13 @@ public class Memory extends BaseTimeEntity {
 
     public void updateIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public void updateMemory(ModifyMemoryRequest modifyMemoryRequest) {
+        this.content = modifyMemoryRequest.getContent();
+        this.date = modifyMemoryRequest.getDate();
+        this.latitude = modifyMemoryRequest.getLatitude();
+        this.longitude = modifyMemoryRequest.getLongitude();
+        this.location = modifyMemoryRequest.getLocation();
     }
 }

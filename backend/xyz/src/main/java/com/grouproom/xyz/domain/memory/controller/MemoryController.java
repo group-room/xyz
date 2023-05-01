@@ -2,14 +2,13 @@ package com.grouproom.xyz.domain.memory.controller;
 
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
+import com.grouproom.xyz.domain.memory.dto.request.ModifyMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryDetailResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
-import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +53,16 @@ public class MemoryController {
         AddMemoryResponse addMemoryResponse = memoryService.addMemory(userSeq, addMemoryRequest, images, audios);
 
         return new BaseResponse(addMemoryResponse);
+    }
+
+    @PutMapping(value = "/{memorySeq}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseResponse<?> modifyMemory(@PathVariable("memorySeq") Long memorySeq, @RequestPart ModifyMemoryRequest modifyMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
+        logger.info("modifyMemory 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        memoryService.modifyMemory(userSeq, memorySeq, modifyMemoryRequest, images, audios);
+
+        return new BaseResponse("추억앨범 수정 성공");
     }
 
     @DeleteMapping("/{memorySeq}")
@@ -134,4 +143,5 @@ public class MemoryController {
         memoryService.removeMemoryComment(userSeq, commentSeq);
 
         return new BaseResponse("댓글 삭제 성공");
-    }}
+    }
+}
