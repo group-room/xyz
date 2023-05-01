@@ -43,7 +43,7 @@ function Container({
           } px-2 py-1 rounded-t border-black border-b`}
         >
           {titleImgSrc && titleImgAlt && (
-            <Image src={titleImgSrc} alt={titleImgAlt} width={16} height={15} />
+            <Image src={titleImgSrc} alt={titleImgAlt} width={15} height={12} />
           )}
           {titleText}
         </div>
