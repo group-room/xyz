@@ -19,6 +19,8 @@ public class MemoryInfoResponse {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String location;
+    private Boolean isLiked;
+    private Integer likeCnt;
     private List<MemoryFileResponse> files;
 
     @Builder

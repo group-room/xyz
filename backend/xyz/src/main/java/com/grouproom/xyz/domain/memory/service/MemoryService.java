@@ -29,7 +29,11 @@ public interface MemoryService {
 
     void removeMemoryLike(Long userSeq, Long memorySeq);
 
-    MemoryDetailResponse findMemoryDetail(Long memorySeq);
+    MemoryDetailResponse findMemoryDetail(Long userSeq, Long memorySeq);
 
     void addMemoryComment(Long userSeq, Long memorySeq, String content);
+
+    Boolean checkIsLiked(Long userSeq, Long memorySeq);
+
+    Integer countMemoryLikes(Long memorySeq);
 }
