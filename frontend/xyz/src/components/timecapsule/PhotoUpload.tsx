@@ -74,10 +74,10 @@ export default function PhotoUpload({
   };
 
   return (
-    <div className="w-full border-2 border-black rounded-md">
+    <div className="w-full border border-black rounded-md">
       {/* 날짜 선택 영역 */}
-      <div className="flex items-center gap-3 mb-4 border-b-2 border-black ">
-        <div className="flex w-12 h-[35px] items-center justify-center bg-pink border-r-2 border-black">
+      <div className="flex items-center gap-3 mb-4 border-b border-black ">
+        <div className="flex w-12 h-[35px] items-center justify-center bg-pink border-r border-black">
           <Image src="/icons/calendar.svg" alt="달력 아이콘" width={19} height={19}/>
         </div>
         <div className="grow">
@@ -96,7 +96,7 @@ export default function PhotoUpload({
       <div className="w-full flex items-center gap-2 mb-3">
         <label
           htmlFor="input-file"
-          className="flex items-center justify-center w-full h-[25vh] font-light text-slate-400 cursor-pointer"
+          className="flex items-center justify-center w-full h-[20vh] font-light text-slate-400 cursor-pointer"
         >
           {photos?.length > 0
             ? "ヘㅏ진 ㉰시 선택㉭ドブl"
