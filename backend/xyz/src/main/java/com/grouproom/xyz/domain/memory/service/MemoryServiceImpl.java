@@ -66,9 +66,13 @@ public class MemoryServiceImpl implements MemoryService {
         // TODO: 무한스크롤 구현 필요
         if (memoryListRequest.getLatitude() == null | memoryListRequest.getLongitude() == null) {
             logger.info("위치 정보 없음");
+
             List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
 
-            logger.info(memoryResponses.toString());
+            for (MemoryResponse memoryResponse : memoryResponses) {
+                memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
+                memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+            }
 
             return MemoryListResponse.builder()
                     .memories(memoryResponses)
@@ -77,6 +81,7 @@ public class MemoryServiceImpl implements MemoryService {
 
         logger.info("위치 정보 있음");
         List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeqAndCoordinate(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
+
         return MemoryListResponse.builder()
                 .memories(memoryResponses)
                 .build();
@@ -131,6 +136,7 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public MemoryListResponse findMyMemory(Long userSeq) {
         logger.info("findMyMemory 호출");
 
@@ -290,5 +296,19 @@ public class MemoryServiceImpl implements MemoryService {
         memoryCommentRepository.save(memoryComment);
 
         return;
+    }
+
+    @Override
+    public Boolean checkIsLiked(Long userSeq, Long memorySeq) {
+        Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
+        if (memoryLike.get().getIsSelected()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Integer countMemoryLikes(Long memorySeq) {
+        return memoryLikeRepository.findByMemory_Sequence(memorySeq).size();
     }
 }

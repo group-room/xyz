@@ -15,6 +15,8 @@ public class MemoryResponse {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String location;
+    private Boolean isLiked;
+    private Integer likeCnt;
 
     public MemoryResponse(Long memorySeq, Long aztSeq, String aztName, LocalDateTime date, BigDecimal latitude, BigDecimal longitude, String location) {
         this.memorySeq = memorySeq;

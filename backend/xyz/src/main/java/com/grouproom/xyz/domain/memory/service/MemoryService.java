@@ -32,4 +32,8 @@ public interface MemoryService {
     MemoryDetailResponse findMemoryDetail(Long memorySeq);
 
     void addMemoryComment(Long userSeq, Long memorySeq, String content);
+
+    Boolean checkIsLiked(Long userSeq, Long memorySeq);
+
+    Integer countMemoryLikes(Long memorySeq);
 }

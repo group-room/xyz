@@ -45,7 +45,7 @@ public class MemoryController {
     }
 
     @PostMapping()
-    public BaseResponse<?> addMemory(@RequestPart AddMemoryRequest addMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) {
+    public BaseResponse<?> addMemory(@RequestPart AddMemoryRequest addMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
         logger.info("addMemory 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
