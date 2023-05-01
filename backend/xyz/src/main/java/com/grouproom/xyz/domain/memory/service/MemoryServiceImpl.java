@@ -69,6 +69,7 @@ public class MemoryServiceImpl implements MemoryService {
 
             List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
 
+
             for (MemoryResponse memoryResponse : memoryResponses) {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
@@ -81,6 +82,11 @@ public class MemoryServiceImpl implements MemoryService {
 
         logger.info("위치 정보 있음");
         List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeqAndCoordinate(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getLatitude(), memoryListRequest.getLongitude(), memoryListRequest.getDate());
+
+        for (MemoryResponse memoryResponse : memoryResponses) {
+            memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
+            memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+        }
 
         return MemoryListResponse.builder()
                 .memories(memoryResponses)
@@ -156,6 +162,11 @@ public class MemoryServiceImpl implements MemoryService {
             memoryResponses.add(memoryResponse);
         }
 
+        for (MemoryResponse memoryResponse : memoryResponses) {
+            memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
+            memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
+        }
+
         return MemoryListResponse.builder()
                 .memories(memoryResponses)
                 .build();
@@ -181,6 +192,11 @@ public class MemoryServiceImpl implements MemoryService {
                     memory.getLocation()
             );
             memoryResponses.add(memoryResponse);
+        }
+
+        for (MemoryResponse memoryResponse : memoryResponses) {
+            memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
+            memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
         }
 
         return MemoryListResponse.builder()
@@ -236,7 +252,7 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public MemoryDetailResponse findMemoryDetail(Long memorySeq) {
+    public MemoryDetailResponse findMemoryDetail(Long userSeq, Long memorySeq) {
         logger.info("findMemoryDetail 호출");
 
         Memory memory = memoryRepository.findBySequence(memorySeq);
@@ -267,6 +283,9 @@ public class MemoryServiceImpl implements MemoryService {
                 .memory(memory)
                 .files(memoryFileResponses)
                 .build();
+
+        memoryInfoResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
+        memoryInfoResponse.setLikeCnt(countMemoryLikes(memorySeq));
 
         return MemoryDetailResponse.builder()
                 .comments(commentResponses)
@@ -301,7 +320,7 @@ public class MemoryServiceImpl implements MemoryService {
     @Override
     public Boolean checkIsLiked(Long userSeq, Long memorySeq) {
         Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
-        if (memoryLike.get().getIsSelected()) {
+        if (memoryLike.isPresent() && memoryLike.get().getIsSelected()) {
             return true;
         }
         return false;

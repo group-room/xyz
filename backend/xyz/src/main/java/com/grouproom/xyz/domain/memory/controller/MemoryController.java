@@ -39,7 +39,8 @@ public class MemoryController {
     public BaseResponse<?> memoryDetail(@PathVariable("memorySeq") Long memorySeq) {
         logger.info("memoryDetail 호출");
 
-        MemoryDetailResponse memoryDetail = memoryService.findMemoryDetail(memorySeq);
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        MemoryDetailResponse memoryDetail = memoryService.findMemoryDetail(userSeq, memorySeq);
 
         return new BaseResponse(memoryDetail);
     }
