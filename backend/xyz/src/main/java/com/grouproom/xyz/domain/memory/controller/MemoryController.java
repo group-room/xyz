@@ -8,8 +8,10 @@ import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.BaseResponse;
+import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +47,7 @@ public class MemoryController {
         return new BaseResponse(memoryDetail);
     }
 
-    @PostMapping()
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public BaseResponse<?> addMemory(@RequestPart AddMemoryRequest addMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
         logger.info("addMemory 호출");
 
