@@ -15,8 +15,10 @@ import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
 import com.grouproom.xyz.domain.friend.service.FriendManageService;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,7 +58,7 @@ public class AztServiceImpl implements AztService {
         AztMember loginMember = aztMemberRepository.findByAzt_SequenceAndUser_SequenceAndIsDeleted(aztSeq, loginSeq, false);
         if(null == loginMember) {
             logger.severe("아지트 멤버가 아님");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "아지트 멤버가 아님");
         }
         List<MemberResponse> memberResponses = new ArrayList<>();
         List<AztMember> aztMembers = aztMemberRepository.findByAzt_SequenceAndIsDeleted(aztSeq, false);
@@ -74,7 +76,7 @@ public class AztServiceImpl implements AztService {
         Azt azt = aztRepository.findBySequenceAndIsDeleted(aztSeq, false);
         if(null == azt) {
             logger.severe("삭제된 아지트");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 아지트");
         }
         return AztResponse.builder()
                 .aztSeq(azt.getSequence())
@@ -89,17 +91,17 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public String addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image) {
+    public AztResponse addAzt(Long loginSeq, AztRequest aztRequest, MultipartFile image) {
 
         logger.info("addAzt 호출");
 
         if(null == aztRequest.getName()) {
             logger.severe("이름 미설정");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "이름 미설정");
         }
 
         String imagePath;
-        if(null == image){
+        if(image.isEmpty()){
             logger.info("이미지 등록 안함");
             String number = String.format("%02d", new Random().nextInt(50) + 1);
             imagePath = new StringBuilder().append("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/background/").append(number).append("_PixelSky_1920x1080.png").toString();
@@ -131,7 +133,7 @@ public class AztServiceImpl implements AztService {
                     .build());
             logger.info(user.getSequence() + " 멤버 가입 성공");
         }
-        return "";
+        return findAzt(loginSeq, azt.getSequence());
     }
 
     @Override
@@ -146,20 +148,20 @@ public class AztServiceImpl implements AztService {
             Azt azt = aztMember.getAzt();
             if(azt.getIsDeleted()) {
                 logger.severe("삭제된 아지트");
-                throw new RuntimeException();
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 아지트");
             } else {
                 azt.setAztName(aztRequest.getName());
-                if(null != image) {
+                if(image.isEmpty()) {
+                    logger.info("사진 변경 안함");
+                } else {
                     logger.info("사진 변경");
                     String imagePath = s3UploadService.upload(image, "azt");
                     azt.setAztImage(imagePath);
-                } else {
-                    logger.info("사진 변경 안함");
                 }
             }
         } else {
-            logger.severe("소속된 아지트가 아님");
-            throw new RuntimeException();
+            logger.severe("해당 아지트에 소속되지 않음");
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 아지트에 소속되지 않음");
         }
 
         logger.info("아지트 상세 조회 호출");
@@ -178,7 +180,7 @@ public class AztServiceImpl implements AztService {
             Azt azt = aztMember.getAzt();
             if(azt.getIsDeleted()) {
                 logger.severe("삭제된 아지트");
-                throw new RuntimeException();
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 아지트");
             }
             for (MemberRequest member : aztRequest.getMembers()) {
                 User user = userRepository.findBySequence(member.getUserSeq());
@@ -190,8 +192,8 @@ public class AztServiceImpl implements AztService {
                 logger.info(user.getSequence() + " 멤버 가입");
             }
         } else {
-            logger.severe("소속된 아지트가 아님");
-            throw new RuntimeException();
+            logger.severe("해당 아지트에 소속되지 않음");
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 아지트에 소속되지 않음");
         }
 
         logger.info("아지트 상세 조회 호출");
@@ -216,6 +218,7 @@ public class AztServiceImpl implements AztService {
                                 .profileImage(friend.getProfileImage())
                                 .identify(friend.getIdentify())
                                 .nickname(friend.getNickname())
+                                .chatSeq(friend.getChatSeq())
                         .build());
             }
         }
@@ -226,7 +229,7 @@ public class AztServiceImpl implements AztService {
 
     @Override
     @Transactional
-    public String modifyAztMemberToDelete(Long loginSeq, Long aztSeq) {
+    public AztListResponse modifyAztMemberToDelete(Long loginSeq, Long aztSeq) {
 
         logger.info("modifyAztMemberToDelete 호출");
 
@@ -248,10 +251,10 @@ public class AztServiceImpl implements AztService {
             }
         } else {
             logger.severe("해당 아지트에 소속되지 않음");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 아지트에 소속되지 않음");
         }
 
-        return "";
+        return findAztList(loginSeq);
     }
 
 }
