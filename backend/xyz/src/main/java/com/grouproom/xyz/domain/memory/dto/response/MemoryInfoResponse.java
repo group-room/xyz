@@ -21,6 +21,7 @@ public class MemoryInfoResponse {
     private String location;
     private Boolean isLiked;
     private Integer likeCnt;
+    private Integer commentCnt;
     private List<MemoryFileResponse> files;
 
     @Builder

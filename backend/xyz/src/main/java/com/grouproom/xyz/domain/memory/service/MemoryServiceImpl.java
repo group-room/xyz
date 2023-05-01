@@ -297,6 +297,7 @@ public class MemoryServiceImpl implements MemoryService {
 
         memoryInfoResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
         memoryInfoResponse.setLikeCnt(countMemoryLikes(memorySeq));
+        memoryInfoResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memorySeq).size());
 
         return MemoryDetailResponse.builder()
                 .comments(commentResponses)
