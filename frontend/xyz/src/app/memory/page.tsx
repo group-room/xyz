@@ -7,10 +7,11 @@ import KakaoMap from "@/components/memory/KakaoMap";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
 import { AztTypes, MemoriesTypes, PositionTypes } from "@/types/memory";
 import { getMemories } from "../api/memory";
+import MemoryItem from "@/components/memory/MemoryItem";
 
 function MemoryPage() {
   // 달력에서 선택된 날짜
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   // 아지트 목록
   const [aztList, setAztList] = useState<AztTypes[]>([]);
   // 아지트 필터 토글 설정
@@ -71,9 +72,24 @@ function MemoryPage() {
         chatSeq: "채팅방시퀀스",
       },
     ]);
+
+    // 날짜 형식변환
+    const dateObj = new Date(selectedDate);
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+    const hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes();
+    const seconds = dateObj.getSeconds();
+    const newDateString = `${year}-${month < 10 ? "0" : ""}${month}-${
+      day < 10 ? "0" : ""
+    }${day}T${hours < 10 ? "0" : ""}${hours}:${
+      minutes < 10 ? "0" : ""
+    }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
     // TODO: 추억 목록 불러오기
     getMemories(
-      selectedDate,
+      newDateString,
       currAzt[0].aztSeq!,
       +position.lat.toFixed(7),
       +position.lng.toFixed(7)
@@ -86,63 +102,73 @@ function MemoryPage() {
         setMemories([
           {
             memorySeq: 0,
-            memoryImage:
-              "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "PUBLIC",
             aztSeq: 0,
             aztName: "그룹명",
-            date: "날짜",
+            date: "2023-04-28",
             latitude: 37.513,
             longitude: 127.02929,
-            location: "카카오",
+            location: "서울시 강남구 논현동 127-2",
+            likeCnt: 36,
+            isLiked: true,
+            commentCnt: 21,
           },
           {
             memorySeq: 1,
-            memoryImage:
-              "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
-            date: "날짜",
+            date: "2023-04-28",
             latitude: 37.514,
             longitude: 127.0293,
-            location: "생태연못",
+            location: "서울시 강남구 논현동 127-2",
+            likeCnt: 36,
+            isLiked: false,
+            commentCnt: 21,
           },
           {
             memorySeq: 2,
-            memoryImage:
-              "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
-            date: "날짜",
+            date: "2023-04-28",
             latitude: 37.515,
             longitude: 127.02931,
-            location: "생태연못",
+            location: "서울시 강남구 논현동 127-2",
+            likeCnt: 36,
+            isLiked: true,
+            commentCnt: 21,
           },
           {
             memorySeq: 3,
-            memoryImage:
-              "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
-            date: "날짜",
+            date: "2023-04-28",
             latitude: 37.516,
             longitude: 127.02932,
-            location: "텃밭",
+            location: "서울시 강남구 논현동 127-2",
+            likeCnt: 36,
+            isLiked: false,
+            commentCnt: 21,
           },
           {
             memorySeq: 4,
-            memoryImage:
-              "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+            memoryImage: "/images/photos/img2.jpg",
             accessibility: "GROUP",
             aztSeq: 0,
             aztName: "그룹명",
-            date: "날짜",
+            date: "2023-04-28",
             latitude: 37.517,
             longitude: 127.02933,
-            location: "근린공원",
+            location: "서울시 강남구 논현동 127-2",
+            likeCnt: 36,
+            isLiked: false,
+            commentCnt: 21,
           },
         ]);
       });
@@ -175,6 +201,16 @@ function MemoryPage() {
         locations={memories}
       />
       <MemoryCreateBtn />
+      <div className="flex flex-col mt-4 gap-y-4">
+        {memories?.map((memory, idx) => {
+          return <MemoryItem memory={memory} key={idx} />;
+        })}
+      </div>
+      <div className="flex flex-col mt-4 gap-y-4">
+        {memories?.map((memory, idx) => {
+          return <MemoryItem memory={memory} key={idx} />;
+        })}
+      </div>
     </section>
   );
 }
