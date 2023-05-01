@@ -345,6 +345,10 @@ public class MemoryServiceImpl implements MemoryService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
         }
 
+        if (comment.getUser() != user) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수정 권한이 없는 댓글입니다.");
+        }
+
         if (comment.getIsDeleted()) {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 댓글입니다.");
         }
