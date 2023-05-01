@@ -6,6 +6,8 @@ import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -39,8 +41,11 @@ public class Timecapsule extends BaseTimeEntity {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "is_opened", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "is_opened")
     private Boolean isOpened;
+
+    @Column(name = "is_updatable")
+    private Boolean isUpdatable;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_sequence")
@@ -49,4 +54,9 @@ public class Timecapsule extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "azt_sequence")
     private Azt azt;
+
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
+    @Transactional
+    public void updateIsOpened() {
+    }
 }
