@@ -318,6 +318,7 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Boolean checkIsLiked(Long userSeq, Long memorySeq) {
         Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
         if (memoryLike.isPresent() && memoryLike.get().getIsSelected()) {
@@ -327,7 +328,29 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Integer countMemoryLikes(Long memorySeq) {
         return memoryLikeRepository.findByMemory_Sequence(memorySeq).size();
+    }
+
+    @Override
+    @Transactional
+    public void modifyMemoryComment(Long userSeq, Long commentSeq, String content) {
+        logger.info("modifyMemoryComment 호출");
+
+        User user = userRepository.findBySequence(userSeq);
+        MemoryComment comment = memoryCommentRepository.findBySequence(commentSeq);
+
+        if (comment == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
+        }
+
+        if (comment.getIsDeleted()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 댓글입니다.");
+        }
+
+        comment.updateContent(content);
+
+        return;
     }
 }

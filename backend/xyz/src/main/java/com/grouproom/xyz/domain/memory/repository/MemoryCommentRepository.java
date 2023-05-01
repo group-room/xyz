@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface MemoryCommentRepository extends JpaRepository<MemoryComment, Long>, MemoryCommentRepositoryCustom {
 
+    MemoryComment findBySequence(Long sequence);
+
     List<MemoryComment> findByMemory_Sequence(Long memorySeq);
 }

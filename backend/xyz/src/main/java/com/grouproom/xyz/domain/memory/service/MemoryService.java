@@ -36,4 +36,6 @@ public interface MemoryService {
     Boolean checkIsLiked(Long userSeq, Long memorySeq);
 
     Integer countMemoryLikes(Long memorySeq);
+
+    void modifyMemoryComment(Long userSeq, Long commentSeq, String content);
 }

@@ -8,7 +8,6 @@ import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.BaseResponse;
-import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -119,5 +118,15 @@ public class MemoryController {
         memoryService.addMemoryComment(userSeq, memorySeq, content);
 
         return new BaseResponse("댓글 작성 성공");
+    }
+
+    @PutMapping("/comment/{commentSeq}")
+    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @RequestBody String content) {
+        logger.info("addMemoryComment 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        memoryService.modifyMemoryComment(userSeq, commentSeq, content);
+
+        return new BaseResponse("댓글 수정 성공");
     }
 }
