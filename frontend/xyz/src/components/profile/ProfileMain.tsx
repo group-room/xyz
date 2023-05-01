@@ -36,7 +36,7 @@ function ProfileMain() {
           />
         </div>
       </div>
-      <div className="border-2 border-black m-2 h-[92px] shadow-lg">
+      <div className="border-2 border-black m-2 h-[92px] shadow-lg pb-2">
         <div className="border-black border-b-2">자기소개 한 마디</div>
         <div className="">사랑이란 마법을 믿어볼래</div>
       </div>
