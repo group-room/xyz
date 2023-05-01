@@ -81,8 +81,13 @@ public class SecurityConfig {
 
         configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept",
+                "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Headers", "Access-Control-Allow-Methods",
+                "Access-Control-Allow-Origin", "Access-Control-Expose-Headers", "Access-Control-Max-Age",
+                "Access-Control-Request-Headers", "Access-Control-Request-Method", "Age", "Allow", "Alternates",
+                "Content-Range", "Content-Disposition", "Content-Description"));
+        configuration.setMaxAge(60L);
 
         //custom header 설정
 //        for (String key : Constants.CORS_HEADER_URIS) {
