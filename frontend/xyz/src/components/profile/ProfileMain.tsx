@@ -1,5 +1,5 @@
 "use client";
-import Textbox from "../Textbox";
+import Textbox from "../common/Textbox";
 import Image from "next/image";
 import React from "react";
 

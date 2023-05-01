@@ -1,7 +1,7 @@
 import { MemoriesTypes } from "@/types/memory";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../instance";
-import { queryKeys } from "../queryKeys";
+import { axiosInstance } from "../../app/api/instance";
+import { queryKeys } from "../../constants/queryKeys";
 
 const MEMORY = "/memory";
 
