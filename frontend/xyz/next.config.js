@@ -3,6 +3,10 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    domains: ["localhost", "*"],
+  },
+  reactStrictMode: true,
   // async headers() {
   //   return [
   //     {
@@ -22,10 +26,6 @@ const nextConfig = {
   //     },
   //   ];
   // },
-  images: {
-    domains: ["localhost", "*"],
-  },
-  reactStrictMode: true,
 };
 
 module.exports = nextConfig;

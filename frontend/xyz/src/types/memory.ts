@@ -24,6 +24,7 @@ export type MemoriesTypes = {
   location: string;
   likeCnt: number;
   isLiked: boolean;
+  commentCnt: number;
 };
 
 export interface KakaoMapProps {

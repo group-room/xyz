@@ -6,7 +6,7 @@ import AztFilter from "@/components/memory/AztFilter";
 import KakaoMap from "@/components/memory/KakaoMap";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
 import { AztTypes, MemoriesTypes, PositionTypes } from "@/types/memory";
-import { getMemories } from "../api/memory";
+import { addMemoryLike, getMemories } from "../api/memory";
 import MemoryItem from "@/components/memory/MemoryItem";
 
 function MemoryPage() {
@@ -109,9 +109,10 @@ function MemoryPage() {
             date: "2023-04-28",
             latitude: 37.513,
             longitude: 127.02929,
-            location: "카카오",
+            location: "서울시 강남구 논현동 127-2",
             likeCnt: 36,
             isLiked: true,
+            commentCnt: 21,
           },
           {
             memorySeq: 1,
@@ -122,9 +123,10 @@ function MemoryPage() {
             date: "2023-04-28",
             latitude: 37.514,
             longitude: 127.0293,
-            location: "생태연못",
+            location: "서울시 강남구 논현동 127-2",
             likeCnt: 36,
             isLiked: false,
+            commentCnt: 21,
           },
           {
             memorySeq: 2,
@@ -135,9 +137,10 @@ function MemoryPage() {
             date: "2023-04-28",
             latitude: 37.515,
             longitude: 127.02931,
-            location: "생태연못",
+            location: "서울시 강남구 논현동 127-2",
             likeCnt: 36,
             isLiked: true,
+            commentCnt: 21,
           },
           {
             memorySeq: 3,
@@ -148,9 +151,10 @@ function MemoryPage() {
             date: "2023-04-28",
             latitude: 37.516,
             longitude: 127.02932,
-            location: "텃밭",
+            location: "서울시 강남구 논현동 127-2",
             likeCnt: 36,
             isLiked: false,
+            commentCnt: 21,
           },
           {
             memorySeq: 4,
@@ -161,9 +165,10 @@ function MemoryPage() {
             date: "2023-04-28",
             latitude: 37.517,
             longitude: 127.02933,
-            location: "근린공원",
+            location: "서울시 강남구 논현동 127-2",
             likeCnt: 36,
             isLiked: false,
+            commentCnt: 21,
           },
         ]);
       });
