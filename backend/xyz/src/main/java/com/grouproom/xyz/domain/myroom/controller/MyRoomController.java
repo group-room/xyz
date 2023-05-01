@@ -67,4 +67,17 @@ public class MyRoomController {
         myRoomService.removeMyRoom(userSequence);
         return new BaseResponse(null);
     }
+
+    @GetMapping("")
+    BaseResponse myRoomList(@RequestParam(name = "userSeq",required = false) Long userSeq)
+    {
+        if(null == userSeq) {
+            Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+            return new BaseResponse(myRoomService.findMyRoomByUserSeq(userSequence));
+        }
+        else{
+            return new BaseResponse(myRoomService.findMyRoomByUserSeq(userSeq));
+        }
+    }
+
 }

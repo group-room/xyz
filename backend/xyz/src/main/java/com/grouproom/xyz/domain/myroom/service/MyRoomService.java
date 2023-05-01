@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.myroom.service;
 
+import com.grouproom.xyz.domain.myroom.dto.response.MyRoomResponse;
 import com.grouproom.xyz.domain.myroom.dto.response.StickerResponse;
 import com.grouproom.xyz.domain.myroom.dto.request.StickerRequest;
 
@@ -13,4 +14,5 @@ public interface MyRoomService {
     void addSticker(Long userSeq, StickerRequest stickerRequest);
     void removeMyRoomByStickerSeq(Long userSeq,Long stickerSeq);
     void removeMyRoom(Long userSeq);
+    List<MyRoomResponse> findMyRoomByUserSeq(Long userSeq);
 }

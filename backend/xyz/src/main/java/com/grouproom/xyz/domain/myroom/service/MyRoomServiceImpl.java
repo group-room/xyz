@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.myroom.service;
 
+import com.grouproom.xyz.domain.myroom.dto.response.MyRoomResponse;
 import com.grouproom.xyz.domain.myroom.dto.response.StickerResponse;
 import com.grouproom.xyz.domain.myroom.entity.Sticker;
 import com.grouproom.xyz.domain.myroom.entity.UserSticker;
@@ -35,7 +36,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class MyRoomServiceImpl implements MyRoomService {
 
     private final StickerRepository stickerRepository;
@@ -85,17 +85,12 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Override
     @Transactional
     public void removeMyRoomByStickerSeq(Long userSeq, Long userStickerSeq) {
-        log.error("removeMyRoomByStickerSeq -1");
         User user = userRepository.getReferenceById(userSeq);
-        log.error("removeMyRoomByStickerSeq 0");
         if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
-log.error("removeMyRoomByStickerSeq 1");
         UserSticker userSticker = userStickerRepository
                 .findById(userStickerSeq)
                 .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"없는 스티커입니다."));
-        log.error("removeMyRoomByStickerSeq 2");
         if(!user.equals(userSticker.getUser())) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"삭제 권한이 없습니다.");
-        log.error("removeMyRoomByStickerSeq 3");
         userStickerRepository.delete(userSticker);
     }
 
@@ -106,5 +101,10 @@ log.error("removeMyRoomByStickerSeq 1");
         if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
         userStickerRepository.deleteUserStickerByUser(user);
 
+    }
+
+    @Override
+    public List<MyRoomResponse> findMyRoomByUserSeq(Long userSeq) {
+        return userStickerRepository.selectMyRoomByUserSeq(userSeq);
     }
 }
