@@ -1,6 +1,7 @@
 import { BgColors } from "@/constants/style";
 import Image from "next/image";
 import React from "react";
+import ImageScroll from "./ImageScroll";
 
 type ContainerProps = {
   title?: boolean;

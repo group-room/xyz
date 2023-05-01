@@ -19,7 +19,8 @@ export type PositionTypes = {
   lng: number;
 };
 
-export type MemoriesTypes = {
+// 추억 메인 피드
+export interface MemoriesTypes {
   memorySeq: number;
   memoryImage: string;
   accessibility: string;
@@ -32,7 +33,18 @@ export type MemoriesTypes = {
   likeCnt: number;
   isLiked: boolean;
   commentCnt: number;
-};
+}
+
+// 추억 상세
+export interface MemoryTypes extends MemoriesTypes {
+  files: {
+    filePath: string;
+    fileType: string;
+  }[];
+  content: string;
+  userNickname: string;
+  userSeq: number;
+}
 
 export interface KakaoMapProps {
   height?: number;

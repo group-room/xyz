@@ -7,6 +7,7 @@ import Link from "next/link";
 import { addMemoryLike, deleteMemoryLike } from "@/app/api/memory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { KEYS } from "@/constants/queryKeys";
+import { sliceDate } from "@/utils/sliceDate";
 
 interface MemoryItemProps {
   memory: MemoriesTypes;
@@ -102,7 +103,7 @@ function MemoryItem({ memory }: MemoryItemProps) {
             <div className="flex justify-between mb-1">
               <div className="flex gap-x-2">
                 <img src="/icons/calendar.svg" alt="캘린더 아이콘" />
-                <span>{date.slice(0, 10)}</span>
+                <span>{sliceDate(date)}</span>
               </div>
             </div>
             <div className="flex items-start gap-x-2">
