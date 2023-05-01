@@ -59,7 +59,7 @@ public class AztController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/friend/all")
     public BaseResponse<?> friendList(@RequestParam Long aztSeq) {
         logger.info("friendList 호출");
         Long loginSeq = 1L;

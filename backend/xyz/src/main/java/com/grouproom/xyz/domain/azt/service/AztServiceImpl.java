@@ -216,6 +216,7 @@ public class AztServiceImpl implements AztService {
                                 .profileImage(friend.getProfileImage())
                                 .identify(friend.getIdentify())
                                 .nickname(friend.getNickname())
+                                .chatSeq(friend.getChatSeq())
                         .build());
             }
         }
