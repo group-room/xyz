@@ -14,6 +14,7 @@ public class MemoryInfoResponse {
     private String userNickname;
     private Long aztSeq;
     private String aztName;
+    private String accessibility;
     private String content;
     private String date;
     private BigDecimal latitude;
@@ -30,6 +31,7 @@ public class MemoryInfoResponse {
         this.userNickname = memory.getUser().getNickname();
         this.aztSeq = memory.getAzt().getSequence();
         this.aztName = memory.getAzt().getAztName();
+        this.accessibility = memory.getAccessibility().toString();
         this.content = memory.getContent();
         this.date = memory.getDate().toString();
         this.latitude = memory.getLatitude();
