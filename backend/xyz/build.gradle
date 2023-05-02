@@ -56,6 +56,13 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
 	implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+
+	// kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 }
 
 //querydsl 추가 시작
