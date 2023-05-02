@@ -7,7 +7,7 @@ import KakaoMap from "@/components/memory/KakaoMap";
 import MultiCarousel from "@/components/timecapsule/MultiCarousel";
 import { MEMORY_OPTIONS } from "@/constants/memoryOption";
 import { useMemoryDetail } from "@/hooks/queries/memory";
-import { sliceDate } from "@/utils/sliceDate";
+import { sliceDate } from "@/utils/dateUtils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -52,11 +52,6 @@ function MemoryDetailPage({ params: { slug } }: Props) {
     let imgList = [];
     for (let file of files) {
       imgList.push(file.filePath);
-    }
-    for (let i = 0; i < 10; i++) {
-      imgList.push(
-        "https://dsmdwofhojppt.cloudfront.net/memory/3ee2f9b8-e0c7-4ca0-ad29-98d7a84aa6af.png"
-      );
     }
 
     return (
