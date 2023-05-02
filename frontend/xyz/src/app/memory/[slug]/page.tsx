@@ -105,7 +105,11 @@ function MemoryDetailPage({ params: { slug } }: Props) {
             <LikeBtn memorySeq={slug} isLiked={isLiked} likeCnt={likeCnt} />
           </div>
         </Container>
-        <Comment commentCnt={commentCnt} commentList={comments} />
+        <Comment
+          memorySeq={slug}
+          commentCnt={commentCnt}
+          commentList={comments}
+        />
       </div>
     );
   }
