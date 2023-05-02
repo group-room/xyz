@@ -324,7 +324,7 @@ public class MemoryServiceImpl implements MemoryService {
             }
         }
 
-        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_SequenceAndIsDeletedOrderByCreatedAtDesc(memorySeq, false);
+        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
         List<CommentResponse> commentResponses = new ArrayList<>();
 
         for (MemoryComment memoryComment : memoryComments) {
