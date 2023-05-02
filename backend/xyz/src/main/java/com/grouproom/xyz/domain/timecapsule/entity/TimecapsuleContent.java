@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.timecapsule.entity;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,10 +24,17 @@ public class TimecapsuleContent extends BaseTimeEntity {
     @JoinColumn(name = "user_sequence")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "timecapsule_sequence")
-    private Timecapsule timecapsuleSequence;
+    private Timecapsule timecapsule;
 
     @Column(length = 200, name = "content")
     private String content;
+
+    @Builder
+    public TimecapsuleContent(String content, User user, Timecapsule timecapsule) {
+        this.content = content;
+        this.user = user;
+        this.timecapsule = timecapsule;
+    }
 }
