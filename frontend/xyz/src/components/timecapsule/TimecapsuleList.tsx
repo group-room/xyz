@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function TimecapsuleList() {
   return (
     <div className='flex overflow-x-auto scrollbar-hide '>
-      <Link href={"/timecapsule"}>
+      <Link href={"/capsule/create"}>
         <div className='relative flex flex-col items-center justify-center shrink-0 mr-2'>
           <div className='flex items-center justify-center bg-pink rounded-full w-[65px] h-[65px]'>
             <Image src={Plus} alt='btn' />
