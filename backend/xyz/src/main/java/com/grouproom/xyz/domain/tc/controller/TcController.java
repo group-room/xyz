@@ -52,4 +52,13 @@ public class TcController {
 
         return new BaseResponse(openedTcDetailsResponse);
     }
-}
+
+    @GetMapping("/random")
+    public BaseResponse<?> randomOpenedTcDetails() throws Exception {
+        logger.info("randomOpenedTcDetails 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        OpenedTcDetailsResponse openedTcDetailsResponse = tcService.findRandomOpenedTcDetails(userSeq);
+
+        return new BaseResponse(openedTcDetailsResponse);
+    }}
