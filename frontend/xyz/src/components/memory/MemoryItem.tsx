@@ -6,6 +6,7 @@ import { MemoriesTypes } from "@/types/memory";
 import Link from "next/link";
 import { sliceDate } from "@/utils/dateUtils";
 import LikeBtn from "./LikeBtn";
+import Image from "next/image";
 
 interface MemoryItemProps {
   memory: MemoriesTypes;
@@ -45,7 +46,6 @@ function MemoryItem({ memory }: MemoryItemProps) {
               className="rounded max-w-[120px]"
             />
           </div>
-
           <div className="w-full flex flex-col justify-evenly">
             <div className="flex justify-between mb-1">
               <div className="flex gap-x-2">
@@ -63,7 +63,12 @@ function MemoryItem({ memory }: MemoryItemProps) {
       <div className="flex gap-x-2">
         <LikeBtn memorySeq={memorySeq} isLiked={isLiked} likeCnt={likeCnt} />
         <div className="flex gap-x-1">
-          <img src="/icons/comment.svg" alt="" />
+          <Image
+            src="/icons/chat.svg"
+            alt="댓글 아이콘"
+            width={17}
+            height={17}
+          />
           <span>{commentCnt}</span>
         </div>
       </div>

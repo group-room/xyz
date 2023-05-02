@@ -1,6 +1,7 @@
 import { addMemoryLike, deleteMemoryLike } from "@/app/api/memory";
 import { KEYS } from "@/constants/queryKeys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 import React from "react";
 
 type LikeBtnProps = {
@@ -36,13 +37,23 @@ function LikeBtn({ memorySeq, isLiked, likeCnt }: LikeBtnProps) {
 
   return (
     <div
-      className="flex gap-x-1 cursor-pointer"
+      className="flex gap-x-1 cursor-pointer w-fit"
       onClick={(e) => handleClickLike(e)}
     >
       {isLiked ? (
-        <img src="/icons/heart-fill.svg" alt="하트 아이콘" />
+        <Image
+          src="/icons/heart-fill.svg"
+          alt="하트 아이콘"
+          width={18}
+          height={18}
+        />
       ) : (
-        <img src="/icons/heart.svg" alt="하트 아이콘" />
+        <Image
+          src="/icons/heart.svg"
+          alt="하트 아이콘"
+          width={16}
+          height={16}
+        />
       )}
       <span>{likeCnt}</span>
     </div>
