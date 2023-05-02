@@ -13,9 +13,10 @@ export const useMemoryList = (
 ) => {
   return useQuery<MemoriesTypes[]>({
     queryKey: queryKeys.memory.memoryList(date, aztSeq, latitude, longitude),
-    queryFn: async () => {
-      return axiosInstance.get(MEMORY).then((res) => res.data.data.memories);
-    },
+    queryFn: async () =>
+      axiosInstance
+        .get(MEMORY, { params: { date, aztSeq, latitude, longitude } })
+        .then((res) => res.data.data.memories),
   });
 };
 
