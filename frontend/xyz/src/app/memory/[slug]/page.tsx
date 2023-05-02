@@ -3,7 +3,9 @@
 import Container from "@/components/common/Container";
 import ImageScroll from "@/components/common/ImageScroll";
 import Textbox from "@/components/common/Textbox";
+import Comment from "@/components/memory/Comment";
 import KakaoMap from "@/components/memory/KakaoMap";
+import LikeBtn from "@/components/memory/LikeBtn";
 import MultiCarousel from "@/components/timecapsule/MultiCarousel";
 import { MEMORY_OPTIONS } from "@/constants/memoryOption";
 import { useMemoryDetail } from "@/hooks/queries/memory";
@@ -25,7 +27,7 @@ function MemoryDetailPage({ params: { slug } }: Props) {
     return <div>로딩중 ㄱ-...</div>;
   }
   if (!memory) {
-    // TODO: 없는 memorySeq라면 not found
+    // 없는 memorySeq라면 not found
     notFound();
   }
 
@@ -47,6 +49,7 @@ function MemoryDetailPage({ params: { slug } }: Props) {
       userNickname,
       accessibility,
       files,
+      comments,
     } = memory;
 
     let imgList = [];
@@ -86,7 +89,7 @@ function MemoryDetailPage({ params: { slug } }: Props) {
           titleImgSrc={"/icons/images.svg"}
           titleImgAlt={"사진 아이콘"}
         >
-          <div className="p-2">
+          <div className="flex flex-col gap-y-2 p-2">
             <MultiCarousel>
               {imgList.map((imgSrc, idx) => (
                 <img
@@ -99,8 +102,10 @@ function MemoryDetailPage({ params: { slug } }: Props) {
               ))}
             </MultiCarousel>
             <div>{content}</div>
+            <LikeBtn memorySeq={slug} isLiked={isLiked} likeCnt={likeCnt} />
           </div>
         </Container>
+        <Comment commentCnt={commentCnt} commentList={comments} />
       </div>
     );
   }
