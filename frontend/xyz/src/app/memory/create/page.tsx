@@ -2,12 +2,16 @@
 
 import Btn from "@/components/common/Btn";
 import KakaoMap from "@/components/memory/KakaoMap";
-import { AztTypes, Photo, PhotoMetadata, PositionTypes } from "@/types/memory";
+import { AztTypes, PhotoMetadata, PositionTypes } from "@/types/memory";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PhotoUpload from "@/components/memory/PhotoUpload";
 import DropDown from "@/components/memory/DropDown";
 import { createMemory } from "@/app/api/memory";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { KEYS } from "@/constants/queryKeys";
+import { convertDate } from "@/utils/dateUtils";
+import { useAztList } from "@/hooks/queries/azt";
 
 function MemoryCreatePage() {
   const router = useRouter();
@@ -21,79 +25,58 @@ function MemoryCreatePage() {
   }); // 현재 위치
   const [position, setPosition] = useState<PositionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
   const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
-  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [photos, setPhotos] = useState<File[]>([]);
   const [metadata, setMetadata] = useState<PhotoMetadata | null>(null);
   const [content, setContent] = useState<string>("");
 
+  const queryClient = useQueryClient();
+  const useCreateMemoryMutation = useMutation({
+    mutationFn: (formData: FormData) => createMemory(formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.memory);
+    },
+  });
+
+  const { data: aztListData, isLoading } = useAztList();
   useEffect(() => {
-    // TODO: 그룹 목록 불러오기
-    const res = [
-      {
-        aztSeq: 0,
-        image: "대표사진 경로",
-        name: "그룹 이름1",
-        createdAt: "생성시간",
-        updatedAt: "수정시간",
-        chatSeq: "채팅방시퀀스",
-      },
-      {
-        aztSeq: 1,
-        image: "대표사진 경로",
-        name: "그룹 이름2",
-        createdAt: "생성시간",
-        updatedAt: "수정시간",
-        chatSeq: "채팅방시퀀스",
-      },
-      {
-        aztSeq: 2,
-        image: "대표사진 경로",
-        name: "그룹 이름33333333333333333333333333333333333333333333333333333333333333333333",
-        createdAt: "생성시간",
-        updatedAt: "수정시간",
-        chatSeq: "채팅방시퀀스",
-      },
-    ];
-    setAztList(res);
-    setCurrAzt([res[0]]);
-  }, []);
+    if (aztListData) {
+      setAztList(aztListData);
+      setCurrAzt([aztListData[0]]);
+    }
+  }, [aztListData]);
 
   const handleSubmitMemory = (e?: React.FormEvent): void => {
     e!.preventDefault();
-    let photoFiles = [];
-    for (const photo of photos) {
-      photoFiles.push(photo.file);
-    }
 
-    // 날짜 형식변환
-    const dateObj = new Date(selectedDate);
-    const year = dateObj.getFullYear();
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
-    const hours = dateObj.getHours();
-    const minutes = dateObj.getMinutes();
-    const seconds = dateObj.getSeconds();
-    const newDateString = `${year}-${month < 10 ? "0" : ""}${month}-${
-      day < 10 ? "0" : ""
-    }${day}T${hours < 10 ? "0" : ""}${hours}:${
-      minutes < 10 ? "0" : ""
-    }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    const formData = new FormData();
+    const stringifiedData = JSON.stringify({
+      content: content,
+      accessibility: rangeOption,
+      aztSeq: currAzt[0].aztSeq!,
+      date: convertDate(selectedDate),
+      latitude: +position.lat.toFixed(7),
+      longitude: +position.lng.toFixed(7),
+      location: address,
+    });
+    const jsonData = new Blob([stringifiedData], {
+      type: "application/json",
+    });
+    // 음성이든 비디오든 할 경우...
+    // const videofile = new File([videoFiles], "videoFile.webm", {
+    //   type: "video/webm",
+    // });
+    formData.append("addMemoryRequest", jsonData);
+    photos.forEach((photo) => {
+      formData.append("images", photo);
+    });
 
-    createMemory(
-      content,
-      rangeOption,
-      currAzt[0].aztSeq!,
-      newDateString,
-      +position.lat.toFixed(7),
-      +position.lng.toFixed(7),
-      address,
-      photoFiles
-    )
-      .then((res) => {
-        console.log(res.data.data.memorySeq);
-        const memorySeq = res.data.data.memorySeq;
-        router.push(`/memory/${memorySeq}`);
-      })
-      .catch((err) => console.log(err));
+    useCreateMemoryMutation.mutate(formData, {
+      onSuccess: (data) => {
+        console.log(data);
+        const memorySeq = data.data.data.memorySeq;
+        router.push(`/memory/${memorySeq}`); // 생성 완료후 상세로 이동
+      },
+    });
   };
 
   const handleDateChange = (date: Date) => setSelectedDate(date);

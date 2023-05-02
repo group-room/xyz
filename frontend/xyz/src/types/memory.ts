@@ -58,11 +58,6 @@ export interface KakaoMapProps {
   isPhotoUpload?: boolean;
 }
 
-export interface Photo {
-  file: File;
-  preview: string;
-}
-
 export type PhotoMetadata = {
   location?: {
     latitude: number;
