@@ -23,6 +23,7 @@ public class MemoryLikeRepositoryImpl implements MemoryLikeRepositoryCustom {
                 .where(memoryLike.user.sequence.eq(userSeq))
                 .where(memoryLike.isSelected.eq(true))
                 .where(memory.isDeleted.eq(false))
+                .orderBy(memoryLike.updatedAt.desc())
                 .fetch();
     }
 }

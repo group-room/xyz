@@ -66,6 +66,7 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
                 .where(eqAzt(aztSeq))
                 .where(eqDate(date))
                 .where(memory.isDeleted.eq(false))
+                .orderBy(memory.createdAt.desc())
                 .fetch();
     }
 
