@@ -1,7 +1,7 @@
-package com.grouproom.xyz.domain.timecapsule.entity;
+package com.grouproom.xyz.domain.tc.entity;
 
 import com.grouproom.xyz.domain.azt.entity.Azt;
-import com.grouproom.xyz.domain.timecapsule.dto.reqeust.AddTimecapsuleRequest;
+import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Timecapsule extends BaseTimeEntity {
+public class Tc extends BaseTimeEntity {
 
     @Id
     @Column(name = "sequence")
@@ -58,13 +58,13 @@ public class Timecapsule extends BaseTimeEntity {
     private Azt azt;
 
     @Builder
-    public Timecapsule(User user, Azt azt, AddTimecapsuleRequest addTimecapsuleRequest) {
-        this.openStart = addTimecapsuleRequest.getOpenStart();
-        this.openEnd = addTimecapsuleRequest.getOpenEnd();
-        this.updateEnd = addTimecapsuleRequest.getUpdateEnd();
-        this.latitude = addTimecapsuleRequest.getLatitude();
-        this.longitude = addTimecapsuleRequest.getLongitude();
-        this.location = addTimecapsuleRequest.getLocation();
+    public Tc(User user, Azt azt, AddTcRequest addTcRequest) {
+        this.openStart = addTcRequest.getOpenStart();
+        this.openEnd = addTcRequest.getOpenEnd();
+        this.updateEnd = addTcRequest.getUpdateEnd();
+        this.latitude = addTcRequest.getLatitude();
+        this.longitude = addTcRequest.getLongitude();
+        this.location = addTcRequest.getLocation();
         this.isOpened = false;
         this.isUpdatable = true;
         this.user = user;

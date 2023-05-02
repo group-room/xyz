@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.timecapsule.entity;
+package com.grouproom.xyz.domain.tc.entity;
 
 import lombok.*;
 
@@ -9,8 +9,8 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTimecapsuleId implements Serializable {
+public class UserTcId implements Serializable {
 
     private Long user;
-    private Long timecapsule;
+    private Long tc;
 }

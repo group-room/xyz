@@ -1,4 +1,4 @@
-package com.grouproom.xyz.domain.timecapsule.entity;
+package com.grouproom.xyz.domain.tc.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import com.grouproom.xyz.global.model.FileType;
@@ -11,9 +11,9 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "timecapsule_content_file")
+@Table(name = "tc_content_file")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TimecapsuleContentFile extends BaseTimeEntity {
+public class TcContentFile extends BaseTimeEntity {
 
     @Id
     @Column(name = "sequence")
@@ -21,8 +21,8 @@ public class TimecapsuleContentFile extends BaseTimeEntity {
     private Long sequence;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "timecapsule_content_sequence")
-    private TimecapsuleContent timecapsuleContent;
+    @JoinColumn(name = "tc_content_sequence")
+    private TcContent tcContent;
 
     @Enumerated
     @Column(name = "file_type")
@@ -32,8 +32,8 @@ public class TimecapsuleContentFile extends BaseTimeEntity {
     private String filePath;
 
     @Builder
-    public TimecapsuleContentFile(TimecapsuleContent timecapsuleContent, FileType fileType, String filePath) {
-        this.timecapsuleContent = timecapsuleContent;
+    public TcContentFile(TcContent tcContent, FileType fileType, String filePath) {
+        this.tcContent = tcContent;
         this.fileType = fileType;
         this.filePath = filePath;
     }
