@@ -7,6 +7,7 @@ import { BgColors } from "@/constants/style";
 import React from "react";
 import { useState } from "react";
 import ProfileMain from "../../components/profile/ProfileMain";
+import ProfileTab from "../../components/profile/ProfileTab";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -32,6 +33,9 @@ function ProfilePage() {
             btnFunc={buttonClick}
           />
         </div>
+      </div>
+      <div className="mt-5">
+        <ProfileTab />
       </div>
       {/* <div onClick={handleClick}> ProfilePage</div> */}
       {isModal && (

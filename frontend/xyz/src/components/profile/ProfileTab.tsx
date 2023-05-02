@@ -2,24 +2,15 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Myroom from "../../../public/icons/home.svg";
+import Visitor from "../../../public/icons/reciept.svg";
 
 type ButtonProps = {
-  textL: string;
-  textR: string;
-  imgL?: string;
-  imgR?: string;
   value: boolean;
   onChange: (value: boolean) => void;
 };
 
-export default function ToggleBtn({
-  textL,
-  textR,
-  imgL,
-  imgR,
-  value,
-  onChange,
-}: ButtonProps) {
+export default function ToggleBtn({ value, onChange }: ButtonProps) {
   const [isClick, setIsClick] = useState(true);
 
   const handleChange = (v: boolean) => {
@@ -27,7 +18,7 @@ export default function ToggleBtn({
   };
 
   return (
-    <div className="flex border-2 border-black rounded-md h-10">
+    <div className="flex border-t-2 border-l-2 border-r-2 border- border-black rounded-md h-10">
       <div
         className={`flex w-1/2 items-center justify-center border-r-2 border-black ${
           isClick ? "bg-yellow" : ""
@@ -37,14 +28,10 @@ export default function ToggleBtn({
           handleChange(true);
         }}
       >
-        {imgL ? (
-          <div className="mr-2">
-            <Image src={imgL} alt="이미지" width={20} height={20} />
-          </div>
-        ) : (
-          ""
-        )}
-        {textL}
+        <div className="mr-2">
+          <Image src={Myroom} alt="이미지" width={20} height={20} />
+        </div>
+        마이룸
       </div>
       <div
         className={`flex w-1/2 items-center justify-center border-black ${
@@ -55,14 +42,10 @@ export default function ToggleBtn({
           handleChange(false);
         }}
       >
-        {imgR ? (
-          <div className="mr-2">
-            <Image src={imgR} alt="이미지" width={20} height={20} />
-          </div>
-        ) : (
-          ""
-        )}
-        {textR}
+        <div className="mr-2">
+          <Image src={Visitor} alt="이미지" width={20} height={20} />
+        </div>
+        방명록
       </div>
     </div>
   );
