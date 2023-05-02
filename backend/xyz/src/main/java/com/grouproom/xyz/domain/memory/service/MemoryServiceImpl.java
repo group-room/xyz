@@ -70,7 +70,6 @@ public class MemoryServiceImpl implements MemoryService {
 
             List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
 
-
             for (MemoryResponse memoryResponse : memoryResponses) {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
@@ -196,7 +195,7 @@ public class MemoryServiceImpl implements MemoryService {
     public MemoryListResponse findMyMemory(Long userSeq) {
         logger.info("findMyMemory 호출");
 
-        List<Memory> memories = memoryRepository.findByUser_Sequence(userSeq);
+        List<Memory> memories = memoryRepository.findByUser_SequenceOrderByCreatedAtDesc(userSeq);
         List<MemoryResponse> memoryResponses = new ArrayList<>();
 
         for (Memory memory : memories) {
@@ -325,7 +324,7 @@ public class MemoryServiceImpl implements MemoryService {
             }
         }
 
-        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
+        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_SequenceAndIsDeletedOrderByCreatedAtDesc(memorySeq, false);
         List<CommentResponse> commentResponses = new ArrayList<>();
 
         for (MemoryComment memoryComment : memoryComments) {
