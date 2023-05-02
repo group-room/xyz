@@ -5,7 +5,7 @@ import ImageScroll from "@/components/common/ImageScroll";
 import Textbox from "@/components/common/Textbox";
 import KakaoMap from "@/components/memory/KakaoMap";
 import MultiCarousel from "@/components/timecapsule/MultiCarousel";
-import { options } from "@/constants/option";
+import { MEMORY_OPTIONS } from "@/constants/memoryOption";
 import { useMemoryDetail } from "@/hooks/queries/memory";
 import { sliceDate } from "@/utils/sliceDate";
 import Image from "next/image";
@@ -81,12 +81,14 @@ function MemoryDetailPage({ params: { slug } }: Props) {
         <Textbox
           icon={"/icons/check.svg"}
           alt={"달력 아이콘"}
-          maintext={options[accessibility as keyof typeof options]}
+          maintext={
+            MEMORY_OPTIONS[accessibility as keyof typeof MEMORY_OPTIONS]
+          }
         />
         <Container
           title
-          titleText={`${userNickname}님의 추억 (${imgList.length})`}
-          titleImgSrc={"/icons/image.svg"}
+          titleText={`${userNickname} 님의 추억 (${imgList.length})`}
+          titleImgSrc={"/icons/images.svg"}
           titleImgAlt={"사진 아이콘"}
         >
           <div className="p-2">
