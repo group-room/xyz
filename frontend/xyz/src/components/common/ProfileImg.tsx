@@ -7,13 +7,11 @@ type ProfileImgProps = {
 
 export default function ProfileImg({ imgSrc }: ProfileImgProps) {
   return (
-    <div className="w-12">
+    <div>
       <img
-        className="rounded-full overflow-hidden border border-pink p-1"
+        className="w-14 h-14 object-cover rounded-full border border-pink p-1"
         src={imgSrc}
         alt="프로필 이미지"
-        width={60}
-        height={60}
       />
     </div>
   );
