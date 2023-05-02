@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -73,11 +74,11 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.visitCount = 0;
         this.introduce = "소개 글을 작성해보세요.";
-        String number = String.format("%02d", new Random().nextInt(50) + 1);
+        String number = String.format("%02d", new SecureRandom().nextInt(50) + 1);
         this.backgroundImage = new StringBuilder().append("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/background/").append(number).append("_PixelSky_1920x1080.png").toString();
-        String number2 = String.format("%01d", new Random().nextInt(9));
+        String number2 = String.format("%01d", new SecureRandom().nextInt(9));
         this.profileImage = new StringBuilder().append("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/profileImg/").append(number2).append(".jpg").toString();
-        String code = String.format("%06d", new Random().nextInt(1000000));
+        String code = String.format("%06d", new SecureRandom().nextInt(1000000));
         this.identify = new StringBuilder().append("#").append(code).toString();
     }
 
