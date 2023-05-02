@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.timecapsule.entity;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import com.grouproom.xyz.global.model.FileType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,14 +20,21 @@ public class TimecapsuleContentFile extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sequence;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "timecapsule_content_sequence")
-    private TimecapsuleContent timecapsuleContentSequence;
+    private TimecapsuleContent timecapsuleContent;
 
     @Enumerated
     @Column(name = "file_type")
     private FileType fileType;
 
     @Column(name = "file_path")
-    private boolean filePath;
+    private String filePath;
+
+    @Builder
+    public TimecapsuleContentFile(TimecapsuleContent timecapsuleContent, FileType fileType, String filePath) {
+        this.timecapsuleContent = timecapsuleContent;
+        this.fileType = fileType;
+        this.filePath = filePath;
+    }
 }
