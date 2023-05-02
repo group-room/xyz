@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.timecapsule.controller;
 import com.grouproom.xyz.domain.timecapsule.dto.reqeust.AddTimecapsuleContentRequest;
 import com.grouproom.xyz.domain.timecapsule.dto.reqeust.AddTimecapsuleRequest;
 import com.grouproom.xyz.domain.timecapsule.dto.response.AddTimecapsuleResponse;
+import com.grouproom.xyz.domain.timecapsule.dto.response.OpenedTimecapsuleDetailsResponse;
 import com.grouproom.xyz.domain.timecapsule.service.TimecapsuleService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,15 @@ public class TimecapsuleController {
         timecapsuleService.addTimecapsuleContent(userSeq, timecapsuleSeq, addTimecapsuleContentRequest.getContent(), images, audios);
 
         return new BaseResponse("타임캡슐 내용 추가 성공");
+    }
+
+    @GetMapping("/{timecapsuleSeq}")
+    public BaseResponse<?> openedTimecapsuleDetails(@PathVariable("timecapsuleSeq") Long timecapsuleSeq) throws Exception {
+        logger.info("openedTimecapsuleDetails 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        OpenedTimecapsuleDetailsResponse openedTimecapsuleDetailsResponse = timecapsuleService.findOpenedTimecapsuleDetails(userSeq, timecapsuleSeq);
+
+        return new BaseResponse(openedTimecapsuleDetailsResponse);
     }
 }

@@ -4,7 +4,7 @@ import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.azt.repository.AztMemberRepository;
 import com.grouproom.xyz.domain.azt.repository.AztRepository;
 import com.grouproom.xyz.domain.timecapsule.dto.reqeust.AddTimecapsuleRequest;
-import com.grouproom.xyz.domain.timecapsule.dto.response.AddTimecapsuleResponse;
+import com.grouproom.xyz.domain.timecapsule.dto.response.*;
 import com.grouproom.xyz.domain.timecapsule.entity.Timecapsule;
 import com.grouproom.xyz.domain.timecapsule.entity.TimecapsuleContent;
 import com.grouproom.xyz.domain.timecapsule.entity.TimecapsuleContentFile;
@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -121,5 +122,59 @@ public class TimecapsuleServiceImpl implements TimecapsuleService {
             List<String> audioPaths = s3UploadService.upload(audios, "memory");
             saveTimecapsulecontentFiles(timecapsuleContent, FileType.AUDIO, audioPaths);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OpenedTimecapsuleDetailsResponse findOpenedTimecapsuleDetails(Long userSeq, Long timecapsuleSeq) {
+        logger.info("findOpenedTimecapsuleDetails 호출");
+
+        User user = userRepository.findBySequence(userSeq);
+
+        if (user == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 유저입니다.");
+        }
+
+        Timecapsule timecapsule = timecapsuleRepository.findBySequence(timecapsuleSeq);
+
+        if (timecapsule == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 타임캡슐입니다.");
+        } else if (aztMemberRepository.findByAzt_SequenceAndUser_SequenceAndIsDeleted(timecapsule.getAzt().getSequence(), userSeq, false) == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "접근권한이 없는 타임캡슐입니다.");
+        } else if (!timecapsule.getIsOpened()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "열리지 않은 타임캡슐입니다.");
+        }
+
+        OpenedTimecapsuleResponse openedTimecapsuleResponse = OpenedTimecapsuleResponse.builder()
+                .timecapsule(timecapsule)
+                .build();
+
+        List<TimecapsuleContent> timecapsuleContents = timecapsuleContentRepository.findByTimecapsule_Sequence(timecapsule.getSequence());
+        List<TimecapsuleContentResponse> timecapsuleContentResponses = new ArrayList<>();
+
+        for (TimecapsuleContent timecapsuleContent : timecapsuleContents) {
+            List<TimecapsuleContentFile> timecapsuleContentFiles = timecapsuleContentFileRepository.findByTimecapsuleContent_Sequence(timecapsuleContent.getSequence());
+            List<TimecapsuleContentFileResponse> timecapsuleContentFileResponses = new ArrayList<>();
+
+            for (TimecapsuleContentFile timecapsuleContentFile : timecapsuleContentFiles) {
+                TimecapsuleContentFileResponse timecapsuleContentFileResponse = TimecapsuleContentFileResponse
+                        .builder()
+                        .timecapsuleContentFile(timecapsuleContentFile)
+                        .build();
+                timecapsuleContentFileResponses.add(timecapsuleContentFileResponse);
+            }
+
+            TimecapsuleContentResponse timecapsuleContentResponse = TimecapsuleContentResponse.builder()
+                    .timecapsuleContent(timecapsuleContent)
+                    .files(timecapsuleContentFileResponses)
+                    .build();
+
+            timecapsuleContentResponses.add(timecapsuleContentResponse);
+        }
+
+        return OpenedTimecapsuleDetailsResponse.builder()
+                .timecapsule(openedTimecapsuleResponse)
+                .contents(timecapsuleContentResponses)
+                .build();
     }
 }
