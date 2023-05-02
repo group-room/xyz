@@ -332,19 +332,17 @@ public class MemoryServiceImpl implements MemoryService {
             commentResponses.add(commentResponse);
         }
 
-        MemoryInfoResponse memoryInfoResponse = MemoryInfoResponse.builder()
+        MemoryDetailResponse memoryDetailResponse = MemoryDetailResponse.builder()
                 .memory(memory)
                 .files(memoryFileResponses)
-                .build();
-
-        memoryInfoResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
-        memoryInfoResponse.setLikeCnt(countMemoryLikes(memorySeq));
-        memoryInfoResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false).size());
-
-        return MemoryDetailResponse.builder()
                 .comments(commentResponses)
-                .memory(memoryInfoResponse)
                 .build();
+
+        memoryDetailResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
+        memoryDetailResponse.setLikeCnt(countMemoryLikes(memorySeq));
+        memoryDetailResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false).size());
+
+        return memoryDetailResponse;
     }
 
     @Override
