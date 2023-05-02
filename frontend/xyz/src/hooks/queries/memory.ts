@@ -1,4 +1,4 @@
-import { MemoriesTypes } from "@/types/memory";
+import { MemoriesTypes, MemoryTypes } from "@/types/memory";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../app/api/instance";
 import { queryKeys } from "../../constants/queryKeys";
@@ -15,6 +15,17 @@ export const useMemoryList = (
     queryKey: queryKeys.memory.memoryList(date, aztSeq, latitude, longitude),
     queryFn: async () => {
       return axiosInstance.get(MEMORY).then((res) => res.data.data.memories);
+    },
+  });
+};
+
+export const useMemoryDetail = (memorySeq: number) => {
+  return useQuery<MemoryTypes>({
+    queryKey: queryKeys.memory.memoryDetail(memorySeq),
+    queryFn: async () => {
+      return axiosInstance
+        .get(`${MEMORY}/${memorySeq}`)
+        .then((res) => res.data.data.memory);
     },
   });
 };

@@ -32,12 +32,10 @@ export const createMemory = async (
   return res.data;
 };
 
-export const addMemoryLike = async (memorySeq: number) => {
-  const res = await axiosInstance.post(`${MEMORY}/like/${memorySeq}`);
-  return res.data;
+export const addMemoryLike = (memorySeq: number) => {
+  return axiosInstance.post(`${MEMORY}/like/${memorySeq}`);
 };
 
-export const deleteMemoryLike = async (memorySeq: number) => {
-  const res = await axiosInstance.delete(`${MEMORY}/like/${memorySeq}`);
-  return res.data;
+export const deleteMemoryLike = (memorySeq: number) => {
+  return axiosInstance.delete(`${MEMORY}/like/${memorySeq}`);
 };
