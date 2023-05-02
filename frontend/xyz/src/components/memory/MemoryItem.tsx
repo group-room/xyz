@@ -4,10 +4,8 @@ import React, { useEffect, useState } from "react";
 import Container from "../common/Container";
 import { MemoriesTypes } from "@/types/memory";
 import Link from "next/link";
-import { addMemoryLike, deleteMemoryLike } from "@/app/api/memory";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { KEYS } from "@/constants/queryKeys";
 import { sliceDate } from "@/utils/dateUtils";
+import LikeBtn from "./LikeBtn";
 
 interface MemoryItemProps {
   memory: MemoriesTypes;
@@ -28,30 +26,6 @@ function MemoryItem({ memory }: MemoryItemProps) {
     isLiked,
     commentCnt,
   } = memory;
-
-  const queryClient = useQueryClient();
-  const useAddMemoryLikeMutation = useMutation({
-    mutationFn: () => addMemoryLike(memorySeq),
-    onSuccess: () => {
-      queryClient.invalidateQueries(KEYS.memory);
-    },
-  });
-
-  const useDeleteMemoryLikeMutation = useMutation({
-    mutationFn: () => deleteMemoryLike(memorySeq),
-    onSuccess: () => {
-      queryClient.invalidateQueries(KEYS.memory);
-    },
-  });
-
-  const handleClickLike = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isLiked) {
-      useDeleteMemoryLikeMutation.mutate();
-    } else {
-      useAddMemoryLikeMutation.mutate();
-    }
-  };
 
   return (
     <Container
@@ -87,17 +61,7 @@ function MemoryItem({ memory }: MemoryItemProps) {
         </div>
       </Link>
       <div className="flex gap-x-2">
-        <div
-          className="flex gap-x-1 cursor-pointer"
-          onClick={(e) => handleClickLike(e)}
-        >
-          {isLiked ? (
-            <img src="/icons/heart-fill.svg" alt="하트 아이콘" />
-          ) : (
-            <img src="/icons/heart.svg" alt="하트 아이콘" />
-          )}
-          <span>{likeCnt}</span>
-        </div>
+        <LikeBtn memorySeq={memorySeq} isLiked={isLiked} likeCnt={likeCnt} />
         <div className="flex gap-x-1">
           <img src="/icons/comment.svg" alt="" />
           <span>{commentCnt}</span>
