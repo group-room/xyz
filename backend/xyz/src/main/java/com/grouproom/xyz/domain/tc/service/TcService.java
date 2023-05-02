@@ -19,4 +19,6 @@ public interface TcService {
     void addTcContent(Long userSeq, Long tcSeq, String content, List<MultipartFile> images, List<MultipartFile> audios);
 
     OpenedTcDetailsResponse findOpenedTcDetails(Long userSeq, Long tcSeq);
+
+    OpenedTcDetailsResponse findRandomOpenedTcDetails(Long userSeq);
 }

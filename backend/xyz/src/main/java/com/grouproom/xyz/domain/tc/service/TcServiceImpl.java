@@ -177,4 +177,14 @@ public class TcServiceImpl implements TcService {
                 .contents(tcContentResponses)
                 .build();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OpenedTcDetailsResponse findRandomOpenedTcDetails(Long userSeq) {
+        logger.info("findOpenedTcDetails 호출");
+
+        User user = userRepository.findBySequence(userSeq);
+
+        return null;
+    }
 }
