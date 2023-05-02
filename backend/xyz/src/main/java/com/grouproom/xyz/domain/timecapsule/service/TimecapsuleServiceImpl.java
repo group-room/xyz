@@ -122,6 +122,4 @@ public class TimecapsuleServiceImpl implements TimecapsuleService {
             saveTimecapsulecontentFiles(timecapsuleContent, FileType.AUDIO, audioPaths);
         }
     }
-
-
 }
