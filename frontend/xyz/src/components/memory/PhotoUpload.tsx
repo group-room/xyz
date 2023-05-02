@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import Image from "next/image";
+import MultiCarousel from "../timecapsule/MultiCarousel";
 
 interface PhotoUploadProps {
   selectedDate: Date;
@@ -118,21 +119,12 @@ function PhotoUpload({
           className="hidden"
         />
       </div>
-      <div>
+      {/* 첨부 사진 보여주는 영역 */}
+      <MultiCarousel>
         {photos?.map((photo) => (
           <img key={photo?.preview} src={photo?.preview} alt="Preview" />
         ))}
-      </div>
-      {/* {metadata && (
-        <div>
-          {metadata.location && (
-            <p>
-              Location: ({metadata.location.latitude},{" "}
-              {metadata.location.longitude})
-            </p>
-          )}
-        </div>
-      )} */}
+      </MultiCarousel>
     </div>
   );
 }
