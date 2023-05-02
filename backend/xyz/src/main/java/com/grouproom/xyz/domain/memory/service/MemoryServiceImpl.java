@@ -74,7 +74,7 @@ public class MemoryServiceImpl implements MemoryService {
             for (MemoryResponse memoryResponse : memoryResponses) {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
-                memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+                memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memoryResponse.getMemorySeq(), false).size());
                 memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
             }
 
@@ -89,7 +89,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
-            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memoryResponse.getMemorySeq(), false).size());
             memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
         }
 
@@ -210,7 +210,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
-            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memoryResponse.getMemorySeq(), false).size());
             memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
         }
 
@@ -244,7 +244,7 @@ public class MemoryServiceImpl implements MemoryService {
         for (MemoryResponse memoryResponse : memoryResponses) {
             memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
             memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
-            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memoryResponse.getMemorySeq()).size());
+            memoryResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memoryResponse.getMemorySeq(), false).size());
             memoryResponse.setMemoryImage(findFilePath(memoryResponse.getMemorySeq()));
         }
 
@@ -320,7 +320,7 @@ public class MemoryServiceImpl implements MemoryService {
             }
         }
 
-        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_Sequence(memorySeq);
+        List<MemoryComment> memoryComments = memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
         List<CommentResponse> commentResponses = new ArrayList<>();
 
         for (MemoryComment memoryComment : memoryComments) {
@@ -335,7 +335,7 @@ public class MemoryServiceImpl implements MemoryService {
 
         memoryInfoResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
         memoryInfoResponse.setLikeCnt(countMemoryLikes(memorySeq));
-        memoryInfoResponse.setCommentCnt(memoryCommentRepository.findByMemory_Sequence(memorySeq).size());
+        memoryInfoResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false).size());
 
         return MemoryDetailResponse.builder()
                 .comments(commentResponses)
@@ -380,7 +380,7 @@ public class MemoryServiceImpl implements MemoryService {
     @Override
     @Transactional(readOnly = true)
     public Integer countMemoryLikes(Long memorySeq) {
-        return memoryLikeRepository.findByMemory_Sequence(memorySeq).size();
+        return memoryLikeRepository.findByMemory_SequenceAndIsSelected(memorySeq, true).size();
     }
 
     @Override

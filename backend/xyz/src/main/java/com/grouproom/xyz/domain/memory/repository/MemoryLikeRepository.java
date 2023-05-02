@@ -10,5 +10,7 @@ public interface MemoryLikeRepository extends JpaRepository<MemoryLike, Long>, M
 
     List<MemoryLike> findByMemory_Sequence(Long memorySeq);
 
+    List<MemoryLike> findByMemory_SequenceAndIsSelected(Long memorySeq, Boolean isSelected);
+
     Optional<MemoryLike> findByUser_SequenceAndMemory_Sequence(Long userSeq, Long memorySeq);
 }
