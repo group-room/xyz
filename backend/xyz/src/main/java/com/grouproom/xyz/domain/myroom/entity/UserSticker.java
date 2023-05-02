@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.myroom.entity;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,4 +47,11 @@ public class UserSticker extends BaseTimeEntity {
     @Column(name = "y_location")
     BigDecimal yLocation;
 
+    @Builder
+    public UserSticker(User user, Sticker sticker, BigDecimal xLocation, BigDecimal yLocation) {
+        this.user = user;
+        this.sticker = sticker;
+        this.xLocation = xLocation;
+        this.yLocation = yLocation;
+    }
 }

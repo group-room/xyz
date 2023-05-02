@@ -1,14 +1,12 @@
 package com.grouproom.xyz.domain.memory.dto.request;
 
 import lombok.Data;
-import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@Setter
 public class AddMemoryRequest {
 
     private String content;

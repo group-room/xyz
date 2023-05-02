@@ -14,11 +14,15 @@ public class MemoryInfoResponse {
     private String userNickname;
     private Long aztSeq;
     private String aztName;
+    private String accessibility;
     private String content;
     private String date;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String location;
+    private Boolean isLiked;
+    private Integer likeCnt;
+    private Integer commentCnt;
     private List<MemoryFileResponse> files;
 
     @Builder
@@ -27,6 +31,7 @@ public class MemoryInfoResponse {
         this.userNickname = memory.getUser().getNickname();
         this.aztSeq = memory.getAzt().getSequence();
         this.aztName = memory.getAzt().getAztName();
+        this.accessibility = memory.getAccessibility().toString();
         this.content = memory.getContent();
         this.date = memory.getDate().toString();
         this.latitude = memory.getLatitude();

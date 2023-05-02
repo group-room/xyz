@@ -2,14 +2,14 @@ package com.grouproom.xyz.domain.memory.controller;
 
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
+import com.grouproom.xyz.domain.memory.dto.request.ModifyMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryDetailResponse;
 import com.grouproom.xyz.domain.memory.dto.response.MemoryListResponse;
 import com.grouproom.xyz.domain.memory.service.MemoryService;
-import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,13 +39,14 @@ public class MemoryController {
     public BaseResponse<?> memoryDetail(@PathVariable("memorySeq") Long memorySeq) {
         logger.info("memoryDetail 호출");
 
-        MemoryDetailResponse memoryDetail = memoryService.findMemoryDetail(memorySeq);
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        MemoryDetailResponse memoryDetail = memoryService.findMemoryDetail(userSeq, memorySeq);
 
         return new BaseResponse(memoryDetail);
     }
 
-    @PostMapping()
-    public BaseResponse<?> addMemory(@RequestPart AddMemoryRequest addMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) {
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseResponse<?> addMemory(@RequestPart AddMemoryRequest addMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
         logger.info("addMemory 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
@@ -54,18 +55,24 @@ public class MemoryController {
         return new BaseResponse(addMemoryResponse);
     }
 
+    @PutMapping(value = "/{memorySeq}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseResponse<?> modifyMemory(@PathVariable("memorySeq") Long memorySeq, @RequestPart ModifyMemoryRequest modifyMemoryRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
+        logger.info("modifyMemory 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        memoryService.modifyMemory(userSeq, memorySeq, modifyMemoryRequest, images, audios);
+
+        return new BaseResponse("추억앨범 수정 성공");
+    }
+
     @DeleteMapping("/{memorySeq}")
     public BaseResponse<?> removeMemory(@PathVariable("memorySeq") Long memorySeq) {
         logger.info("removeMemory 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Boolean success = memoryService.removeMemory(userSeq, memorySeq);
+        memoryService.removeMemory(userSeq, memorySeq);
 
-        if (success == true) {
-            return new BaseResponse("추억앨범 삭제 성공");
-        }
-
-        throw new ErrorResponse(HttpStatus.BAD_REQUEST, "추억앨범 삭제 실패");
+        return new BaseResponse("추억앨범 삭제 성공");
     }
 
     @GetMapping("/mymemories")
@@ -116,5 +123,25 @@ public class MemoryController {
         memoryService.addMemoryComment(userSeq, memorySeq, content);
 
         return new BaseResponse("댓글 작성 성공");
+    }
+
+    @PutMapping("/comment/{commentSeq}")
+    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @RequestBody String content) {
+        logger.info("modifyMemoryComment 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        memoryService.modifyMemoryComment(userSeq, commentSeq, content);
+
+        return new BaseResponse("댓글 수정 성공");
+    }
+
+    @DeleteMapping("/comment/{commentSeq}")
+    public BaseResponse<?> removeMemoryComment(@PathVariable("commentSeq") Long commentSeq) {
+        logger.info("removeMemoryComment 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        memoryService.removeMemoryComment(userSeq, commentSeq);
+
+        return new BaseResponse("댓글 삭제 성공");
     }
 }
