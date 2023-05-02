@@ -1,9 +1,11 @@
 package com.grouproom.xyz.domain.timecapsule.entity;
 
 import com.grouproom.xyz.domain.azt.entity.Azt;
+import com.grouproom.xyz.domain.timecapsule.dto.reqeust.AddTimecapsuleRequest;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -54,6 +56,20 @@ public class Timecapsule extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "azt_sequence")
     private Azt azt;
+
+    @Builder
+    public Timecapsule(User user, Azt azt, AddTimecapsuleRequest addTimecapsuleRequest) {
+        this.openStart = addTimecapsuleRequest.getOpenStart();
+        this.openEnd = addTimecapsuleRequest.getOpenEnd();
+        this.updateEnd = addTimecapsuleRequest.getUpdateEnd();
+        this.latitude = addTimecapsuleRequest.getLatitude();
+        this.longitude = addTimecapsuleRequest.getLongitude();
+        this.location = addTimecapsuleRequest.getLocation();
+        this.isOpened = false;
+        this.isUpdatable = true;
+        this.user = user;
+        this.azt = azt;
+    }
 
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     @Transactional
