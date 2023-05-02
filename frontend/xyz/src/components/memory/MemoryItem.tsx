@@ -7,7 +7,7 @@ import Link from "next/link";
 import { addMemoryLike, deleteMemoryLike } from "@/app/api/memory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { KEYS } from "@/constants/queryKeys";
-import { sliceDate } from "@/utils/sliceDate";
+import { sliceDate } from "@/utils/dateUtils";
 
 interface MemoryItemProps {
   memory: MemoriesTypes;
@@ -28,8 +28,6 @@ function MemoryItem({ memory }: MemoryItemProps) {
     isLiked,
     commentCnt,
   } = memory;
-  // const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
-  // const [localLikeCnt, setLocalLikeCnt] = useState<number>(0);
 
   const queryClient = useQueryClient();
   const useAddMemoryLikeMutation = useMutation({
@@ -38,33 +36,13 @@ function MemoryItem({ memory }: MemoryItemProps) {
       queryClient.invalidateQueries(KEYS.memory);
     },
   });
+
   const useDeleteMemoryLikeMutation = useMutation({
     mutationFn: () => deleteMemoryLike(memorySeq),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.memory);
     },
   });
-
-  // const handleClickLike = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   if (isLocalLiked) {
-  //     deleteMemoryLike(memorySeq)
-  //       .then(() => {
-  //         setIsLocalLiked(false);
-  //         if (localLikeCnt >= 1) {
-  //           setLocalLikeCnt((prev) => prev! - 1);
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   } else {
-  //     addMemoryLike(memorySeq)
-  //       .then(() => {
-  //         setIsLocalLiked(true);
-  //         setLocalLikeCnt((prev) => prev + 1);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
 
   const handleClickLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -74,11 +52,6 @@ function MemoryItem({ memory }: MemoryItemProps) {
       useAddMemoryLikeMutation.mutate();
     }
   };
-
-  // useEffect(() => {
-  //   setIsLocalLiked(isLiked);
-  //   setLocalLikeCnt(likeCnt);
-  // }, [isLiked, likeCnt]);
 
   return (
     <Container
@@ -95,7 +68,7 @@ function MemoryItem({ memory }: MemoryItemProps) {
               src={memoryImage}
               alt="추억 사진"
               width={120}
-              className="rounded"
+              className="rounded max-w-[120px]"
             />
           </div>
 

@@ -19,4 +19,7 @@ export const queryKeys = {
     ) => [...KEYS.memory, { date }, { aztSeq }, { latitude }, { longitude }],
     memoryDetail: (memorySeq: number) => [...KEYS.memory, { memorySeq }],
   },
+  azt: {
+    aztList: () => [...KEYS.azt],
+  },
 };

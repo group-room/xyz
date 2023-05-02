@@ -8,6 +8,8 @@ import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
 import { AztTypes, MemoriesTypes, PositionTypes } from "@/types/memory";
 import MemoryItem from "@/components/memory/MemoryItem";
 import { useMemoryList } from "../../hooks/queries/memory";
+import { convertDate } from "@/utils/dateUtils";
+import { useAztList } from "@/hooks/queries/azt";
 
 function MemoryPage() {
   // 달력에서 선택된 날짜
@@ -44,150 +46,27 @@ function MemoryPage() {
   };
   const handleDateChange = (date: Date) => setSelectedDate(date);
 
-  // 날짜 형식변환
-  const dateObj = new Date(selectedDate);
-  const year = dateObj.getFullYear();
-  const month = dateObj.getMonth() + 1;
-  const day = dateObj.getDate();
-  const hours = dateObj.getHours();
-  const minutes = dateObj.getMinutes();
-  const seconds = dateObj.getSeconds();
-  const newDateString = `${year}-${month < 10 ? "0" : ""}${month}-${
-    day < 10 ? "0" : ""
-  }${day}T${hours < 10 ? "0" : ""}${hours}:${
-    minutes < 10 ? "0" : ""
-  }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-
   const {
     data: memoryList,
-    isLoading,
+    isLoading: isMemoryLoading,
     error,
   } = useMemoryList(
-    newDateString,
+    convertDate(selectedDate),
     currAzt[0].aztSeq!,
     +position.lat.toFixed(7),
     +position.lng.toFixed(7)
   );
 
-  if (!isLoading) {
+  const { data: aztData, isLoading: isAztLoading } = useAztList();
+
+  if (!isMemoryLoading) {
     console.log(memoryList);
   }
 
   useEffect(() => {
-    // TODO: 그룹 목록 불러오기
-    setAztList([
-      {
-        aztSeq: 0,
-        image: "대표사진 경로",
-        name: "그룹 이름1",
-        createdAt: "생성시간",
-        updatedAt: "수정시간",
-        chatSeq: "채팅방시퀀스",
-      },
-      {
-        aztSeq: 1,
-        image: "대표사진 경로",
-        name: "그룹 이름2",
-        createdAt: "생성시간",
-        updatedAt: "수정시간",
-        chatSeq: "채팅방시퀀스",
-      },
-      {
-        aztSeq: 2,
-        image: "대표사진 경로",
-        name: "그룹 이름33333333333333333333333333333333333333333333333333333333333333333333",
-        createdAt: "생성시간",
-        updatedAt: "수정시간",
-        chatSeq: "채팅방시퀀스",
-      },
-    ]);
-
-    // TODO: 추억 목록 불러오기
-
-    // getMemories(
-    //   newDateString,
-    //   currAzt[0].aztSeq!,
-    //   +position.lat.toFixed(7),
-    //   +position.lng.toFixed(7)
-    // )
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setMemories([
-    //       {
-    //         memorySeq: 0,
-    //         memoryImage: "/images/photos/img2.jpg",
-    //         accessibility: "PUBLIC",
-    //         aztSeq: 0,
-    //         aztName: "그룹명",
-    //         date: "2023-04-28",
-    //         latitude: 37.513,
-    //         longitude: 127.02929,
-    //         location: "서울시 강남구 논현동 127-2",
-    //         likeCnt: 36,
-    //         isLiked: true,
-    //         commentCnt: 21,
-    //       },
-    //       {
-    //         memorySeq: 1,
-    //         memoryImage: "/images/photos/img2.jpg",
-    //         accessibility: "GROUP",
-    //         aztSeq: 0,
-    //         aztName: "그룹명",
-    //         date: "2023-04-28",
-    //         latitude: 37.514,
-    //         longitude: 127.0293,
-    //         location: "서울시 강남구 논현동 127-2",
-    //         likeCnt: 36,
-    //         isLiked: false,
-    //         commentCnt: 21,
-    //       },
-    //       {
-    //         memorySeq: 2,
-    //         memoryImage: "/images/photos/img2.jpg",
-    //         accessibility: "GROUP",
-    //         aztSeq: 0,
-    //         aztName: "그룹명",
-    //         date: "2023-04-28",
-    //         latitude: 37.515,
-    //         longitude: 127.02931,
-    //         location: "서울시 강남구 논현동 127-2",
-    //         likeCnt: 36,
-    //         isLiked: true,
-    //         commentCnt: 21,
-    //       },
-    //       {
-    //         memorySeq: 3,
-    //         memoryImage: "/images/photos/img2.jpg",
-    //         accessibility: "GROUP",
-    //         aztSeq: 0,
-    //         aztName: "그룹명",
-    //         date: "2023-04-28",
-    //         latitude: 37.516,
-    //         longitude: 127.02932,
-    //         location: "서울시 강남구 논현동 127-2",
-    //         likeCnt: 36,
-    //         isLiked: false,
-    //         commentCnt: 21,
-    //       },
-    //       {
-    //         memorySeq: 4,
-    //         memoryImage: "/images/photos/img2.jpg",
-    //         accessibility: "GROUP",
-    //         aztSeq: 0,
-    //         aztName: "그룹명",
-    //         date: "2023-04-28",
-    //         latitude: 37.517,
-    //         longitude: 127.02933,
-    //         location: "서울시 강남구 논현동 127-2",
-    //         likeCnt: 36,
-    //         isLiked: false,
-    //         commentCnt: 21,
-    //       },
-    //     ]);
-    //   });
+    if (!isAztLoading && aztData) {
+      setAztList(aztData);
+    }
   }, [selectedDate, currAzt, position]); // 선택 날짜 / currAzt / 현재 or 마커 위치 변경되면 추억 목록 다시 조회
 
   return (
@@ -217,7 +96,7 @@ function MemoryPage() {
         locations={memories}
       />
       <MemoryCreateBtn />
-      {isLoading ? (
+      {isMemoryLoading ? (
         "로딩중..."
       ) : (
         <div className="flex flex-col mt-4 gap-y-4">
