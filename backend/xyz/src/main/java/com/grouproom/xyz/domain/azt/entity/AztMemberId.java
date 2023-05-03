@@ -9,7 +9,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAztId implements Serializable {
+public class AztMemberId implements Serializable {
 
     private Long user;
     private Long azt;
