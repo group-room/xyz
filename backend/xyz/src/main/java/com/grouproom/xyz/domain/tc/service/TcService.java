@@ -4,6 +4,7 @@ import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.tc.dto.response.AddTcResponse;
 import com.grouproom.xyz.domain.tc.dto.response.OpenedTcDetailsResponse;
 import com.grouproom.xyz.domain.tc.dto.response.OpenedTcListResponse;
+import com.grouproom.xyz.domain.tc.dto.response.OpenedTcResponse;
 import com.grouproom.xyz.domain.tc.entity.TcContent;
 import com.grouproom.xyz.global.model.FileType;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,7 @@ public interface TcService {
 
     OpenedTcDetailsResponse findOpenedTcDetails(Long userSeq, Long tcSeq);
 
-    OpenedTcDetailsResponse findRandomOpenedTcDetails(Long userSeq);
+    OpenedTcResponse findRandomOpenedTcDetails(Long userSeq);
 
     OpenedTcListResponse findOpenedTcList(Long userSeq);
 }

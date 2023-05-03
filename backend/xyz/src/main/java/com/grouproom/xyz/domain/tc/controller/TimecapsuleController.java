@@ -5,6 +5,7 @@ import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.tc.dto.response.AddTcResponse;
 import com.grouproom.xyz.domain.tc.dto.response.OpenedTcDetailsResponse;
 import com.grouproom.xyz.domain.tc.dto.response.OpenedTcListResponse;
+import com.grouproom.xyz.domain.tc.dto.response.OpenedTcResponse;
 import com.grouproom.xyz.domain.tc.service.TcService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -69,8 +70,8 @@ public class TimecapsuleController {
         logger.info("randomOpenedTcDetails 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        OpenedTcDetailsResponse openedTcDetailsResponse = tcService.findRandomOpenedTcDetails(userSeq);
+        OpenedTcResponse openedTcResponse = tcService.findRandomOpenedTcDetails(userSeq);
 
-        return new BaseResponse(openedTcDetailsResponse);
+        return new BaseResponse(openedTcResponse);
     }
 }

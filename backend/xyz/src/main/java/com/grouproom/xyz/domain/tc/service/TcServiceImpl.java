@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -181,12 +182,18 @@ public class TcServiceImpl implements TcService {
 
     @Override
     @Transactional(readOnly = true)
-    public OpenedTcDetailsResponse findRandomOpenedTcDetails(Long userSeq) {
+    public OpenedTcResponse findRandomOpenedTcDetails(Long userSeq) {
         logger.info("findOpenedTcDetails 호출");
 
         User user = userRepository.findBySequence(userSeq);
 
-        return null;
+        Optional<OpenedTcResponse> openedTcResponse = tcRepository.findRandomOpenedTcByUser_Seq(userSeq);
+
+        if (openedTcResponse.isEmpty()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "확인할 수 있는 타임캡슐이 없습니다.");
+        }
+
+        return openedTcResponse.get();
     }
 
     @Override
