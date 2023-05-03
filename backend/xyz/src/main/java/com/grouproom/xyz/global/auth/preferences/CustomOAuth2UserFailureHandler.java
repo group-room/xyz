@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.grouproom.xyz.global.auth.Constants.SERVER_URL;
 import static com.grouproom.xyz.global.auth.preferences.CustomOAuth2CookieAuthorizationRepository.OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME;
 import static com.grouproom.xyz.global.auth.preferences.CustomOAuth2CookieAuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-import static com.grouproom.xyz.global.util.JwtTokenUtils.ACCESS_PERIOD;
 import static com.grouproom.xyz.global.util.JwtTokenUtils.REFRESH_PERIOD;
 
 /**
@@ -123,10 +123,11 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
         refreshCookie.setMaxAge((int) REFRESH_PERIOD);
         refreshCookie.setPath("/");
 
-        response.addHeader("Authorization",jsonWebToken.getAccessToken());
+//        response.addHeader("Authorization",jsonWebToken.getAccessToken());
 
         //리다이렉트 시킨다.
-        getRedirectStrategy().sendRedirect(request, response, baseUrl);
+//        getRedirectStrategy().sendRedirect(request, response, baseUrl);
+        getRedirectStrategy().sendRedirect(request, response, SERVER_URL+"/api/login/store-and-redirect?authorization="+jsonWebToken.getRefreshToken());
 
     }
 
