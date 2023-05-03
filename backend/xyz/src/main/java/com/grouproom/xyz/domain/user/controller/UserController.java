@@ -26,22 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
-@Slf4j
 public class UserController {
 
     private final S3UploadService s3UploadService;
     private final UserService userService;
 
-//    @PostMapping("/profile")
-//    String test( MultipartFile files){
-//        if(null==files || files.isEmpty())
-//            log.error("file null");
-//
-//        return s3UploadService.upload(files, "record");
-//    }
-
     @DeleteMapping("")
-    BaseResponse removeUser() {
+    public BaseResponse removeUser() {
         Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
         userService.removeUser(userSequence);
@@ -50,14 +41,14 @@ public class UserController {
     }
 
     @GetMapping("/modifier")
-    BaseResponse modifierList() {
+    public BaseResponse modifierList() {
         Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
         return new BaseResponse(userService.findModifierByUserSequence(userSequence));
     }
 
     @GetMapping("/profile")
-    BaseResponse profileDetails(@RequestParam(value = "userSeq",required = false) Long userSeq){
+    public BaseResponse profileDetails(@RequestParam(value = "userSeq",required = false) Long userSeq){
         Long fromSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         if(userSeq==null)
             return new BaseResponse(userService.findProfileByUserSeq(fromSeq));
@@ -66,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    BaseResponse saveProfile(@RequestPart(required = false)String nickname,@RequestPart(required = false) MultipartFile profileImage,
+    public BaseResponse saveProfile(@RequestPart(required = false)String nickname,@RequestPart(required = false) MultipartFile profileImage,
                                 @RequestPart(required = false)MultipartFile backgroundImage,@RequestPart(required = false)String introduce,
                                 @RequestPart(required = false)Long modifierSequence){
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
@@ -83,21 +74,21 @@ public class UserController {
     }
 
     @PostMapping("/visitor")
-    BaseResponse saveVisitor(Long userSeq,String content){
+    public BaseResponse saveVisitor(Long userSeq,String content){
         Long fromUserSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         userService.addVisitor(fromUserSeq,userSeq,content);
         return new BaseResponse(null);
     }
 
     @DeleteMapping("/visitor/{visitorSeq}")
-    BaseResponse removeVisitor(@PathVariable("visitorSeq") Long visitorSeq){
+    public BaseResponse removeVisitor(@PathVariable("visitorSeq") Long visitorSeq){
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         userService.removeVisitor(userSeq,visitorSeq);
         return new BaseResponse(null);
     }
 
     @GetMapping("/visitor")
-    BaseResponse visitorList(Long userSeq) {
+    public BaseResponse visitorList(Long userSeq) {
         return new BaseResponse(userService.findVisitorByUserSequence(userSeq));
     }
 }

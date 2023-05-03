@@ -17,6 +17,7 @@ function KakaoMap({
   setAddress,
   locations,
   isPhotoUpload,
+  isPhotoEdit,
 }: KakaoMapProps) {
   // 위도, 경도를 주소로 변환하는 함수
   const getConvertedAddress = (x: string, y: string) => {
@@ -55,7 +56,11 @@ function KakaoMap({
     // console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setCurrLocation({ lat: latitude, lng: longitude });
-    if (isPhotoUpload) setPosition({ lat: latitude, lng: longitude }); // 추억 등록하는 거라면 현재 위치 없애고 사진 메타데이터 위치 or 수정해서 마커 찍은 위치로 이동하도록 하기
+    if (isPhotoUpload && !isPhotoEdit) {
+      // 추억 처음 등록하는 거라면 (편집 X) 현재 위치 없애고 사진 메타데이터 위치 or 수정해서 마커 찍은 위치로 이동하도록 하기}
+      setPosition({ lat: latitude, lng: longitude });
+      getConvertedAddress(longitude.toString(), latitude.toString());
+    }
     getConvertedAddress(longitude.toString(), latitude.toString());
   };
 

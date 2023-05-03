@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import EXIF from "exif-js";
 import { PhotoMetadata, PositionTypes } from "@/types/memory";
 import DatePicker from "react-datepicker";
@@ -75,6 +75,16 @@ function PhotoUpload({
     }
   };
 
+  useEffect(() => {
+    if (photos) {
+      const selectedPhotoPreviewList: string[] = [];
+      for (const photo of photos) {
+        selectedPhotoPreviewList.push(URL.createObjectURL(photo));
+      }
+      setPhotoPreviewList(selectedPhotoPreviewList);
+    }
+  }, [photos]);
+
   return (
     <div className="w-full">
       {/* 날짜 선택 영역 */}
@@ -121,11 +131,13 @@ function PhotoUpload({
         />
       </div>
       {/* 첨부 사진 보여주는 영역 */}
-      <MultiCarousel>
-        {photoPreviewList?.map((url) => (
-          <img key={url} src={url} alt="Preview" />
-        ))}
-      </MultiCarousel>
+      {photoPreviewList.length > 0 && (
+        <MultiCarousel>
+          {photoPreviewList?.map((url) => (
+            <img key={url} src={url} alt="Preview" />
+          ))}
+        </MultiCarousel>
+      )}
     </div>
   );
 }

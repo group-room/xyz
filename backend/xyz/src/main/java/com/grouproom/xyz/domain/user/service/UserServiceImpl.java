@@ -35,7 +35,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -106,10 +105,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addVisitor(Long fromUserSeq, Long toUserSeq, String content) {
         User fromUser = userRepository.getReferenceById(fromUserSeq);
-        User toUser = userRepository.getReferenceById(toUserSeq);
-
-        if (toUser == null) throw new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 유저는 없는 유저입니다.");
-
+        User toUser = userRepository.findById(toUserSeq)
+                .orElseThrow(()-> new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 유저는 없는 유저입니다."));
         FriendshipResponse friendshipResponse = userRepository.selectFriendshipByUserSeq(fromUser, toUser)
                 .orElseThrow(() -> new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다."));
         if (!friendshipResponse.getFriend()) throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다.");

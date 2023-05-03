@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, FriendID>, FriendRepositoryCustom {
 
-    Friend findByFromUserAndToUserAndIsAcceptedAndIsDeleted(User from, User to, Boolean isAccepted, Boolean isDeleted);
+    Friend findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(Long from, Long to, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted);
 
     Friend findByFromUserAndToUser(User from, User to);
 }

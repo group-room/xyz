@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const SERVER_URL = "https://xyz-gen.com/backend";
+export const SERVER_URL = "https://xyz-gen.com/backend/api";
 
 export const axiosInstance = axios.create({
-  baseURL: `${SERVER_URL}/api`,
+  baseURL: SERVER_URL,
   headers: {
     // "Content-type": "application/json",
     Authorization:
@@ -13,7 +13,7 @@ export const axiosInstance = axios.create({
 });
 
 export const axiosFileInstance = axios.create({
-  baseURL: `${SERVER_URL}/api`,
+  baseURL: SERVER_URL,
   headers: {
     "Content-type": "multipart/form-data",
     Authorization:

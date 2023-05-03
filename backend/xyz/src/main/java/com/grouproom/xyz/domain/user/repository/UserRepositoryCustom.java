@@ -21,4 +21,8 @@ public interface UserRepositoryCustom {
 
     List<BgmResponse> selectBgmByUserSeq(User targetUser);
 
+    Optional<String> selectNicknameByRandom();
+
+    Optional<String> selectTokenByUserSeq(Long userSeq);
+
 }
