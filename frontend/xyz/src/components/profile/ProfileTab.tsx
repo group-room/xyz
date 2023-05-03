@@ -20,8 +20,8 @@ export default function ToggleBtn({ value, onChange }: ButtonProps) {
   return (
     <div className="flex border-t-2 border-l-2 border-r-2 border- border-black rounded-md h-10">
       <div
-        className={`flex w-1/2 items-center justify-center border-r-2 border-black ${
-          isClick ? "bg-yellow" : ""
+        className={`flex w-1/2 items-center justify-center border-r-2 border-black bg-yellow ${
+          isClick ? "" : "border-b-2"
         }`}
         onClick={() => {
           setIsClick(true);
@@ -34,8 +34,8 @@ export default function ToggleBtn({ value, onChange }: ButtonProps) {
         마이룸
       </div>
       <div
-        className={`flex w-1/2 items-center justify-center border-black ${
-          !isClick ? "bg-yellow" : ""
+        className={`flex w-1/2 items-center justify-center border-black bg-pink text-white ${
+          !isClick ? "" : "border-b-2"
         }`}
         onClick={() => {
           setIsClick(false);
