@@ -15,5 +15,5 @@ export const deleteMemoryLike = (memorySeq: number) => {
 };
 
 export const createMemoryComment = (memorySeq: number, content: string) => {
-  return axiosInstance.post(`${MEMORY}/comment/${memorySeq}`, content);
+  return axiosInstance.post(`${MEMORY}/comment/${memorySeq}`, { content });
 };
