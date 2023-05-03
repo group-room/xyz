@@ -2,13 +2,12 @@
 
 import Container from "@/components/common/Container";
 import Textbox from "@/components/common/Textbox";
-import Comment from "@/components/memory/Comment";
+import CommentList from "@/components/memory/CommentList";
 import LikeBtn from "@/components/memory/LikeBtn";
 import MultiCarousel from "@/components/timecapsule/MultiCarousel";
 import { MEMORY_OPTIONS } from "@/constants/memoryOption";
 import { useMemoryDetail } from "@/hooks/queries/memory";
 import { sliceDate } from "@/utils/dateUtils";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -101,7 +100,7 @@ function MemoryDetailPage({ params: { slug } }: Props) {
             <LikeBtn memorySeq={slug} isLiked={isLiked} likeCnt={likeCnt} />
           </div>
         </Container>
-        <Comment
+        <CommentList
           memorySeq={slug}
           commentCnt={commentCnt}
           commentList={comments}
