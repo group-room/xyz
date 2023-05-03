@@ -314,7 +314,7 @@ public class MemoryServiceImpl implements MemoryService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
         }
 
-        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_Sequence(memorySeq);
+        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
         List<MemoryFileResponse> memoryFileResponses = new ArrayList<>();
 
         if (memoryFiles != null) {
