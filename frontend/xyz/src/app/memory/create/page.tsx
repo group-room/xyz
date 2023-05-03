@@ -2,7 +2,7 @@
 
 import Btn from "@/components/common/Btn";
 import KakaoMap from "@/components/memory/KakaoMap";
-import { AztTypes, PhotoMetadata, PositionTypes } from "@/types/memory";
+import { PhotoMetadata, PositionTypes } from "@/types/memory";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PhotoUpload from "@/components/memory/PhotoUpload";
@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { KEYS } from "@/constants/queryKeys";
 import { convertDate } from "@/utils/dateUtils";
 import { useAztList } from "@/hooks/queries/azt";
+import { AztTypes } from "@/types/azt";
 
 function MemoryCreatePage() {
   const router = useRouter();
@@ -72,7 +73,7 @@ function MemoryCreatePage() {
 
     useCreateMemoryMutation.mutate(formData, {
       onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
         const memorySeq = data.data.data.memorySeq;
         router.push(`/memory/${memorySeq}`); // 생성 완료후 상세로 이동
       },

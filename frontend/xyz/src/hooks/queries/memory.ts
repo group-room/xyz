@@ -26,7 +26,7 @@ export const useMemoryDetail = (memorySeq: number) => {
     queryFn: async () => {
       return axiosInstance
         .get(`${MEMORY}/${memorySeq}`)
-        .then((res) => res.data.data.memory);
+        .then((res) => res.data.data);
     },
   });
 };

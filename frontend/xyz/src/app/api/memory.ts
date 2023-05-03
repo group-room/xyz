@@ -13,3 +13,7 @@ export const addMemoryLike = (memorySeq: number) => {
 export const deleteMemoryLike = (memorySeq: number) => {
   return axiosInstance.delete(`${MEMORY}/like/${memorySeq}`);
 };
+
+export const createMemoryComment = (memorySeq: number, content: string) => {
+  return axiosInstance.post(`${MEMORY}/comment/${memorySeq}`, content);
+};

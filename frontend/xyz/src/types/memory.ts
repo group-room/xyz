@@ -1,22 +1,8 @@
-export type AztTypes = {
-  aztSeq?: number | null;
-  name: string;
-  image?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  chatSeq?: string;
-};
-
 export type MemoryListParams = {
   date: string;
   aztSeq?: number;
   latitude?: number;
   longitude?: number;
-};
-
-export type PositionTypes = {
-  lat: number;
-  lng: number;
 };
 
 // 추억 메인 피드
@@ -44,6 +30,17 @@ export interface MemoryTypes extends MemoriesTypes {
   content: string;
   userNickname: string;
   userSeq: number;
+  comments: MemoryCommentTypes[];
+}
+
+// 추억 댓글
+export interface MemoryCommentTypes {
+  commentSeq: number;
+  userSeq: number;
+  nickname: string;
+  profileImage: string;
+  content: string;
+  createdAt: string;
 }
 
 export interface KakaoMapProps {
@@ -64,4 +61,9 @@ export type PhotoMetadata = {
     longitude: number;
   };
   dateTaken: string;
+};
+
+export type PositionTypes = {
+  lat: number;
+  lng: number;
 };
