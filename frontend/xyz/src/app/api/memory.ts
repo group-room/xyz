@@ -10,6 +10,10 @@ export const editMemory = (memorySeq: number, formData: FormData) => {
   return axiosFileInstance.put(`${MEMORY}/${memorySeq}`, formData);
 };
 
+export const deleteMemory = (memorySeq: number) => {
+  return axiosInstance.delete(`${MEMORY}/${memorySeq}`);
+};
+
 export const addMemoryLike = (memorySeq: number) => {
   return axiosInstance.post(`${MEMORY}/like/${memorySeq}`);
 };
