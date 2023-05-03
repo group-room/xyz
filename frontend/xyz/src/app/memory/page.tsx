@@ -5,11 +5,12 @@ import DateFilter from "@/components/memory/DateFilter";
 import AztFilter from "@/components/memory/AztFilter";
 import KakaoMap from "@/components/memory/KakaoMap";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
-import { AztTypes, MemoriesTypes, PositionTypes } from "@/types/memory";
+import { MemoriesTypes, PositionTypes } from "@/types/memory";
 import MemoryItem from "@/components/memory/MemoryItem";
 import { useMemoryList } from "../../hooks/queries/memory";
 import { convertDate } from "@/utils/dateUtils";
 import { useAztList } from "@/hooks/queries/azt";
+import { AztTypes } from "@/types/azt";
 
 function MemoryPage() {
   // 달력에서 선택된 날짜

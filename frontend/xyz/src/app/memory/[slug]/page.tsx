@@ -1,10 +1,8 @@
 "use client";
 
 import Container from "@/components/common/Container";
-import ImageScroll from "@/components/common/ImageScroll";
 import Textbox from "@/components/common/Textbox";
 import Comment from "@/components/memory/Comment";
-import KakaoMap from "@/components/memory/KakaoMap";
 import LikeBtn from "@/components/memory/LikeBtn";
 import MultiCarousel from "@/components/timecapsule/MultiCarousel";
 import { MEMORY_OPTIONS } from "@/constants/memoryOption";
@@ -18,8 +16,6 @@ type Props = {
     slug: number;
   };
 };
-
-import React from "react";
 
 function MemoryDetailPage({ params: { slug } }: Props) {
   const { data: memory, isLoading } = useMemoryDetail(slug);
