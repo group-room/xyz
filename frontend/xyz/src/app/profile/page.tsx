@@ -8,6 +8,7 @@ import React from "react";
 import { useState } from "react";
 import ProfileMain from "../../components/profile/ProfileMain";
 import ProfileTab from "../../components/profile/ProfileTab";
+import Guestbook from "@/components/profile/Guestbook";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -35,9 +36,10 @@ function ProfilePage() {
         </div>
       </div>
       <div className="mt-5">
-        <ProfileTab />
+        <ProfileTab value={true} onChange={() => true} />
       </div>
-      {/* <div onClick={handleClick}> ProfilePage</div> */}
+      <Guestbook />
+      <div onClick={handleClick}> ProfilePage</div>
       {isModal && (
         <Modal closeModal={() => setIsModal(false)}>
           {<div>친구하실래요?</div>}

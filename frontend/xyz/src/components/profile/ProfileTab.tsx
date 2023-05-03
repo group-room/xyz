@@ -10,7 +10,7 @@ type ButtonProps = {
   onChange: (value: boolean) => void;
 };
 
-export default function ToggleBtn({ value, onChange }: ButtonProps) {
+export default function ProfileTab({ value, onChange }: ButtonProps) {
   const [isClick, setIsClick] = useState(true);
 
   const handleChange = (v: boolean) => {
