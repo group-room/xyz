@@ -19,7 +19,7 @@ public class AztResponse {
     String name;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
-    Long chatSeq;
+    String chatId;
     List<MemberResponse> members;
 
 }

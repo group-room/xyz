@@ -83,7 +83,7 @@ public class AztServiceImpl implements AztService {
                 .name(azt.getAztName())
                 .createdAt(azt.getCreatedAt())
                 .updatedAt(azt.getUpdatedAt())
-                .chatSeq(azt.getChatSequence())
+                .chatId(azt.getChatId())
                 .members(memberResponses)
                 .build();
     }
@@ -217,7 +217,7 @@ public class AztServiceImpl implements AztService {
                                 .profileImage(friend.getProfileImage())
                                 .identify(friend.getIdentify())
                                 .nickname(friend.getNickname())
-                                .chatSeq(friend.getChatSeq())
+                                .chatId(friend.getChatId())
                         .build());
             }
         }

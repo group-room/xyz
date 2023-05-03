@@ -11,6 +11,6 @@ public class FriendUserResponse {
     private String nickname;
     private String profileImage;
     private String identify;
-    private Long chatSeq;
+    private String chatId;
 
 }

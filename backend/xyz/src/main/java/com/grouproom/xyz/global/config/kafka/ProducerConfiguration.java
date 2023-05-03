@@ -1,6 +1,6 @@
 package com.grouproom.xyz.global.config.kafka;
 
-import com.grouproom.xyz.domain.chat.dto.Message;
+import com.grouproom.xyz.domain.chat.dto.request.Message;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;

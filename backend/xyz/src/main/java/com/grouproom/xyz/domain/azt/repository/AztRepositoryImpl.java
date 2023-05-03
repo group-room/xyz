@@ -23,7 +23,7 @@ public class AztRepositoryImpl implements AztRepositoryCustom {
                         azt.aztName.as("name"),
                         azt.createdAt,
                         azt.updatedAt,
-                        azt.chatSequence)
+                        azt.chatId)
                 )
                 .from(azt)
                 .join(aztMember)
