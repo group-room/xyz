@@ -146,7 +146,7 @@ public class TcServiceImpl implements TcService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "열리지 않은 타임캡슐입니다.");
         }
 
-        OpenedTcResponse openedTcResponse = OpenedTcResponse.builder()
+        OpenedTcInfoResponse openedTcInfoResponse = OpenedTcInfoResponse.builder()
                 .tc(tc)
                 .build();
 
@@ -174,7 +174,7 @@ public class TcServiceImpl implements TcService {
         }
 
         return OpenedTcDetailsResponse.builder()
-                .tc(openedTcResponse)
+                .tc(openedTcInfoResponse)
                 .contents(tcContentResponses)
                 .build();
     }

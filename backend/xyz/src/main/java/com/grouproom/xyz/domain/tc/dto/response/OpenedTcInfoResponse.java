@@ -7,7 +7,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class OpenedTcResponse {
+public class OpenedTcInfoResponse {
     private Long userSeq;
     private String userNickname;
     private Long aztSeq;
@@ -18,7 +18,7 @@ public class OpenedTcResponse {
     private String location;
 
     @Builder
-    public OpenedTcResponse(Tc tc) {
+    public OpenedTcInfoResponse(Tc tc) {
         this.userSeq = tc.getUser().getSequence();
         this.userNickname = tc.getUser().getNickname();
         this.aztSeq = tc.getAzt().getSequence();
