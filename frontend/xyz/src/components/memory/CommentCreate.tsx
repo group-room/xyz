@@ -4,7 +4,7 @@ import React from "react";
 import Btn from "../common/Btn";
 import useInput from "@/hooks/useInput";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { KEYS, queryKeys } from "@/constants/queryKeys";
+import { queryKeys } from "@/constants/queryKeys";
 import { createMemoryComment } from "@/app/api/memory";
 
 type CommentCreateTypes = {
@@ -13,15 +13,6 @@ type CommentCreateTypes = {
 
 function CommentCreate({ memorySeq }: CommentCreateTypes) {
   const [commentInput, onChangeCommentInput, resetInputValue] = useInput("");
-  const handleBtnClick = () => {
-    if (commentInput === "") {
-      alert("댓글 내용을 작성해주세요");
-      return;
-    }
-    // console.log(commentInput);
-    useCreateMemoryCommentMutation.mutate();
-  };
-
   const queryClient = useQueryClient();
   const useCreateMemoryCommentMutation = useMutation({
     mutationFn: () => createMemoryComment(memorySeq, commentInput.trim()),
@@ -30,6 +21,15 @@ function CommentCreate({ memorySeq }: CommentCreateTypes) {
       resetInputValue();
     },
   });
+
+  const handleCommentCreateClick = () => {
+    if (commentInput === "") {
+      alert("댓글 내용을 작성해주세요");
+      return;
+    }
+    useCreateMemoryCommentMutation.mutate();
+  };
+
   return (
     <div className="flex w-full gap-x-2 border-t border-black p-2">
       <input
@@ -39,7 +39,7 @@ function CommentCreate({ memorySeq }: CommentCreateTypes) {
         value={commentInput}
         onChange={onChangeCommentInput}
       />
-      <Btn bgColor="yellow" text="등 록" btnFunc={handleBtnClick} />
+      <Btn bgColor="yellow" text="등 록" btnFunc={handleCommentCreateClick} />
     </div>
   );
 }
