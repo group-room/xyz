@@ -188,4 +188,15 @@ public class TcServiceImpl implements TcService {
 
         return null;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OpenedTcListResponse findOpenedTcList(Long userSeq) {
+        logger.info("findOpenedTcList 호출");
+
+        List<OpenedTcResponse> openedTcResponses = tcRepository.findOpenedTcListByUser_Seq(userSeq);
+        return OpenedTcListResponse.builder()
+                .openedTcResponses(openedTcResponses)
+                .build();
+    }
 }

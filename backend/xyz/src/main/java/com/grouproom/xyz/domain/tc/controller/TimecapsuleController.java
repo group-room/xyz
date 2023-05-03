@@ -4,6 +4,7 @@ import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcContentRequest;
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.tc.dto.response.AddTcResponse;
 import com.grouproom.xyz.domain.tc.dto.response.OpenedTcDetailsResponse;
+import com.grouproom.xyz.domain.tc.dto.response.OpenedTcListResponse;
 import com.grouproom.xyz.domain.tc.service.TcService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,16 @@ public class TimecapsuleController {
 
     private final TcService tcService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.controller.TimecapsuleController");
+
+    @GetMapping("/opened")
+    public BaseResponse<?> openedTcList(@RequestParam(name = "tcSeq", required = false) Long tcSeq) {
+        logger.info("openedTcList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        OpenedTcListResponse openedTcListResponse = tcService.findOpenedTcList(userSeq);
+
+        return new BaseResponse(openedTcListResponse);
+    }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public BaseResponse<?> addTc(@RequestPart AddTcRequest addTcRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
@@ -61,4 +72,5 @@ public class TimecapsuleController {
         OpenedTcDetailsResponse openedTcDetailsResponse = tcService.findRandomOpenedTcDetails(userSeq);
 
         return new BaseResponse(openedTcDetailsResponse);
-    }}
+    }
+}
