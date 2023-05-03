@@ -3,7 +3,7 @@
 import React from "react";
 import arrowDownIcon from "../../../public/icons/arrow-down.svg";
 import Image from "next/image";
-import { AztTypes } from "@/types/memory";
+import { AztTypes } from "@/types/azt";
 
 interface AztFilterProps {
   aztList: AztTypes[];

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import arrowDownIcon from "../../../public/icons/arrow-down.svg";
-import { AztTypes } from "@/types/memory";
 import { MEMORY_OPTIONS } from "@/constants/memoryOption";
+import { AztTypes } from "@/types/azt";
 
 interface DropDownProps {
   isAzt?: boolean;
