@@ -25,7 +25,6 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
 
     @Override
     public List<OpenedTcResponse> findOpenedTcListByUser_Seq(Long userSeq) {
-
         return jpaQueryFactory.select(Projections.constructor(OpenedTcResponse.class,
                         tc.sequence.as("tcSeq"), tc.azt.aztName, tc.updatedAt))
                 .from(tc)
@@ -53,4 +52,19 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
                         .fetchFirst()
         );
     }
+
+//    @Override
+//    public List<WaitingTcResponse> findWaitingTcListByUser_Seq(Long userSeq) {
+//
+//        return jpaQueryFactory.select(Projections.constructor(WaitingTcResponse.class,
+//                        tc.sequence.as("tcSeq"), tc.azt.sequence, tc.azt.aztName, tc.openStatus, tc.openStart, tc.openEnd, tc.location))
+//                .from(tc)
+//                .join(tc.azt, azt)
+//                .where(azt.sequence.in(JPAExpressions.select(aztMember.azt.sequence)
+//                        .from(aztMember)
+//                        .where(aztMember.user.sequence.eq(userSeq))))
+//                .where(tc.openStatus.in(OpenStatus.OPENED, OpenStatus.OPENABLE, OpenStatus.UPDATABLE))
+//                .orderBy(tc.openStart.asc())
+//                .fetch();
+//    }
 }

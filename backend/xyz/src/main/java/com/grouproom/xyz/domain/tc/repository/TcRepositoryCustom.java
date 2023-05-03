@@ -9,4 +9,6 @@ public interface TcRepositoryCustom {
     List<OpenedTcResponse> findOpenedTcListByUser_Seq(Long userSeq);
 
     Optional<OpenedTcResponse> findRandomOpenedTcByUser_Seq(Long userSeq);
+
+//    List<WaitingTcResponse> findWaitingTcListByUser_Seq(Long userSeq);
 }
