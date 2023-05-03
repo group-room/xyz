@@ -6,6 +6,10 @@ export const createMemory = (formData: FormData) => {
   return axiosFileInstance.post(MEMORY, formData);
 };
 
+export const editMemory = (memorySeq: number, formData: FormData) => {
+  return axiosFileInstance.put(`${MEMORY}/${memorySeq}`, formData);
+};
+
 export const addMemoryLike = (memorySeq: number) => {
   return axiosInstance.post(`${MEMORY}/like/${memorySeq}`);
 };

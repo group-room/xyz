@@ -105,9 +105,8 @@ function MemoryEditPage({ params: { slug } }: Props) {
     console.log(formData);
 
     useEditMemoryMutation.mutate(formData, {
-      onSuccess: (data) => {
-        const memorySeq = data.data.data.memorySeq;
-        router.push(`/memory/${memorySeq}`); // 생성 완료후 상세로 이동
+      onSuccess: () => {
+        router.push(`/memory/${slug}`); // 생성 완료후 상세로 이동
       },
     });
   };
