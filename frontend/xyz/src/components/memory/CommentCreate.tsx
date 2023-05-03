@@ -18,12 +18,13 @@ function CommentCreate({ memorySeq }: CommentCreateTypes) {
       alert("댓글 내용을 작성해주세요");
       return;
     }
+    // console.log(commentInput);
     useCreateMemoryCommentMutation.mutate();
   };
 
   const queryClient = useQueryClient();
   const useCreateMemoryCommentMutation = useMutation({
-    mutationFn: () => createMemoryComment(memorySeq, commentInput),
+    mutationFn: () => createMemoryComment(memorySeq, commentInput.trim()),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.memory.memoryDetail(memorySeq));
       resetInputValue();

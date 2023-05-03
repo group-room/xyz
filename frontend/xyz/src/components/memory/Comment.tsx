@@ -38,7 +38,7 @@ function Comment({ memorySeq, commentCnt, commentList }: CommentProps) {
             })}
           </div>
         ) : (
-          <p>아직 댓글이 없어요ㅠㅠ</p>
+          <p className="px-2 py-3">아직 댓글이 없어요ㅠㅠ</p>
         )}
         <CommentCreate memorySeq={memorySeq} />
       </Container>
