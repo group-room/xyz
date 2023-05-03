@@ -67,10 +67,10 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Override
     @Transactional
     public void addSticker(Long userSeq, StickerRequest stickerRequest) {
-        User user = userRepository.getReferenceById(userSeq);
-        if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
-        Sticker sticker = stickerRepository.getReferenceById(stickerRequest.getStickerSeq());
-        if(null==sticker) throw new ErrorResponse(HttpStatus.BAD_REQUEST,"없는 스티커입니다.");
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다."));
+        Sticker sticker = stickerRepository.findById(stickerRequest.getStickerSeq())
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"없는 스티커입니다."));
 
         userStickerRepository.save(
             UserSticker.builder()
@@ -85,8 +85,8 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Override
     @Transactional
     public void removeMyRoomByStickerSeq(Long userSeq, Long userStickerSeq) {
-        User user = userRepository.getReferenceById(userSeq);
-        if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다."));
         UserSticker userSticker = userStickerRepository
                 .findById(userStickerSeq)
                 .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"없는 스티커입니다."));
@@ -97,8 +97,8 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Override
     @Transactional
     public void removeMyRoom(Long userSeq) {
-        User user = userRepository.getReferenceById(userSeq);
-        if(null==user) throw new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다.");
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다."));
         userStickerRepository.deleteUserStickerByUser(user);
 
     }

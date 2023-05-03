@@ -11,5 +11,5 @@ public interface MemoryCommentRepository extends JpaRepository<MemoryComment, Lo
 
     List<MemoryComment> findByMemory_Sequence(Long memorySeq);
 
-    List<MemoryComment> findByMemory_SequenceAndIsDeleted(Long memorySeq, Boolean isDeleted);
+    List<MemoryComment> findByMemory_SequenceAndIsDeleted(Long memorySeq, boolean isDeleted);
 }

@@ -30,8 +30,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
 
-        authException.printStackTrace();
-
         if (authException instanceof InsufficientAuthenticationException) {
             JsonUtils.writeJsonExceptionResponse(response, HttpStatus.BAD_REQUEST,"소셜 로그인 부분 오류");
         }

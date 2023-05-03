@@ -70,7 +70,6 @@ public class MemoryServiceImpl implements MemoryService {
 
             List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
 
-
             for (MemoryResponse memoryResponse : memoryResponses) {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
@@ -196,7 +195,7 @@ public class MemoryServiceImpl implements MemoryService {
     public MemoryListResponse findMyMemory(Long userSeq) {
         logger.info("findMyMemory 호출");
 
-        List<Memory> memories = memoryRepository.findByUser_Sequence(userSeq);
+        List<Memory> memories = memoryRepository.findByUser_SequenceOrderByCreatedAtDesc(userSeq);
         List<MemoryResponse> memoryResponses = new ArrayList<>();
 
         for (Memory memory : memories) {
@@ -333,19 +332,17 @@ public class MemoryServiceImpl implements MemoryService {
             commentResponses.add(commentResponse);
         }
 
-        MemoryInfoResponse memoryInfoResponse = MemoryInfoResponse.builder()
+        MemoryDetailResponse memoryDetailResponse = MemoryDetailResponse.builder()
                 .memory(memory)
                 .files(memoryFileResponses)
-                .build();
-
-        memoryInfoResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
-        memoryInfoResponse.setLikeCnt(countMemoryLikes(memorySeq));
-        memoryInfoResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false).size());
-
-        return MemoryDetailResponse.builder()
                 .comments(commentResponses)
-                .memory(memoryInfoResponse)
                 .build();
+
+        memoryDetailResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
+        memoryDetailResponse.setLikeCnt(countMemoryLikes(memorySeq));
+        memoryDetailResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false).size());
+
+        return memoryDetailResponse;
     }
 
     @Override

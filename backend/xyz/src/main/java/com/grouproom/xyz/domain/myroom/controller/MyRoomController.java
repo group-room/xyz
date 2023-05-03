@@ -33,7 +33,7 @@ public class MyRoomController {
     private final MyRoomService myRoomService;
 
     @GetMapping("/update-asset")
-    BaseResponse updateAsset() {
+    public BaseResponse updateAsset() {
         List<HashMap> assets = s3UploadService.listBucketObjects();
         myRoomService.removeAllStickers();
         myRoomService.addStickersFromS3Asset(assets);
@@ -42,12 +42,12 @@ public class MyRoomController {
 
 
     @GetMapping("/sticker")
-    BaseResponse stickerList() {
+    public BaseResponse stickerList() {
         return new BaseResponse(myRoomService.findSticker());
     }
 
     @PostMapping("/sticker")
-    BaseResponse saveSticker(StickerRequest stickerRequest) {
+    public BaseResponse saveSticker(StickerRequest stickerRequest) {
         Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         myRoomService.addSticker(userSequence,stickerRequest);
 
@@ -55,21 +55,21 @@ public class MyRoomController {
     }
 
     @DeleteMapping("/sticker/{userStickerSeq}")
-    BaseResponse removeMyRoomByStickerSeq(@PathVariable("userStickerSeq") Long userStickerSeq) {
+    public BaseResponse removeMyRoomByStickerSeq(@PathVariable("userStickerSeq") Long userStickerSeq) {
         Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         myRoomService.removeMyRoomByStickerSeq(userSequence,userStickerSeq);
         return new BaseResponse(null);
     }
 
     @DeleteMapping("/sticker")
-    BaseResponse removeMyRoom() {
+    public BaseResponse removeMyRoom() {
         Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         myRoomService.removeMyRoom(userSequence);
         return new BaseResponse(null);
     }
 
     @GetMapping("")
-    BaseResponse myRoomList(@RequestParam(name = "userSeq",required = false) Long userSeq)
+    public BaseResponse myRoomList(@RequestParam(name = "userSeq",required = false) Long userSeq)
     {
         if(null == userSeq) {
             Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
