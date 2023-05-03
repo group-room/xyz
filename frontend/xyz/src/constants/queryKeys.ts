@@ -22,4 +22,7 @@ export const queryKeys = {
   azt: {
     aztList: () => [...KEYS.azt],
   },
+  user: {
+    userList: () => [...KEYS.user],
+  },
 };
