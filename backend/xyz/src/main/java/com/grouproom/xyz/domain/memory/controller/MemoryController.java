@@ -1,7 +1,6 @@
 package com.grouproom.xyz.domain.memory.controller;
 
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
-import com.grouproom.xyz.domain.memory.dto.request.CommentRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.request.ModifyMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
