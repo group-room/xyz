@@ -5,6 +5,7 @@ import com.grouproom.xyz.domain.azt.repository.AztMemberRepository;
 import com.grouproom.xyz.domain.azt.repository.AztRepository;
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.tc.dto.response.*;
+import com.grouproom.xyz.domain.tc.entity.OpenStatus;
 import com.grouproom.xyz.domain.tc.entity.Tc;
 import com.grouproom.xyz.domain.tc.entity.TcContent;
 import com.grouproom.xyz.domain.tc.entity.TcContentFile;
@@ -103,7 +104,7 @@ public class TcServiceImpl implements TcService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 타임캡슐입니다.");
         } else if (aztMemberRepository.findByAzt_SequenceAndUser_SequenceAndIsDeleted(tc.getAzt().getSequence(), userSeq, false) == null) {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "접근권한이 없는 타임캡슐입니다.");
-        } else if (!tc.getIsUpdatable()) {
+        } else if (tc.getOpenStatus() != OpenStatus.UPDATABLE) {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수정기간이 지난 타임캡슐입니다.");
         }
 
@@ -141,11 +142,11 @@ public class TcServiceImpl implements TcService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 타임캡슐입니다.");
         } else if (aztMemberRepository.findByAzt_SequenceAndUser_SequenceAndIsDeleted(tc.getAzt().getSequence(), userSeq, false) == null) {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "접근권한이 없는 타임캡슐입니다.");
-        } else if (!tc.getIsOpened()) {
+        } else if (tc.getOpenStatus() != OpenStatus.OPENED) {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "열리지 않은 타임캡슐입니다.");
         }
 
-        OpenedTcResponse openedTcResponse = OpenedTcResponse.builder()
+        OpenedTcInfoResponse openedTcInfoResponse = OpenedTcInfoResponse.builder()
                 .tc(tc)
                 .build();
 
@@ -173,7 +174,7 @@ public class TcServiceImpl implements TcService {
         }
 
         return OpenedTcDetailsResponse.builder()
-                .tc(openedTcResponse)
+                .tc(openedTcInfoResponse)
                 .contents(tcContentResponses)
                 .build();
     }
@@ -186,5 +187,16 @@ public class TcServiceImpl implements TcService {
         User user = userRepository.findBySequence(userSeq);
 
         return null;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OpenedTcListResponse findOpenedTcList(Long userSeq) {
+        logger.info("findOpenedTcList 호출");
+
+        List<OpenedTcResponse> openedTcResponses = tcRepository.findOpenedTcListByUser_Seq(userSeq);
+        return OpenedTcListResponse.builder()
+                .openedTcResponses(openedTcResponses)
+                .build();
     }
 }
