@@ -18,10 +18,10 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/timecapsule")
 @RequiredArgsConstructor
-public class TcController {
+public class TimecapsuleController {
 
     private final TcService tcService;
-    private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.controller.TcController");
+    private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.controller.TimecapsuleController");
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public BaseResponse<?> addTc(@RequestPart AddTcRequest addTcRequest, @RequestPart(required = false) List<MultipartFile> images, @RequestPart(required = false) List<MultipartFile> audios) throws Exception {
