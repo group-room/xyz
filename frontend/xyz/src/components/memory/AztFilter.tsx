@@ -3,7 +3,7 @@
 import React from "react";
 import arrowDownIcon from "../../../public/icons/arrow-down.svg";
 import Image from "next/image";
-import { AztTypes } from "@/types/memory";
+import { AztTypes } from "@/types/azt";
 
 interface AztFilterProps {
   aztList: AztTypes[];
@@ -43,7 +43,7 @@ function AztFilter({
             : "전체 아지트 보기"}
         </div>
         <div className="flex align-middle px-2 border-l border-black">
-          <Image src={arrowDownIcon} alt="화살표" width={15} />
+          <Image src={arrowDownIcon} alt="화살표" width={12} />
         </div>
       </div>
       {toggle && (

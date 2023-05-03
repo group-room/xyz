@@ -4,7 +4,7 @@ import { BgColors } from "@/constants/style";
 import React from "react";
 
 interface BtnProps {
-  width: string;
+  width?: string;
   bgColor: string;
   text: string;
   btnFunc: () => void;
