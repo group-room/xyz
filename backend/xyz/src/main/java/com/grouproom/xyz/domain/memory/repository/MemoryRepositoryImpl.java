@@ -17,7 +17,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -28,8 +28,8 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    QMemory memory = QMemory.memory;
     QAzt azt = QAzt.azt;
+    QMemory memory = QMemory.memory;
     QAztMember aztMember = QAztMember.aztMember;
 
     private BooleanExpression eqAzt(Long aztSeq) {
@@ -39,15 +39,15 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
         return memory.azt.sequence.eq(aztSeq);
     }
 
-    private BooleanExpression eqDate(LocalDate date) {
+    private BooleanExpression eqDate(LocalDateTime date) {
         if (date == null) {
             return null;
         }
-        return memory.date.between(date.atStartOfDay(), date.atTime(LocalTime.MAX));
+        return memory.date.between(date.toLocalDate().atStartOfDay(), date.toLocalDate().atTime(LocalTime.MAX).minusNanos(1));
     }
 
     @Override
-    public List<MemoryResponse> findByUserSeq(Long userSeq, Long aztSeq, LocalDate date) {
+    public List<MemoryResponse> findByUserSeq(Long userSeq, Long aztSeq, LocalDateTime date) {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.or(memory.accessibility.eq(Accessibility.PUBLIC));
@@ -66,11 +66,12 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
                 .where(eqAzt(aztSeq))
                 .where(eqDate(date))
                 .where(memory.isDeleted.eq(false))
+                .orderBy(memory.createdAt.desc())
                 .fetch();
     }
 
     @Override
-    public List<MemoryResponse> findByUserSeqAndCoordinate(Long userSeq, Long aztSeq, BigDecimal latitude, BigDecimal longitude, LocalDate date) {
+    public List<MemoryResponse> findByUserSeqAndCoordinate(Long userSeq, Long aztSeq, BigDecimal latitude, BigDecimal longitude, LocalDateTime date) {
 
         NumberExpression<Double> distanceExpression = acos(sin(radians(Expressions.constant(latitude)))
                 .multiply(sin(radians(memory.latitude)))

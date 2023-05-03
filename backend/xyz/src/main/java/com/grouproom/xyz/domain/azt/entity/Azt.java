@@ -1,14 +1,15 @@
 package com.grouproom.xyz.domain.azt.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Setter
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Azt extends BaseTimeEntity {
 
@@ -26,6 +27,6 @@ public class Azt extends BaseTimeEntity {
     @Column(name = "chat_sequence")
     private Long chatSequence;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private Boolean isDeleated;
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
+    private Boolean isDeleted;
 }

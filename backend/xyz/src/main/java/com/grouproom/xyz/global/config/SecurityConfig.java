@@ -1,9 +1,9 @@
 package com.grouproom.xyz.global.config;
 
+import com.grouproom.xyz.domain.user.repository.BgmRepository;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.auth.Constants;
 import com.grouproom.xyz.global.auth.jwt.JsonWebTokenCheckFilter;
-import com.grouproom.xyz.global.auth.jwt.JsonWebTokenProvider;
 import com.grouproom.xyz.global.auth.oauth.CustomOAuth2Provider;
 import com.grouproom.xyz.global.auth.preferences.*;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -21,16 +24,13 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 /**
@@ -55,6 +55,8 @@ public class SecurityConfig {
 
     private final UserRepository userRepository;
 
+    private final BgmRepository bgmRepository;
+
     // (0)[Constants] SECURITY_WEB_EXCLUDE_URIS에 설정한 url들은 스프링 시큐리티를 적용하지 않는다.
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -68,19 +70,30 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         //허용할 URL
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedOriginPattern("*");
-        //허용할 METHOD (post,get,delete,put...등등 다 허용)
-        configuration.addAllowedMethod("*");
-        // 자격증명과 함께 요청 여부 ( 내 서버가 응답할 때 json을 JS에서 처리할 수 있게 설정)
+//        configuration.addAllowedOrigin("*");
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedOriginPattern("*");
+//        //허용할 METHOD (post,get,delete,put...등등 다 허용)
+//        configuration.addAllowedMethod("*");
+//        // 자격증명과 함께 요청 여부 ( 내 서버가 응답할 때 json을 JS에서 처리할 수 있게 설정)
 //        configuration.setAllowCredentials(true);
 
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept",
+                "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Headers", "Access-Control-Allow-Methods",
+                "Access-Control-Allow-Origin", "Access-Control-Expose-Headers", "Access-Control-Max-Age",
+                "Access-Control-Request-Headers", "Access-Control-Request-Method", "Age", "Allow", "Alternates",
+                "Content-Range", "Content-Disposition", "Content-Description"));
+        configuration.setMaxAge(60L);
+
         //custom header 설정
-        for (String key : Constants.CORS_HEADER_URIS) {
-            configuration.addAllowedHeader(key);
-            configuration.addExposedHeader(key);
-        }
+//        for (String key : Constants.CORS_HEADER_URIS) {
+//            configuration.addAllowedHeader(key);
+//            configuration.addExposedHeader(key);
+//        }
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -133,7 +146,7 @@ public class SecurityConfig {
     //JWT에 시퀀스, role넣기. 그리고 SECURITY_AFTER_LOGIN로 설정된 URL로 이동
     @Bean
     public CustomOAuth2UserSuccessHandler customOAuth2UserSuccessHandler() {
-        return new CustomOAuth2UserSuccessHandler();
+        return new CustomOAuth2UserSuccessHandler(userRepository);
     }
 
     //(2-5) OAuth2 설정[실패시]  -- 해당 class는 만든 것
@@ -143,7 +156,7 @@ public class SecurityConfig {
     //회원가입까지 무사히 되면 -> JWT에 시퀀스, role넣기. 그리고 SECURITY_AFTER_LOGIN로 설정된 URL로 이동
     @Bean
     public CustomOAuth2UserFailureHandler customOAuth2UserFailureHandler() {
-        return new CustomOAuth2UserFailureHandler(userRepository);
+        return new CustomOAuth2UserFailureHandler(userRepository,bgmRepository);
     }
 
 

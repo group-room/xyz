@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.user.entity;
 
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,4 +40,10 @@ public class Bgm extends BaseTimeEntity {
     @Column(name = "link", length = 2083)
     private String link;
 
+    @Builder
+    public Bgm(User user, String title, String link) {
+        this.user = user;
+        this.title = title;
+        this.link = link;
+    }
 }
