@@ -117,7 +117,7 @@ public class MemoryController {
     }
 
     @PostMapping("/comment/{memorySeq}")
-    public BaseResponse<?> addMemoryComment(@PathVariable("memorySeq") Long memorySeq, @ModelAttribute CommentRequest commentRequest) {
+    public BaseResponse<?> addMemoryComment(@PathVariable("memorySeq") Long memorySeq, @RequestBody CommentRequest commentRequest) {
         logger.info("addMemoryComment 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
@@ -127,7 +127,7 @@ public class MemoryController {
     }
 
     @PutMapping("/comment/{commentSeq}")
-    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @ModelAttribute CommentRequest commentRequest) {
+    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @RequestBody CommentRequest commentRequest) {
         logger.info("modifyMemoryComment 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
