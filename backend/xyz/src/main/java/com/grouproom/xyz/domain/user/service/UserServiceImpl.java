@@ -134,4 +134,11 @@ public class UserServiceImpl implements UserService {
         User toUser = userRepository.getReferenceById(toUserSeq);
         return visitorRepository.selectVisitorByUserSeq(toUser);
     }
+
+    @Override
+    @Transactional
+    public void logout(Long userSeq) {
+        User user = userRepository.getReferenceById(userSeq);
+        user.changeToken("");
+    }
 }

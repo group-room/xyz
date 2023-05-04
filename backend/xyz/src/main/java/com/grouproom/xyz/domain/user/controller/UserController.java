@@ -93,7 +93,10 @@ public class UserController {
     }
 
     @GetMapping("/visitor")
-    public BaseResponse visitorList(Long userSeq) {
+    public BaseResponse visitorList(@RequestParam(value = "userSeq",required = false) Long userSeq) {
+        if(null == userSeq)
+            userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+
         return new BaseResponse(userService.findVisitorByUserSequence(userSeq));
     }
 
@@ -105,5 +108,12 @@ public class UserController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body("SUCCESS");
+    }
+
+    @DeleteMapping("/logout")
+    public BaseResponse logout() {
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        userService.logout(userSeq);
+        return new BaseResponse(null);
     }
 }
