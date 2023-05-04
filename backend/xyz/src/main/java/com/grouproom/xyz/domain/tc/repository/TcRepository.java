@@ -11,5 +11,5 @@ public interface TcRepository extends JpaRepository<Tc, Long>, TcRepositoryCusto
 
     Tc findBySequence(Long tcSeq);
 
-    List<Tc> findAllByAzt_Sequence(Long aztSeq);
+    List<Tc> findAllByAzt_SequenceOrderByCreatedAtDesc(Long aztSeq);
 }

@@ -240,7 +240,7 @@ public class TcServiceImpl implements TcService {
 
         Long requiredCnt = (long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(aztSeq, false) / 2.0);
 
-        List<Tc> tcs = tcRepository.findAllByAzt_Sequence(aztSeq);
+        List<Tc> tcs = tcRepository.findAllByAzt_SequenceOrderByCreatedAtDesc(aztSeq);
         List<TcResponse> tcResponses = new ArrayList<>();
 
         for (Tc tc : tcs) {
