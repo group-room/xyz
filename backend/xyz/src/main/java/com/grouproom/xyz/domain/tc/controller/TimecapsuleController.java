@@ -2,9 +2,8 @@ package com.grouproom.xyz.domain.tc.controller;
 
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcContentRequest;
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
-import com.grouproom.xyz.domain.tc.dto.response.AddTcResponse;
-import com.grouproom.xyz.domain.tc.dto.response.OpenedTcDetailsResponse;
-import com.grouproom.xyz.domain.tc.dto.response.OpenedTcListResponse;
+import com.grouproom.xyz.domain.tc.dto.reqeust.TcListRequest;
+import com.grouproom.xyz.domain.tc.dto.response.*;
 import com.grouproom.xyz.domain.tc.service.TcService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +23,16 @@ public class TimecapsuleController {
     private final TcService tcService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.controller.TimecapsuleController");
 
+    @GetMapping()
+    public BaseResponse<?> TcList(@ModelAttribute TcListRequest tcListRequest) {
+        logger.info("TcList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        TcListResponse tcListResponse = tcService.findTcList(tcListRequest.getAztSeq());
+
+        return new BaseResponse(tcListResponse);
+    }
+
     @GetMapping("/opened")
     public BaseResponse<?> openedTcList(@RequestParam(name = "tcSeq", required = false) Long tcSeq) {
         logger.info("openedTcList 호출");
@@ -32,6 +41,16 @@ public class TimecapsuleController {
         OpenedTcListResponse openedTcListResponse = tcService.findOpenedTcList(userSeq);
 
         return new BaseResponse(openedTcListResponse);
+    }
+
+    @GetMapping("/waiting")
+    public BaseResponse<?> waitingTcList(@RequestParam(name = "tcSeq", required = false) Long tcSeq) {
+        logger.info("waitingTcList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        TcListResponse tcListResponse = tcService.findWaitingTcList(userSeq);
+
+        return new BaseResponse(tcListResponse);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -69,8 +88,8 @@ public class TimecapsuleController {
         logger.info("randomOpenedTcDetails 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        OpenedTcDetailsResponse openedTcDetailsResponse = tcService.findRandomOpenedTcDetails(userSeq);
+        OpenedTcResponse openedTcResponse = tcService.findRandomOpenedTcDetails(userSeq);
 
-        return new BaseResponse(openedTcDetailsResponse);
+        return new BaseResponse(openedTcResponse);
     }
 }

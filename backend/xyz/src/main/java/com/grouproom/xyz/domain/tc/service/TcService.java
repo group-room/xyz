@@ -1,9 +1,7 @@
 package com.grouproom.xyz.domain.tc.service;
 
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
-import com.grouproom.xyz.domain.tc.dto.response.AddTcResponse;
-import com.grouproom.xyz.domain.tc.dto.response.OpenedTcDetailsResponse;
-import com.grouproom.xyz.domain.tc.dto.response.OpenedTcListResponse;
+import com.grouproom.xyz.domain.tc.dto.response.*;
 import com.grouproom.xyz.domain.tc.entity.TcContent;
 import com.grouproom.xyz.global.model.FileType;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +10,7 @@ import java.util.List;
 
 public interface TcService {
 
-    void saveTccontentFiles(TcContent tcContent, FileType fileType, List<String> filePaths);
+    void saveTcContentFiles(TcContent tcContent, FileType fileType, List<String> filePaths);
 
     AddTcResponse addTc(Long userSeq, AddTcRequest addTcRequest, List<MultipartFile> images, List<MultipartFile> audios);
 
@@ -20,7 +18,11 @@ public interface TcService {
 
     OpenedTcDetailsResponse findOpenedTcDetails(Long userSeq, Long tcSeq);
 
-    OpenedTcDetailsResponse findRandomOpenedTcDetails(Long userSeq);
+    OpenedTcResponse findRandomOpenedTcDetails(Long userSeq);
 
     OpenedTcListResponse findOpenedTcList(Long userSeq);
+
+    TcListResponse findWaitingTcList(Long userSeq);
+
+    TcListResponse findTcList(Long aztSeq);
 }

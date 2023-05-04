@@ -11,6 +11,7 @@ import com.grouproom.xyz.domain.tc.entity.TcContent;
 import com.grouproom.xyz.domain.tc.entity.TcContentFile;
 import com.grouproom.xyz.domain.tc.repository.TcContentFileRepository;
 import com.grouproom.xyz.domain.tc.repository.TcContentRepository;
+import com.grouproom.xyz.domain.tc.repository.TcOpenRepository;
 import com.grouproom.xyz.domain.tc.repository.TcRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
@@ -25,24 +26,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
 public class TcServiceImpl implements TcService {
 
+    private final TcRepository tcRepository;
     private final AztRepository aztRepository;
     private final UserRepository userRepository;
     private final S3UploadService s3UploadService;
-    private final AztMemberRepository aztMemberRepository;
-    private final TcRepository tcRepository;
+    private final TcOpenRepository tcOpenRepository;
     private final TcContentRepository tcContentRepository;
+    private final AztMemberRepository aztMemberRepository;
     private final TcContentFileRepository tcContentFileRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.service.TcServiceImpl");
 
     @Override
     @Transactional
-    public void saveTccontentFiles(TcContent tcContent, FileType fileType, List<String> filePaths) {
+    public void saveTcContentFiles(TcContent tcContent, FileType fileType, List<String> filePaths) {
         logger.info("saveTccontentFiles 호출");
 
         filePaths.stream().forEach(
@@ -116,12 +119,12 @@ public class TcServiceImpl implements TcService {
 
         if (images != null) {
             List<String> imagePaths = s3UploadService.upload(images, "tc");
-            saveTccontentFiles(tcContent, FileType.IMAGE, imagePaths);
+            saveTcContentFiles(tcContent, FileType.IMAGE, imagePaths);
         }
 
         if (audios != null) {
             List<String> audioPaths = s3UploadService.upload(audios, "memory");
-            saveTccontentFiles(tcContent, FileType.AUDIO, audioPaths);
+            saveTcContentFiles(tcContent, FileType.AUDIO, audioPaths);
         }
     }
 
@@ -181,12 +184,18 @@ public class TcServiceImpl implements TcService {
 
     @Override
     @Transactional(readOnly = true)
-    public OpenedTcDetailsResponse findRandomOpenedTcDetails(Long userSeq) {
+    public OpenedTcResponse findRandomOpenedTcDetails(Long userSeq) {
         logger.info("findOpenedTcDetails 호출");
 
         User user = userRepository.findBySequence(userSeq);
 
-        return null;
+        Optional<OpenedTcResponse> openedTcResponse = tcRepository.findRandomOpenedTcByUser_Seq(userSeq);
+
+        if (openedTcResponse.isEmpty()) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "확인할 수 있는 타임캡슐이 없습니다.");
+        }
+
+        return openedTcResponse.get();
     }
 
     @Override
@@ -197,6 +206,58 @@ public class TcServiceImpl implements TcService {
         List<OpenedTcResponse> openedTcResponses = tcRepository.findOpenedTcListByUser_Seq(userSeq);
         return OpenedTcListResponse.builder()
                 .openedTcResponses(openedTcResponses)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TcListResponse findWaitingTcList(Long userSeq) {
+        logger.info("findWaitingTcList 호출");
+
+        List<TcResponse> tcResponses = tcRepository.findWaitingTcListByUser_Seq(userSeq);
+
+        for (TcResponse tcResponse : tcResponses) {
+            tcResponse.setRequiredCnt((long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(tcResponse.getAztSeq(), false) / 2.0));
+
+            if (tcResponse.getOpenStatus().equals("OPENABLE")) {
+                tcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(tcResponse.getTcSeq()));
+            }
+        }
+
+        return TcListResponse.builder()
+                .tcResponses(tcResponses)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TcListResponse findTcList(Long aztSeq) {
+        logger.info("findTcList 호출");
+
+        if (aztSeq == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "아지트 seq가 필요합니다.");
+        }
+
+        Long requiredCnt = (long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(aztSeq, false) / 2.0);
+
+        List<Tc> tcs = tcRepository.findAllByAzt_Sequence(aztSeq);
+        List<TcResponse> tcResponses = new ArrayList<>();
+
+        for (Tc tc : tcs) {
+            TcResponse tcResponse = TcResponse.builder()
+                    .tc(tc)
+                    .requiredCnt(requiredCnt)
+                    .build();
+
+            if (tcResponse.getOpenStatus().equals("OPENABLE")) {
+                tcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(tcResponse.getTcSeq()));
+            }
+
+            tcResponses.add(tcResponse);
+        }
+
+        return TcListResponse.builder()
+                .tcResponses(tcResponses)
                 .build();
     }
 }
