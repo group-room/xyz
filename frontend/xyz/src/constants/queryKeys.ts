@@ -12,7 +12,7 @@ export const KEYS = {
 export const queryKeys = {
   memory: {
     memoryList: (
-      date: string,
+      date: string | null,
       aztSeq?: number,
       latitude?: number,
       longitude?: number
