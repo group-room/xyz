@@ -122,12 +122,11 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
         Cookie refreshCookie = new Cookie("Refresh", jsonWebToken.getRefreshToken());
         refreshCookie.setMaxAge((int) REFRESH_PERIOD);
         refreshCookie.setPath("/");
+        response.addCookie(refreshCookie);
 
-//        response.addHeader("Authorization",jsonWebToken.getAccessToken());
-
+        request.getSession().setAttribute("Authorization",jsonWebToken.getAccessToken());
         //리다이렉트 시킨다.
-//        getRedirectStrategy().sendRedirect(request, response, baseUrl);
-        getRedirectStrategy().sendRedirect(request, response, SERVER_URL+"/api/login/store-and-redirect?authorization="+jsonWebToken.getRefreshToken());
+        getRedirectStrategy().sendRedirect(request, response, baseUrl);
 
     }
 

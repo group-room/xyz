@@ -5,9 +5,13 @@ import com.grouproom.xyz.global.model.BaseResponse;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.controller
@@ -90,5 +94,15 @@ public class UserController {
     @GetMapping("/visitor")
     public BaseResponse visitorList(Long userSeq) {
         return new BaseResponse(userService.findVisitorByUserSequence(userSeq));
+    }
+
+    @GetMapping("/access-token")
+    public ResponseEntity getAccessToken(HttpSession httpSession) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization",(String)httpSession.getAttribute("Authorization"));
+        httpSession.removeAttribute("Authorization");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body("SUCCESS");
     }
 }
