@@ -24,5 +24,6 @@ export const queryKeys = {
   },
   user: {
     userList: () => [...KEYS.user],
+    visitorList: (userSeq: number) => [...KEYS.user, { userSeq }],
   },
 };

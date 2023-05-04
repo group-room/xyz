@@ -6,7 +6,7 @@ import Btn from "@/components/common/Btn";
 import { BgColors } from "@/constants/style";
 import React from "react";
 import { useState } from "react";
-import { useUserList } from "@/hooks/queries/user";
+import { useUserList, useVisitorList } from "@/hooks/queries/user";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -18,11 +18,19 @@ function ProfilePage() {
 
   const { data: userList, isLoading: isUserLoading, error } = useUserList();
   if (!isUserLoading && userList) {
-    console.log(userList, 3434353525);
+    console.log(userList, "userList");
+  }
+
+  const { data: visitorList, isLoading: isVisitorLoading } = useVisitorList(1);
+  if (!isVisitorLoading && visitorList) {
+    console.log(visitorList, "visitorList");
   }
 
   return (
-    <div>{!userList ? "로딩중..." : <div>하이루 {userList.nickname}</div>}</div>
+    <div>
+      {/* {!userList ? "로딩중..." : <div>하이루 {userList.nickname}</div>} */}
+      {/* {!visitorList ? "로딩중..." : <div>방명록 {visitorList.map((idx))}</div>} */}
+    </div>
   );
 }
 

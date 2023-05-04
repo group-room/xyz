@@ -1,13 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/app/api/instance";
 import { queryKeys } from "@/constants/queryKeys";
-import { UserProfileType } from "@/types/user";
+import { UserProfileType, VisitorTypes } from "@/types/user";
 
 export const useUserList = () => {
   return useQuery<UserProfileType>({
     queryKey: queryKeys.user.userList(),
     queryFn: async () => {
       return axiosInstance.get(`user/profile`).then((res) => res.data.data);
+    },
+  });
+};
+
+export const useVisitorList = (userSeq: number) => {
+  return useQuery<VisitorTypes[]>({
+    queryKey: queryKeys.user.visitorList(1),
+    queryFn: async () => {
+      return axiosInstance
+        .get(`user/visitor?userSeq=${userSeq}`)
+        .then((res) => res.data.data);
     },
   });
 };
