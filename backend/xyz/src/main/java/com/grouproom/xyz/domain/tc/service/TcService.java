@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TcService {
 
-    void saveTccontentFiles(TcContent tcContent, FileType fileType, List<String> filePaths);
+    void saveTcContentFiles(TcContent tcContent, FileType fileType, List<String> filePaths);
 
     AddTcResponse addTc(Long userSeq, AddTcRequest addTcRequest, List<MultipartFile> images, List<MultipartFile> audios);
 
@@ -23,4 +23,6 @@ public interface TcService {
     OpenedTcListResponse findOpenedTcList(Long userSeq);
 
     TcListResponse findWaitingTcList(Long userSeq);
+
+    TcListResponse findTcList(Long aztSeq);
 }

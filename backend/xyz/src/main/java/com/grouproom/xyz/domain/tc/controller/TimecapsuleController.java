@@ -2,6 +2,7 @@ package com.grouproom.xyz.domain.tc.controller;
 
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcContentRequest;
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
+import com.grouproom.xyz.domain.tc.dto.reqeust.TcListRequest;
 import com.grouproom.xyz.domain.tc.dto.response.*;
 import com.grouproom.xyz.domain.tc.service.TcService;
 import com.grouproom.xyz.global.model.BaseResponse;
@@ -21,6 +22,16 @@ public class TimecapsuleController {
 
     private final TcService tcService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.controller.TimecapsuleController");
+
+    @GetMapping()
+    public BaseResponse<?> TcList(@ModelAttribute TcListRequest tcListRequest) {
+        logger.info("TcList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        TcListResponse tcListResponse = tcService.findTcList(tcListRequest.getAztSeq());
+
+        return new BaseResponse(tcListResponse);
+    }
 
     @GetMapping("/opened")
     public BaseResponse<?> openedTcList(@RequestParam(name = "tcSeq", required = false) Long tcSeq) {

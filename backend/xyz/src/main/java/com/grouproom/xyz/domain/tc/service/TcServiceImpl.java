@@ -45,7 +45,7 @@ public class TcServiceImpl implements TcService {
 
     @Override
     @Transactional
-    public void saveTccontentFiles(TcContent tcContent, FileType fileType, List<String> filePaths) {
+    public void saveTcContentFiles(TcContent tcContent, FileType fileType, List<String> filePaths) {
         logger.info("saveTccontentFiles 호출");
 
         filePaths.stream().forEach(
@@ -119,12 +119,12 @@ public class TcServiceImpl implements TcService {
 
         if (images != null) {
             List<String> imagePaths = s3UploadService.upload(images, "tc");
-            saveTccontentFiles(tcContent, FileType.IMAGE, imagePaths);
+            saveTcContentFiles(tcContent, FileType.IMAGE, imagePaths);
         }
 
         if (audios != null) {
             List<String> audioPaths = s3UploadService.upload(audios, "memory");
-            saveTccontentFiles(tcContent, FileType.AUDIO, audioPaths);
+            saveTcContentFiles(tcContent, FileType.AUDIO, audioPaths);
         }
     }
 
@@ -217,11 +217,43 @@ public class TcServiceImpl implements TcService {
         List<TcResponse> tcResponses = tcRepository.findWaitingTcListByUser_Seq(userSeq);
 
         for (TcResponse tcResponse : tcResponses) {
-            tcResponse.setRequiredCnt(aztMemberRepository.countByAzt_SequenceAndIsDeleted(tcResponse.getAztSeq(), false));
+            tcResponse.setRequiredCnt((long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(tcResponse.getAztSeq(), false) / 2.0));
 
             if (tcResponse.getOpenStatus().equals("OPENABLE")) {
                 tcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(tcResponse.getTcSeq()));
             }
+        }
+
+        return TcListResponse.builder()
+                .tcResponses(tcResponses)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TcListResponse findTcList(Long aztSeq) {
+        logger.info("findTcList 호출");
+
+        if (aztSeq == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "아지트 seq가 필요합니다.");
+        }
+
+        Long requiredCnt = (long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(aztSeq, false) / 2.0);
+
+        List<Tc> tcs = tcRepository.findAllByAzt_Sequence(aztSeq);
+        List<TcResponse> tcResponses = new ArrayList<>();
+
+        for (Tc tc : tcs) {
+            TcResponse tcResponse = TcResponse.builder()
+                    .tc(tc)
+                    .requiredCnt(requiredCnt)
+                    .build();
+
+            if (tcResponse.getOpenStatus().equals("OPENABLE")) {
+                tcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(tcResponse.getTcSeq()));
+            }
+
+            tcResponses.add(tcResponse);
         }
 
         return TcListResponse.builder()
