@@ -6,6 +6,8 @@ import com.grouproom.xyz.domain.tc.dto.response.OpenedTcResponse;
 import com.grouproom.xyz.domain.tc.dto.response.TcResponse;
 import com.grouproom.xyz.domain.tc.entity.OpenStatus;
 import com.grouproom.xyz.domain.tc.entity.QTc;
+import com.grouproom.xyz.domain.tc.entity.QTcContent;
+import com.grouproom.xyz.domain.tc.entity.Tc;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -23,6 +25,7 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
     QTc tc = QTc.tc;
     QAzt azt = QAzt.azt;
     QAztMember aztMember = QAztMember.aztMember;
+    QTcContent tcContent = QTcContent.tcContent;
 
     @Override
     public List<OpenedTcResponse> findOpenedTcListByUser_Seq(Long userSeq) {
@@ -77,6 +80,15 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
                         .where(aztMember.user.sequence.eq(userSeq))))
                 .where(tc.openStatus.in(OpenStatus.LOCKED, OpenStatus.OPENABLE, OpenStatus.UPDATABLE))
                 .orderBy(tc.openStart.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<Tc> findTcListByUser_Seq(Long userSeq) {
+        return jpaQueryFactory.selectDistinct(tc)
+                .from(tc)
+                .join(tcContent).on(tc.sequence.eq(tcContent.tc.sequence))
+                .where(tcContent.user.sequence.eq(userSeq))
                 .fetch();
     }
 }
