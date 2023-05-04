@@ -16,14 +16,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import ModalBtn from "@/components/common/ModalBtn";
+import { SlugProps } from "@/types/common";
 
-type Props = {
-  params: {
-    slug: number;
-  };
-};
-
-function MemoryDetailPage({ params: { slug } }: Props) {
+function MemoryDetailPage({ params: { slug } }: SlugProps) {
   const router = useRouter();
   const { data: memory, isLoading } = useMemoryDetail(slug);
   const queryClient = useQueryClient();

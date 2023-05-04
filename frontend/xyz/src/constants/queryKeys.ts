@@ -21,5 +21,6 @@ export const queryKeys = {
   },
   azt: {
     aztList: () => [...KEYS.azt],
+    aztDetail: (aztSeq: number) => [...KEYS.azt, { aztSeq }],
   },
 };

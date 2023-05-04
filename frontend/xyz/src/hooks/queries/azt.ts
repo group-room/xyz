@@ -13,3 +13,12 @@ export const useAztList = () => {
     },
   });
 };
+
+export const useAztDetail = (aztSeq: number) => {
+  return useQuery<AztTypes>({
+    queryKey: queryKeys.azt.aztDetail(aztSeq),
+    queryFn: async () => {
+      return axiosInstance.get(`${AZT}/${aztSeq}`).then((res) => res.data.data);
+    },
+  });
+};
