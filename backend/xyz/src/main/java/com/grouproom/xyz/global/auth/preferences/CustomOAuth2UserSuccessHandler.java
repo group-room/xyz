@@ -77,9 +77,10 @@ public class CustomOAuth2UserSuccessHandler extends SimpleUrlAuthenticationSucce
         refreshCookie.setMaxAge((int) REFRESH_PERIOD);
         refreshCookie.setPath("/");
         response.addCookie(refreshCookie);
-        
+
+        request.getSession().setAttribute("Authorization",jsonWebToken.getAccessToken());
         //리다이렉트 시킨다.
-        getRedirectStrategy().sendRedirect(request, response, SERVER_URL+"/api/login/store-and-redirect?authorization="+jsonWebToken.getRefreshToken());
+        getRedirectStrategy().sendRedirect(request, response, baseUrl);
     }
 
 }
