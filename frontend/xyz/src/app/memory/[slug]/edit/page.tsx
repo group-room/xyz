@@ -30,7 +30,9 @@ function MemoryEditPage({ params: { slug } }: Props) {
   }); // 현재 위치
   const [position, setPosition] = useState<PositionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
   const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
-  const [photos, setPhotos] = useState<File[]>([]);
+  const [photos, setPhotos] = useState<File[]>([]); // 업로드한 사진 파일들
+  const [photoPreviewList, setPhotoPreviewList] = useState<string[]>([]); // 사진 미리보기용 (생성 - 업로드한 사진파일에서 변환, 편집 - 서버 url)
+  const [isPhotoChanged, setIsPhotoChanged] = useState<boolean>(false); // 사진 변경 여부
   const [metadata, setMetadata] = useState<PhotoMetadata | null>(null);
   const [content, setContent] = useState<string>("");
 
@@ -62,20 +64,23 @@ function MemoryEditPage({ params: { slug } }: Props) {
       setPosition({ lat: latitude, lng: longitude });
       setContent(content);
       setSelectedDate(new Date(date));
+      files.forEach((file) => {
+        setPhotoPreviewList((prev) => [...prev, file.filePath]);
+      });
 
       // 사진 파일로 변환해서 저장
-      let temp: File[] = [];
-      files.forEach((file) => {
-        const blob = new Blob([file.filePath], { type: file.fileType });
-        const newFile = new File([blob], file.filePath, {
-          type: file.fileType,
-        });
-        // const newFile = new File([file.filePath], file.filePath, {
-        //   type: file.fileType,
-        // });
-        temp.push(newFile);
-      });
-      setPhotos(temp);
+      // let temp: File[] = [];
+      // files.forEach((file) => {
+      //   const blob = new Blob([file.filePath], { type: file.fileType });
+      //   const newFile = new File([blob], file.filePath, {
+      //     type: file.fileType,
+      //   });
+      // const newFile = new File([file.filePath], file.filePath, {
+      //   type: file.fileType,
+      // });
+      //   temp.push(newFile);
+      // });
+      // setPhotos(temp);
     }
   }, [memory]);
 
@@ -98,15 +103,17 @@ function MemoryEditPage({ params: { slug } }: Props) {
     //   type: "video/webm",
     // });
     formData.append("modifyMemoryRequest", jsonData);
-    photos.forEach((photo) => {
-      formData.append("images", photo);
-    });
 
-    console.log(formData);
+    // 사진 편집한 경우에만 사진 업로드
+    if (isPhotoChanged) {
+      photos.forEach((photo) => {
+        formData.append("images", photo);
+      });
+    }
 
     useEditMemoryMutation.mutate(formData, {
       onSuccess: () => {
-        router.push(`/memory/${slug}`); // 생성 완료후 상세로 이동
+        router.push(`/memory/${slug}`); // 편집 완료후 상세로 이동
       },
     });
   };
@@ -136,6 +143,10 @@ function MemoryEditPage({ params: { slug } }: Props) {
             setMetadata={setMetadata}
             setPosition={setPosition}
             handleDateChange={handleDateChange}
+            photoPreviewList={photoPreviewList}
+            setPhotoPreviewList={setPhotoPreviewList}
+            isPhotoChanged={isPhotoChanged}
+            setIsPhotoChanged={setIsPhotoChanged}
           />
 
           <KakaoMap
