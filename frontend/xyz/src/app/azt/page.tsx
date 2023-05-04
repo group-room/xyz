@@ -1,17 +1,12 @@
 "use client";
 
+import React from "react";
+import Link from "next/link";
 import AztItem from "@/components/azt/AztItem";
-import Btn from "@/components/common/Btn";
 import Container from "@/components/common/Container";
 import { useAztList } from "@/hooks/queries/azt";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React from "react";
 
-function AzitPage() {
-  const router = useRouter();
-
+function AztPage() {
   const { data: aztData, isLoading: isAztLoading } = useAztList();
   if (aztData) {
     console.log(aztData);
@@ -48,4 +43,4 @@ function AzitPage() {
   );
 }
 
-export default AzitPage;
+export default AztPage;
