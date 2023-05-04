@@ -211,21 +211,21 @@ public class TcServiceImpl implements TcService {
 
     @Override
     @Transactional(readOnly = true)
-    public WaitingTcListResponse findWaitingTcList(Long userSeq) {
+    public TcListResponse findWaitingTcList(Long userSeq) {
         logger.info("findWaitingTcList 호출");
 
-        List<WaitingTcResponse> waitingTcResponses = tcRepository.findWaitingTcListByUser_Seq(userSeq);
+        List<TcResponse> tcResponses = tcRepository.findWaitingTcListByUser_Seq(userSeq);
 
-        for (WaitingTcResponse waitingTcResponse : waitingTcResponses) {
-            waitingTcResponse.setRequiredCnt(aztMemberRepository.countByAzt_SequenceAndIsDeleted(waitingTcResponse.getAztSeq(), false));
+        for (TcResponse tcResponse : tcResponses) {
+            tcResponse.setRequiredCnt(aztMemberRepository.countByAzt_SequenceAndIsDeleted(tcResponse.getAztSeq(), false));
 
-            if (waitingTcResponse.getOpenStatus().equals("OPENABLE")) {
-                waitingTcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(waitingTcResponse.getTcSeq()));
+            if (tcResponse.getOpenStatus().equals("OPENABLE")) {
+                tcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(tcResponse.getTcSeq()));
             }
         }
 
-        return WaitingTcListResponse.builder()
-                .waitingTcResponses(waitingTcResponses)
+        return TcListResponse.builder()
+                .tcResponses(tcResponses)
                 .build();
     }
 }

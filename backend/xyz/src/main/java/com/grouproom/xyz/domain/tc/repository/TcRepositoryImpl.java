@@ -3,7 +3,7 @@ package com.grouproom.xyz.domain.tc.repository;
 import com.grouproom.xyz.domain.azt.entity.QAzt;
 import com.grouproom.xyz.domain.azt.entity.QAztMember;
 import com.grouproom.xyz.domain.tc.dto.response.OpenedTcResponse;
-import com.grouproom.xyz.domain.tc.dto.response.WaitingTcResponse;
+import com.grouproom.xyz.domain.tc.dto.response.TcResponse;
 import com.grouproom.xyz.domain.tc.entity.OpenStatus;
 import com.grouproom.xyz.domain.tc.entity.QTc;
 import com.querydsl.core.types.Projections;
@@ -55,7 +55,7 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
     }
 
     @Override
-    public List<WaitingTcResponse> findWaitingTcListByUser_Seq(Long userSeq) {
+    public List<TcResponse> findWaitingTcListByUser_Seq(Long userSeq) {
 
 //        return jpaQueryFactory.select(Projections.constructor(WaitingTcResponse.class,
 //                        tc.sequence.as("tcSeq"), azt.sequence, azt.aztName, tc.openStatus, tc.openStart, tc.openEnd, tc.location))
@@ -68,7 +68,7 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
 //                .orderBy(tc.openStart.asc())
 //                .fetch();
 
-        return jpaQueryFactory.select(Projections.constructor(WaitingTcResponse.class,
+        return jpaQueryFactory.select(Projections.constructor(TcResponse.class,
                         tc.sequence.as("tcSeq"), tc.azt.sequence, tc.azt.aztName, tc.openStatus, tc.openStart, tc.openEnd, tc.location))
                 .from(tc)
                 .join(tc.azt, azt)

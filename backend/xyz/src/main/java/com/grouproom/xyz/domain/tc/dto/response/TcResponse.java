@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class WaitingTcResponse {
+public class TcResponse {
     private Long tcSeq;
     private Long aztSeq;
     private String aztName;
@@ -17,7 +17,7 @@ public class WaitingTcResponse {
     private Long requiredCnt;
     private Long openCnt;
 
-    public WaitingTcResponse(Long tcSeq, Long aztSeq, String aztName, OpenStatus openStatus, LocalDateTime openStart, LocalDateTime openEnd, String location) {
+    public TcResponse(Long tcSeq, Long aztSeq, String aztName, OpenStatus openStatus, LocalDateTime openStart, LocalDateTime openEnd, String location) {
         this.tcSeq = tcSeq;
         this.aztSeq = aztSeq;
         this.aztName = aztName;

@@ -37,9 +37,9 @@ public class TimecapsuleController {
         logger.info("waitingTcList 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        WaitingTcListResponse waitingTcListResponse = tcService.findWaitingTcList(userSeq);
+        TcListResponse tcListResponse = tcService.findWaitingTcList(userSeq);
 
-        return new BaseResponse(waitingTcListResponse);
+        return new BaseResponse(tcListResponse);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

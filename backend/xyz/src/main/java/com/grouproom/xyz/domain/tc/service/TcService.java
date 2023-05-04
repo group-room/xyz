@@ -4,7 +4,6 @@ import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.tc.dto.response.*;
 import com.grouproom.xyz.domain.tc.entity.TcContent;
 import com.grouproom.xyz.global.model.FileType;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,6 +22,5 @@ public interface TcService {
 
     OpenedTcListResponse findOpenedTcList(Long userSeq);
 
-    @Transactional(readOnly = true)
-    WaitingTcListResponse findWaitingTcList(Long userSeq);
+    TcListResponse findWaitingTcList(Long userSeq);
 }
