@@ -89,6 +89,7 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
                 .from(tc)
                 .join(tcContent).on(tc.sequence.eq(tcContent.tc.sequence))
                 .where(tcContent.user.sequence.eq(userSeq))
+                .orderBy(tc.createdAt.desc())
                 .fetch();
     }
 }
