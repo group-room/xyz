@@ -43,5 +43,6 @@ public class TcResponse {
         this.updatedAt = tc.getUpdatedAt().toString();
         this.location = tc.getLocation();
         this.requiredCnt = requiredCnt;
+        this.openCnt = 0L;
     }
 }

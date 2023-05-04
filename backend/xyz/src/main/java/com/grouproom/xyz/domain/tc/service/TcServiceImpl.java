@@ -240,7 +240,7 @@ public class TcServiceImpl implements TcService {
 
         Long requiredCnt = (long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(aztSeq, false) / 2.0);
 
-        List<Tc> tcs = tcRepository.findAllByAzt_Sequence(aztSeq);
+        List<Tc> tcs = tcRepository.findAllByAzt_SequenceOrderByCreatedAtDesc(aztSeq);
         List<TcResponse> tcResponses = new ArrayList<>();
 
         for (Tc tc : tcs) {
@@ -251,6 +251,32 @@ public class TcServiceImpl implements TcService {
 
             if (tcResponse.getOpenStatus().equals("OPENABLE")) {
                 tcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(tcResponse.getTcSeq()));
+            }
+
+            tcResponses.add(tcResponse);
+        }
+
+        return TcListResponse.builder()
+                .tcResponses(tcResponses)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TcListResponse findMyTcList(Long userSeq) {
+        logger.info("findMyTcList 호출");
+
+        List<Tc> tcs = tcRepository.findTcListByUser_Seq(userSeq);
+        List<TcResponse> tcResponses = new ArrayList<>();
+
+        for (Tc tc : tcs) {
+            TcResponse tcResponse = TcResponse.builder()
+                    .tc(tc)
+                    .requiredCnt((long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(tc.getAzt().getSequence(), false) / 2.0))
+                    .build();
+
+            if (tcResponse.getOpenStatus().equals("OPENABLE")) {
+                tcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(tc.getSequence()));
             }
 
             tcResponses.add(tcResponse);

@@ -24,11 +24,21 @@ public class TimecapsuleController {
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.controller.TimecapsuleController");
 
     @GetMapping()
-    public BaseResponse<?> TcList(@ModelAttribute TcListRequest tcListRequest) {
+    public BaseResponse<?> tcList(@ModelAttribute TcListRequest tcListRequest) {
         logger.info("TcList 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         TcListResponse tcListResponse = tcService.findTcList(tcListRequest.getAztSeq());
+
+        return new BaseResponse(tcListResponse);
+    }
+
+    @GetMapping("mytimecapsule")
+    public BaseResponse<?> myTcList(@RequestParam(name = "tcSeq", required = false) Long tcSeq) {
+        logger.info("myTcList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        TcListResponse tcListResponse = tcService.findMyTcList(userSeq);
 
         return new BaseResponse(tcListResponse);
     }
