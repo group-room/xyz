@@ -5,9 +5,8 @@ export const SERVER_URL = "https://xyz-gen.com/backend/api";
 export const axiosInstance = axios.create({
   baseURL: SERVER_URL,
   headers: {
-    // "Content-type": "application/json",
     Authorization:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXF1ZW5jZSI6MSwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY4MzAxNjQyMiwiZXhwIjoxNjgzNDQ4NDIyfQ.TOkxpVTIAvzw1ozn9DDjefmWHlTmZTvgDHfyQNqgi2w",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXF1ZW5jZSI6MSwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY4MzAwMzgzOCwiZXhwIjoxNjgzNDM1ODM4fQ.4NQOVV7N-vOlNylkQetVd8qKODjDRWfK8tNDN1Yl2I8",
   }, // 나중에 토큰 넣어주기
   withCredentials: true,
 });
@@ -17,7 +16,7 @@ export const axiosFileInstance = axios.create({
   headers: {
     "Content-type": "multipart/form-data",
     Authorization:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXF1ZW5jZSI6MSwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY4MzAxNjQyMiwiZXhwIjoxNjgzNDQ4NDIyfQ.TOkxpVTIAvzw1ozn9DDjefmWHlTmZTvgDHfyQNqgi2w",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXF1ZW5jZSI6MSwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY4MzAwMzgzOCwiZXhwIjoxNjgzNDM1ODM4fQ.4NQOVV7N-vOlNylkQetVd8qKODjDRWfK8tNDN1Yl2I8",
   }, // 나중에 토큰 넣어주기
   withCredentials: true,
 });
