@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.tc.repository;
 import com.grouproom.xyz.domain.azt.entity.QAzt;
 import com.grouproom.xyz.domain.azt.entity.QAztMember;
 import com.grouproom.xyz.domain.tc.dto.response.OpenedTcResponse;
+import com.grouproom.xyz.domain.tc.dto.response.WaitingTcResponse;
 import com.grouproom.xyz.domain.tc.entity.OpenStatus;
 import com.grouproom.xyz.domain.tc.entity.QTc;
 import com.querydsl.core.types.Projections;
@@ -53,18 +54,29 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
         );
     }
 
-//    @Override
-//    public List<WaitingTcResponse> findWaitingTcListByUser_Seq(Long userSeq) {
-//
+    @Override
+    public List<WaitingTcResponse> findWaitingTcListByUser_Seq(Long userSeq) {
+
 //        return jpaQueryFactory.select(Projections.constructor(WaitingTcResponse.class,
-//                        tc.sequence.as("tcSeq"), tc.azt.sequence, tc.azt.aztName, tc.openStatus, tc.openStart, tc.openEnd, tc.location))
+//                        tc.sequence.as("tcSeq"), azt.sequence, azt.aztName, tc.openStatus, tc.openStart, tc.openEnd, tc.location))
 //                .from(tc)
 //                .join(tc.azt, azt)
-//                .where(azt.sequence.in(JPAExpressions.select(aztMember.azt.sequence)
-//                        .from(aztMember)
-//                        .where(aztMember.user.sequence.eq(userSeq))))
+//                .join(aztMember)
+//                .on(aztMember.azt.eq(azt))
+//                .where(aztMember.user.sequence.eq(userSeq))
 //                .where(tc.openStatus.in(OpenStatus.OPENED, OpenStatus.OPENABLE, OpenStatus.UPDATABLE))
 //                .orderBy(tc.openStart.asc())
 //                .fetch();
-//    }
+
+        return jpaQueryFactory.select(Projections.constructor(WaitingTcResponse.class,
+                        tc.sequence.as("tcSeq"), tc.azt.sequence, tc.azt.aztName, tc.openStatus, tc.openStart, tc.openEnd, tc.location))
+                .from(tc)
+                .join(tc.azt, azt)
+                .where(azt.sequence.in(JPAExpressions.select(aztMember.azt.sequence)
+                        .from(aztMember)
+                        .where(aztMember.user.sequence.eq(userSeq))))
+                .where(tc.openStatus.in(OpenStatus.LOCKED, OpenStatus.OPENABLE, OpenStatus.UPDATABLE))
+                .orderBy(tc.openStart.asc())
+                .fetch();
+    }
 }

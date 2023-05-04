@@ -11,6 +11,7 @@ import com.grouproom.xyz.domain.tc.entity.TcContent;
 import com.grouproom.xyz.domain.tc.entity.TcContentFile;
 import com.grouproom.xyz.domain.tc.repository.TcContentFileRepository;
 import com.grouproom.xyz.domain.tc.repository.TcContentRepository;
+import com.grouproom.xyz.domain.tc.repository.TcOpenRepository;
 import com.grouproom.xyz.domain.tc.repository.TcRepository;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
@@ -32,12 +33,13 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class TcServiceImpl implements TcService {
 
+    private final TcRepository tcRepository;
     private final AztRepository aztRepository;
     private final UserRepository userRepository;
     private final S3UploadService s3UploadService;
-    private final AztMemberRepository aztMemberRepository;
-    private final TcRepository tcRepository;
+    private final TcOpenRepository tcOpenRepository;
     private final TcContentRepository tcContentRepository;
+    private final AztMemberRepository aztMemberRepository;
     private final TcContentFileRepository tcContentFileRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.tc.service.TcServiceImpl");
 
@@ -204,6 +206,26 @@ public class TcServiceImpl implements TcService {
         List<OpenedTcResponse> openedTcResponses = tcRepository.findOpenedTcListByUser_Seq(userSeq);
         return OpenedTcListResponse.builder()
                 .openedTcResponses(openedTcResponses)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public WaitingTcListResponse findWaitingTcList(Long userSeq) {
+        logger.info("findWaitingTcList 호출");
+
+        List<WaitingTcResponse> waitingTcResponses = tcRepository.findWaitingTcListByUser_Seq(userSeq);
+
+        for (WaitingTcResponse waitingTcResponse : waitingTcResponses) {
+            waitingTcResponse.setRequiredCnt(aztMemberRepository.countByAzt_SequenceAndIsDeleted(waitingTcResponse.getAztSeq(), false));
+
+            if (waitingTcResponse.getOpenStatus().equals("OPENABLE")) {
+                waitingTcResponse.setOpenCnt(tcOpenRepository.countTcOpensByTc_Sequence(waitingTcResponse.getTcSeq()));
+            }
+        }
+
+        return WaitingTcListResponse.builder()
+                .waitingTcResponses(waitingTcResponses)
                 .build();
     }
 }

@@ -2,10 +2,7 @@ package com.grouproom.xyz.domain.tc.controller;
 
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcContentRequest;
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
-import com.grouproom.xyz.domain.tc.dto.response.AddTcResponse;
-import com.grouproom.xyz.domain.tc.dto.response.OpenedTcDetailsResponse;
-import com.grouproom.xyz.domain.tc.dto.response.OpenedTcListResponse;
-import com.grouproom.xyz.domain.tc.dto.response.OpenedTcResponse;
+import com.grouproom.xyz.domain.tc.dto.response.*;
 import com.grouproom.xyz.domain.tc.service.TcService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +30,16 @@ public class TimecapsuleController {
         OpenedTcListResponse openedTcListResponse = tcService.findOpenedTcList(userSeq);
 
         return new BaseResponse(openedTcListResponse);
+    }
+
+    @GetMapping("/waiting")
+    public BaseResponse<?> waitingTcList(@RequestParam(name = "tcSeq", required = false) Long tcSeq) {
+        logger.info("waitingTcList 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        WaitingTcListResponse waitingTcListResponse = tcService.findWaitingTcList(userSeq);
+
+        return new BaseResponse(waitingTcListResponse);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

@@ -13,4 +13,5 @@ public interface AztMemberRepository extends JpaRepository<AztMember, AztMemberI
     AztMember findByAzt_SequenceAndUser_Sequence(Long aztSeq, Long userSeq);
     AztMember findByAzt_SequenceAndUser_SequenceAndIsDeleted(Long aztSeq, Long userSeq, Boolean isDeleted);
     List<AztMember> findByAzt_SequenceAndIsDeleted(Long aztSeq, Boolean isDeleted);
+    Long countByAzt_SequenceAndIsDeleted(Long aztSeq, Boolean isDeleted);
 }

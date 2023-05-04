@@ -14,10 +14,10 @@ public class WaitingTcResponse {
     private String openStart;
     private String openEnd;
     private String location;
-    private Integer requiredCnt;
-    private Integer openerCnt;
+    private Long requiredCnt;
+    private Long openCnt;
 
-    public WaitingTcResponse(Long tcSeq, Long aztSeq, String aztName, OpenStatus openStatus, LocalDateTime openStart, LocalDateTime openEnd, String location, Integer requiredCnt, Integer openerCnt) {
+    public WaitingTcResponse(Long tcSeq, Long aztSeq, String aztName, OpenStatus openStatus, LocalDateTime openStart, LocalDateTime openEnd, String location) {
         this.tcSeq = tcSeq;
         this.aztSeq = aztSeq;
         this.aztName = aztName;
@@ -25,7 +25,6 @@ public class WaitingTcResponse {
         this.openStart = openStart.toString();
         this.openEnd = openEnd.toString();
         this.location = location;
-        this.requiredCnt = requiredCnt;
-        this.openerCnt = openerCnt;
+        this.openCnt = 0L;
     }
 }
