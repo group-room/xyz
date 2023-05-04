@@ -26,7 +26,8 @@ function MemoryCreatePage() {
   }); // 현재 위치
   const [position, setPosition] = useState<PositionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
   const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
-  const [photos, setPhotos] = useState<File[]>([]);
+  const [photos, setPhotos] = useState<File[]>([]); // 업로드한 사진 파일들
+  const [photoPreviewList, setPhotoPreviewList] = useState<string[]>([]); // 사진 미리보기용
   const [metadata, setMetadata] = useState<PhotoMetadata | null>(null);
   const [content, setContent] = useState<string>("");
 
@@ -110,6 +111,8 @@ function MemoryCreatePage() {
           setMetadata={setMetadata}
           setPosition={setPosition}
           handleDateChange={handleDateChange}
+          photoPreviewList={photoPreviewList}
+          setPhotoPreviewList={setPhotoPreviewList}
         />
         <KakaoMap
           currLocation={currLocation}
