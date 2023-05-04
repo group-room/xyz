@@ -109,4 +109,11 @@ public class UserController {
                 .headers(headers)
                 .body("SUCCESS");
     }
+
+    @DeleteMapping("/logout")
+    public BaseResponse logout() {
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        userService.logout(userSeq);
+        return new BaseResponse(null);
+    }
 }
