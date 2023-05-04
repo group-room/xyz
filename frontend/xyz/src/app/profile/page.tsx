@@ -7,6 +7,7 @@ import { BgColors } from "@/constants/style";
 import React from "react";
 import { useState } from "react";
 import { useUserList, useVisitorList } from "@/hooks/queries/user";
+import ProfileEdit from "@/components/profile/ProfileEdit";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -28,8 +29,11 @@ function ProfilePage() {
 
   return (
     <div>
-      {/* {!userList ? "로딩중..." : <div>하이루 {userList.nickname}</div>} */}
+      {!userList ? "로딩중..." : <div>닉네임 {userList.nickname}</div>}
+      {!userList ? "로딩중..." : <div>자기소개 {userList.introduce}</div>}
+
       {/* {!visitorList ? "로딩중..." : <div>방명록 {visitorList.map((idx))}</div>} */}
+      <ProfileEdit />
     </div>
   );
 }
