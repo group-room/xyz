@@ -150,18 +150,27 @@ public class MemoryServiceImpl implements MemoryService {
 
         memory.updateMemory(modifyMemoryRequest);
 
-        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
-
-        for (MemoryFile memoryFile : memoryFiles) {
-            memoryFile.updateIsDeleted(true);
-        }
-
         if (images != null) {
+            logger.info("updateMemoryFile");
+
+            List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeletedAndFileType(memorySeq, false, FileType.IMAGE);
+
+            for (MemoryFile memoryFile : memoryFiles) {
+                memoryFile.updateIsDeleted(true);
+            }
+
             List<String> imagePaths = s3UploadService.upload(images, "memory");
             saveMemoryFiles(memory, FileType.IMAGE, imagePaths);
         }
 
         if (audios != null) {
+            logger.info("updateMemoryFile");
+
+            List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeletedAndFileType(memorySeq, false, FileType.AUDIO);
+
+            for (MemoryFile memoryFile : memoryFiles) {
+                memoryFile.updateIsDeleted(true);
+            }
             List<String> audioPaths = s3UploadService.upload(audios, "memory");
             saveMemoryFiles(memory, FileType.AUDIO, audioPaths);
         }
