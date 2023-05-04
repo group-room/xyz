@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@Document
+@Document(collection="admin")
 @Getter
 @Setter
 public class ChatRoom {
