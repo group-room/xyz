@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import EXIF from "exif-js";
 import { PhotoMetadata, PositionTypes } from "@/types/memory";
 import DatePicker from "react-datepicker";
@@ -17,6 +17,10 @@ interface PhotoUploadProps {
   setMetadata: Dispatch<SetStateAction<PhotoMetadata | null>>;
   setPosition: Dispatch<SetStateAction<PositionTypes>>;
   handleDateChange: (date: Date) => void;
+  photoPreviewList: string[];
+  setPhotoPreviewList: Dispatch<SetStateAction<string[]>>;
+  isPhotoChanged?: boolean;
+  setIsPhotoChanged?: Dispatch<SetStateAction<boolean>>;
 }
 
 function PhotoUpload({
@@ -27,11 +31,18 @@ function PhotoUpload({
   setMetadata,
   setPosition,
   handleDateChange,
+  photoPreviewList,
+  setPhotoPreviewList,
+  setIsPhotoChanged,
 }: PhotoUploadProps) {
-  const [photoPreviewList, setPhotoPreviewList] = useState<string[]>([]);
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPosition({ lat: 0, lng: 0 });
     setMetadata(null);
+
+    // 사진을 편집했다면, 사진 변경 여부를 true로 설정
+    if (photos && setIsPhotoChanged) {
+      setIsPhotoChanged(true);
+    }
 
     const fileList: any = event.target.files;
     if (fileList) {
@@ -74,6 +85,16 @@ function PhotoUpload({
       }
     }
   };
+
+  useEffect(() => {
+    if (photos) {
+      const selectedPhotoPreviewList: string[] = [];
+      for (const photo of photos) {
+        selectedPhotoPreviewList.push(URL.createObjectURL(photo));
+      }
+      setPhotoPreviewList(selectedPhotoPreviewList);
+    }
+  }, [photos]);
 
   return (
     <div className="w-full">
@@ -121,11 +142,13 @@ function PhotoUpload({
         />
       </div>
       {/* 첨부 사진 보여주는 영역 */}
-      <MultiCarousel>
-        {photoPreviewList?.map((url) => (
-          <img key={url} src={url} alt="Preview" />
-        ))}
-      </MultiCarousel>
+      {photoPreviewList.length > 0 && (
+        <MultiCarousel>
+          {photoPreviewList?.map((url) => (
+            <img key={url} src={url} alt="Preview" />
+          ))}
+        </MultiCarousel>
+      )}
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "../common/Container";
 import { MemoryCommentTypes } from "@/types/memory";
-import ProfileImg from "../common/ProfileImg";
 import CommentCreate from "./CommentCreate";
+import CommentItem from "./CommentItem";
 
 interface CommentProps {
   memorySeq: number;
@@ -10,7 +10,7 @@ interface CommentProps {
   commentList: MemoryCommentTypes[];
 }
 
-function Comment({ memorySeq, commentCnt, commentList }: CommentProps) {
+function CommentList({ memorySeq, commentCnt, commentList }: CommentProps) {
   return (
     <div className="my-2">
       <Container
@@ -23,19 +23,20 @@ function Comment({ memorySeq, commentCnt, commentList }: CommentProps) {
       >
         {commentList.length ? (
           <div className="divide-y divide-stone-300 px-4 py-1">
-            {commentList.map((comment, idx) => {
-              return (
-                <div key={idx} className="flex gap-x-3 py-3">
-                  <div className="flex-none">
-                    <ProfileImg imgSrc={comment.profileImage} />
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="mb-1 mt-2 ">{comment.nickname} :</p>
-                    <p>{comment.content}</p>
-                  </div>
-                </div>
-              );
-            })}
+            {commentList.map(
+              ({ commentSeq, profileImage, nickname, content }) => {
+                return (
+                  <CommentItem
+                    key={commentSeq}
+                    commentSeq={commentSeq}
+                    profileImage={profileImage}
+                    nickname={nickname}
+                    content={content}
+                    memorySeq={memorySeq}
+                  />
+                );
+              }
+            )}
           </div>
         ) : (
           <p className="px-2 py-3">아직 댓글이 없어요ㅠㅠ</p>
@@ -46,4 +47,4 @@ function Comment({ memorySeq, commentCnt, commentList }: CommentProps) {
   );
 }
 
-export default Comment;
+export default CommentList;
