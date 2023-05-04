@@ -22,7 +22,7 @@ function ProfilePage() {
     console.log(userList, "userList");
   }
 
-  const { data: visitorList, isLoading: isVisitorLoading } = useVisitorList(1);
+  const { data: visitorList, isLoading: isVisitorLoading } = useVisitorList();
   if (!isVisitorLoading && visitorList) {
     console.log(visitorList, "visitorList");
   }

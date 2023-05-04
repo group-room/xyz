@@ -21,17 +21,14 @@ function ProfileEdit() {
   const handleBtnClick = (e?: React.FormEvent): void => {
     e?.preventDefault();
     const formData = new FormData();
-    // const stringifiedData = JSON.stringify({
-    //   nickname: nickname,
-    //   introduce: introduce,
-    // });
-    // const nickData = new Blob(JSON.stringify(nickname),
-    // {
-    //   type: "application/json",
-    // });
-    formData.append("nickname", JSON.stringify(nickname));
-    formData.append("introduce", JSON.stringify(introduce));
-
+    const stringifiedData = JSON.stringify({
+      nickname: nickname,
+      introduce: introduce,
+    });
+    const jsonData = new Blob([stringifiedData], {
+      type: "application/json",
+    });
+    formData.append("profileRequest", jsonData);
     console.log(formData, "formData");
 
     // const jsonData = new Blob([stringifiedData], {

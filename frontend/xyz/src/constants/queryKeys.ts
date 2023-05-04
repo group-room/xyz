@@ -24,6 +24,7 @@ export const queryKeys = {
   },
   user: {
     userList: () => [...KEYS.user],
-    visitorList: (userSeq: number) => [...KEYS.user, { userSeq }],
+    visitorList: (userSeq?: number) => [...KEYS.user, { userSeq }],
+    // mymemoryList: (memory: string) => [...KEYS.user, { memory }],
   },
 };

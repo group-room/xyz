@@ -12,13 +12,11 @@ export const useUserList = () => {
   });
 };
 
-export const useVisitorList = (userSeq: number) => {
+export const useVisitorList = (userSeq?: number) => {
   return useQuery<VisitorTypes[]>({
-    queryKey: queryKeys.user.visitorList(1),
+    queryKey: queryKeys.user.visitorList(),
     queryFn: async () => {
-      return axiosInstance
-        .get(`user/visitor?userSeq=${userSeq}`)
-        .then((res) => res.data.data);
+      return axiosInstance.get(`user/visitor`).then((res) => res.data.data);
     },
   });
 };
