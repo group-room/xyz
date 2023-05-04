@@ -65,4 +65,8 @@ public class Tc extends BaseTimeEntity {
         this.user = user;
         this.azt = azt;
     }
+
+    public void updateOpenStatus(OpenStatus openStatus) {
+        this.openStatus = openStatus;
+    }
 }
