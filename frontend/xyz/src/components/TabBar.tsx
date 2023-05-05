@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 function TabBar() {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <div className="fixed flex items-center justify-evenly bottom-0 left-0 right-0 h-14 bg-white shadow-[0_-3px_20px_-20px_rgba(0,0,0,0.3)] z-50">
