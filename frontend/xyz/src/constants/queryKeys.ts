@@ -32,7 +32,7 @@ export const queryKeys = {
   },
   azt: {
     aztList: () => [...KEYS.azt],
-    aztDetail: (aztSeq: number) => [...KEYS.azt, { aztSeq }],
+    aztInfo: (aztSeq: number) => [...KEYS.azt, { aztSeq }],
   },
   capsule: {
     aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],

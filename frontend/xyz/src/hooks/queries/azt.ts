@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/app/api/instance";
 import { API, queryKeys } from "@/constants/queryKeys";
-import { AztTypes } from "@/types/azt";
+import { AztInfoTypes, AztTypes } from "@/types/azt";
 import { useQuery } from "@tanstack/react-query";
 
 const AZT: string = `/${API.azt}`;
@@ -14,9 +14,9 @@ export const useAztList = () => {
   });
 };
 
-export const useAztDetail = (aztSeq: number) => {
-  return useQuery<AztTypes>({
-    queryKey: queryKeys.azt.aztDetail(aztSeq),
+export const useAztInfo = (aztSeq: number) => {
+  return useQuery<AztInfoTypes>({
+    queryKey: queryKeys.azt.aztInfo(aztSeq),
     queryFn: async () => {
       return axiosInstance.get(`${AZT}/${aztSeq}`).then((res) => res.data.data);
     },
