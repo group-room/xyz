@@ -1,9 +1,9 @@
 import { MemoriesTypes, MemoryListParams, MemoryTypes } from "@/types/memory";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../app/api/instance";
-import { queryKeys } from "../../constants/queryKeys";
+import { API, queryKeys } from "../../constants/queryKeys";
 
-const MEMORY = "/memory";
+const MEMORY: string = `/${API.memory}`;
 
 export const useMemoryList = ({
   date,

@@ -1,9 +1,9 @@
 import { axiosInstance } from "@/app/api/instance";
-import { queryKeys } from "@/constants/queryKeys";
+import { API, queryKeys } from "@/constants/queryKeys";
 import { AztTypes } from "@/types/azt";
 import { useQuery } from "@tanstack/react-query";
 
-const AZT = "azt";
+const AZT: string = `/${API.azt}`;
 
 export const useAztList = () => {
   return useQuery<AztTypes[]>({

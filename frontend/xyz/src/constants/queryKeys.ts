@@ -1,12 +1,23 @@
+export const API = {
+  user: "user",
+  memory: "memory",
+  capsule: "timecapsule",
+  azt: "azt",
+  chat: "chat",
+  myroom: "myroom",
+  friend: "friend",
+  notification: "notification",
+};
+
 export const KEYS = {
-  user: ["user"],
-  memory: ["memory"],
-  timecapsule: ["timecapsule"],
-  azt: ["azt"],
-  chat: ["chat"],
-  myroom: ["myroom"],
-  friend: ["friend"],
-  notification: ["notification"],
+  user: [API.user],
+  memory: [API.memory],
+  capsule: [API.capsule],
+  azt: [API.azt],
+  chat: [API.chat],
+  myroom: [API.myroom],
+  friend: [API.friend],
+  notification: [API.notification],
 };
 
 export const queryKeys = {
@@ -22,5 +33,8 @@ export const queryKeys = {
   azt: {
     aztList: () => [...KEYS.azt],
     aztDetail: (aztSeq: number) => [...KEYS.azt, { aztSeq }],
+  },
+  capsule: {
+    aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],
   },
 };
