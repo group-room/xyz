@@ -23,7 +23,7 @@ export const queryKeys = {
     aztList: () => [...KEYS.azt],
   },
   user: {
-    userList: () => [...KEYS.user],
+    userList: (userSeq?: number) => [...KEYS.user, { userSeq }],
     visitorList: (userSeq?: number) => [...KEYS.user, { userSeq }],
     // mymemoryList: (memory: string) => [...KEYS.user, { memory }],
   },
