@@ -1,27 +1,40 @@
 "use client";
 
-import { useAccessToken } from "@/hooks/queries/user";
+import { useLogin } from "@/hooks/queries/user";
 import { useAppDispatch } from "@/hooks/redux";
 import {
   updateAccessToken,
   updateLoginStatus,
-  updateUserSeq,
+  updateUserInfo,
 } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { axiosFileInstance, axiosInstance } from "../api/instance";
+import { API } from "@/constants/queryKeys";
 
 function LoginPage() {
-  const { data: loginHeaders, isLoading } = useAccessToken();
+  const { data: loginRes, isLoading } = useLogin();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  if (loginHeaders) {
-    // console.log(loginHeaders);
+  if (loginRes) {
+    // console.log(loginRes);
+    const loginHeaders = loginRes.headers;
     const accessToken = loginHeaders["authorization"];
+    const userSeq = +loginHeaders["sequence"];
+    const profilePhoto = loginHeaders["image"];
+
+    const nickname = loginRes.data.nickname;
+
     dispatch(updateLoginStatus(true));
     dispatch(updateAccessToken(accessToken));
-    dispatch(updateUserSeq(+loginHeaders["sequence"]));
-    router.push("/memory");
+    dispatch(
+      updateUserInfo({
+        userSeq,
+        nickname,
+        profilePhoto,
+      })
+    );
+    router.push(API.memory);
     axiosInstance.defaults.headers.common["Authorization"] = accessToken;
     axiosFileInstance.defaults.headers.common["Authorization"] = accessToken;
   }
