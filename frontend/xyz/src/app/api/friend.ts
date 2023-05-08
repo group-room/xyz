@@ -10,7 +10,7 @@ export const postFollow = (userSeq: number) => {
 
 // 친구 요청 취소
 export const putCancelFollow = (userSeq: number) => {
-  return axiosInstance.put(`/${FRIEND}/cancel`, userSeq);
+  return axiosInstance.put(`${FRIEND}/cancel`, { userSeq });
 };
 
 // 친구 요청 수락

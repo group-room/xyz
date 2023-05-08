@@ -22,8 +22,7 @@ export default function FriendBox({
   const queryClient = useQueryClient();
 
   const usePostFollowMutation = useMutation({
-    mutationFn: () =>
-      postFollow(userSeq).then(console.log("useSeq mutationFn : ", userSeq)),
+    mutationFn: () => postFollow(userSeq),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.friend);
     },
@@ -44,7 +43,7 @@ export default function FriendBox({
       usePostFollowMutation.mutate();
       console.log("완료");
     } else if (relation === "친구") {
-      console.log("useCancelFollowMutation");
+    } else if (relation === "요청 함") {
       useCancelFollowMutation.mutate();
     }
   };
