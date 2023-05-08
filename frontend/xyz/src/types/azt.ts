@@ -15,6 +15,6 @@ export interface AztMemberTypes {
 }
 
 export interface AztInfoTypes extends AztTypes {
-  createdAt: number[];
+  createdAt: string;
   members: AztMemberTypes[];
 }
