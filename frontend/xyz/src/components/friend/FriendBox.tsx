@@ -42,6 +42,7 @@ export default function FriendBox({
     if (relation === "관계 없음") {
       console.log("usePostFollowMutation");
       usePostFollowMutation.mutate();
+      console.log("완료");
     } else if (relation === "친구") {
       console.log("useCancelFollowMutation");
       useCancelFollowMutation.mutate();
@@ -77,6 +78,14 @@ export default function FriendBox({
           onClick={(e) => handleClickFollow(e)}
         >
           요청중
+        </div>
+      )}
+      {relation === "요청 받음" && (
+        <div
+          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          onClick={(e) => handleClickFollow(e)}
+        >
+          요청 받음
         </div>
       )}
     </div>

@@ -12,6 +12,10 @@ interface Props {
 export default function SearchFriendList({ check, keyword }: Props) {
   const { data: searchList, isLoading } = useAllSearch(check, keyword);
 
+  if (searchList) {
+    console.log(searchList);
+  }
+
   return (
     <div>
       <div className="text-lg mb-2">검색된 유저</div>
@@ -24,7 +28,7 @@ export default function SearchFriendList({ check, keyword }: Props) {
               imgSrc={list.profileImage}
               nickname={list.nickname}
               identify={list.identify}
-              relation={list.relation}
+              relation={list.relation as string}
               userSeq={list.userSeq}
             />
           );
