@@ -18,12 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.grouproom.xyz.domain.notification.controller.SseController.sseEmitters;
-
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
+    private final SseService sseService;
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.service.NotificationServiceImpl");
@@ -88,12 +87,12 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public void notifyEvent(Notification notification) {
         Long userSeq = notification.getUser().getSequence();
-        if (sseEmitters.containsKey(userSeq)) {
-            SseEmitter sseEmitter = sseEmitters.get(userSeq);
+        if (sseService.containsSseEmitter(userSeq)) {
+            SseEmitter sseEmitter = sseService.getSseEmitter(userSeq);
             try {
                 sseEmitter.send(SseEmitter.event().name("newNotification").data("새로운 알림이 있습니다."));
             } catch (Exception e) {
-                sseEmitters.remove(userSeq);
+                sseService.removeSseEmitter(userSeq);
             }
         }
     }
