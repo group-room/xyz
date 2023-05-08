@@ -46,7 +46,7 @@ function MemoryEditPage({ params: { slug } }: Props) {
 
   useEffect(() => {
     if (memory) {
-      console.log(memory);
+      // console.log(memory);
       const {
         aztSeq,
         aztName,
