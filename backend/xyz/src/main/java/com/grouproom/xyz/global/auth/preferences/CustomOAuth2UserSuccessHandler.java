@@ -7,6 +7,7 @@ import com.grouproom.xyz.global.auth.jwt.JsonWebToken;
 import com.grouproom.xyz.global.util.CookieUtils;
 import com.grouproom.xyz.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -52,11 +53,11 @@ public class CustomOAuth2UserSuccessHandler extends SimpleUrlAuthenticationSucce
 
         //authentication 객체에서 attribute를 추출하고, CustomAuthenticatedUser를 생성한다.
         CustomAuthenticatedUser customAuthenticatedUser = CustomAuthenticatedUser.mapToObj(((DefaultOAuth2User) authentication.getPrincipal()).getAttributes());
-
+        Long userSeq = customAuthenticatedUser.getUserSequence();
         //jwt 토큰을 생성한다.
-        JsonWebToken jsonWebToken = JwtTokenUtils.allocateToken(customAuthenticatedUser.getUserSequence(), customAuthenticatedUser.getRole());
+        JsonWebToken jsonWebToken = JwtTokenUtils.allocateToken(userSeq, customAuthenticatedUser.getRole());
 
-        User user = userRepository.getReferenceById(customAuthenticatedUser.getUserSequence());
+        User user = userRepository.getReferenceById(userSeq);
         user.changeToken(jsonWebToken.getRefreshToken());
 
         //cookie에서 redirectUrl을 추출하고, redirect 주소를 생성한다.
@@ -73,12 +74,17 @@ public class CustomOAuth2UserSuccessHandler extends SimpleUrlAuthenticationSucce
 //        acessCookie.setPath("/");
 //        response.addCookie(acessCookie);
 
-        Cookie refreshCookie = new Cookie("Refresh", jsonWebToken.getRefreshToken());
-        refreshCookie.setMaxAge((int) REFRESH_PERIOD);
-        refreshCookie.setPath("/");
-        response.addCookie(refreshCookie);
+        ResponseCookie cookie = ResponseCookie.from("Refresh",jsonWebToken.getRefreshToken())
+                .sameSite("None")
+                .secure(true)
+                .path("/")
+                .maxAge(REFRESH_PERIOD)
+                .build();
+        response.addHeader("Set-Cookie",cookie.toString());
 
+        request.getSession().setMaxInactiveInterval(180); //second
         request.getSession().setAttribute("Authorization",jsonWebToken.getAccessToken());
+        request.getSession().setAttribute("Sequence",Long.toString(userSeq));
         //리다이렉트 시킨다.
         getRedirectStrategy().sendRedirect(request, response, baseUrl);
     }
