@@ -1,24 +1,18 @@
 import { axiosInstance } from "@/app/api/instance";
 import { API, queryKeys } from "@/constants/queryKeys";
+import { UserLoginTypes } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 
-const user = API.user;
+const USER = API.user;
 
 export const useAccessToken = () => {
   return useQuery({
-    queryKey: queryKeys.user.user,
+    queryKey: queryKeys.user.userOnly(),
     queryFn: async () => {
-      return axiosInstance.get(`/${user}/access-token`).then((res) => {
+      return axiosInstance.get(`/${USER}/access-token`).then((res) => {
         // console.log(res.data);
         // console.log(res.headers);
-        let userData = {};
-        if (res.data === "SUCCESS") {
-          userData = {
-            accessToken: res.headers["Authorization"],
-            userSeq: res.headers["Sequence"],
-          };
-        }
-        return userData;
+        return res.headers; // header에 있는 accessToken, userSeq 조회해서 쓰기
       });
     },
   });

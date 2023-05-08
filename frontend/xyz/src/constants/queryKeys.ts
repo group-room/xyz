@@ -22,7 +22,7 @@ export const KEYS = {
 
 export const queryKeys = {
   user: {
-    user: [...KEYS.user],
+    userOnly: () => [...KEYS.user],
   },
   memory: {
     memoryList: (
