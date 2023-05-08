@@ -71,13 +71,17 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content) {
-        User user = userRepository.findBySequence(userSeq);
+        logger.info("addNotification 호출");
+
+        User user = userRepository.getReferenceById(userSeq);
+
         Notification notification = Notification.builder()
                 .user(user)
                 .notificationType(notificationType)
                 .targetSeq(targetSeq)
                 .content(content)
                 .build();
+
         notificationRepository.save(notification);
 
         notifyEvent(notification);
@@ -86,7 +90,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void notifyEvent(Notification notification) {
+        logger.info("notifyEvent 호출");
+
         Long userSeq = notification.getUser().getSequence();
+
         if (sseService.containsSseEmitter(userSeq)) {
             SseEmitter sseEmitter = sseService.getSseEmitter(userSeq);
             try {
@@ -95,5 +102,15 @@ public class NotificationServiceImpl implements NotificationService {
                 sseService.removeSseEmitter(userSeq);
             }
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean checkUnreadNotifications(Long userSeq) {
+        logger.info("checkUnreadNotifications 호출");
+
+        List<Notification> notifications = notificationRepository.findNotificationsByUser_SequenceAndIsReceivedAndIsDeleted(userSeq, false, false);
+
+        return !notifications.isEmpty();
     }
 }
