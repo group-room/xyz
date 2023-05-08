@@ -59,7 +59,7 @@ public class MemoryRepositoryImpl implements MemoryRepositoryCustom {
                 .and(memory.user.sequence.eq(userSeq)));
 
         return jpaQueryFactory.select(Projections.constructor(MemoryResponse.class,
-                        memory.sequence.as("memorySeq"), memory.azt.sequence.as("aztSeq"), memory.azt.aztName, memory.date, memory.latitude, memory.longitude, memory.location))
+                        memory.sequence.as("memorySeq"), memory.azt.sequence.as("aztSeq"), memory.azt.aztName, memory.user.nickname, memory.date, memory.latitude, memory.longitude, memory.location))
                 .from(memory)
                 .join(memory.azt, azt)
                 .where(builder)

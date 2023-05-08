@@ -208,15 +208,7 @@ public class MemoryServiceImpl implements MemoryService {
         List<MemoryResponse> memoryResponses = new ArrayList<>();
 
         for (Memory memory : memories) {
-            MemoryResponse memoryResponse = new MemoryResponse(
-                    memory.getSequence(),
-                    memory.getAzt().getSequence(),
-                    memory.getAzt().getAztName(),
-                    memory.getDate(),
-                    memory.getLatitude(),
-                    memory.getLongitude(),
-                    memory.getLocation()
-            );
+            MemoryResponse memoryResponse = new MemoryResponse(memory);
             memoryResponses.add(memoryResponse);
         }
 
@@ -242,15 +234,7 @@ public class MemoryServiceImpl implements MemoryService {
 
         for (MemoryLike memoryLike : memoryLikes) {
             Memory memory = memoryLike.getMemory();
-            MemoryResponse memoryResponse = new MemoryResponse(
-                    memory.getSequence(),
-                    memory.getAzt().getSequence(),
-                    memory.getAzt().getAztName(),
-                    memory.getDate(),
-                    memory.getLatitude(),
-                    memory.getLongitude(),
-                    memory.getLocation()
-            );
+            MemoryResponse memoryResponse = new MemoryResponse(memory);
             memoryResponses.add(memoryResponse);
         }
 
