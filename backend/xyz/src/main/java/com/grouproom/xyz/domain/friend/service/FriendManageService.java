@@ -1,7 +1,6 @@
 package com.grouproom.xyz.domain.friend.service;
 
 import com.grouproom.xyz.domain.friend.dto.response.FriendListResponse;
-import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
 
 public interface FriendManageService {
 
@@ -9,5 +8,5 @@ public interface FriendManageService {
     FriendListResponse findFriend(Long loginUserSeq);
     String modifyFriendToDeleted(Long loginSeq, Long userSeq);
     FriendListResponse findFriendByNickname(Long loginSeq, String nickname);
-    FriendUserResponse findFriendByIdentify(Long loginSeq, String identify);
+    FriendListResponse findFriendByIdentify(Long loginSeq, String identify);
 }
