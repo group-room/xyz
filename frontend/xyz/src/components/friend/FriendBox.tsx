@@ -37,11 +37,8 @@ export default function FriendBox({
 
   const handleClickFollow = (e) => {
     // 요청 여부에 따라 조건
-    console.log("userSeq -> ", userSeq);
     if (relation === "관계 없음") {
-      console.log("usePostFollowMutation");
       usePostFollowMutation.mutate();
-      console.log("완료");
     } else if (relation === "친구") {
     } else if (relation === "요청 함") {
       useCancelFollowMutation.mutate();

@@ -4,7 +4,6 @@ const FRIEND = "/friend";
 
 // 친구 요청
 export const postFollow = (userSeq: number) => {
-  console.log("postFollow api userSeq : ", userSeq);
   return axiosInstance.post(FRIEND, { userSeq });
 };
 

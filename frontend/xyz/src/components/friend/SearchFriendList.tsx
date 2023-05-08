@@ -12,10 +12,6 @@ interface Props {
 export default function SearchFriendList({ check, keyword }: Props) {
   const { data: searchList, isLoading } = useAllSearch(check, keyword);
 
-  if (searchList) {
-    console.log(searchList);
-  }
-
   return (
     <div>
       <div className="text-lg mb-2">검색된 유저</div>

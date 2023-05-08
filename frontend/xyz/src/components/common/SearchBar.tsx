@@ -14,7 +14,6 @@ export default function SearchBar({ keyword, setKeyword }: Props) {
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     setUserInput(event.target.value);
     setKeyword(event.target.value);
-    console.log(`User entered: ${event.target.value}`);
   }
 
   return (

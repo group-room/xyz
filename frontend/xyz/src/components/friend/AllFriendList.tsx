@@ -6,11 +6,6 @@ import ProfileImg from "@/components/common/ProfileImg";
 export default function AllFriendList() {
   const { data: friendList, isLoading: isFriendListLoading } = useFriendList();
 
-  if (friendList) {
-    console.log("전체 친구 목록");
-    console.log(friendList);
-  }
-
   return (
     <div>
       <div className="text-lg mb-2">내 친구 목록</div>

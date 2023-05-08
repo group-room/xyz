@@ -24,14 +24,11 @@ export const useAllSearch = (check: boolean, keyword: string) => {
     queryFn: async () => {
       // true : 닉네임 검색, false : 고유 코드 검색
       if (check) {
-        console.log(check, "닉네임 검색");
         let nickname = keyword;
         return axiosInstance
           .get(`/${FRIEND}/user`, { params: { nickname } })
           .then((res) => res.data.data.users);
       } else {
-        console.log(check, "고유 코드 검색");
-        console.log("keyword -> ", keyword);
         return axiosInstance
           .get(`/${FRIEND}/user/${keyword}`)
           .then((res) => res.data.data.users);
@@ -47,14 +44,11 @@ export const useFriendSearch = (check: boolean, keyword: string) => {
     queryFn: async () => {
       // true : 닉네임 검색, false : 고유 코드 검색
       if (check) {
-        console.log(check, "닉네임 검색");
         let nickname = keyword;
         return axiosInstance
           .get(`/${FRIEND}`, { params: { nickname } })
           .then((res) => res.data.data.users);
       } else {
-        console.log(check, "고유 코드 검색");
-        console.log("keyword -> ", keyword);
         return axiosInstance
           .get(`/${FRIEND}/${keyword}`)
           .then((res) => res.data.data.users);

@@ -10,20 +10,6 @@ export default function FriendPage() {
   const [check, setCheck] = useState(true);
   const [keyword, setKeyword] = useState("");
 
-  useEffect(() => {
-    console.log("check 값: ", check);
-  }, [check]);
-
-  useEffect(() => {
-    if (keyword === "" || keyword === undefined || keyword === null) {
-      console.log("keyword 값이 비어 있음 ");
-      console.log("keyword 길이:: ", keyword.length);
-    } else {
-      console.log("keyword 값: ", keyword);
-      console.log("keyword 길이: ", keyword.length);
-    }
-  }, [keyword]);
-
   return (
     <div>
       <div>
