@@ -50,10 +50,10 @@ public class Notification extends BaseTimeEntity {
     }
 
     public void updateIsReceived() {
-        isReceived = true;
+        this.isReceived = true;
     }
 
     public void updateIsDeleted() {
-        isDeleted = true;
+        this.isDeleted = true;
     }
 }

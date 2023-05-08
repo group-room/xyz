@@ -28,7 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.service.NotificationServiceImpl");
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public NotificationListResponse findNotificationList(Long userSeq, String type) {
         logger.info("findNotificationList 호출");
 
@@ -71,7 +71,9 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content) {
-        User user = userRepository.findBySequence(userSeq);
+        logger.info("addNotification 호출");
+
+        User user = userRepository.getReferenceById(userSeq);
         Notification notification = Notification.builder()
                 .user(user)
                 .notificationType(notificationType)
@@ -80,7 +82,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .build();
         notificationRepository.save(notification);
 
-        notifyEvent(notification);
+//        notifyEvent(notification);
     }
 
     @Override

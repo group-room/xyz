@@ -281,8 +281,6 @@ public class MemoryServiceImpl implements MemoryService {
                 .memory(memory)
                 .build());
 
-        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "추억앨범 댓글 달림");
-
         return;
     }
 
@@ -363,6 +361,8 @@ public class MemoryServiceImpl implements MemoryService {
                 .build();
 
         memoryCommentRepository.save(memoryComment);
+
+        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "추억앨범 댓글 달림");
 
         return;
     }
