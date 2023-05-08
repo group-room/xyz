@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -81,9 +82,9 @@ public class AztServiceImpl implements AztService {
                 .aztSeq(azt.getSequence())
                 .image(azt.getAztImage())
                 .name(azt.getAztName())
-                .createdAt(azt.getCreatedAt())
-                .updatedAt(azt.getUpdatedAt())
-                .chatSeq(azt.getChatSequence())
+                .createdAt(azt.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                .updatedAt(azt.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                .chatSeq(azt.getChatId())
                 .members(memberResponses)
                 .build();
     }
@@ -123,14 +124,18 @@ public class AztServiceImpl implements AztService {
                 .build());
         logger.info("본인 가입 성공");
 
-        for (MemberRequest member : addAztRequest.getMembers()) {
-            User user = userRepository.findBySequence(member.getUserSeq());
-            aztMemberRepository.save(AztMember.builder()
-                            .azt(azt)
-                            .user(user)
-                            .isDeleted(false)
-                    .build());
-            logger.info(user.getSequence() + " 멤버 가입 성공");
+        if(null == addAztRequest.getMembers()) {
+            logger.info("멤버 없음");
+        } else {
+            for (MemberRequest member : addAztRequest.getMembers()) {
+                User user = userRepository.findBySequence(member.getUserSeq());
+                aztMemberRepository.save(AztMember.builder()
+                                .azt(azt)
+                                .user(user)
+                                .isDeleted(false)
+                        .build());
+                logger.info(user.getSequence() + " 멤버 가입 성공");
+            }
         }
         return findAzt(loginSeq, azt.getSequence());
     }
@@ -217,7 +222,7 @@ public class AztServiceImpl implements AztService {
                                 .profileImage(friend.getProfileImage())
                                 .identify(friend.getIdentify())
                                 .nickname(friend.getNickname())
-                                .chatSeq(friend.getChatSeq())
+                                .chatId(friend.getChatId())
                         .build());
             }
         }

@@ -10,12 +10,16 @@ import com.grouproom.xyz.domain.tc.entity.QTcContent;
 import com.grouproom.xyz.domain.tc.entity.Tc;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import static com.querydsl.core.types.dsl.MathExpressions.*;
 
 @RequiredArgsConstructor
 public class TcRepositoryImpl implements TcRepositoryCustom {
@@ -90,6 +94,28 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
                 .join(tcContent).on(tc.sequence.eq(tcContent.tc.sequence))
                 .where(tcContent.user.sequence.eq(userSeq))
                 .orderBy(tc.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Tc> findOpenableTcByUser_SeqAndCoordinates(Long userSeq, BigDecimal latitude, BigDecimal longitude) {
+
+//        일단 1km 반경
+        double maxDistance = 1000.0;
+
+        NumberExpression<Double> distanceExpression = acos(sin(radians(Expressions.constant(latitude)))
+                .multiply(sin(radians(tc.latitude)))
+                .add(cos(radians(Expressions.constant(latitude)))
+                        .multiply(cos(radians(tc.latitude)))
+                        .multiply(cos(radians(Expressions.constant(longitude)).subtract(
+                                radians(tc.longitude))))
+                )).multiply(6371000);
+
+        return jpaQueryFactory.selectDistinct(tc)
+                .from(tc)
+                .join(tcContent).on(tc.sequence.eq(tcContent.tc.sequence))
+                .where(tcContent.user.sequence.eq(userSeq))
+                .where(distanceExpression.loe(maxDistance))
                 .fetch();
     }
 }
