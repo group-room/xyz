@@ -1,5 +1,6 @@
 export const KEYS = {
   user: ["user"],
+  visitor: ["visitor"],
   memory: ["memory"],
   timecapsule: ["timecapsule"],
   azt: ["azt"],
@@ -24,7 +25,9 @@ export const queryKeys = {
   },
   user: {
     userList: (userSeq?: number) => [...KEYS.user, { userSeq }],
-    visitorList: (userSeq?: number) => [...KEYS.user, { userSeq }],
     // mymemoryList: (memory: string) => [...KEYS.user, { memory }],
+  },
+  visitor: {
+    visitorList: (userSeq?: number) => [...KEYS.visitor, { userSeq }],
   },
 };

@@ -25,7 +25,7 @@ function ProfileBtn({ userSeq }: Props) {
     router.push("/profile/mypage");
   };
   const MakeFriends = () => {
-    // 추후에 친구 신청을 누르면 친구 신청이 감
+    // 추후에 친구 신청을 누르면 친구 신청이 감 (query 만들어놓으면 연결)
   };
 
   if (userSeq === "1") {

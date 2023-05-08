@@ -7,7 +7,7 @@ const USER = "/user";
 //userSeq 없을 때 처리를 어떻게 하는게 맞는지 모르겠음(get 주소가 저런식이 맞나..?)
 //userSeq << 나의 것은 어디서 얻을 수 있는지?
 
-export const useUserList = (userSeq?: number) => {
+export const useUserList = (userSeq?: number | string) => {
   return useQuery<UserProfileType>({
     queryKey: queryKeys.user.userList(),
     queryFn: async () => {
@@ -20,7 +20,7 @@ export const useUserList = (userSeq?: number) => {
 
 export const useVisitorList = (userSeq?: number) => {
   return useQuery<VisitorTypes[]>({
-    queryKey: queryKeys.user.visitorList(),
+    queryKey: queryKeys.visitor.visitorList(),
     queryFn: async () => {
       return axiosInstance
         .get(`${USER}/visitor?userSeq=${userSeq}`)

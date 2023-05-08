@@ -14,7 +14,7 @@ export interface UserProfileType {
   modifier: string;
   modifierColor: string;
   modifierGrade: string;
-  identity: string;
+  identify: string;
   friend: boolean;
   friendRequest: boolean;
   friendResponse: boolean;
