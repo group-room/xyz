@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -116,21 +117,21 @@ public class MemoryController {
     }
 
     @PostMapping("/comment/{memorySeq}")
-    public BaseResponse<?> addMemoryComment(@PathVariable("memorySeq") Long memorySeq, @RequestBody String content) {
+    public BaseResponse<?> addMemoryComment(@PathVariable("memorySeq") Long memorySeq, @RequestBody Map<String, String> commentRequest) {
         logger.info("addMemoryComment 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        memoryService.addMemoryComment(userSeq, memorySeq, content);
+        memoryService.addMemoryComment(userSeq, memorySeq, commentRequest.get("content"));
 
         return new BaseResponse("댓글 작성 성공");
     }
 
     @PutMapping("/comment/{commentSeq}")
-    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @RequestBody String content) {
+    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @RequestBody Map<String, String> commentRequest) {
         logger.info("modifyMemoryComment 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        memoryService.modifyMemoryComment(userSeq, commentSeq, content);
+        memoryService.modifyMemoryComment(userSeq, commentSeq, commentRequest.get("content"));
 
         return new BaseResponse("댓글 수정 성공");
     }

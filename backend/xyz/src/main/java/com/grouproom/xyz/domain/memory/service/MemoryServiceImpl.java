@@ -70,7 +70,6 @@ public class MemoryServiceImpl implements MemoryService {
 
             List<MemoryResponse> memoryResponses = memoryRepository.findByUserSeq(userSeq, memoryListRequest.getAztSeq(), memoryListRequest.getDate());
 
-
             for (MemoryResponse memoryResponse : memoryResponses) {
                 memoryResponse.setIsLiked(checkIsLiked(userSeq, memoryResponse.getMemorySeq()));
                 memoryResponse.setLikeCnt(countMemoryLikes(memoryResponse.getMemorySeq()));
@@ -151,18 +150,27 @@ public class MemoryServiceImpl implements MemoryService {
 
         memory.updateMemory(modifyMemoryRequest);
 
-        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
-
-        for (MemoryFile memoryFile : memoryFiles) {
-            memoryFile.updateIsDeleted(true);
-        }
-
         if (images != null) {
+            logger.info("updateMemoryFile");
+
+            List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeletedAndFileType(memorySeq, false, FileType.IMAGE);
+
+            for (MemoryFile memoryFile : memoryFiles) {
+                memoryFile.updateIsDeleted(true);
+            }
+
             List<String> imagePaths = s3UploadService.upload(images, "memory");
             saveMemoryFiles(memory, FileType.IMAGE, imagePaths);
         }
 
         if (audios != null) {
+            logger.info("updateMemoryFile");
+
+            List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeletedAndFileType(memorySeq, false, FileType.AUDIO);
+
+            for (MemoryFile memoryFile : memoryFiles) {
+                memoryFile.updateIsDeleted(true);
+            }
             List<String> audioPaths = s3UploadService.upload(audios, "memory");
             saveMemoryFiles(memory, FileType.AUDIO, audioPaths);
         }
@@ -196,7 +204,7 @@ public class MemoryServiceImpl implements MemoryService {
     public MemoryListResponse findMyMemory(Long userSeq) {
         logger.info("findMyMemory 호출");
 
-        List<Memory> memories = memoryRepository.findByUser_Sequence(userSeq);
+        List<Memory> memories = memoryRepository.findByUser_SequenceOrderByCreatedAtDesc(userSeq);
         List<MemoryResponse> memoryResponses = new ArrayList<>();
 
         for (Memory memory : memories) {
@@ -315,7 +323,7 @@ public class MemoryServiceImpl implements MemoryService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
         }
 
-        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_Sequence(memorySeq);
+        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
         List<MemoryFileResponse> memoryFileResponses = new ArrayList<>();
 
         if (memoryFiles != null) {
@@ -333,19 +341,17 @@ public class MemoryServiceImpl implements MemoryService {
             commentResponses.add(commentResponse);
         }
 
-        MemoryInfoResponse memoryInfoResponse = MemoryInfoResponse.builder()
+        MemoryDetailResponse memoryDetailResponse = MemoryDetailResponse.builder()
                 .memory(memory)
                 .files(memoryFileResponses)
-                .build();
-
-        memoryInfoResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
-        memoryInfoResponse.setLikeCnt(countMemoryLikes(memorySeq));
-        memoryInfoResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false).size());
-
-        return MemoryDetailResponse.builder()
                 .comments(commentResponses)
-                .memory(memoryInfoResponse)
                 .build();
+
+        memoryDetailResponse.setIsLiked(checkIsLiked(userSeq, memorySeq));
+        memoryDetailResponse.setLikeCnt(countMemoryLikes(memorySeq));
+        memoryDetailResponse.setCommentCnt(memoryCommentRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false).size());
+
+        return memoryDetailResponse;
     }
 
     @Override

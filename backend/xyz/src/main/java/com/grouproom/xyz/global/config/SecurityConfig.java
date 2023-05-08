@@ -80,8 +80,9 @@ public class SecurityConfig {
 //        configuration.setAllowCredentials(true);
 
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://xyz-gen.com","https://www.xyz-gen.com","http://localhost:5500"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization","Sequence"));
         configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept",
                 "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Headers", "Access-Control-Allow-Methods",
                 "Access-Control-Allow-Origin", "Access-Control-Expose-Headers", "Access-Control-Max-Age",
@@ -188,7 +189,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)                                                            //Cross Site Request Forgery 설정 해제
                 .formLogin(FormLoginConfigurer::disable)                                                        //Login Form 페이지 설정 해제
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))    //세션 정책 : 스프링 시큐리티가 생성하지도 않고 존재해도 사용하지 않음(JWT 같은토큰방식을 쓸때 사용하는 설정 )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))    //세션 정책 : 스프링 시큐리티가 생성하지도 않고 존재해도 사용하지 않음(JWT 같은토큰방식을 쓸때 사용하는 설정 )
                 .requestCache(RequestCacheConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                                 .antMatchers(Constants.SECURITY_HTTP_EXCLUDE_URIS).permitAll()                            //(0)[Constants] SECURITY_HTTP_EXCLUDE_URIS 권한 허용

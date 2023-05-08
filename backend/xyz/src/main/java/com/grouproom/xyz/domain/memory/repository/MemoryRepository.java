@@ -11,5 +11,5 @@ public interface MemoryRepository extends JpaRepository<Memory, Long>, MemoryRep
 
     Memory findBySequence(Long memorySeq);
 
-    List<Memory> findByUser_Sequence(Long userSeq);
+    List<Memory> findByUser_SequenceOrderByCreatedAtDesc(Long userSeq);
 }
