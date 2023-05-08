@@ -34,7 +34,7 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
     },
   });
 
-  const handleClickInvite = () => {}; // TODO: 멤버 초대 링크 연결
+  const handleClickInvite = () => {}; // TODO: 멤버 초대하기 링크 연결
   const handleClickWithdraw = () => {
     setIsModal(true);
   };
@@ -112,10 +112,10 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
               ))}
             </div>
             <div className="my-3 mx-auto">
-              {/* TODO: 멤버 초대 링크 연결 */}
+              {/* TODO: 멤버 초대하기 링크 연결 */}
               <Btn
                 bgColor="blue"
-                text="멤버 초대"
+                text="멤버 초대하기"
                 btnFunc={handleClickInvite}
               />
             </div>
