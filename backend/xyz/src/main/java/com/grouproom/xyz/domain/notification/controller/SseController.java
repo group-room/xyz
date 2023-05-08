@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 @RequestMapping("/connect")
 public class SseController {
 
-    public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
+    public static final Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.controller.SseController");
 
     @CrossOrigin
@@ -31,14 +31,14 @@ public class SseController {
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
 
         sseEmitters.put(userSeq, sseEmitter);
 
         sseEmitter.onCompletion(() -> sseEmitters.remove(userSeq));
         sseEmitter.onTimeout(() -> sseEmitters.remove(userSeq));
-        sseEmitter.onError((e) -> sseEmitters.remove(userSeq));
+        sseEmitter.onError(e -> sseEmitters.remove(userSeq));
 
         return sseEmitter;
     }
