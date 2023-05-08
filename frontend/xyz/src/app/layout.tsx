@@ -2,6 +2,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import Script from "next/script";
 import ReactQueryProvider from "./ReactQueryProvider";
+import { ReduxProviders } from "@/store/provider";
 
 export const metadata = {
   title: "XYZ",
@@ -24,9 +25,11 @@ export default function RootLayout({
     <html lang="ko" className={pixelFont.className}>
       <body>
         <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
-        <ReactQueryProvider>
-          <main className="px-5 my-16">{children}</main>
-        </ReactQueryProvider>
+        <ReduxProviders>
+          <ReactQueryProvider>
+            <main className="px-5 my-16">{children}</main>
+          </ReactQueryProvider>
+        </ReduxProviders>
       </body>
     </html>
   );

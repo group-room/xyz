@@ -8,9 +8,6 @@ import { useAztList } from "@/hooks/queries/azt";
 
 function AztPage() {
   const { data: aztData, isLoading: isAztLoading } = useAztList();
-  if (aztData) {
-    console.log(aztData);
-  }
 
   return (
     <div className="flex flex-col gap-y-6">
