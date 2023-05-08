@@ -83,6 +83,8 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
 
         logger.info("findUserByIdentify 호출");
 
+        identify = new StringBuilder().append("#").append(identify).toString();
+
         User targetUser = userRepository.findByIdentify(identify);
         if(null == targetUser) {
             logger.severe("없는 사용자");
@@ -99,7 +101,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             for (UserBlock block: blocks) {
                 if(block.getFromUser().equals(targetUser)) {
                     logger.info(targetUser.getSequence() + "로부터 차단된 상태");
-                    throw new RuntimeException();
+                    throw new ErrorResponse(HttpStatus.BAD_REQUEST, targetUser.getSequence() + "로부터 차단된 상태");
                 } else {
                     logger.info(targetUser.getSequence() + "를 차단한 상태");
                     userResponse.setRelation("차단함");
