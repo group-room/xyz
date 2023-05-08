@@ -40,4 +40,11 @@ export const queryKeys = {
   capsule: {
     aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],
   },
+  user: {
+    userList: (userSeq?: number) => [...KEYS.user, { userSeq }],
+    // mymemoryList: (memory: string) => [...KEYS.user, { memory }],
+  },
+  visitor: {
+    visitorList: (userSeq?: number) => [...KEYS.visitor, { userSeq }],
+  },
 };
