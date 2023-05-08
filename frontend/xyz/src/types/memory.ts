@@ -1,5 +1,5 @@
 export type MemoryListParams = {
-  date: string;
+  date: string | null;
   aztSeq?: number;
   latitude?: number;
   longitude?: number;

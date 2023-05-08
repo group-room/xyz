@@ -2,7 +2,8 @@ export const sliceDate = (date: string) => {
   return date.slice(0, 10);
 };
 
-export const convertDate = (date: Date) => {
+export const convertDate = (date: Date | null) => {
+  if (!date) return null;
   const dateObj = new Date(date);
   const year = dateObj.getFullYear();
   const month = dateObj.getMonth() + 1;

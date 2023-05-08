@@ -3,16 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { API } from "@/constants/queryKeys";
 
 function TabBar() {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <div className="fixed flex items-center justify-evenly bottom-0 left-0 right-0 h-14 bg-white shadow-[0_-3px_20px_-20px_rgba(0,0,0,0.3)] z-50">
       <Link
-        href={"/memory"}
-        className={pathname.includes("/memory") ? "text-pink" : ""}
+        href={`/${API.memory}`}
+        className={pathname.includes(`/${API.memory}`) ? "text-pink" : ""}
       >
         추억
       </Link>
@@ -23,14 +23,14 @@ function TabBar() {
         캡슐
       </Link>
       <Link
-        href={"/azt"}
-        className={pathname.includes("/azt") ? "text-pink" : ""}
+        href={`/${API.azt}`}
+        className={pathname.includes(`/${API.azt}`) ? "text-pink" : ""}
       >
         아지트
       </Link>
       <Link
-        href={"/chat"}
-        className={pathname.includes("/chat") ? "text-pink" : ""}
+        href={`/${API.chat}`}
+        className={pathname.includes(`/${API.chat}`) ? "text-pink" : ""}
       >
         채팅
       </Link>

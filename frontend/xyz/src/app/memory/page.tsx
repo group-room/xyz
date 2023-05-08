@@ -14,7 +14,7 @@ import { AztTypes } from "@/types/azt";
 
 function MemoryPage() {
   // 달력에서 선택된 날짜
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   // 아지트 목록
   const [aztList, setAztList] = useState<AztTypes[]>([]);
   // 아지트 필터 토글 설정
@@ -51,12 +51,12 @@ function MemoryPage() {
     data: memoryList,
     isLoading: isMemoryLoading,
     error,
-  } = useMemoryList(
-    convertDate(selectedDate),
-    currAzt[0].aztSeq!,
-    +position.lat.toFixed(7),
-    +position.lng.toFixed(7)
-  );
+  } = useMemoryList({
+    date: convertDate(selectedDate),
+    aztSeq: currAzt[0].aztSeq!,
+    latitude: +position.lat.toFixed(7),
+    longitude: +position.lng.toFixed(7),
+  });
 
   const { data: aztData, isLoading: isAztLoading } = useAztList();
 
