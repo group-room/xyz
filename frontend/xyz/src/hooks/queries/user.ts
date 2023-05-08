@@ -1,4 +1,3 @@
-
 import { UserProfileType, VisitorTypes } from "@/types/user";
 import { axiosInstance } from "@/app/api/instance";
 import { API, queryKeys } from "@/constants/queryKeys";
@@ -6,6 +5,20 @@ import { UserLoginTypes } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 
 const USER = API.user;
+
+export const useAccessToken = () => {
+  return useQuery({
+    queryKey: queryKeys.user.userOnly(),
+    queryFn: async () => {
+      return axiosInstance.get(`/${USER}/access-token`).then((res) => {
+        // console.log(res.data);
+        // console.log(res.headers);
+        return res.headers; // header에 있는 accessToken, userSeq 조회해서 쓰기
+      });
+    },
+  });
+};
+
 //userSeq 없을 때 처리를 어떻게 하는게 맞는지 모르겠음(get 주소가 저런식이 맞나..?)
 //userSeq << 나의 것은 어디서 얻을 수 있는지?
 
@@ -22,22 +35,11 @@ export const useUserList = (userSeq?: number | string) => {
 
 export const useVisitorList = (userSeq?: number) => {
   return useQuery<VisitorTypes[]>({
-    queryKey: queryKeys.visitor.visitorList(),
+    queryKey: queryKeys.user.myVisitorList(),
     queryFn: async () => {
       return axiosInstance
         .get(`${USER}/visitor?userSeq=${userSeq}`)
         .then((res) => res.data.data);
-
-
-export const useAccessToken = () => {
-  return useQuery({
-    queryKey: queryKeys.user.userOnly(),
-    queryFn: async () => {
-      return axiosInstance.get(`/${USER}/access-token`).then((res) => {
-        // console.log(res.data);
-        // console.log(res.headers);
-        return res.headers; // header에 있는 accessToken, userSeq 조회해서 쓰기
-      });
     },
   });
 };

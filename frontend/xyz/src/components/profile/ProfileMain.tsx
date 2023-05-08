@@ -17,7 +17,7 @@ function ProfileMain() {
           />
         </div>
         <div>
-          <ProfileDropdown />
+          {/* <ProfileDropdown  /> */}
           <Textbox
             icon="/icons/edit.svg"
             alt="pretty"
