@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -81,8 +82,8 @@ public class AztServiceImpl implements AztService {
                 .aztSeq(azt.getSequence())
                 .image(azt.getAztImage())
                 .name(azt.getAztName())
-                .createdAt(azt.getCreatedAt())
-                .updatedAt(azt.getUpdatedAt())
+                .createdAt(azt.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                .updatedAt(azt.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .chatSeq(azt.getChatSequence())
                 .members(memberResponses)
                 .build();
