@@ -28,7 +28,7 @@ function ModalBtn({ closeModal, yesFunc, text }: ModalBtnProps) {
   {
     /* <div onClick={handleClick}> ProfilePage</div>
       {isModal && (
-        <Modal
+        <ModalBtn
           yesFunc={buttonYes}
           closeModal={() => setIsModal(false)}
           text="나랑 친구를 해볼래? 나랑 친구를 해볼래?"
