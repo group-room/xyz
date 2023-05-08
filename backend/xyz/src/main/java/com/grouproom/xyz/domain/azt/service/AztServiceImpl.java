@@ -84,7 +84,7 @@ public class AztServiceImpl implements AztService {
                 .name(azt.getAztName())
                 .createdAt(azt.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .updatedAt(azt.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
-                .chatSeq(azt.getChatSequence())
+                .chatSeq(azt.getChatId())
                 .members(memberResponses)
                 .build();
     }
