@@ -13,4 +13,6 @@ public interface NotificationService {
     void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content);
 
     void notifyEvent(Notification notification);
+
+    Boolean checkUnreadNotifications(Long userSeq);
 }

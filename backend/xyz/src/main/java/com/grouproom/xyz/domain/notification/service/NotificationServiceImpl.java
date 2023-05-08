@@ -80,6 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .targetSeq(targetSeq)
                 .content(content)
                 .build();
+
         notificationRepository.save(notification);
 
 //        notifyEvent(notification);
@@ -88,7 +89,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void notifyEvent(Notification notification) {
+        logger.info("notifyEvent 호출");
+
         Long userSeq = notification.getUser().getSequence();
+
         if (sseService.containsSseEmitter(userSeq)) {
             SseEmitter sseEmitter = sseService.getSseEmitter(userSeq);
             try {
@@ -97,5 +101,15 @@ public class NotificationServiceImpl implements NotificationService {
                 sseService.removeSseEmitter(userSeq);
             }
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean checkUnreadNotifications(Long userSeq) {
+        logger.info("checkUnreadNotifications 호출");
+
+        List<Notification> notifications = notificationRepository.findNotificationsByUser_SequenceAndIsReceivedAndIsDeleted(userSeq, false, false);
+
+        return !notifications.isEmpty();
     }
 }
