@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 @Builder
 public class OpenedTcDetailsResponse {
-    private OpenedTcResponse tc;
+    private OpenedTcInfoResponse tc;
     private List<TcContentResponse> contents;
 }

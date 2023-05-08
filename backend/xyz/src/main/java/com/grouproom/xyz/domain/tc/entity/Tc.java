@@ -8,8 +8,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -34,6 +32,10 @@ public class Tc extends BaseTimeEntity {
     @Column(name = "update_end")
     private LocalDateTime updateEnd;
 
+    @Enumerated
+    @Column(name = "open_status")
+    private OpenStatus openStatus;
+
     @Column(name = "latitude", precision = 10, scale = 7)
     private BigDecimal latitude;
 
@@ -42,12 +44,6 @@ public class Tc extends BaseTimeEntity {
 
     @Column(name = "location")
     private String location;
-
-    @Column(name = "is_opened")
-    private Boolean isOpened;
-
-    @Column(name = "is_updatable")
-    private Boolean isUpdatable;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_sequence")
@@ -65,18 +61,12 @@ public class Tc extends BaseTimeEntity {
         this.latitude = addTcRequest.getLatitude();
         this.longitude = addTcRequest.getLongitude();
         this.location = addTcRequest.getLocation();
-        this.isOpened = false;
-        this.isUpdatable = true;
+        this.openStatus = OpenStatus.UPDATABLE;
         this.user = user;
         this.azt = azt;
     }
 
-    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
-    @Transactional
-    public void updateIsUpdatable() {
-        LocalDateTime now = LocalDateTime.now();
-        if (updateEnd.isBefore(now)) {
-            isUpdatable = false;
-        }
+    public void updateOpenStatus(OpenStatus openStatus) {
+        this.openStatus = openStatus;
     }
 }

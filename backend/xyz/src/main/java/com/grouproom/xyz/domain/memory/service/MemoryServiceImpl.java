@@ -150,18 +150,27 @@ public class MemoryServiceImpl implements MemoryService {
 
         memory.updateMemory(modifyMemoryRequest);
 
-        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
-
-        for (MemoryFile memoryFile : memoryFiles) {
-            memoryFile.updateIsDeleted(true);
-        }
-
         if (images != null) {
+            logger.info("updateMemoryFile");
+
+            List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeletedAndFileType(memorySeq, false, FileType.IMAGE);
+
+            for (MemoryFile memoryFile : memoryFiles) {
+                memoryFile.updateIsDeleted(true);
+            }
+
             List<String> imagePaths = s3UploadService.upload(images, "memory");
             saveMemoryFiles(memory, FileType.IMAGE, imagePaths);
         }
 
         if (audios != null) {
+            logger.info("updateMemoryFile");
+
+            List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeletedAndFileType(memorySeq, false, FileType.AUDIO);
+
+            for (MemoryFile memoryFile : memoryFiles) {
+                memoryFile.updateIsDeleted(true);
+            }
             List<String> audioPaths = s3UploadService.upload(audios, "memory");
             saveMemoryFiles(memory, FileType.AUDIO, audioPaths);
         }
@@ -199,15 +208,7 @@ public class MemoryServiceImpl implements MemoryService {
         List<MemoryResponse> memoryResponses = new ArrayList<>();
 
         for (Memory memory : memories) {
-            MemoryResponse memoryResponse = new MemoryResponse(
-                    memory.getSequence(),
-                    memory.getAzt().getSequence(),
-                    memory.getAzt().getAztName(),
-                    memory.getDate(),
-                    memory.getLatitude(),
-                    memory.getLongitude(),
-                    memory.getLocation()
-            );
+            MemoryResponse memoryResponse = new MemoryResponse(memory);
             memoryResponses.add(memoryResponse);
         }
 
@@ -233,15 +234,7 @@ public class MemoryServiceImpl implements MemoryService {
 
         for (MemoryLike memoryLike : memoryLikes) {
             Memory memory = memoryLike.getMemory();
-            MemoryResponse memoryResponse = new MemoryResponse(
-                    memory.getSequence(),
-                    memory.getAzt().getSequence(),
-                    memory.getAzt().getAztName(),
-                    memory.getDate(),
-                    memory.getLatitude(),
-                    memory.getLongitude(),
-                    memory.getLocation()
-            );
+            MemoryResponse memoryResponse = new MemoryResponse(memory);
             memoryResponses.add(memoryResponse);
         }
 
@@ -314,7 +307,7 @@ public class MemoryServiceImpl implements MemoryService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
         }
 
-        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_Sequence(memorySeq);
+        List<MemoryFile> memoryFiles = memoryFileRepository.findByMemory_SequenceAndIsDeleted(memorySeq, false);
         List<MemoryFileResponse> memoryFileResponses = new ArrayList<>();
 
         if (memoryFiles != null) {

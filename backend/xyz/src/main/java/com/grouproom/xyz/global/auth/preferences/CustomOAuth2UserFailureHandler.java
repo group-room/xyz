@@ -12,6 +12,7 @@ import com.grouproom.xyz.global.util.JsonUtils;
 import com.grouproom.xyz.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.grouproom.xyz.global.auth.Constants.SERVER_URL;
 import static com.grouproom.xyz.global.auth.preferences.CustomOAuth2CookieAuthorizationRepository.OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME;
 import static com.grouproom.xyz.global.auth.preferences.CustomOAuth2CookieAuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-import static com.grouproom.xyz.global.util.JwtTokenUtils.ACCESS_PERIOD;
 import static com.grouproom.xyz.global.util.JwtTokenUtils.REFRESH_PERIOD;
 
 /**
@@ -118,13 +119,17 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
 //        acessCookie.setMaxAge((int) ACCESS_PERIOD);
 //        acessCookie.setPath("/");
 //        response.addCookie(acessCookie);
+        ResponseCookie cookie = ResponseCookie.from("Refresh",jsonWebToken.getRefreshToken())
+                .sameSite("None")
+                .secure(true)
+                .path("/")
+                .maxAge(REFRESH_PERIOD)
+                .build();
+        response.addHeader("Set-Cookie",cookie.toString());
 
-        Cookie refreshCookie = new Cookie("Refresh", jsonWebToken.getRefreshToken());
-        refreshCookie.setMaxAge((int) REFRESH_PERIOD);
-        refreshCookie.setPath("/");
-
-        response.addHeader("Authorization",jsonWebToken.getAccessToken());
-
+        request.getSession().setMaxInactiveInterval(180); //second
+        request.getSession().setAttribute("Authorization",jsonWebToken.getAccessToken());
+        request.getSession().setAttribute("Sequence",Long.toString(userSeq));
         //리다이렉트 시킨다.
         getRedirectStrategy().sendRedirect(request, response, baseUrl);
 
