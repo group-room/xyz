@@ -16,7 +16,7 @@ export default function SearchFriendList({ check, keyword }: Props) {
     <div>
       <div className="text-lg mb-2">검색된 유저</div>
       <hr className="border-1 border-black mb-4"></hr>
-      {check && searchList ? (
+      {searchList ? (
         searchList.map((list) => {
           return (
             <FriendBox
@@ -28,7 +28,7 @@ export default function SearchFriendList({ check, keyword }: Props) {
           );
         })
       ) : (
-        <div></div>
+        <div>로딩중</div>
       )}
     </div>
   );
