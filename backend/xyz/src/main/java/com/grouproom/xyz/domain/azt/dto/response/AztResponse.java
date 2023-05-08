@@ -18,7 +18,7 @@ public class AztResponse {
     String name;
     String createdAt;
     String updatedAt;
-    Long chatSeq;
+    String chatId;
     List<MemberResponse> members;
 
 }
