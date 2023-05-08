@@ -24,6 +24,8 @@ export default function SearchFriendList({ check, keyword }: Props) {
               imgSrc={list.profileImage}
               nickname={list.nickname}
               identify={list.identify}
+              relation={list.relation}
+              userSeq={list.userSeq}
             />
           );
         })
