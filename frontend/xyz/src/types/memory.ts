@@ -1,5 +1,5 @@
 export type MemoryListParams = {
-  date: string;
+  date: string | null;
   aztSeq?: number;
   latitude?: number;
   longitude?: number;
@@ -53,6 +53,7 @@ export interface KakaoMapProps {
   setAddress: React.Dispatch<React.SetStateAction<string>>;
   locations?: MemoriesTypes[];
   isPhotoUpload?: boolean;
+  isPhotoEdit?: boolean;
 }
 
 export type PhotoMetadata = {

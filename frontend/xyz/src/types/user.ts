@@ -1,4 +1,4 @@
-// 프로필 메인 비지엠
+
 export interface BgmTypes {
   bgmTitle: string;
   bgmLink: string;
@@ -33,4 +33,8 @@ export interface VisitorTypes {
   modifierGrade: string;
   content: string;
   createdTime: string;
+
+export interface UserLoginTypes {
+  accessToken: string;
+  userSeq: number;
 }

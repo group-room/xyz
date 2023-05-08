@@ -20,7 +20,7 @@ function CapsulePage() {
         <TimecapsuleList />
       </div>
 
-      <div className={`${value ? "mb-2" : ""} shadow-md`}>
+      <div className={`${value ? "mb-2" : ""}`}>
         <ToggleBtn
           textL="타임캡슐 뽑기"
           textR="타임캡슐 목록"

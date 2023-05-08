@@ -1,19 +1,32 @@
+export const API = {
+  user: "user",
+  memory: "memory",
+  capsule: "timecapsule",
+  azt: "azt",
+  chat: "chat",
+  myroom: "myroom",
+  friend: "friend",
+  notification: "notification",
+};
+
 export const KEYS = {
-  user: ["user"],
-  visitor: ["visitor"],
-  memory: ["memory"],
-  timecapsule: ["timecapsule"],
-  azt: ["azt"],
-  chat: ["chat"],
-  myroom: ["myroom"],
-  friend: ["friend"],
-  notification: ["notification"],
+  user: [API.user],
+  memory: [API.memory],
+  capsule: [API.capsule],
+  azt: [API.azt],
+  chat: [API.chat],
+  myroom: [API.myroom],
+  friend: [API.friend],
+  notification: [API.notification],
 };
 
 export const queryKeys = {
+  user: {
+    userOnly: () => [...KEYS.user],
+  },
   memory: {
     memoryList: (
-      date: string,
+      date: string | null,
       aztSeq?: number,
       latitude?: number,
       longitude?: number
@@ -22,6 +35,10 @@ export const queryKeys = {
   },
   azt: {
     aztList: () => [...KEYS.azt],
+    aztInfo: (aztSeq: number) => [...KEYS.azt, { aztSeq }],
+  },
+  capsule: {
+    aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],
   },
   user: {
     userList: (userSeq?: number) => [...KEYS.user, { userSeq }],

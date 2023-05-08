@@ -1,7 +1,6 @@
 package com.grouproom.xyz.domain.memory.controller;
 
 import com.grouproom.xyz.domain.memory.dto.request.AddMemoryRequest;
-import com.grouproom.xyz.domain.memory.dto.request.CommentRequest;
 import com.grouproom.xyz.domain.memory.dto.request.MemoryListRequest;
 import com.grouproom.xyz.domain.memory.dto.request.ModifyMemoryRequest;
 import com.grouproom.xyz.domain.memory.dto.response.AddMemoryResponse;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -117,21 +117,21 @@ public class MemoryController {
     }
 
     @PostMapping("/comment/{memorySeq}")
-    public BaseResponse<?> addMemoryComment(@PathVariable("memorySeq") Long memorySeq, @ModelAttribute CommentRequest commentRequest) {
+    public BaseResponse<?> addMemoryComment(@PathVariable("memorySeq") Long memorySeq, @RequestBody Map<String, String> commentRequest) {
         logger.info("addMemoryComment 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        memoryService.addMemoryComment(userSeq, memorySeq, commentRequest.getContent());
+        memoryService.addMemoryComment(userSeq, memorySeq, commentRequest.get("content"));
 
         return new BaseResponse("댓글 작성 성공");
     }
 
     @PutMapping("/comment/{commentSeq}")
-    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @ModelAttribute CommentRequest commentRequest) {
+    public BaseResponse<?> modifyMemoryComment(@PathVariable("commentSeq") Long commentSeq, @RequestBody Map<String, String> commentRequest) {
         logger.info("modifyMemoryComment 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        memoryService.modifyMemoryComment(userSeq, commentSeq, commentRequest.getContent());
+        memoryService.modifyMemoryComment(userSeq, commentSeq, commentRequest.get("content"));
 
         return new BaseResponse("댓글 수정 성공");
     }
