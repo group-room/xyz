@@ -41,4 +41,8 @@ public class Notification extends BaseTimeEntity {
     public void updateIsReceived() {
         isReceived = true;
     }
+
+    public void updateIsDeleted() {
+        isDeleted = true;
+    }
 }

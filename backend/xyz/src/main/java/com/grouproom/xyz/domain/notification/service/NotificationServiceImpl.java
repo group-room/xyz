@@ -5,7 +5,9 @@ import com.grouproom.xyz.domain.notification.dto.response.NotificationResponse;
 import com.grouproom.xyz.domain.notification.entity.Notification;
 import com.grouproom.xyz.domain.notification.entity.NotificationType;
 import com.grouproom.xyz.domain.notification.repository.NotificationRepository;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +47,19 @@ public class NotificationServiceImpl implements NotificationService {
         return NotificationListResponse.builder()
                 .notifications(notificationResponses)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void removeNotification(Long userSeq, Long notificationSeq) {
+        logger.info("removeNotification 호출");
+
+        Notification notification = notificationRepository.findBySequenceAndUser_SequenceAndIsDeleted(notificationSeq, userSeq, false);
+
+        if (notification == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "알림 삭제 실패");
+        }
+
+        notification.updateIsDeleted();
     }
 }

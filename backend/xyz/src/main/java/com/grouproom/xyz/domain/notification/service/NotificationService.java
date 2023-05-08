@@ -5,4 +5,6 @@ import com.grouproom.xyz.domain.notification.dto.response.NotificationListRespon
 public interface NotificationService {
 
     NotificationListResponse findNotificationList(Long userSeq, String type);
+
+    void removeNotification(Long userSeq, Long notificationSeq);
 }

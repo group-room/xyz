@@ -5,10 +5,7 @@ import com.grouproom.xyz.domain.notification.service.NotificationService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 
@@ -28,5 +25,15 @@ public class NotificationController {
         NotificationListResponse notificationList = notificationService.findNotificationList(userSeq, type);
 
         return new BaseResponse(notificationList);
+    }
+
+    @DeleteMapping("/{notificationSeq}")
+    public BaseResponse<?> removeNotification(@PathVariable("notificationSeq") Long notificationSeq) {
+        logger.info("removeNotification 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        notificationService.removeNotification(userSeq, notificationSeq);
+
+        return new BaseResponse("알림 삭제 성공");
     }
 }
