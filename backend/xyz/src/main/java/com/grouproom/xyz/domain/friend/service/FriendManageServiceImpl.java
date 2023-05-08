@@ -63,6 +63,8 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("findFriendByIdentify 호출");
 
+        identify = new StringBuilder().append("#").append(identify).toString();
+
         FriendUserResponse friendUserResponse = friendRepository.findIdentifyBYFromUserOrToUser(loginSeq, identify, true, false, false);
         if(null == friendUserResponse) {
             logger.severe("친구 아님");
