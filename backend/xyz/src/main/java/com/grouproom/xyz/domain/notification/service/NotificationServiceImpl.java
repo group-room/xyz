@@ -5,6 +5,7 @@ import com.grouproom.xyz.domain.notification.dto.response.NotificationResponse;
 import com.grouproom.xyz.domain.notification.entity.Notification;
 import com.grouproom.xyz.domain.notification.entity.NotificationType;
 import com.grouproom.xyz.domain.notification.repository.NotificationRepository;
+import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +67,21 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         notification.updateIsDeleted();
+    }
+
+    @Override
+    @Transactional
+    public void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content) {
+        User user = userRepository.findBySequence(userSeq);
+        Notification notification = Notification.builder()
+                .user(user)
+                .notificationType(notificationType)
+                .targetSeq(targetSeq)
+                .content(content)
+                .build();
+        notificationRepository.save(notification);
+
+        notifyEvent(notification);
     }
 
     @Override
