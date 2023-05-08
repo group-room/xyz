@@ -14,6 +14,8 @@ import com.grouproom.xyz.domain.memory.repository.MemoryCommentRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryFileRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryLikeRepository;
 import com.grouproom.xyz.domain.memory.repository.MemoryRepository;
+import com.grouproom.xyz.domain.notification.entity.NotificationType;
+import com.grouproom.xyz.domain.notification.service.NotificationService;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.exception.ErrorResponse;
@@ -41,6 +43,7 @@ public class MemoryServiceImpl implements MemoryService {
     private final MemoryFileRepository memoryFileRepository;
     private final MemoryLikeRepository memoryLikeRepository;
     private final MemoryCommentRepository memoryCommentRepository;
+    private final NotificationService notificationService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.memory.service.MemoryServiceImpl");
 
     @Override
@@ -277,6 +280,8 @@ public class MemoryServiceImpl implements MemoryService {
                 .user(user)
                 .memory(memory)
                 .build());
+
+        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "추억앨범 댓글 달림");
 
         return;
     }
