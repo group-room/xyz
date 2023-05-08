@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.tc.entity;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @IdClass(UserTcId.class)
 @Table(name = "tc_open")
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TcOpen extends BaseTimeEntity {
 

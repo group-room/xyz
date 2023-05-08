@@ -3,12 +3,10 @@ package com.grouproom.xyz.domain.tc.service;
 import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.azt.repository.AztMemberRepository;
 import com.grouproom.xyz.domain.azt.repository.AztRepository;
+import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcOpenRequest;
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.tc.dto.response.*;
-import com.grouproom.xyz.domain.tc.entity.OpenStatus;
-import com.grouproom.xyz.domain.tc.entity.Tc;
-import com.grouproom.xyz.domain.tc.entity.TcContent;
-import com.grouproom.xyz.domain.tc.entity.TcContentFile;
+import com.grouproom.xyz.domain.tc.entity.*;
 import com.grouproom.xyz.domain.tc.repository.TcContentFileRepository;
 import com.grouproom.xyz.domain.tc.repository.TcContentRepository;
 import com.grouproom.xyz.domain.tc.repository.TcOpenRepository;
@@ -285,5 +283,39 @@ public class TcServiceImpl implements TcService {
         return TcListResponse.builder()
                 .tcResponses(tcResponses)
                 .build();
+    }
+
+    @Override
+    public String addTcOpen(Long userSeq, Long tcSeq, AddTcOpenRequest addTcOpenRequest) {
+        logger.info("addTcOpen 호출");
+
+        Tc tc = tcRepository.findBySequence(tcSeq);
+
+        if (tc == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 타임캡슐입니다.");
+        } else if (aztMemberRepository.findByAzt_SequenceAndUser_SequenceAndIsDeleted(tc.getAzt().getSequence(), userSeq, false) == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "타임캡슐 오픈 권한이 없습니다.");
+        } else if (tc.getOpenStatus() != OpenStatus.OPENABLE) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "타임캡슐 오픈 날짜를 확인해주세요.");
+        }
+
+        List<Tc> tcs = tcRepository.findOpenableTcByUser_SeqAndCoordinates(userSeq, addTcOpenRequest.getLatitude(), addTcOpenRequest.getLongitude());
+
+        if (!tcs.contains(tc)) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "타임캡슐이 멀리 있습니다.");
+        }
+
+        User user = userRepository.findBySequence(userSeq);
+
+        TcOpen tcOpen = new TcOpen(user, tc);
+        tcOpenRepository.save(tcOpen);
+
+        Long requiredCnt = (long) Math.ceil((double) aztMemberRepository.countByAzt_SequenceAndIsDeleted(tc.getAzt().getSequence(), false) / 2.0);
+
+        if (tcOpenRepository.countTcOpensByTc_Sequence(tcSeq) >= requiredCnt) {
+            tc.updateOpenStatus(OpenStatus.OPENED);
+        }
+
+        return tc.getOpenStatus().toString();
     }
 }
