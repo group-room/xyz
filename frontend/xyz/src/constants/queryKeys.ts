@@ -22,4 +22,8 @@ export const queryKeys = {
   azt: {
     aztList: () => [...KEYS.azt],
   },
+  friend: {
+    friendList: () => [...KEYS.friend],
+    searchList:(check:boolean, keyword: string) => [...KEYS.friend, {check}, {keyword}],
+  },
 };
