@@ -32,9 +32,13 @@ public class Notification extends BaseTimeEntity {
     @Column(length = 200, name = "content")
     private String content;
 
-    @Column(name = "is_received", columnDefinition = "tinyint(1) default 0")
-    private boolean ieReceived;
+    @Column(name = "is_received")
+    private Boolean isReceived;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private Boolean isDeleated;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
+    public void updateIsReceived() {
+        isReceived = true;
+    }
 }
