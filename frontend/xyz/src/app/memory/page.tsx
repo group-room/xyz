@@ -60,10 +60,6 @@ function MemoryPage() {
 
   const { data: aztData, isLoading: isAztLoading } = useAztList();
 
-  if (!isMemoryLoading) {
-    console.log(memoryList);
-  }
-
   useEffect(() => {
     if (!isAztLoading && aztData) {
       setAztList(aztData);

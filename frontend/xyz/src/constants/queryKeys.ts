@@ -21,6 +21,9 @@ export const KEYS = {
 };
 
 export const queryKeys = {
+  user: {
+    userOnly: () => [...KEYS.user],
+  },
   memory: {
     memoryList: (
       date: string | null,
