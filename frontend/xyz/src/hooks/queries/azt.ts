@@ -22,3 +22,12 @@ export const useAztInfo = (aztSeq: number) => {
     },
   });
 };
+
+export const useAztWithdraw = (aztSeq: number) => {
+  return useQuery({
+    queryKey: queryKeys.azt.aztInfo(aztSeq),
+    queryFn: async () => {
+      return axiosInstance.delete(`${AZT}/member/${aztSeq}`);
+    },
+  });
+};
