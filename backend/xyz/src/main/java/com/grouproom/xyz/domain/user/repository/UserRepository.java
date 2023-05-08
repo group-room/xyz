@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
     User findBySequence(Long userSeq);
     List<User> findByIdentifyContaining(String identify);
-    List<User> findByNickname(String nickname);
+    List<User> findByNicknameContaining(String nickname);
 }

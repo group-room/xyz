@@ -35,7 +35,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         logger.info("findUserByNickname 호출");
 
         List<UserResponse> userResponseList = new ArrayList<>();
-        List<User> users = userRepository.findByNickname(nickname);
+        List<User> users = userRepository.findByNicknameContaining(nickname);
         for (User user: users) {
             UserResponse userResponse = new UserResponse();
             userResponse.setUserSeq(user.getSequence());
