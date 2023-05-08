@@ -1,13 +1,21 @@
 "use client";
 
 import Btn from "@/components/common/Btn";
+import ProfileImg from "@/components/common/ProfileImg";
+import { LOCAL } from "@/constants/localUrl";
+import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
-import React, { useState } from "react";
+import { UserTypes } from "@/types/user";
+import React, { useEffect, useState } from "react";
 
 function AzitCreatePage() {
   const [aztNameInput, onChangeAztNameInput] = useInput("");
   const [aztPhoto, setAztPhoto] = useState<File | null>(null);
   const [previewPhoto, setPreviewPhoto] = useState("");
+  const [aztMembers, setAztMembers] = useState<UserTypes[]>([]);
+
+  const state = useAppSelector((state) => state);
+  const loggedInUserInfo = state.auth.userInfo;
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList: any = e.target.files;
@@ -20,6 +28,15 @@ function AzitCreatePage() {
 
   const handleClickInvite = () => {};
   const handleClickCreate = () => {};
+
+  useEffect(() => {
+    if (
+      loggedInUserInfo &&
+      !aztMembers.find((member) => member.userSeq === loggedInUserInfo.userSeq)
+    ) {
+      setAztMembers([loggedInUserInfo]);
+    }
+  }, []);
 
   return (
     <div>
@@ -67,12 +84,21 @@ function AzitCreatePage() {
         <div>
           <p>아지트 멤버</p>
           <div className="my-3 mx-auto text-center">
-            {/* TODO: 멤버 초대하기 링크 연결 */}
-            <Btn
-              bgColor="blue"
-              text="멤버 초대하기"
-              btnFunc={handleClickInvite}
-            />
+            <div className="flex text-center gap-x-3 justify-center">
+              {aztMembers.map(({ userSeq, profileImage }) => (
+                <div key={userSeq}>
+                  <ProfileImg imgSrc={profileImage} />
+                </div>
+              ))}
+            </div>
+            <div className="mt-3">
+              {/* TODO: 멤버 초대하기 링크 연결 */}
+              <Btn
+                bgColor="blue"
+                text="멤버 초대하기"
+                btnFunc={handleClickInvite}
+              />
+            </div>
           </div>
         </div>
         <div>

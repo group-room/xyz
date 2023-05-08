@@ -21,7 +21,7 @@ function LoginPage() {
     const loginHeaders = loginRes.headers;
     const accessToken = loginHeaders["authorization"];
     const userSeq = +loginHeaders["sequence"];
-    const profilePhoto = loginHeaders["image"];
+    const profileImage = loginHeaders["image"];
 
     const nickname = loginRes.data.nickname;
 
@@ -31,7 +31,7 @@ function LoginPage() {
       updateUserInfo({
         userSeq,
         nickname,
-        profilePhoto,
+        profileImage,
       })
     );
     router.push(API.memory);

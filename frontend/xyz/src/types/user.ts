@@ -1,7 +1,7 @@
 export interface UserTypes {
   userSeq: number;
   nickname: string;
-  profilePhoto: string;
+  profileImage: string;
 }
 
 export interface BgmTypes {
