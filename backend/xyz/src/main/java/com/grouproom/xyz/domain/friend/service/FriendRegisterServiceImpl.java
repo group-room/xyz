@@ -35,7 +35,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         logger.info("findUserByNickname 호출");
 
         List<UserResponse> userResponseList = new ArrayList<>();
-        List<User> users = userRepository.findByNickname(nickname);
+        List<User> users = userRepository.findByNicknameContaining(nickname);
         for (User user: users) {
             UserResponse userResponse = new UserResponse();
             userResponse.setUserSeq(user.getSequence());
@@ -79,52 +79,56 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
     }
 
     @Override
-    public UserResponse findUserByIdentify(Long loginSeq, String identify) {
+    public UserListResponse findUserByIdentify(Long loginSeq, String identify) {
 
         logger.info("findUserByIdentify 호출");
 
-        identify = new StringBuilder().append("#").append(identify).toString();
-
-        User targetUser = userRepository.findByIdentify(identify);
-        if(null == targetUser) {
-            logger.severe("없는 사용자");
-            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "없는 사용자");
+        List<UserResponse> userResponses = new ArrayList<>();
+        List<User> users = userRepository.findByIdentifyContaining(identify);
+        if(users.isEmpty()) {
+            logger.severe("사용자 없음");
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "사용자 없음");
         }
-        UserResponse userResponse = new UserResponse();
-        userResponse.setUserSeq(targetUser.getSequence());
-        userResponse.setNickname(targetUser.getNickname());
-        userResponse.setProfileImage(targetUser.getProfileImage());
-        userResponse.setIdentify(targetUser.getIdentify());
+        for (User targetUser: users) {
+            UserResponse userResponse = new UserResponse();
+            userResponse.setUserSeq(targetUser.getSequence());
+            userResponse.setNickname(targetUser.getNickname());
+            userResponse.setProfileImage(targetUser.getProfileImage());
+            userResponse.setIdentify(targetUser.getIdentify());
 
-        List<UserBlock> blocks = userBlockRepository.findNicknameByFromUserOrToUser(loginSeq, targetUser.getSequence(), false);
-        if(blocks.size() != 0) {
-            for (UserBlock block: blocks) {
-                if(block.getFromUser().equals(targetUser)) {
-                    logger.info(targetUser.getSequence() + "로부터 차단된 상태");
-                    throw new ErrorResponse(HttpStatus.BAD_REQUEST, targetUser.getSequence() + "로부터 차단된 상태");
-                } else {
-                    logger.info(targetUser.getSequence() + "를 차단한 상태");
-                    userResponse.setRelation("차단함");
+            List<UserBlock> blocks = userBlockRepository.findNicknameByFromUserOrToUser(loginSeq, targetUser.getSequence(), false);
+            if(blocks.size() != 0) {
+                for (UserBlock block: blocks) {
+                    if(block.getFromUser().equals(targetUser)) {
+                        logger.info(targetUser.getSequence() + "로부터 차단된 상태");
+                        throw new RuntimeException();
+                    } else {
+                        logger.info(targetUser.getSequence() + "를 차단한 상태");
+                        userResponse.setRelation("차단함");
+                    }
                 }
+                userResponses.add(userResponse);
+            } else {
+                Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, targetUser.getSequence());
+                if(null == friend || friend.getIsDeleted() || friend.getIsCanceled()) {
+                    logger.info("관계 없음");
+                    userResponse.setRelation("관계 없음");
+                } else if(friend.getIsAccepted()) {
+                    logger.info(targetUser.getSequence() + "와 친구");
+                    userResponse.setRelation("친구");
+                } else if(friend.getFromUser().equals(targetUser)) {
+                    logger.info(targetUser.getSequence() + "에게 요청 받음");
+                    userResponse.setRelation("요청 받음");
+                } else {
+                    logger.info(targetUser.getSequence() + "의 수락 대기 중");
+                    userResponse.setRelation("요청 함");
+                }
+                userResponses.add(userResponse);
             }
-            return userResponse;
         }
-
-        Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, targetUser.getSequence());
-        if(null == friend || friend.getIsDeleted() || friend.getIsCanceled()) {
-            logger.info("관계 없음");
-            userResponse.setRelation("관계 없음");
-        } else if(friend.getIsAccepted()) {
-            logger.info(targetUser.getSequence() + "와 친구");
-            userResponse.setRelation("친구");
-        } else if(friend.getFromUser().equals(targetUser)) {
-            logger.info(targetUser.getSequence() + "에게 요청 받음");
-            userResponse.setRelation("요청 받음");
-        } else {
-            logger.info(targetUser.getSequence() + "의 수락 대기 중");
-            userResponse.setRelation("요청 함");
-        }
-        return userResponse;
+        return UserListResponse.builder()
+                .users(userResponses)
+                .build();
     }
 
     @Override
