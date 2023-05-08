@@ -71,10 +71,10 @@ public class JsonWebTokenCheckFilter extends OncePerRequestFilter {
                 Authentication authentication = jsonWebTokenProvider.getAuthentication(access); // 정상 토큰이면 SecurityContext 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else if (refresh == null) {// ACCESS 토큰 유효기간 지남.+ REFRESH 없으면 -> 토큰 만료 되었습니다.
-                throw new ErrorResponse(HttpStatus.GONE, "Access 토큰의 유효기간이 지났습니다.");
+                throw new ErrorResponse(HttpStatus.CONFLICT, "Access 토큰의 유효기간이 지났습니다.");
             } else { // ACCESS 토큰 유효기간 지남.+ REFRESH 있음
                 if (!JwtTokenUtils.isValidToken(refresh))
-                    throw new ErrorResponse(HttpStatus.GONE, "Refresh 토큰의 유효기간이 지났습니다.");
+                    throw new ErrorResponse(HttpStatus.CONFLICT, "Refresh 토큰의 유효기간이 지났습니다.");
 
                 String userSequence = JwtTokenUtils.getClaimAttribute(refresh, "sequence");
                 Long userSequenceValue = Long.parseLong(userSequence);
