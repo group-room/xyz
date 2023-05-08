@@ -4,13 +4,13 @@ const FRIEND = "/friend";
 
 // 친구 요청
 export const postFollow = (userSeq: number) => {
-  console.log("api userSeq : ", userSeq)
+  console.log("postFollow api userSeq : ", userSeq)
   return axiosInstance.post(FRIEND, userSeq);
 };
 
 // 친구 요청 취소
 export const putCancelFollow = (userSeq: number) => {
-  return axiosInstance.put(FRIEND, userSeq);
+  return axiosInstance.put(`/${FRIEND}/cancel`, userSeq);
 };
 
 // 친구 요청 수락
