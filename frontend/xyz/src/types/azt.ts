@@ -1,3 +1,9 @@
+export interface AztCreateTypes {
+  name: string;
+  image?: File;
+  members: { userSeq: number }[];
+}
+
 export interface AztTypes {
   aztSeq?: number | null;
   name: string;

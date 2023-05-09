@@ -1,19 +1,18 @@
 import { UserProfileType, VisitorTypes } from "@/types/user";
 import { axiosInstance } from "@/app/api/instance";
 import { API, queryKeys } from "@/constants/queryKeys";
-import { UserLoginTypes } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 
 const USER = API.user;
 
-export const useAccessToken = () => {
+export const useLogin = () => {
   return useQuery({
     queryKey: queryKeys.user.userOnly(),
     queryFn: async () => {
       return axiosInstance.get(`/${USER}/access-token`).then((res) => {
         // console.log(res.data);
         // console.log(res.headers);
-        return res.headers; // header에 있는 accessToken, userSeq 조회해서 쓰기
+        return res; // header에 있는 accessToken, userSeq, profileImg 주소 및 body에 있는 nickname 조회해서 쓰기
       });
     },
   });
