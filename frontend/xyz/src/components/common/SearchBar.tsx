@@ -22,7 +22,7 @@ export default function SearchBar({ keyword, setKeyword }: Props) {
         <input
           className="w-full h-full hover:outline-none"
           type="text"
-          placeholder="input"
+          placeholder="검색어를 입력하세요"
           value={userInput}
           onChange={handleInputChange}
         />
