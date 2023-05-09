@@ -4,8 +4,14 @@ import ProfileImg from "./../common/ProfileImg";
 import Image from "next/image";
 import Plus from "../../../public/icons/plus.svg";
 import Link from "next/link";
+import { useWaitingCapsuleList } from "@/hooks/queries/capsule";
 
 export default function TimecapsuleList() {
+  const { data: capsuleList, isLoading } = useWaitingCapsuleList(0);
+  if (capsuleList) {
+    console.log(capsuleList);
+  }
+
   return (
     <div className="flex overflow-x-auto scrollbar-hide ">
       <Link href={"/capsule/create"}>
