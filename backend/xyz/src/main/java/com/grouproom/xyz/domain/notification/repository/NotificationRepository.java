@@ -16,4 +16,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     Notification findBySequenceAndUser_SequenceAndIsDeleted(Long sequence, Long userSeq, Boolean isDeleted);
 
     List<Notification> findNotificationsByUser_SequenceAndIsReceivedAndIsDeleted(Long userSeq, Boolean isReceived, Boolean isDeleted);
+
+    Notification findByUser_SequenceAndTargetSequenceAndIsDeletedAndNotificationType(Long userSeq, Long targetSeq, Boolean isDeleted, NotificationType notificationType);
 }
