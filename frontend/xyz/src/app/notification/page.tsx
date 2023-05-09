@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Btn from "./../../components/common/Btn";
 import Notification from "./../../components/common/Notification";
-import { useNotifiacationList } from "@/hooks/queries/notification";
 
 type BtnType = {
   name: string;
@@ -32,15 +31,8 @@ export default function NotificationPage() {
     },
   ];
 
-  const { data: notiList, isLoading } = useNotifiacationList(type);
-  
-  if (notiList) {
-    console.log(notiList);
-  }
-
   return (
     <div>
-      <h2>Notification</h2>
       <div className="flex space-x-4">
         {arr.map((list, idx) => (
           <div className="" key={idx}>
@@ -54,7 +46,7 @@ export default function NotificationPage() {
         ))}
       </div>
 
-      <Notification />
+      <Notification type={type} />
     </div>
   );
 }

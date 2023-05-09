@@ -49,6 +49,6 @@ export const queryKeys = {
     searchList:(check:boolean, keyword: string) => [...KEYS.friend, {check}, {keyword}],
   },
   notification: {
-    notificationList: (type?: string) => [...KEYS.notification, {type}],
+    notificationList: (type: string) => [...KEYS.notification, {type}],
   }
 };

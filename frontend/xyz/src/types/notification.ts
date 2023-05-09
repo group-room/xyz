@@ -1,6 +1,9 @@
 export type NotificationTypes = {
   type: string;
+	notificationSeq: number;
+	userSeq: number;
 	targetSeq: number;
 	content: string;
-	is_received: boolean;
+	fromUserName: string;
+	isReceived: boolean;
 };
