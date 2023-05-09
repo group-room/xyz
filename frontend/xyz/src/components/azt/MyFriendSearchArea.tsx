@@ -94,12 +94,14 @@ function MyFriendSearchArea({
         {keyword === "" || keyword === undefined || keyword === null ? (
           <MyFriendList
             slug={slug}
+            aztMembers={aztMembers}
             handleClickMemberInvite={handleClickMemberInvite}
           />
         ) : searchList ? (
           searchList.length > 0 ? (
             <MyFriendSearchList
               searchList={searchList}
+              aztMembers={aztMembers}
               setAztMembers={setAztMembers}
               handleClickMemberInvite={handleClickMemberInvite}
             />

@@ -5,6 +5,7 @@ import { UserTypes } from "@/types/user";
 
 interface MyFriendSearchListProps {
   searchList: FriendListTypes[];
+  aztMembers: UserTypes[];
   setAztMembers: React.Dispatch<React.SetStateAction<UserTypes[]>>;
   handleClickMemberInvite: (
     nickname: string,
@@ -15,6 +16,7 @@ interface MyFriendSearchListProps {
 
 function MyFriendSearchList({
   searchList,
+  aztMembers,
   setAztMembers,
   handleClickMemberInvite,
 }: MyFriendSearchListProps) {
@@ -26,6 +28,7 @@ function MyFriendSearchList({
         searchList.map(({ identify, profileImage, nickname, userSeq }) => {
           return (
             <MyFriendBox
+              aztMembers={aztMembers}
               key={identify}
               imgSrc={profileImage}
               nickname={nickname}

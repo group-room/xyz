@@ -4,9 +4,11 @@ import MyFriendBox from "./MyFriendBox";
 import Btn from "../common/Btn";
 import { useRouter } from "next/navigation";
 import { API } from "@/constants/queryKeys";
+import { UserTypes } from "@/types/user";
 
 type Props = {
   slug: number;
+  aztMembers: UserTypes[];
   handleClickMemberInvite: (
     nickname: string,
     profileImage: string,
@@ -14,14 +16,9 @@ type Props = {
   ) => void;
 };
 
-function MyFriendList({ slug, handleClickMemberInvite }: Props) {
+function MyFriendList({ slug, aztMembers, handleClickMemberInvite }: Props) {
   const { data: availableFriendList, isLoading } =
     useAztAvailableFriendList(slug);
-  if (availableFriendList) {
-    // console.log(slug);
-    console.log(availableFriendList);
-  }
-
   const router = useRouter();
 
   return (
@@ -35,6 +32,7 @@ function MyFriendList({ slug, handleClickMemberInvite }: Props) {
               ({ identify, profileImage, nickname, userSeq }) => {
                 return (
                   <MyFriendBox
+                    aztMembers={aztMembers}
                     key={identify}
                     imgSrc={profileImage}
                     nickname={nickname}
