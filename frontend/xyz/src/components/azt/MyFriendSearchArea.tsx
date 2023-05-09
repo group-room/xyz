@@ -4,15 +4,19 @@ import React, { useState } from "react";
 import SearchBar from "../common/SearchBar";
 import MyFriendList from "./MyFriendList";
 import MyFriendSearchList from "./MyFriendSearchList";
+import { useFriendSearch } from "@/hooks/queries/friend";
+import { UserTypes } from "@/types/user";
 
 type MyFriendSearchAreaProps = {
   slug: number;
+  setAztMembers: React.Dispatch<React.SetStateAction<UserTypes[]>>;
 };
 
-function MyFriendSearchArea({ slug }: MyFriendSearchAreaProps) {
+function MyFriendSearchArea({ slug, setAztMembers }: MyFriendSearchAreaProps) {
   // true : 닉네임 검색, false : 고유 코드 검색
   const [check, setCheck] = useState(true);
   const [keyword, setKeyword] = useState("");
+  const { data: searchList, isLoading } = useFriendSearch(check, keyword);
 
   return (
     <div>
@@ -47,8 +51,17 @@ function MyFriendSearchArea({ slug }: MyFriendSearchAreaProps) {
         </div>
         {keyword === "" || keyword === undefined || keyword === null ? (
           <MyFriendList slug={slug} />
+        ) : searchList ? (
+          searchList.length > 0 ? (
+            <MyFriendSearchList
+              searchList={searchList}
+              setAztMembers={setAztMembers}
+            />
+          ) : (
+            <p>검색결과가 없어요 ㅠㅠ</p>
+          )
         ) : (
-          <MyFriendSearchList check={check} keyword={keyword} />
+          <p>검색중..</p>
         )}
       </div>
     </div>

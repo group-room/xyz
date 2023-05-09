@@ -1,14 +1,21 @@
 import React from "react";
-import FriendBox from "../friend/FriendBox";
-import { useFriendSearch } from "@/hooks/queries/friend";
+import MyFriendBox from "./MyFriendBox";
+import { FriendListTypes } from "@/types/friend";
+import { UserTypes } from "@/types/user";
 
-interface Props {
-  check: boolean;
-  keyword: string;
+interface MyFriendSearchListProps {
+  searchList: FriendListTypes[];
+  setAztMembers: React.Dispatch<React.SetStateAction<UserTypes[]>>;
 }
 
-function MyFriendSearchList({ check, keyword }: Props) {
-  const { data: searchList, isLoading } = useFriendSearch(check, keyword);
+function MyFriendSearchList({
+  searchList,
+  setAztMembers,
+}: MyFriendSearchListProps) {
+  if (searchList) console.log(searchList);
+  const handleClickInvite = () => {
+    setAztMembers((prev) => [...prev]);
+  };
 
   return (
     <div>
@@ -17,13 +24,13 @@ function MyFriendSearchList({ check, keyword }: Props) {
       {searchList ? (
         searchList.map((list) => {
           return (
-            <FriendBox
+            <MyFriendBox
               key={list.identify}
               imgSrc={list.profileImage}
               nickname={list.nickname}
               identify={list.identify}
-              relation={list.relation as string}
               userSeq={list.userSeq}
+              handleClickInvite={handleClickInvite}
             />
           );
         })

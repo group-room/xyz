@@ -27,18 +27,20 @@ function MyFriendList({ slug }: Props) {
       <hr className="border-1 border-black mb-4"></hr>
       {availableFriendList ? (
         availableFriendList.length > 0 ? (
-          availableFriendList?.map((list) => {
-            return (
-              <MyFriendBox
-                key={list.identify}
-                imgSrc={list.profileImage}
-                nickname={list.nickname}
-                identify={list.identify}
-                userSeq={list.userSeq}
-                handleClickInvite={handleClickInvite}
-              />
-            );
-          })
+          <div className="flex flex-col gap-y-3">
+            {availableFriendList?.map((list) => {
+              return (
+                <MyFriendBox
+                  key={list.identify}
+                  imgSrc={list.profileImage}
+                  nickname={list.nickname}
+                  identify={list.identify}
+                  userSeq={list.userSeq}
+                  handleClickInvite={handleClickInvite}
+                />
+              );
+            })}
+          </div>
         ) : (
           <div className="text-center">
             <p className="p-5">아직 친구가 없어요 ㅠㅠ</p>
