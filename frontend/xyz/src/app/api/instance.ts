@@ -8,7 +8,7 @@ export const axiosInstance = axios.create({
   baseURL: SERVER_URL,
   headers: {
     Authorization: state.auth.accessToken,
-  },
+  }, // 나중에 토큰 넣어주기
   withCredentials: true,
 });
 
@@ -17,6 +17,6 @@ export const axiosFileInstance = axios.create({
   headers: {
     "Content-type": "multipart/form-data",
     Authorization: state.auth.accessToken,
-  },
+  }, // 나중에 토큰 넣어주기
   withCredentials: true,
 });
