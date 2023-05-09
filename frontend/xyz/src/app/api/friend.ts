@@ -14,7 +14,8 @@ export const putCancelFollow = (userSeq: number) => {
 
 // 친구 요청 수락
 export const putAcceptFollow = (userSeq: number) => {
-  return axiosInstance.put(`${FRIEND}/accept`, {userSeq});
+  console.log("targetSeq -> ", userSeq)
+  return axiosInstance.put(`${FRIEND}/accept`, { userSeq });
 };
 
 // 친구 끊기
