@@ -1,63 +1,60 @@
-'use client'
+"use client";
 
-import React from "react";
-import Btn from './../../components/common/Btn';
-import Notification from './../../components/common/Notification';
+import React, { useState } from "react";
+import Btn from "./../../components/common/Btn";
+import Notification from "./../../components/common/Notification";
+import { useNotifiacationList } from "@/hooks/queries/notification";
 
 type BtnType = {
   name: string;
   func: () => void;
-}
-
-function AllList() {
-  console.log("AllList")
-}
-
-function MyroomList() {
-  console.log("MyroomList")
-}
-
-function FriendList() {
-  console.log("FriendList")
-}
-
-function MemoryList() {
-  console.log("MemoryList")
-}
-
+};
 
 export default function NotificationPage() {
+  const [type, setType] = useState("ALL");
+
   const arr: BtnType[] = [
     {
       name: "전체",
-      func: AllList,
+      func: () => setType("ALL"),
     },
     {
       name: "마이룸",
-      func: MyroomList,
+      func: () => setType("MYROOM"),
     },
     {
       name: "친구",
-      func: FriendList,
+      func: () => setType("FRIEND"),
     },
     {
       name: "추억",
-      func: MemoryList,
+      func: () => setType("MEMORY"),
     },
-  ]
-  
-  return (
-  <div>
-    <h2>Notification</h2>
-    <div className="flex space-x-4">
-      {arr.map((list, idx) => 
-      <div className="" key={idx}>
-        <Btn width="w-[75px]" bgColor="bg-white" text={list.name} btnFunc={list.func} />
-      </div>
-      )}
-    </div>
+  ];
 
-    <Notification />
-  </div>
+  const { data: notiList, isLoading } = useNotifiacationList(type);
+  
+  if (notiList) {
+    console.log(notiList);
+  }
+
+  return (
+    <div>
+      <h2>Notification</h2>
+      <div className="flex space-x-4">
+        {arr.map((list, idx) => (
+          <div className="" key={idx}>
+            <Btn
+              width="w-[75px]"
+              bgColor="bg-white"
+              text={list.name}
+              btnFunc={list.func}
+            />
+          </div>
+        ))}
+      </div>
+
+      <Notification />
+    </div>
   );
 }

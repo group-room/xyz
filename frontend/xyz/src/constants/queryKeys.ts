@@ -48,4 +48,7 @@ export const queryKeys = {
     friendList: (isBlock:boolean) => [...KEYS.friend, {isBlock}],
     searchList:(check:boolean, keyword: string) => [...KEYS.friend, {check}, {keyword}],
   },
+  notification: {
+    notificationList: (type?: string) => [...KEYS.notification, {type}],
+  }
 };
