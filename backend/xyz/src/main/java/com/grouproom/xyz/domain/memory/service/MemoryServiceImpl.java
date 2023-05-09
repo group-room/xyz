@@ -365,7 +365,9 @@ public class MemoryServiceImpl implements MemoryService {
 
         memoryCommentRepository.save(memoryComment);
 
-        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY COMMENT", user.getNickname());
+        if (user != memory.getUser()) {
+            notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY COMMENT", user.getNickname());
+        }
 
         return;
     }
