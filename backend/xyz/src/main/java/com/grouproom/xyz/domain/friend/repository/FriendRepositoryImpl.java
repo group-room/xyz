@@ -5,6 +5,7 @@ import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.user.entity.QUser;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
    @Override
     public List<FriendUserResponse> findByFromUserOrToUser(Long userSeq, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
 
+       String isFriend = "친구";
         return jpaQueryFactory
                 .select(Projections.fields(FriendUserResponse.class,
                         new CaseBuilder()
@@ -41,7 +43,8 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                 .when(fromUser.sequence.eq(userSeq))
                                 .then(toUser.profileImage)
                                 .otherwise(fromUser.profileImage).as("profileImage"),
-                        friend.chatId.as("chatId")
+                        friend.chatId.as("chatId"),
+                        Expressions.as(Expressions.constant(isFriend), "relation")
                         )
                 )
                 .from(friend)
