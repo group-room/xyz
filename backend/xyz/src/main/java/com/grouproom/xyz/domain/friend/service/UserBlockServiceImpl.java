@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.friend.service;
 
+import com.grouproom.xyz.domain.friend.dto.response.UserListResponse;
+import com.grouproom.xyz.domain.friend.dto.response.UserResponse;
 import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.friend.entity.UserBlock;
 import com.grouproom.xyz.domain.friend.repository.FriendRepository;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -66,5 +69,17 @@ public class UserBlockServiceImpl implements UserBlockService {
         userBlock.setIsDeleted(true);
 
         return "";
+    }
+
+    @Override
+    public UserListResponse findUserBlock(Long loginSeq) {
+
+        logger.info("findUserBlock 호출");
+
+        List<UserResponse> userResponses = userBlockRepository.findByFromUserAndIsDeleted(loginSeq, false);
+
+        return UserListResponse.builder()
+                .users(userResponses)
+                .build();
     }
 }
