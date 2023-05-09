@@ -28,7 +28,7 @@ public class NotificationController {
     }
 
     @GetMapping()
-    public BaseResponse<?> notificationList(@RequestParam(required = false) String type) {
+    public BaseResponse<?> notificationList(@RequestParam String type) {
         logger.info("notificationList 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());

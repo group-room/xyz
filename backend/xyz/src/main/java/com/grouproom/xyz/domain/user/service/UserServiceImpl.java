@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.user.service;
 
+import com.grouproom.xyz.domain.notification.entity.NotificationType;
+import com.grouproom.xyz.domain.notification.service.NotificationService;
 import com.grouproom.xyz.domain.user.dto.response.FriendshipResponse;
 import com.grouproom.xyz.domain.user.dto.response.ModifierResponse;
 import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
@@ -12,7 +14,6 @@ import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.domain.user.repository.VisitorRepository;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserModifierRepository userModifierRepository;
     private final VisitorRepository visitorRepository;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -106,12 +108,13 @@ public class UserServiceImpl implements UserService {
     public void addVisitor(Long fromUserSeq, Long toUserSeq, String content) {
         User fromUser = userRepository.getReferenceById(fromUserSeq);
         User toUser = userRepository.findById(toUserSeq)
-                .orElseThrow(()-> new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 유저는 없는 유저입니다."));
+                .orElseThrow(() -> new ErrorResponse(HttpStatus.BAD_REQUEST, "해당 유저는 없는 유저입니다."));
         FriendshipResponse friendshipResponse = userRepository.selectFriendshipByUserSeq(fromUser, toUser)
                 .orElseThrow(() -> new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다."));
         if (!friendshipResponse.getFriend()) throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다.");
 
         visitorRepository.save(Visitor.builder().fromUser(fromUser).toUser(toUser).content(content).build());
+        notificationService.addNotification(toUserSeq, fromUserSeq, NotificationType.MYROOM, "NEW VISITOR", fromUser.getNickname());
     }
 
     @Override
