@@ -23,7 +23,7 @@ function ProfileDropDown({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="dropdown relative w-24 ">
+    <div className="dropdown relative w-24">
       <button
         className="text-center w-full py-1 focus:outline-none"
         onClick={() => setOpen(!open)}
