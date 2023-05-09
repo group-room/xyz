@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteNotification } from "@/app/api/notification";
 import { KEYS } from "@/constants/queryKeys";
+import { putAcceptFollow } from "@/app/api/friend";
 
 type Props = {
   type: string;
@@ -24,6 +25,13 @@ export default function Notification({ type }: Props) {
   const useDeleteNotiMutation = useMutation({
     mutationFn: (notificationSeq: number) =>
       deleteNotification(notificationSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.notification);
+    },
+  });
+
+  const usePutAcceptMutation = useMutation({
+    mutationFn: (targetSeq: number) => putAcceptFollow(targetSeq),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.notification);
     },
@@ -56,7 +64,13 @@ export default function Notification({ type }: Props) {
               </div>
               {list.type === "FRIEND" ? (
                 <div className="flex">
-                  <div className="flex items-center justify-center w-1/3 h-10 border-r-2 border-black bg-yellow">
+                  <div
+                    className="flex items-center justify-center w-1/3 h-10 border-r-2 border-black bg-yellow"
+                    onClick={() => {
+                      list.targetSeq &&
+                        usePutAcceptMutation.mutate(list.targetSeq);
+                    }}
+                  >
                     수락
                   </div>
                   <div className="flex items-center justify-center w-1/3 h-10 border-r-2 border-black bg-pink">
