@@ -1,13 +1,24 @@
 "use client";
 
+import { createAzt } from "@/app/api/azt";
 import Btn from "@/components/common/Btn";
+import ProfileImg from "@/components/common/ProfileImg";
+import { API } from "@/constants/queryKeys";
+import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
-import React, { useState } from "react";
+import { UserTypes } from "@/types/user";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 function AzitCreatePage() {
   const [aztNameInput, onChangeAztNameInput] = useInput("");
   const [aztPhoto, setAztPhoto] = useState<File | null>(null);
   const [previewPhoto, setPreviewPhoto] = useState("");
+  const [aztMembers, setAztMembers] = useState<UserTypes[]>([]);
+  const router = useRouter();
+  const state = useAppSelector((state) => state);
+  const loggedInUserInfo = state.auth.userInfo;
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList: any = e.target.files;
@@ -18,8 +29,51 @@ function AzitCreatePage() {
     }
   };
 
+  const useCreateAztMutation = useMutation({
+    mutationFn: (formData) => createAzt(formData),
+    onSuccess: (data) => {
+      const aztSeq = data.data.aztSeq;
+      router.push(`${API.azt}/${aztSeq}`);
+    },
+  });
+
   const handleClickInvite = () => {};
-  const handleClickCreate = () => {};
+  const handleClickCreate = () => {
+    if (!aztNameInput) {
+      alert("아지트 이름을 입력해주세요!");
+      return;
+    }
+    let membersArr: { userSeq: number }[] = [];
+    aztMembers
+      // .filter((member) => member.userSeq !== loggedInUserInfo?.userSeq)
+      .forEach((member) => {
+        {
+          membersArr.push({ userSeq: member.userSeq });
+        }
+      });
+    console.log(membersArr);
+    const formData = new FormData();
+    const stringifiedData = JSON.stringify({
+      name: aztNameInput,
+      members: membersArr,
+    });
+    const jsonBlob = new Blob([stringifiedData], {
+      type: "application/json",
+    });
+    formData.append("addAztRequest", jsonBlob);
+    if (aztPhoto) formData.append("image", aztPhoto as File);
+
+    useCreateAztMutation.mutate();
+  };
+
+  useEffect(() => {
+    if (
+      loggedInUserInfo &&
+      !aztMembers.find((member) => member.userSeq === loggedInUserInfo.userSeq)
+    ) {
+      setAztMembers([loggedInUserInfo]);
+    }
+  }, []);
 
   return (
     <div>
@@ -67,12 +121,21 @@ function AzitCreatePage() {
         <div>
           <p>아지트 멤버</p>
           <div className="my-3 mx-auto text-center">
-            {/* TODO: 멤버 초대하기 링크 연결 */}
-            <Btn
-              bgColor="blue"
-              text="멤버 초대하기"
-              btnFunc={handleClickInvite}
-            />
+            <div className="flex text-center gap-x-3 justify-center">
+              {aztMembers.map(({ userSeq, profileImage }) => (
+                <div key={userSeq}>
+                  <ProfileImg imgSrc={profileImage} />
+                </div>
+              ))}
+            </div>
+            <div className="mt-3">
+              {/* TODO: 멤버 초대하기 링크 연결 */}
+              <Btn
+                bgColor="blue"
+                text="멤버 초대하기"
+                btnFunc={handleClickInvite}
+              />
+            </div>
           </div>
         </div>
         <div>
