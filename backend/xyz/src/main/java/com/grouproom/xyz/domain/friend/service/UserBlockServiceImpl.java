@@ -6,6 +6,10 @@ import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.friend.entity.UserBlock;
 import com.grouproom.xyz.domain.friend.repository.FriendRepository;
 import com.grouproom.xyz.domain.friend.repository.UserBlockRepository;
+import com.grouproom.xyz.domain.notification.entity.Notification;
+import com.grouproom.xyz.domain.notification.entity.NotificationType;
+import com.grouproom.xyz.domain.notification.repository.NotificationRepository;
+import com.grouproom.xyz.domain.notification.service.NotificationService;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.exception.ErrorResponse;
@@ -24,6 +28,8 @@ public class UserBlockServiceImpl implements UserBlockService {
     private final UserRepository userRepository;
     private final UserBlockRepository userBlockRepository;
     private final FriendRepository friendRepository;
+    private final NotificationRepository notificationRepository;
+    private final NotificationService notificationService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.friend.service.UserBlockServiceImpl");
 
     @Override
@@ -33,24 +39,29 @@ public class UserBlockServiceImpl implements UserBlockService {
         logger.info("saveUserBlock 호출");
 
         Friend friend = friendRepository.findByFromUserAndToUser(loginSeq, userSeq, true, false, false);
-        if(null != friend) {
+        if (null != friend) {
             logger.info("친구 끊기");
             friend.setIsDeleted(true);
         }
 
         User loginUser = userRepository.findBySequence(loginSeq);
         User targetUser = userRepository.findBySequence(userSeq);
-        if(null == targetUser) {
+        if (null == targetUser) {
             logger.severe("없는 사용자");
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "없는 사용자");
         }
         userBlockRepository.save(UserBlock.builder()
-                        .fromUser(loginUser)
-                        .toUser(targetUser)
-                        .isDeleted(false)
-                    .build());
+                .fromUser(loginUser)
+                .toUser(targetUser)
+                .isDeleted(false)
+                .build());
 
         logger.info("차단");
+
+        Notification notification = notificationRepository.findByUser_SequenceAndTargetSequenceAndIsDeletedAndNotificationType(loginSeq, userSeq, false, NotificationType.FRIEND);
+        if (null != notification) {
+            notificationService.removeNotification(userSeq, notification.getSequence());
+        }
 
         return "";
     }
@@ -62,7 +73,7 @@ public class UserBlockServiceImpl implements UserBlockService {
         logger.info("modifySaveBlock 호출");
 
         UserBlock userBlock = userBlockRepository.findByFromUser_SequenceAndToUser_SequenceAndIsDeleted(loginSeq, userSeq, false);
-        if(null == userBlock) {
+        if (null == userBlock) {
             logger.severe("차단한 대상이 아님");
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "차단한 대상이 아님");
         }

@@ -64,10 +64,6 @@ public class FriendManageServiceImpl implements FriendManageService {
         logger.info("findFriendByIdentify 호출");
 
         List<FriendUserResponse> friendUserResponseList = friendRepository.findIdentifyBYFromUserOrToUser(loginSeq, identify, true, false, false);
-        if(friendUserResponseList.isEmpty()) {
-            logger.severe("친구 없음");
-            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "친구 없음");
-        }
         return FriendListResponse.builder()
                 .friends(friendUserResponseList)
                 .build();
