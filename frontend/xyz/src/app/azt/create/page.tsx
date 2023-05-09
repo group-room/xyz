@@ -30,9 +30,9 @@ function AzitCreatePage() {
   };
 
   const useCreateAztMutation = useMutation({
-    mutationFn: (formData) => createAzt(formData),
+    mutationFn: (formData: FormData) => createAzt(formData),
     onSuccess: (data) => {
-      const aztSeq = data.data.aztSeq;
+      const aztSeq = data.data.data.aztSeq;
       router.push(`${API.azt}/${aztSeq}`);
     },
   });
@@ -45,7 +45,7 @@ function AzitCreatePage() {
     }
     let membersArr: { userSeq: number }[] = [];
     aztMembers
-      // .filter((member) => member.userSeq !== loggedInUserInfo?.userSeq)
+      .filter((member) => member.userSeq !== loggedInUserInfo?.userSeq)
       .forEach((member) => {
         {
           membersArr.push({ userSeq: member.userSeq });
@@ -63,7 +63,7 @@ function AzitCreatePage() {
     formData.append("addAztRequest", jsonBlob);
     if (aztPhoto) formData.append("image", aztPhoto as File);
 
-    useCreateAztMutation.mutate();
+    useCreateAztMutation.mutate(formData);
   };
 
   useEffect(() => {
