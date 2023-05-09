@@ -28,6 +28,7 @@ export const queryKeys = {
     myVisitorList: (userSeq?: number) => [...KEYS.user, "visitor", { userSeq }],
     // mymemoryList: (memory: string) => [...KEYS.user, { memory }],
   },
+
   memory: {
     memoryList: (
       date: string | null,
