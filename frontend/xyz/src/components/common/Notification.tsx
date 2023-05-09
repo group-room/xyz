@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteNotification } from "@/app/api/notification";
 import { KEYS } from "@/constants/queryKeys";
-import { putAcceptFollow } from "@/app/api/friend";
+import { putAcceptFollow, putRejectFollow, postBlock } from "@/app/api/friend";
 
 type Props = {
   type: string;
@@ -32,6 +32,20 @@ export default function Notification({ type }: Props) {
 
   const usePutAcceptMutation = useMutation({
     mutationFn: (targetSeq: number) => putAcceptFollow(targetSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.notification);
+    },
+  });
+
+  const usePutRejectMutation = useMutation({
+    mutationFn: (targetSeq: number) => putRejectFollow(targetSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.notification);
+    },
+  });
+
+  const usePostBlockMutation = useMutation({
+    mutationFn: (targetSeq: number) => postBlock(targetSeq),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.notification);
     },
@@ -73,10 +87,22 @@ export default function Notification({ type }: Props) {
                   >
                     수락
                   </div>
-                  <div className="flex items-center justify-center w-1/3 h-10 border-r-2 border-black bg-pink">
+                  <div
+                    className="flex items-center justify-center w-1/3 h-10 border-r-2 border-black bg-pink"
+                    onClick={() => {
+                      list.targetSeq &&
+                        usePutRejectMutation.mutate(list.targetSeq);
+                    }}
+                  >
                     거절
                   </div>
-                  <div className="flex items-center justify-center w-1/3 bg-slate-100 h-10">
+                  <div
+                    className="flex items-center justify-center w-1/3 bg-slate-100 h-10"
+                    onClick={() => {
+                      list.targetSeq &&
+                        usePostBlockMutation.mutate(list.targetSeq);
+                    }}
+                  >
                     차단
                   </div>
                 </div>

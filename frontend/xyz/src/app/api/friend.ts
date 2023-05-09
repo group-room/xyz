@@ -14,8 +14,12 @@ export const putCancelFollow = (userSeq: number) => {
 
 // 친구 요청 수락
 export const putAcceptFollow = (userSeq: number) => {
-  console.log("targetSeq -> ", userSeq)
   return axiosInstance.put(`${FRIEND}/accept`, { userSeq });
+};
+
+// 친구 요청 거절
+export const putRejectFollow = (userSeq: number) => {
+  return axiosInstance.put(`${FRIEND}/reject`, { userSeq });
 };
 
 // 친구 끊기
@@ -25,7 +29,7 @@ export const deleteFollow = (userSeq: number) => {
 
 // 사용자 차단
 export const postBlock = (userSeq: number) => {
-  return axiosInstance.post(`${FRIEND}/block`, {userSeq});
+  return axiosInstance.post(`${FRIEND}/block`, { userSeq });
 };
 
 // 사용자 차단 해제
