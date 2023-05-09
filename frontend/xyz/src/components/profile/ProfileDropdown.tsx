@@ -3,15 +3,27 @@ import React, { useState, cloneElement, PropsWithChildren } from "react";
 import Image from "next/image";
 import ProfileEditImg from "../../../public/icons/profile-edit.svg";
 
-function DropDown() {
+interface ProfileDropDownProps {
+  firstText: string;
+  secondText?: string;
+  thirdText?: string;
+  firstFunc: () => void;
+  secondFunc?: () => void;
+  thirdFunc?: () => void;
+}
+
+function ProfileDropDown({
+  firstText,
+  secondText,
+  thirdText,
+  firstFunc,
+  secondFunc,
+  thirdFunc,
+}: ProfileDropDownProps) {
   const [open, setOpen] = useState(false);
-  const withdraw = () => {};
-  const logout = () => {
-    alert("로그아웃 되었습니다.");
-  };
-  const editProfile = () => {};
+
   return (
-    <div className="dropdown relative w-24 ">
+    <div className="dropdown relative w-24">
       <button
         className="text-center w-full py-1 focus:outline-none"
         onClick={() => setOpen(!open)}
@@ -28,23 +40,27 @@ function DropDown() {
         onClick={() => setOpen(!open)}
       >
         <li>
-          <button className="py-1" onClick={editProfile}>
-            프로필 수정
+          <button className="py-1" onClick={firstFunc}>
+            {firstText}
           </button>
         </li>
-        <li>
-          <button className="py-1" onClick={logout}>
-            로그아웃
-          </button>
-        </li>
-        <li>
-          <button className="py-1" onClick={withdraw}>
-            탈퇴하기
-          </button>
-        </li>
+        {secondText && (
+          <li>
+            <button className="py-1" onClick={secondFunc}>
+              {secondText}
+            </button>
+          </li>
+        )}
+        {thirdText && (
+          <li>
+            <button className="py-1" onClick={thirdFunc}>
+              {thirdText}
+            </button>
+          </li>
+        )}
       </ul>
     </div>
   );
 }
 
-export default DropDown;
+export default ProfileDropDown;

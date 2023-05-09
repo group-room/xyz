@@ -23,6 +23,10 @@ export const KEYS = {
 export const queryKeys = {
   user: {
     userOnly: () => [...KEYS.user],
+    userList: (userSeq?: number) => [...KEYS.user, { userSeq }],
+    visitor: (userSeq?: number) => [...KEYS.user, "visitor"],
+    myVisitorList: (userSeq?: number) => [...KEYS.user, "visitor", { userSeq }],
+    // mymemoryList: (memory: string) => [...KEYS.user, { memory }],
   },
   memory: {
     memoryList: (
@@ -40,4 +44,11 @@ export const queryKeys = {
   capsule: {
     aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],
   },
+  friend: {
+    friendList: (isBlock:boolean) => [...KEYS.friend, {isBlock}],
+    searchList:(check:boolean, keyword: string) => [...KEYS.friend, {check}, {keyword}],
+  },
+  notification: {
+    notificationList: (type: string) => [...KEYS.notification, {type}],
+  }
 };

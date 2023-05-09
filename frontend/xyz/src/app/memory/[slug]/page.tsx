@@ -17,6 +17,7 @@ import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import ModalBtn from "@/components/common/ModalBtn";
 import { SlugProps } from "@/types/common";
+import { useAppSelector } from "@/hooks/redux";
 
 function MemoryDetailPage({ params: { slug } }: SlugProps) {
   const router = useRouter();
@@ -40,6 +41,8 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
     setIsModal(true);
   };
 
+  const loggedInUserSeq = useAppSelector((state) => state.auth.userSeq);
+
   if (isLoading) {
     return <div>로딩중 ㄱ-...</div>;
   }
@@ -49,8 +52,8 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
   }
 
   if (memory) {
-    console.log(memory);
     const {
+      userSeq,
       aztSeq,
       aztName,
       commentCnt,
@@ -101,32 +104,34 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
               MEMORY_OPTIONS[accessibility as keyof typeof MEMORY_OPTIONS]
             }
           />
-          <div className="flex gap-x-3 p-1 justify-end mb-2">
-            <Link
-              href={`/memory/${slug}/edit`}
-              className="flex items-center gap-x-1"
-            >
-              <Image
-                src={"/icons/edit.svg"}
-                alt={"편집 아이콘"}
-                width={16}
-                height={16}
-              />
-              <span>편집하기</span>
-            </Link>
-            <button
-              className="flex items-center gap-x-1"
-              onClick={handleClickDeleteBtn}
-            >
-              <Image
-                src={"/icons/trash.svg"}
-                alt={"삭제 아이콘"}
-                width={16}
-                height={16}
-              />
-              <span>삭제하기</span>
-            </button>
-          </div>
+          {loggedInUserSeq === userSeq && (
+            <div className="flex gap-x-3 p-1 justify-end mb-2">
+              <Link
+                href={`/memory/${slug}/edit`}
+                className="flex items-center gap-x-1"
+              >
+                <Image
+                  src={"/icons/edit.svg"}
+                  alt={"편집 아이콘"}
+                  width={16}
+                  height={16}
+                />
+                <span>편집하기</span>
+              </Link>
+              <button
+                className="flex items-center gap-x-1"
+                onClick={handleClickDeleteBtn}
+              >
+                <Image
+                  src={"/icons/trash.svg"}
+                  alt={"삭제 아이콘"}
+                  width={16}
+                  height={16}
+                />
+                <span>삭제하기</span>
+              </button>
+            </div>
+          )}
           <Container
             title
             titleText={`${userNickname} 님의 추억 (${imgList.length})`}
