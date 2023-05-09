@@ -1,9 +1,9 @@
 import { axiosInstance } from "@/app/api/instance";
-import { queryKeys } from "@/constants/queryKeys";
+import { API, queryKeys } from "@/constants/queryKeys";
 import { FriendListTypes } from "@/types/friend";
 import { useQuery } from "@tanstack/react-query";
 
-const FRIEND = "friend";
+const FRIEND:string = API.friend;
 
 export const useFriendList = (isBlock: boolean) => {
   return useQuery<FriendListTypes[]>({
