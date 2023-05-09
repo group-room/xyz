@@ -34,7 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<Notification> notifications;
 
-        if (type == null) {
+        if (type.equals("ALL")) {
             notifications = notificationRepository.findNotificationsByUser_SequenceAndIsDeletedOrderByCreatedAtDesc(userSeq, false);
         } else {
             notifications = notificationRepository.findNotificationsByUser_SequenceAndIsDeletedAndNotificationTypeOrderByCreatedAtDesc(userSeq, false, NotificationType.valueOf(type));
