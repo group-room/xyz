@@ -24,8 +24,8 @@ public class Azt extends BaseTimeEntity {
     @Column(name = "azt_image", length = 2083)
     private String aztImage;
 
-    @Column(name = "chat_sequence")
-    private Long chatSequence;
+    @Column(name = "chat_id")
+    private String chatId;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
     private Boolean isDeleted;

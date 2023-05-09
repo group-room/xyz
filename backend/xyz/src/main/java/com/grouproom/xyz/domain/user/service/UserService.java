@@ -24,4 +24,6 @@ public interface UserService {
     void removeVisitor(Long userSeq,Long visitorSeq);
 
     List<VisitorResponse> findVisitorByUserSequence(Long toUserSeq);
+
+    void logout(Long userSeq);
 }

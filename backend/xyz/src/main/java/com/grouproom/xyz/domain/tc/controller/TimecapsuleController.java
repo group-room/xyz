@@ -1,6 +1,7 @@
 package com.grouproom.xyz.domain.tc.controller;
 
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcContentRequest;
+import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcOpenRequest;
 import com.grouproom.xyz.domain.tc.dto.reqeust.AddTcRequest;
 import com.grouproom.xyz.domain.tc.dto.reqeust.TcListRequest;
 import com.grouproom.xyz.domain.tc.dto.response.*;
@@ -101,5 +102,15 @@ public class TimecapsuleController {
         OpenedTcResponse openedTcResponse = tcService.findRandomOpenedTcDetails(userSeq);
 
         return new BaseResponse(openedTcResponse);
+    }
+
+    @PostMapping("/open/{tcSeq}")
+    public BaseResponse<?> addTcOpen(@PathVariable("tcSeq") Long tcSeq, @RequestBody AddTcOpenRequest addTcOpenRequest) {
+        logger.info("addTcOpen 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        String openStatus = tcService.addTcOpen(userSeq, tcSeq, addTcOpenRequest);
+
+        return new BaseResponse(openStatus);
     }
 }

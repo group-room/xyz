@@ -1,17 +1,23 @@
 package com.grouproom.xyz.domain.user.controller;
 
+import com.grouproom.xyz.domain.user.dto.request.ProfileRequest;
+import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
 import com.grouproom.xyz.domain.user.service.UserService;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.BaseResponse;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.controller
@@ -30,6 +36,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final S3UploadService s3UploadService;
@@ -60,10 +67,9 @@ public class UserController {
             return new BaseResponse(userService.findProfileByUserSeq(fromSeq,userSeq));
     }
 
-    @PostMapping("/profile")
-    public BaseResponse saveProfile(@RequestPart(required = false)String nickname,@RequestPart(required = false) MultipartFile profileImage,
-                                @RequestPart(required = false)MultipartFile backgroundImage,@RequestPart(required = false)String introduce,
-                                @RequestPart(required = false)Long modifierSequence){
+    @PostMapping(value = "/profile",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseResponse saveProfile(@RequestPart(required = false) ProfileRequest profileRequest, @RequestPart(required = false) MultipartFile profileImage,
+                                    @RequestPart(required = false)MultipartFile backgroundImage){
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         String profileImagePath = null,backgroundImagePath = null;
 
@@ -72,7 +78,7 @@ public class UserController {
         if(null!=backgroundImage && !backgroundImage.isEmpty())
             backgroundImagePath = s3UploadService.upload(backgroundImage, "user");
 
-        userService.modifyProfile(userSeq,nickname,profileImagePath,backgroundImagePath,introduce,modifierSequence);
+        userService.modifyProfile(userSeq,profileRequest.getNickname(),profileImagePath,backgroundImagePath,profileRequest.getIntroduce(),profileRequest.getModifierSequence());
 
         return new BaseResponse(null);
     }
@@ -92,17 +98,40 @@ public class UserController {
     }
 
     @GetMapping("/visitor")
-    public BaseResponse visitorList(Long userSeq) {
+    public BaseResponse visitorList(@RequestParam(value = "userSeq",required = false) Long userSeq) {
+        if(null == userSeq)
+            userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+
         return new BaseResponse(userService.findVisitorByUserSequence(userSeq));
     }
 
     @GetMapping("/access-token")
     public ResponseEntity getAccessToken(HttpSession httpSession) {
+
+        String authorization = (String)httpSession.getAttribute("Authorization");
+        if(null == authorization) throw new ErrorResponse(HttpStatus.BAD_REQUEST,"로그인 실패");
+        Long sequence = (Long)httpSession.getAttribute("Sequence");
+        ProfileResponse profileResponse = userService.findProfileByUserSeq(sequence);
+
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization",(String)httpSession.getAttribute("Authorization"));
+        headers.add("Authorization",authorization);
+        headers.add("Sequence",Long.toString(sequence));
+        headers.add("Image",profileResponse.getProfileImage());
         httpSession.removeAttribute("Authorization");
+
+        HashMap<String,String> body = new HashMap<String,String>();
+        body.put("result","SUCCESS");
+        body.put("nickname",profileResponse.getNickname());
+
         return ResponseEntity.ok()
                 .headers(headers)
-                .body("SUCCESS");
+                .body(body);
+    }
+
+    @DeleteMapping("/logout")
+    public BaseResponse logout() {
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        userService.logout(userSeq);
+        return new BaseResponse(null);
     }
 }

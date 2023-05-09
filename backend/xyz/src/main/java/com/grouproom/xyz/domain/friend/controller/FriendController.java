@@ -109,4 +109,12 @@ public class FriendController {
         Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return new BaseResponse<>(userBlockService.modifySaveBlock(loginSeq, userSeq));
     }
+
+    @ApiOperation(value = "차단 목록 조회", notes = "차단한 사용자 목록을 조회한다.")
+    @GetMapping("/block")
+    public BaseResponse userBlockList() {
+        logger.info("userBlockList 호출");
+        Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        return new BaseResponse(userBlockService.findUserBlock(loginSeq));
+    }
 }
