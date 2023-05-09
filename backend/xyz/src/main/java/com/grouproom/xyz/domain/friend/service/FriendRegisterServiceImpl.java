@@ -192,7 +192,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
                 throw new ErrorResponse(HttpStatus.BAD_REQUEST, "친구 요청 후 수락 대기 상태 혹은 친구 상태");
             }
         }
-        notificationService.addNotification(userSeq, loginSeq, NotificationType.FRIEND, "NEW FRIEND ASK");
+        notificationService.addNotification(userSeq, loginSeq, NotificationType.FRIEND, "NEW FRIEND ASK", userRepository.findBySequence(loginSeq).getNickname());
         return "";
     }
 
@@ -225,7 +225,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수락할 수 있는 대상이 아님");
         }
         friend.setIsAccepted(true);
-        notificationService.addNotification(userSeq, loginSeq, NotificationType.FRIEND, "FRIEND ASK ACCEPTED");
+        notificationService.addNotification(userSeq, loginSeq, NotificationType.FRIEND, "FRIEND ASK ACCEPTED", userRepository.findBySequence(loginSeq).getNickname());
         return "";
     }
 

@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
         if (!friendshipResponse.getFriend()) throw new ErrorResponse(HttpStatus.UNAUTHORIZED, "해당 유저는 친구가 아닙니다.");
 
         visitorRepository.save(Visitor.builder().fromUser(fromUser).toUser(toUser).content(content).build());
-        notificationService.addNotification(toUserSeq, fromUserSeq, NotificationType.MYROOM, "NEW VISITOR");
+        notificationService.addNotification(toUserSeq, fromUserSeq, NotificationType.MYROOM, "NEW VISITOR", fromUser.getNickname());
     }
 
     @Override

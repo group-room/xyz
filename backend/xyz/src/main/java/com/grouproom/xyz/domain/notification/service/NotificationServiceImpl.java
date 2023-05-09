@@ -70,7 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Transactional
-    public void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content) {
+    public void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content, String fromUserName) {
         logger.info("addNotification 호출");
 
         User user = userRepository.getReferenceById(userSeq);
@@ -79,6 +79,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .notificationType(notificationType)
                 .targetSeq(targetSeq)
                 .content(content)
+                .fromUserName(fromUserName)
                 .build();
 
         notificationRepository.save(notification);

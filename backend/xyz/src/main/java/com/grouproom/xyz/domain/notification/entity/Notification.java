@@ -33,6 +33,9 @@ public class Notification extends BaseTimeEntity {
     @Column(length = 200, name = "content")
     private String content;
 
+    @Column(name = "from_user_name")
+    private String fromUserName;
+
     @Column(name = "is_received")
     private Boolean isReceived;
 
@@ -40,11 +43,12 @@ public class Notification extends BaseTimeEntity {
     private Boolean isDeleted;
 
     @Builder
-    public Notification(User user, Long targetSeq, NotificationType notificationType, String content) {
+    public Notification(User user, Long targetSeq, NotificationType notificationType, String content, String fromUserName) {
         this.user = user;
         this.targetSequence = targetSeq;
         this.notificationType = notificationType;
         this.content = content;
+        this.fromUserName = fromUserName;
         this.isReceived = false;
         this.isDeleted = false;
     }

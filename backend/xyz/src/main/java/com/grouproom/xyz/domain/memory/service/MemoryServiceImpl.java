@@ -258,6 +258,7 @@ public class MemoryServiceImpl implements MemoryService {
     public void addMemoryLike(Long userSeq, Long memorySeq) {
         logger.info("addMemoryLike 호출");
 
+        User user = userRepository.findBySequence(userSeq);
         Memory memory = memoryRepository.findBySequence(memorySeq);
         Optional<MemoryLike> memoryLike = memoryLikeRepository.findByUser_SequenceAndMemory_Sequence(userSeq, memorySeq);
 
@@ -267,12 +268,10 @@ public class MemoryServiceImpl implements MemoryService {
             }
 
             memoryLike.get().updateIsSelected(true);
-            notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY LIKE");
+            notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY LIKE", user.getNickname());
 
             return;
         }
-
-        User user = userRepository.findBySequence(userSeq);
 
         if (memory.getIsDeleted()) {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 추억입니다.");
@@ -283,7 +282,7 @@ public class MemoryServiceImpl implements MemoryService {
                 .memory(memory)
                 .build());
 
-        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY COMMENT");
+        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY LIKE", user.getNickname());
 
         return;
     }
@@ -366,7 +365,7 @@ public class MemoryServiceImpl implements MemoryService {
 
         memoryCommentRepository.save(memoryComment);
 
-        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "추억앨범 댓글 달림");
+        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY COMMENT", user.getNickname());
 
         return;
     }
