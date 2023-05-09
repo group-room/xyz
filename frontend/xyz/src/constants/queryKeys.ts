@@ -45,7 +45,7 @@ export const queryKeys = {
     aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],
   },
   friend: {
-    friendList: () => [...KEYS.friend],
+    friendList: (isBlock:boolean) => [...KEYS.friend, {isBlock}],
     searchList:(check:boolean, keyword: string) => [...KEYS.friend, {check}, {keyword}],
   },
 };

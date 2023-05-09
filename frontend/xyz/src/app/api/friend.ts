@@ -14,20 +14,20 @@ export const putCancelFollow = (userSeq: number) => {
 
 // 친구 요청 수락
 export const putAcceptFollow = (userSeq: number) => {
-  return axiosInstance.put(FRIEND, userSeq);
+  return axiosInstance.put(`${FRIEND}/accept`, {userSeq});
 };
 
 // 친구 끊기
 export const deleteFollow = (userSeq: number) => {
-  return axiosInstance.put(`${FRIEND}/${userSeq}`);
+  return axiosInstance.delete(`${FRIEND}/${userSeq}`);
 };
 
 // 사용자 차단
 export const postBlock = (userSeq: number) => {
-  return axiosInstance.put(`${FRIEND}/block`, userSeq);
+  return axiosInstance.post(`${FRIEND}/block`, {userSeq});
 };
 
 // 사용자 차단 해제
 export const deleteBlock = (userSeq: number) => {
-  return axiosInstance.put(`${FRIEND}/block/${userSeq}`);
+  return axiosInstance.delete(`${FRIEND}/block/${userSeq}`);
 };

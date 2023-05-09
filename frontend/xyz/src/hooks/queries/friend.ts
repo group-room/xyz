@@ -5,14 +5,21 @@ import { useQuery } from "@tanstack/react-query";
 
 const FRIEND = "friend";
 
-// 친구 목록 불러오기
-export const useFriendList = () => {
+export const useFriendList = (isBlock: boolean) => {
   return useQuery<FriendListTypes[]>({
-    queryKey: queryKeys.friend.friendList(),
+    queryKey: queryKeys.friend.friendList(isBlock),
     queryFn: async () => {
-      return axiosInstance
-        .get(`/${FRIEND}/all`)
+      if(isBlock) { // 차단한 친구 목록 불러오기
+        console.log("차단한 친구 목록 불러오기")
+        return axiosInstance
+        .get(`${FRIEND}/block`)
+        .then((res) => res.data.data.users);
+      } else { // 친구 목록 불러오기
+        console.log("친구 목록 불러오기")
+        return axiosInstance
+        .get(`${FRIEND}/all`)
         .then((res) => res.data.data.friends);
+      }
     },
   });
 };

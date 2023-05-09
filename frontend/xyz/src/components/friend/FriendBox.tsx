@@ -2,7 +2,8 @@ import React from "react";
 import ProfileImg from "@/components/common/ProfileImg";
 import { KEYS } from "@/constants/queryKeys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postFollow, putCancelFollow } from "@/app/api/friend";
+import { postFollow, putCancelFollow, deleteBlock } from "@/app/api/friend";
+import { useRouter } from "next/navigation";
 
 type Props = {
   imgSrc: string;
@@ -19,6 +20,7 @@ export default function FriendBox({
   relation,
   userSeq,
 }: Props) {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const usePostFollowMutation = useMutation({
@@ -35,13 +37,23 @@ export default function FriendBox({
     },
   });
 
-  const handleClickFollow = (e) => {
+  const useCancelBlockMutation = useMutation({
+    mutationFn: () => deleteBlock(userSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.friend);
+    },
+  });
+
+  const handleClickFollow = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     // 요청 여부에 따라 조건
     if (relation === "관계 없음") {
       usePostFollowMutation.mutate();
-    } else if (relation === "친구") {
     } else if (relation === "요청 함") {
       useCancelFollowMutation.mutate();
+    } else if (relation === "차단함") {
+      useCancelBlockMutation.mutate();
     }
   };
 
@@ -56,7 +68,10 @@ export default function FriendBox({
         <div>{identify}</div>
       </div>
       {relation === "친구" && (
-        <div className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md">
+        <div
+          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          onClick={() => router.push("/chat")}
+        >
           채팅
         </div>
       )}
@@ -82,6 +97,14 @@ export default function FriendBox({
           onClick={(e) => handleClickFollow(e)}
         >
           요청 받음
+        </div>
+      )}
+      {relation === "차단함" && (
+        <div
+          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          onClick={(e) => handleClickFollow(e)}
+        >
+          차단 해제
         </div>
       )}
     </div>

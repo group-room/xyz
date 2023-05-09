@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import SearchBar from "@/components/common/SearchBar";
-import AllFriendList from "@/components/friend/AllFriendList";
+import FriendList from "@/components/friend/FriendList";
 import SearchFriendList from "@/components/friend/SearchFriendList";
 
 export default function FriendPage() {
@@ -42,7 +42,7 @@ export default function FriendPage() {
           <SearchBar keyword={keyword} setKeyword={setKeyword} />
         </div>
         {keyword === "" || keyword === undefined || keyword === null ? (
-          <AllFriendList />
+          <FriendList isBlock={false}/>
         ) : (
           <SearchFriendList check={check} keyword={keyword} />
         )}
