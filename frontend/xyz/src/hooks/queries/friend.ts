@@ -3,22 +3,24 @@ import { API, queryKeys } from "@/constants/queryKeys";
 import { FriendListTypes } from "@/types/friend";
 import { useQuery } from "@tanstack/react-query";
 
-const FRIEND:string = API.friend;
+const FRIEND: string = API.friend;
 
 export const useFriendList = (isBlock: boolean) => {
   return useQuery<FriendListTypes[]>({
     queryKey: queryKeys.friend.friendList(isBlock),
     queryFn: async () => {
-      if(isBlock) { // 차단한 친구 목록 불러오기
-        console.log("차단한 친구 목록 불러오기")
+      if (isBlock) {
+        // 차단한 친구 목록 불러오기
+        console.log("차단한 친구 목록 불러오기");
         return axiosInstance
-        .get(`${FRIEND}/block`)
-        .then((res) => res.data.data.users);
-      } else { // 친구 목록 불러오기
-        console.log("친구 목록 불러오기")
+          .get(`${FRIEND}/block`)
+          .then((res) => res.data.data.users);
+      } else {
+        // 친구 목록 불러오기
+        console.log("친구 목록 불러오기");
         return axiosInstance
-        .get(`${FRIEND}/all`)
-        .then((res) => res.data.data.friends);
+          .get(`${FRIEND}/all`)
+          .then((res) => res.data.data.friends);
       }
     },
   });
@@ -54,11 +56,11 @@ export const useFriendSearch = (check: boolean, keyword: string) => {
         let nickname = keyword;
         return axiosInstance
           .get(`/${FRIEND}`, { params: { nickname } })
-          .then((res) => res.data.data.users);
+          .then((res) => res.data.data.friends);
       } else {
         return axiosInstance
           .get(`/${FRIEND}/${keyword}`)
-          .then((res) => res.data.data.users);
+          .then((res) => res.data.data.friends);
       }
     },
   });
