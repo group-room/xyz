@@ -225,6 +225,8 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수락할 수 있는 대상이 아님");
         }
         friend.setIsAccepted(true);
+        Notification notification = notificationRepository.findByUser_SequenceAndTargetSequenceAndIsDeletedAndNotificationType(loginSeq, userSeq, false, NotificationType.FRIEND);
+        notificationService.removeNotification(loginSeq, notification.getSequence());
         notificationService.addNotification(userSeq, loginSeq, NotificationType.FRIEND, "FRIEND ASK ACCEPTED", userRepository.findBySequence(loginSeq).getNickname());
         return "";
     }
@@ -235,11 +237,13 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         logger.info("modifyFriendToReject 호출");
 
         Friend friend = friendRepository.findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(userSeq, loginSeq, false, false, false);
-        if(null == friend) {
+        if (null == friend) {
             logger.severe("거절할 수 있는 대상이 아님");
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "거절할 수 있는 대상이 아님");
         }
         friend.setIsDeleted(true);
+        Notification notification = notificationRepository.findByUser_SequenceAndTargetSequenceAndIsDeletedAndNotificationType(loginSeq, userSeq, false, NotificationType.FRIEND);
+        notificationService.removeNotification(loginSeq, notification.getSequence());
         return "";
     }
 
