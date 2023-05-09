@@ -7,18 +7,21 @@ import { API } from "@/constants/queryKeys";
 
 type Props = {
   slug: number;
+  handleClickMemberInvite: (
+    nickname: string,
+    profileImage: string,
+    userSeq: number
+  ) => void;
 };
 
-function MyFriendList({ slug }: Props) {
+function MyFriendList({ slug, handleClickMemberInvite }: Props) {
   const { data: availableFriendList, isLoading } =
     useAztAvailableFriendList(slug);
   if (availableFriendList) {
     // console.log(slug);
     console.log(availableFriendList);
   }
-  const handleClickInvite = (e: React.MouseEvent) => {
-    console.log("초대하기");
-  };
+
   const router = useRouter();
 
   return (
@@ -28,18 +31,22 @@ function MyFriendList({ slug }: Props) {
       {availableFriendList ? (
         availableFriendList.length > 0 ? (
           <div className="flex flex-col gap-y-3">
-            {availableFriendList?.map((list) => {
-              return (
-                <MyFriendBox
-                  key={list.identify}
-                  imgSrc={list.profileImage}
-                  nickname={list.nickname}
-                  identify={list.identify}
-                  userSeq={list.userSeq}
-                  handleClickInvite={handleClickInvite}
-                />
-              );
-            })}
+            {availableFriendList?.map(
+              ({ identify, profileImage, nickname, userSeq }) => {
+                return (
+                  <MyFriendBox
+                    key={identify}
+                    imgSrc={profileImage}
+                    nickname={nickname}
+                    identify={identify}
+                    userSeq={userSeq}
+                    handleClickMemberInvite={() =>
+                      handleClickMemberInvite(nickname, profileImage, userSeq)
+                    }
+                  />
+                );
+              }
+            )}
           </div>
         ) : (
           <div className="text-center">

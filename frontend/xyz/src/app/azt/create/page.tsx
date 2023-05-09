@@ -39,7 +39,7 @@ function AzitCreatePage() {
     },
   });
 
-  const handleClickInvite = () => {
+  const handleClickMemberInvite = () => {
     setIsFriendInviteOpen(true);
   };
 
@@ -140,7 +140,7 @@ function AzitCreatePage() {
                   <Btn
                     bgColor="blue"
                     text="멤버 초대하기"
-                    btnFunc={handleClickInvite}
+                    btnFunc={handleClickMemberInvite}
                   />
                 </div>
               </div>
@@ -157,7 +157,12 @@ function AzitCreatePage() {
           </div>
         </div>
       ) : (
-        <MyFriendSearchArea slug={0} setAztMembers={setAztMembers} /> // 생성시에는 0 넘기기
+        <MyFriendSearchArea
+          slug={0} // 생성시에는 0 넘기기
+          aztMembers={aztMembers}
+          setAztMembers={setAztMembers}
+          setIsFriendInviteOpen={setIsFriendInviteOpen}
+        />
       )}
     </div>
   );

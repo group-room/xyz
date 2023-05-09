@@ -6,14 +6,14 @@ type MyFriendBoxProps = {
   nickname: string;
   identify: string;
   userSeq: number;
-  handleClickInvite: (e: React.MouseEvent) => void;
+  handleClickMemberInvite: (e: React.MouseEvent) => void;
 };
 
 function MyFriendBox({
   imgSrc,
   nickname,
   identify,
-  handleClickInvite,
+  handleClickMemberInvite,
 }: MyFriendBoxProps) {
   return (
     <div className="flex items-center">
@@ -27,7 +27,7 @@ function MyFriendBox({
       </div>
       <div
         className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md cursor-pointer"
-        onClick={(e) => handleClickInvite(e)}
+        onClick={(e) => handleClickMemberInvite(e)}
       >
         초대하기
       </div>
