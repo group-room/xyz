@@ -267,7 +267,7 @@ public class MemoryServiceImpl implements MemoryService {
             }
 
             memoryLike.get().updateIsSelected(true);
-            notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "추억앨범 좋아요 달림");
+            notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY LIKE");
 
             return;
         }
@@ -283,7 +283,7 @@ public class MemoryServiceImpl implements MemoryService {
                 .memory(memory)
                 .build());
 
-        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "추억앨범 좋아요 달림");
+        notificationService.addNotification(memory.getUser().getSequence(), memory.getSequence(), NotificationType.MEMORY, "NEW MEMORY COMMENT");
 
         return;
     }
