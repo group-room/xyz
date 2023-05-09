@@ -94,6 +94,14 @@ public class FriendController {
         return new BaseResponse<>(friendRegisterService.modifyFriendToAccept(loginSeq, friendRequest.getUserSeq()));
     }
 
+    @ApiOperation(value = "친구 요청 거절", notes = "취소하기 전에 한해 로그인한 유저에게 들어온 해당 유저의 친구 요청을 거절한다.")
+    @PutMapping("/reject")
+    public BaseResponse modifyFriendToReject(@RequestBody FriendRequest friendRequest) {
+        logger.info("modifyFriendToReject 호출");
+        Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        return new BaseResponse(friendRegisterService.modifyFriendToReject(loginSeq, friendRequest.getUserSeq()));
+    }
+
     @ApiOperation(value = "사용자 차단", notes = "해당하는 유저를 차단한다. 친구일 경우 친구에서도 삭제한다.")
     @PostMapping("/block")
     public BaseResponse<?> saveUserBlock(@RequestBody FriendRequest friendRequest) {

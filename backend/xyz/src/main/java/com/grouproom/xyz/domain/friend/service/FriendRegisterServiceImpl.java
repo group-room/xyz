@@ -219,4 +219,18 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         return "";
     }
 
+    @Override
+    @Transactional
+    public String modifyFriendToReject(Long loginSeq, Long userSeq) {
+        logger.info("modifyFriendToReject 호출");
+
+        Friend friend = friendRepository.findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(userSeq, loginSeq, false, false, false);
+        if(null == friend) {
+            logger.severe("거절할 수 있는 대상이 아님");
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "거절할 수 있는 대상이 아님");
+        }
+        friend.setIsDeleted(true);
+        return "";
+    }
+
 }
