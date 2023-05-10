@@ -76,7 +76,7 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
 //                .fetch();
 
         return jpaQueryFactory.select(Projections.constructor(TcResponse.class,
-                        tc.sequence.as("tcSeq"), tc.azt.sequence, tc.azt.aztName, tc.openStatus, tc.openStart, tc.openEnd, tc.updatedAt, tc.location))
+                        tc.sequence.as("tcSeq"), tc.azt.sequence, tc.azt.aztName, tc.azt.aztImage, tc.openStatus, tc.openStart, tc.openEnd, tc.updatedAt, tc.location))
                 .from(tc)
                 .join(tc.azt, azt)
                 .where(azt.sequence.in(JPAExpressions.select(aztMember.azt.sequence)
