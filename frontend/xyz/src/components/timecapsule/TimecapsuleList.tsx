@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useWaitingCapsuleList } from "@/hooks/queries/capsule";
 
 export default function TimecapsuleList() {
-  const { data: capsuleList, isLoading } = useWaitingCapsuleList(0);
+  const { data: capsuleList, isLoading } = useWaitingCapsuleList();
   if (capsuleList) {
     console.log(capsuleList);
   }
@@ -55,7 +55,7 @@ export default function TimecapsuleList() {
                   </div>
                 )}
 
-                <ProfileImg imgSrc="/images/profileimg/queen.jpg" />
+                <ProfileImg imgSrc={list.aztImage as string} />
                 <div>{getDayDiff(list.openStart as Date)}</div>
               </div>
             );
