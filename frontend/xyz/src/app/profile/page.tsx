@@ -8,6 +8,7 @@ import React from "react";
 import { useState } from "react";
 import { useUserList, useVisitorList } from "@/hooks/queries/user";
 import ProfileEdit from "@/components/profile/ProfileEdit";
+import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -35,6 +36,7 @@ function ProfilePage() {
 
       {/* {!visitorList ? "로딩중..." : <div>방명록 {visitorList.map((idx))}</div>} */}
       <ProfileEdit />
+      {/* <ProfilePhotoEdit /> */}
     </div>
   );
 }
