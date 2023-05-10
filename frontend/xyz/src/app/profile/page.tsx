@@ -6,6 +6,9 @@ import Btn from "@/components/common/Btn";
 import { BgColors } from "@/constants/style";
 import React from "react";
 import { useState } from "react";
+import ProfileMain from "../../components/profile/ProfileMain";
+import ProfileTab from "../../components/profile/ProfileTab";
+import Guestbook from "@/components/profile/Guestbook";
 import { useUserList, useVisitorList } from "@/hooks/queries/user";
 import ProfileEdit from "@/components/profile/ProfileEdit";
 import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
@@ -30,13 +33,29 @@ function ProfilePage() {
   }
 
   return (
-    <div>
-      {!userList ? "로딩중..." : <div>닉네임 {userList.nickname}</div>}
-      {!userList ? "로딩중..." : <div>자기소개 {userList.introduce}</div>}
-
-      {/* {!visitorList ? "로딩중..." : <div>방명록 {visitorList.map((idx))}</div>} */}
-      <ProfileEdit />
-      {/* <ProfilePhotoEdit /> */}
+    <div className="w-full h-full">
+      <div className={`box-content w-full h-full bg-yellow -z-50`}>
+        <ProfileMain />
+      </div>
+      <div className="flex pt-5">
+        <div>
+          <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={buttonClick} />
+        </div>
+        <div className=" pl-7">
+          <Btn
+            width="w-40"
+            bgColor="blue"
+            text="나의 활동"
+            btnFunc={buttonClick}
+          />
+        </div>
+      </div>
+      {/* <div onClick={handleClick}> ProfilePage</div> */}
+      {isModal && (
+        <Modal closeModal={() => setIsModal(false)}>
+          {<div>친구하실래요?</div>}
+        </Modal>
+      )}
     </div>
   );
 }
