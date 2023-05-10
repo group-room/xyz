@@ -1,3 +1,5 @@
+"use client";
+
 function Guestbook() {
   return (
     <section className="w-full h-full">

@@ -12,6 +12,7 @@ import Guestbook from "@/components/profile/Guestbook";
 import { useUserList, useVisitorList } from "@/hooks/queries/user";
 import ProfileEdit from "@/components/profile/ProfileEdit";
 import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
+import Myroom from "@/components/profile/Myroom";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -34,7 +35,7 @@ function ProfilePage() {
 
   return (
     <div className="w-full h-full">
-      <div className={`box-content w-full h-full bg-yellow -z-50`}>
+      <div className={`box-content w-full h-full bg-yellow p-1`}>
         <ProfileMain />
       </div>
       <div className="flex pt-5">
@@ -56,6 +57,10 @@ function ProfilePage() {
           {<div>친구하실래요?</div>}
         </Modal>
       )}
+
+      <ProfileTab value={true} onChange={() => {}} />
+      {/* <Myroom /> */}
+      <Guestbook />
     </div>
   );
 }
