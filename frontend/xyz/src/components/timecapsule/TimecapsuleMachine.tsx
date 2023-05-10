@@ -18,16 +18,19 @@ export default function TimecapsuleMachine() {
           <Image
             src="/images/machine.svg"
             alt="machine"
-            width={320}
-            height={140}
+            width="0"
+            height="0"
+            className="w-full h-auto"
+            priority
           />
         </div>
         <div onClick={handleClick}>
           <Image
             src="/images/capsule.svg"
             alt="capsule"
-            width={100}
-            height={100}
+            width="0"
+            height="0"
+            className="w-full h-auto"
           />
         </div>
         {/* 캡슐 잠김 여부에 따라  AbleTimecaplsuleModal or UnAbleTimecaplsuleModal*/}
