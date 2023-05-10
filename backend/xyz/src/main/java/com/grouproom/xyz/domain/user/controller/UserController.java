@@ -1,6 +1,7 @@
 package com.grouproom.xyz.domain.user.controller;
 
 import com.grouproom.xyz.domain.user.dto.request.ProfileRequest;
+import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
 import com.grouproom.xyz.domain.user.service.UserService;
 import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.model.BaseResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.controller
@@ -108,14 +110,22 @@ public class UserController {
 
         String authorization = (String)httpSession.getAttribute("Authorization");
         if(null == authorization) throw new ErrorResponse(HttpStatus.BAD_REQUEST,"로그인 실패");
+        Long sequence = (Long)httpSession.getAttribute("Sequence");
+        ProfileResponse profileResponse = userService.findProfileByUserSeq(sequence);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization",authorization);
-        headers.add("Sequence",(String)httpSession.getAttribute("Sequence"));
+        headers.add("Sequence",Long.toString(sequence));
+        headers.add("Image",profileResponse.getProfileImage());
         httpSession.removeAttribute("Authorization");
+
+        HashMap<String,String> body = new HashMap<String,String>();
+        body.put("result","SUCCESS");
+        body.put("nickname",profileResponse.getNickname());
+
         return ResponseEntity.ok()
                 .headers(headers)
-                .body("SUCCESS");
+                .body(body);
     }
 
     @DeleteMapping("/logout")

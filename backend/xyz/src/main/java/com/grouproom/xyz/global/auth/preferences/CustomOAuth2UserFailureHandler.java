@@ -129,7 +129,7 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
 
         request.getSession().setMaxInactiveInterval(180); //second
         request.getSession().setAttribute("Authorization",jsonWebToken.getAccessToken());
-        request.getSession().setAttribute("Sequence",Long.toString(userSeq));
+        request.getSession().setAttribute("Sequence",userSeq);
         //리다이렉트 시킨다.
         getRedirectStrategy().sendRedirect(request, response, baseUrl);
 

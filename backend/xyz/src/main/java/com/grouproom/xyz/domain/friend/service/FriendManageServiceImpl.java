@@ -59,17 +59,13 @@ public class FriendManageServiceImpl implements FriendManageService {
     }
 
     @Override
-    public FriendUserResponse findFriendByIdentify(Long loginSeq, String identify) {
+    public FriendListResponse findFriendByIdentify(Long loginSeq, String identify) {
 
         logger.info("findFriendByIdentify 호출");
 
-        identify = new StringBuilder().append("#").append(identify).toString();
-
-        FriendUserResponse friendUserResponse = friendRepository.findIdentifyBYFromUserOrToUser(loginSeq, identify, true, false, false);
-        if(null == friendUserResponse) {
-            logger.severe("친구 아님");
-            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "친구 아님");
-        }
-        return friendUserResponse;
+        List<FriendUserResponse> friendUserResponseList = friendRepository.findIdentifyBYFromUserOrToUser(loginSeq, identify, true, false, false);
+        return FriendListResponse.builder()
+                .friends(friendUserResponseList)
+                .build();
     }
 }

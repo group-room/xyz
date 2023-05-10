@@ -17,8 +17,18 @@ public class NotificationController {
     private final NotificationService notificationService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.controller.NotificationController");
 
+    @GetMapping("/unread")
+    public BaseResponse<?> checkUnreadNotifications() {
+        logger.info("checkUnreadNotification 호출");
+
+        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        Boolean hasUnreadNotifications = notificationService.checkUnreadNotifications(userSeq);
+
+        return new BaseResponse(hasUnreadNotifications);
+    }
+
     @GetMapping()
-    public BaseResponse<?> notificationList(@RequestParam(required = false) String type) {
+    public BaseResponse<?> notificationList(@RequestParam String type) {
         logger.info("notificationList 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());

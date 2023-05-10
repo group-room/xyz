@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.notification.controller;
 
+import com.grouproom.xyz.domain.notification.service.SseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,15 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/connect")
+@RequiredArgsConstructor
 public class SseController {
 
-    public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
+    private final SseService sseService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.controller.SseController");
 
     @CrossOrigin
@@ -31,14 +32,14 @@ public class SseController {
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
 
-        sseEmitters.put(userSeq, sseEmitter);
+        sseService.addSseEmitter(userSeq, sseEmitter);
 
-        sseEmitter.onCompletion(() -> sseEmitters.remove(userSeq));
-        sseEmitter.onTimeout(() -> sseEmitters.remove(userSeq));
-        sseEmitter.onError((e) -> sseEmitters.remove(userSeq));
+        sseEmitter.onCompletion(() -> sseService.removeSseEmitter(userSeq));
+        sseEmitter.onTimeout(() -> sseService.removeSseEmitter(userSeq));
+        sseEmitter.onError(e -> sseService.removeSseEmitter(userSeq));
 
         return sseEmitter;
     }

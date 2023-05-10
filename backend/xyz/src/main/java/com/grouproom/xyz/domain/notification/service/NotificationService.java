@@ -10,7 +10,9 @@ public interface NotificationService {
 
     void removeNotification(Long userSeq, Long notificationSeq);
 
-    void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content);
+    void addNotification(Long userSeq, Long targetSeq, NotificationType notificationType, String content, String fromUserName);
 
     void notifyEvent(Notification notification);
+
+    Boolean checkUnreadNotifications(Long userSeq);
 }

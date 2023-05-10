@@ -10,6 +10,7 @@ public class NotificationResponse {
     private Long userSeq;
     private Long targetSeq;
     private String content;
+    private String fromUserName;
     private Boolean isReceived;
 
     public NotificationResponse(Notification notification) {
@@ -18,6 +19,7 @@ public class NotificationResponse {
         this.userSeq = notification.getUser().getSequence();
         this.targetSeq = notification.getTargetSequence();
         this.content = notification.getContent();
+        this.fromUserName = notification.getFromUserName();
         this.isReceived = notification.getIsReceived();
     }
 
