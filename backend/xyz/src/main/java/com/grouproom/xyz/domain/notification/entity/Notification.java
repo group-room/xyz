@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.notification.entity;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,9 +33,27 @@ public class Notification extends BaseTimeEntity {
     @Column(length = 200, name = "content")
     private String content;
 
-    @Column(name = "is_received", columnDefinition = "tinyint(1) default 0")
-    private boolean ieReceived;
+    @Column(name = "is_received")
+    private Boolean isReceived;
 
-    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private Boolean isDeleated;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
+    @Builder
+    public Notification(User user, Long targetSeq, NotificationType notificationType, String content) {
+        this.user = user;
+        this.targetSequence = targetSeq;
+        this.notificationType = notificationType;
+        this.content = content;
+        this.isReceived = false;
+        this.isDeleted = false;
+    }
+
+    public void updateIsReceived() {
+        isReceived = true;
+    }
+
+    public void updateIsDeleted() {
+        isDeleted = true;
+    }
 }

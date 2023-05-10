@@ -1,21 +1,26 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import EXIF from "exif-js";
-import { Photo, PhotoMetadata, PositionTypes } from "@/types/memory";
+import { PhotoMetadata, PositionTypes } from "@/types/memory";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import Image from "next/image";
+import MultiCarousel from "../timecapsule/MultiCarousel";
 
 interface PhotoUploadProps {
   selectedDate: Date;
-  photos: Photo[];
-  setPhotos: Dispatch<SetStateAction<Photo[]>>;
+  photos: File[];
+  setPhotos: Dispatch<SetStateAction<File[]>>;
   metadata: PhotoMetadata | null;
   setMetadata: Dispatch<SetStateAction<PhotoMetadata | null>>;
   setPosition: Dispatch<SetStateAction<PositionTypes>>;
   handleDateChange: (date: Date) => void;
+  photoPreviewList: string[];
+  setPhotoPreviewList: Dispatch<SetStateAction<string[]>>;
+  isPhotoChanged?: boolean;
+  setIsPhotoChanged?: Dispatch<SetStateAction<boolean>>;
 }
 
 function PhotoUpload({
@@ -26,10 +31,18 @@ function PhotoUpload({
   setMetadata,
   setPosition,
   handleDateChange,
+  photoPreviewList,
+  setPhotoPreviewList,
+  setIsPhotoChanged,
 }: PhotoUploadProps) {
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPosition({ lat: 0, lng: 0 });
     setMetadata(null);
+
+    // 사진을 편집했다면, 사진 변경 여부를 true로 설정
+    if (photos && setIsPhotoChanged) {
+      setIsPhotoChanged(true);
+    }
 
     const fileList: any = event.target.files;
     if (fileList) {
@@ -39,15 +52,15 @@ function PhotoUpload({
       }
 
       // 사진 10장까지만 저장하기
-      const selectedPhotos: Photo[] = [];
+      const selectedPhotos: File[] = [];
+      const selectedPhotoPreviewList: string[] = [];
       for (let i = 0; i < Math.min(fileList.length, 10); i++) {
         const photo: File = fileList[i];
-        selectedPhotos.push({
-          file: photo,
-          preview: URL.createObjectURL(photo),
-        });
+        selectedPhotos.push(photo);
+        selectedPhotoPreviewList.push(URL.createObjectURL(photo));
       }
       setPhotos(selectedPhotos);
+      setPhotoPreviewList(selectedPhotoPreviewList);
 
       // 사진 메타데이터에서 위치정보 가져오기 (처음 찾아진걸로 저장)
       for (const photo of fileList) {
@@ -72,6 +85,16 @@ function PhotoUpload({
       }
     }
   };
+
+  useEffect(() => {
+    if (photos) {
+      const selectedPhotoPreviewList: string[] = [];
+      for (const photo of photos) {
+        selectedPhotoPreviewList.push(URL.createObjectURL(photo));
+      }
+      setPhotoPreviewList(selectedPhotoPreviewList);
+    }
+  }, [photos]);
 
   return (
     <div className="w-full">
@@ -118,21 +141,14 @@ function PhotoUpload({
           className="hidden"
         />
       </div>
-      <div>
-        {photos?.map((photo) => (
-          <img key={photo?.preview} src={photo?.preview} alt="Preview" />
-        ))}
-      </div>
-      {/* {metadata && (
-        <div>
-          {metadata.location && (
-            <p>
-              Location: ({metadata.location.latitude},{" "}
-              {metadata.location.longitude})
-            </p>
-          )}
-        </div>
-      )} */}
+      {/* 첨부 사진 보여주는 영역 */}
+      {photoPreviewList.length > 0 && (
+        <MultiCarousel>
+          {photoPreviewList?.map((url) => (
+            <img key={url} src={url} alt="Preview" />
+          ))}
+        </MultiCarousel>
+      )}
     </div>
   );
 }

@@ -1,60 +1,31 @@
-import { axiosInstance } from "./instance";
+import { axiosFileInstance, axiosInstance } from "./instance";
 
 const MEMORY = "/memory";
 
-export const getMemories = async (
-  date: string,
-  aztSeq?: number,
-  latitude?: number,
-  longitude?: number
-) => {
-  const res = await axiosInstance.get(MEMORY, {
-    params: {
-      date,
-      aztSeq,
-      latitude,
-      longitude,
-    },
-  });
-  return res.data;
+export const createMemory = (formData: FormData) => {
+  return axiosFileInstance.post(MEMORY, formData);
 };
 
-export const createMemory = async (
-  content: string,
-  accessibility: string,
-  aztSeq: number,
-  date: string,
-  latitude: number,
-  longitude: number,
-  location: string,
-  images: File[]
-) => {
-  const formData = new FormData();
-  formData.append(
-    "addMemoryRequest",
-    JSON.stringify({
-      content: content,
-      accessibility: accessibility,
-      aztSeq: aztSeq,
-      date: date,
-      latitude: latitude,
-      longitude: longitude,
-      location: location,
-    })
-  );
-  images.forEach((image) => formData.append("images", image));
-  const res = await axiosInstance.post(MEMORY, formData, {
-    headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
-  });
-  return res.data;
+export const editMemory = (memorySeq: number, formData: FormData) => {
+  return axiosFileInstance.put(`${MEMORY}/${memorySeq}`, formData);
 };
 
-export const addMemoryLike = async (memorySeq: number) => {
-  const res = await axiosInstance.post(`${MEMORY}/like/${memorySeq}`);
-  return res.data;
+export const deleteMemory = (memorySeq: number) => {
+  return axiosInstance.delete(`${MEMORY}/${memorySeq}`);
 };
 
-export const deleteMemoryLike = async (memorySeq: number) => {
-  const res = await axiosInstance.delete(`${MEMORY}/like/${memorySeq}`);
-  return res.data;
+export const addMemoryLike = (memorySeq: number) => {
+  return axiosInstance.post(`${MEMORY}/like/${memorySeq}`);
+};
+
+export const deleteMemoryLike = (memorySeq: number) => {
+  return axiosInstance.delete(`${MEMORY}/like/${memorySeq}`);
+};
+
+export const createMemoryComment = (memorySeq: number, content: string) => {
+  return axiosInstance.post(`${MEMORY}/comment/${memorySeq}`, { content });
+};
+
+export const deleteMemoryComment = (commentSeq: number) => {
+  return axiosInstance.delete(`${MEMORY}/comment/${commentSeq}`);
 };

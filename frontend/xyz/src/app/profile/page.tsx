@@ -1,7 +1,7 @@
 "use client";
-import Modal from "@/components/Modal";
-import Tab from "@/components/Tab";
-import Textbox from "@/components/Textbox";
+import Modal from "@/components/common/Modal";
+import Tab from "@/components/common/Tab";
+import Textbox from "@/components/common/Textbox";
 import Btn from "@/components/common/Btn";
 import { BgColors } from "@/constants/style";
 import React from "react";
@@ -9,6 +9,9 @@ import { useState } from "react";
 import ProfileMain from "../../components/profile/ProfileMain";
 import ProfileTab from "../../components/profile/ProfileTab";
 import Guestbook from "@/components/profile/Guestbook";
+import { useUserList, useVisitorList } from "@/hooks/queries/user";
+import ProfileEdit from "@/components/profile/ProfileEdit";
+import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -17,6 +20,18 @@ function ProfilePage() {
   const handleClick = () => {
     setIsModal(true);
   };
+
+  const { data: userList, isLoading: isUserLoading, error } = useUserList(1);
+  // 나중에 state 에서 userSeq 가져와서 넣을 자리 : useUserList(userSeq)
+  if (!isUserLoading && userList) {
+    console.log(userList, "userList");
+  }
+
+  const { data: visitorList, isLoading: isVisitorLoading } = useVisitorList(1);
+  if (!isVisitorLoading && visitorList) {
+    console.log(visitorList, "visitorList");
+  }
+
   return (
     <div className="w-full h-full">
       <div className={`box-content w-full h-full bg-yellow -z-50`}>
@@ -24,7 +39,7 @@ function ProfilePage() {
       </div>
       <div className="flex pt-5">
         <div>
-          <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={handleClick} />
+          <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={buttonClick} />
         </div>
         <div className=" pl-7">
           <Btn
@@ -35,11 +50,7 @@ function ProfilePage() {
           />
         </div>
       </div>
-      <div className="mt-5">
-        <ProfileTab value={true} onChange={() => true} />
-      </div>
-      <Guestbook />
-      <div onClick={handleClick}> ProfilePage</div>
+      {/* <div onClick={handleClick}> ProfilePage</div> */}
       {isModal && (
         <Modal closeModal={() => setIsModal(false)}>
           {<div>친구하실래요?</div>}

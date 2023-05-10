@@ -2,7 +2,6 @@ package com.grouproom.xyz.global.auth;
 
 import com.grouproom.xyz.global.config.AuthConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,7 +9,7 @@ public class Constants {
 
 //    public static final String[] SECURITY_WEB_EXCLUDE_URIS = {"/resources/**", "/csrf", "/error", "/swagger*/**", "favicon.ico", "/webjars/**", "/swagger-ui/**"};
 
-    public static final String[] SECURITY_HTTP_EXCLUDE_URIS = { "/api/user/login/**",  "/api/resources/**", "/api/csrf", "/api/error", "/api/swagger*/**", "favicon.ico", "/api/webjars/**", "/api/swagger-ui/**", "/api/v3/api-docs/**", "/api/swagger-ui/**", "/api/swagger-resources/**"};
+    public static final String[] SECURITY_HTTP_EXCLUDE_URIS = {"/api/user/access-token", "/api/login/store-and-redirect","/api/user/login/**",  "/api/resources/**", "/api/csrf", "/api/error", "/api/swagger*/**", "favicon.ico", "/api/webjars/**", "/api/swagger-ui/**", "/api/v3/api-docs/**", "/api/swagger-ui/**", "/api/swagger-resources/**"};
 
     //Authorization == JWT 사용을 위함  // 해더에서 허용할 부분 설정 // CORS =  서버가 다른 origin의 브라우저에게 자신의 자원이 로드될 수 있도록 헤더에 표시해주는 방법
     public static final String[] CORS_HEADER_URIS = {"Authorization", "Refresh", "content-type"};
@@ -30,10 +29,16 @@ public class Constants {
 
     public static String DEFAULT_REDIRECT_URL;
 
+    public static String SERVER_URL;
+
     @Autowired
     public void setDefaultRedirectUrl(AuthConfig authConfig){
         DEFAULT_REDIRECT_URL = authConfig.getServerUrl()+"/api/user/login/callback/{registrationId}";
     }
 
+    @Autowired
+    public void setServerUrl(AuthConfig authConfig){
+        SERVER_URL = authConfig.getServerUrl();
+    }
 
 }

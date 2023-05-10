@@ -1,7 +1,8 @@
 "use client";
-import Textbox from "../Textbox";
+import Textbox from "../common/Textbox";
 import Image from "next/image";
 import React from "react";
+import ProfileDropdown from "./ProfileDropdown";
 
 function ProfileMain() {
   return (
@@ -16,6 +17,7 @@ function ProfileMain() {
           />
         </div>
         <div>
+          {/* <ProfileDropdown  /> */}
           <Textbox
             icon="/icons/edit.svg"
             alt="pretty"

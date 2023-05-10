@@ -4,7 +4,9 @@ import com.grouproom.xyz.domain.friend.dto.response.FriendListResponse;
 import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
 import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.friend.repository.FriendRepository;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,14 +33,14 @@ public class FriendManageServiceImpl implements FriendManageService {
 
     @Override
     @Transactional
-    public String modifyFriendIsDeleted(Long loginSeq, Long userSeq) throws RuntimeException {
+    public String modifyFriendToDeleted(Long loginSeq, Long userSeq) {
 
         logger.info("modifyFriendDelete 호출");
 
         Friend friend = friendRepository.findByFromUserAndToUser(loginSeq, userSeq, true, false, false);
         if(null == friend) {
             logger.severe("친구 아님");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "친구 아님");
         } else {
             friend.setIsDeleted(true);
         }
@@ -61,10 +63,12 @@ public class FriendManageServiceImpl implements FriendManageService {
 
         logger.info("findFriendByIdentify 호출");
 
+        identify = new StringBuilder().append("#").append(identify).toString();
+
         FriendUserResponse friendUserResponse = friendRepository.findIdentifyBYFromUserOrToUser(loginSeq, identify, true, false, false);
         if(null == friendUserResponse) {
             logger.severe("친구 아님");
-            throw new RuntimeException();
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "친구 아님");
         }
         return friendUserResponse;
     }

@@ -4,7 +4,9 @@ import React, { useEffect, useState } from "react";
 import Container from "../common/Container";
 import { MemoriesTypes } from "@/types/memory";
 import Link from "next/link";
-import { addMemoryLike, deleteMemoryLike } from "@/app/api/memory";
+import { sliceDate } from "@/utils/dateUtils";
+import LikeBtn from "./LikeBtn";
+import Image from "next/image";
 
 interface MemoryItemProps {
   memory: MemoriesTypes;
@@ -25,53 +27,30 @@ function MemoryItem({ memory }: MemoryItemProps) {
     isLiked,
     commentCnt,
   } = memory;
-  const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
-  const [localLikeCnt, setLocalLikeCnt] = useState<number>(0);
-  const handleClickLike = () => {
-    // e.stopPropagation();
-    // console.log(e);
-    if (isLocalLiked) {
-      deleteMemoryLike(memorySeq)
-        .then(() => {
-          setIsLocalLiked(false);
-          if (localLikeCnt >= 1) {
-            setLocalLikeCnt((prev) => prev! - 1);
-          }
-        })
-        .catch((err) => console.log(err));
-    } else {
-      addMemoryLike(memorySeq)
-        .then(() => {
-          setIsLocalLiked(true);
-          setLocalLikeCnt((prev) => prev + 1);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  useEffect(() => {
-    setIsLocalLiked(isLiked);
-    setLocalLikeCnt(likeCnt);
-  }, [isLiked, likeCnt]);
 
   return (
-    <Container title={true} titleBgColor="blue" titleText={aztName}>
+    <Container
+      title={true}
+      titleBgColor="blue"
+      titleText={aztName}
+      titleImgSrc="/icons/users.svg"
+      titleImgAlt="그룹 아이콘"
+    >
       <Link href={`memory/${memorySeq}`}>
-        <div className="flex gap-x-2 mb-1">
+        <div className="flex gap-x-3 mb-1">
           <div className="flex-none">
             <img
               src={memoryImage}
               alt="추억 사진"
               width={120}
-              className="rounded"
+              className="rounded max-w-[120px]"
             />
           </div>
-
           <div className="w-full flex flex-col justify-evenly">
             <div className="flex justify-between mb-1">
               <div className="flex gap-x-2">
                 <img src="/icons/calendar.svg" alt="캘린더 아이콘" />
-                <span>{date}</span>
+                <span>{sliceDate(date)}</span>
               </div>
             </div>
             <div className="flex items-start gap-x-2">
@@ -82,22 +61,14 @@ function MemoryItem({ memory }: MemoryItemProps) {
         </div>
       </Link>
       <div className="flex gap-x-2">
-        <div
-          className="flex gap-x-1 cursor-pointer"
-          onClick={(e: React.MouseEvent) => {
-            e.stopPropagation();
-            handleClickLike();
-          }}
-        >
-          {isLocalLiked ? (
-            <img src="/icons/heart-fill.svg" alt="하트 아이콘" />
-          ) : (
-            <img src="/icons/heart.svg" alt="하트 아이콘" />
-          )}
-          <span>{localLikeCnt}</span>
-        </div>
+        <LikeBtn memorySeq={memorySeq} isLiked={isLiked} likeCnt={likeCnt} />
         <div className="flex gap-x-1">
-          <img src="/icons/comment.svg" alt="" />
+          <Image
+            src="/icons/chat.svg"
+            alt="댓글 아이콘"
+            width={17}
+            height={17}
+          />
           <span>{commentCnt}</span>
         </div>
       </div>

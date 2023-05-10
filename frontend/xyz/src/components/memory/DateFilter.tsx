@@ -9,7 +9,7 @@ import Image from "next/image";
 
 interface DateFilterProps {
   selectedDate: Date | null;
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
   handleDateChange: (date: Date) => void;
 }
 
