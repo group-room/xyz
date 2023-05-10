@@ -17,24 +17,24 @@ export const useAztCapsuleList = (aztSeq: number) => {
 };
 
 // 대기중 타임캡슐 목록 조회
-export const useWaitingCapsuleList = (tcSeq: number) => {
+export const useWaitingCapsuleList = () => {
   return useQuery<CapsuleAztTypes[]>({
-    queryKey: queryKeys.capsule.capsuleList(tcSeq),
+    queryKey: queryKeys.capsule.capsuleList(),
     queryFn: async () => {
       return axiosInstance
-        .get(`${CAPSULE}/waiting`, { params: { tcSeq } })
+        .get(`${CAPSULE}/waiting`)
         .then((res) => res.data.data.timecapsules);
     },
   });
 };
 
 // 열림 타임캡슐 목록 조회
-export const useOpenCapsuleList = (tcSeq: number) => {
+export const useOpenCapsuleList = () => {
   return useQuery<CapsuleAztTypes[]>({
-    queryKey: queryKeys.capsule.capsuleList(tcSeq),
+    queryKey: queryKeys.capsule.capsuleList(),
     queryFn: async () => {
       return axiosInstance
-        .get(`${CAPSULE}/opened`, { params: { tcSeq } })
+        .get(`${CAPSULE}/opened`)
         .then((res) => res.data.data.timecapsules);
     },
   });
@@ -43,7 +43,7 @@ export const useOpenCapsuleList = (tcSeq: number) => {
 // 타임캡슐 랜덤 조회
 export const useRamdomCapsule = () => {
   return useQuery<CapsuleAztTypes>({
-    queryKey: queryKeys.capsule.randomCapsuleList(),
+    queryKey: queryKeys.capsule.capsuleList(),
     queryFn: async () => {
       return axiosInstance
         .get(`${CAPSULE}/random`)
@@ -54,7 +54,7 @@ export const useRamdomCapsule = () => {
 
 // 타임캡슐 상세 조회 - return 타입 수정해야 됨
 export const useDetailCapsule = (tcSeq: number) => {
-  return useQuery<CapsuleAztTypes[]>({
+  return useQuery<CapsuleAztTypes>({
     queryKey: queryKeys.capsule.capsuleList(tcSeq),
     queryFn: async () => {
       return axiosInstance
@@ -65,12 +65,12 @@ export const useDetailCapsule = (tcSeq: number) => {
 };
 
 // 나의 활동 - 타임캡슐 목록
-export const useMyCapsuleList = (tcSeq: number) => {
+export const useMyCapsuleList = () => {
   return useQuery<CapsuleAztTypes[]>({
-    queryKey: queryKeys.capsule.capsuleList(tcSeq),
+    queryKey: queryKeys.capsule.capsuleList(),
     queryFn: async () => {
       return axiosInstance
-        .get(`${CAPSULE}/mytimecapsule`, { params: { tcSeq } })
+        .get(`${CAPSULE}/mytimecapsule`)
         .then((res) => res.data.data.timecapsules);
     },
   });

@@ -6,122 +6,30 @@ export default function AllTimecapsuleList() {
       <Image
         src="/images/capsule.svg"
         alt="capsuleImg"
-        width={500}
-        height={500}
+        width="0"
+        height="0"
+        className="w-full h-auto"
       />
       <Image
         src="/images/capsule.svg"
         alt="capsuleImg"
-        width={500}
-        height={500}
+        width="0"
+        height="0"
+        className="w-full h-auto"
       />
       <Image
         src="/images/capsule.svg"
         alt="capsuleImg"
-        width={500}
-        height={500}
+        width="0"
+        height="0"
+        className="w-full h-auto"
       />
       <Image
         src="/images/capsule.svg"
         alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/capsule.svg"
-        alt="capsuleImg"
-        width={500}
-        height={500}
+        width="0"
+        height="0"
+        className="w-full h-auto"
       />
     </div>
   );

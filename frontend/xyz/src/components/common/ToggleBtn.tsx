@@ -41,7 +41,13 @@ export default function ToggleBtn({
       >
         {imgL ? (
           <div className="mr-2">
-            <Image src={imgL} alt="이미지" width={20} height={20} />
+            <Image
+              src={imgL}
+              alt="이미지"
+              width="0"
+              height="0"
+              className="w-full h-auto"
+            />
           </div>
         ) : (
           ""
@@ -61,7 +67,10 @@ export default function ToggleBtn({
       >
         {imgR ? (
           <div className="mr-2">
-            <Image src={imgR} alt="이미지" width={20} height={20} />
+            <Image src={imgR} alt="이미지" 
+              width="0"
+              height="0"
+              className="w-full h-auto" />
           </div>
         ) : (
           ""

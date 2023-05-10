@@ -3,8 +3,8 @@ export type CapsuleAztTypes = {
   aztSeq?: number;
   aztName: string;
   openStatus?: string;
-  openStart?: string;
-  openEnd?: string;
+  openStart?: Date;
+  openEnd?: Date;
   updatedAt?: string;
   location?: string;
   requiredCnt?: number;
