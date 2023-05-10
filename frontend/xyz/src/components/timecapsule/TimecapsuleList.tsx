@@ -27,12 +27,12 @@ export default function TimecapsuleList() {
 
   return (
     <div className="flex">
-      <Link href={"/capsule/create"}>
-        <div className="relative flex flex-col items-center justify-center shrink-0 mr-2">
+      <Link href={"/capsule/create"} className="mr-2">
+        <div className="flex flex-col items-center justify-center w-[60px]">
           <div className="flex items-center justify-center bg-pink rounded-full w-[55px] h-[55px]">
             <Image src={Plus} alt="btn" />
           </div>
-          <div className="text-sm mt-2">캡슐생성</div>
+          <p className="text-sm mt-2">캡슐생성</p>
         </div>
       </Link>
       <div className="flex overflow-x-auto scrollbar-hide ">
@@ -41,17 +41,20 @@ export default function TimecapsuleList() {
             return (
               <div
                 key={list.tcSeq}
-                className="flex flex-col items-center justify-center shrink-0 mr-2"
+                className="flex relative flex-col items-center justify-center shrink-0 mr-2"
               >
-                <div className="absolute top-0 left-1">
-                  <Image
-                    src="/icons/lock-gray.svg"
-                    alt="icon"
-                    width="0"
-                    height="0"
-                    className="w-full h-auto"
-                  />
-                </div>
+                {list.openStatus === "LOCKED" && (
+                  <div className="absolute top-0 right-0">
+                    <Image
+                      src="/icons/lock-gray.svg"
+                      alt="icon"
+                      width="0"
+                      height="0"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                )}
+
                 <ProfileImg imgSrc="/images/profileimg/queen.jpg" />
                 <div>{getDayDiff(list.openStart as Date)}</div>
               </div>
