@@ -1,15 +1,16 @@
+import { UserTypes } from "@/types/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   isLogin: boolean;
   accessToken: string;
-  userSeq: number | null;
+  userInfo: UserTypes | null;
 }
 
 const initialState: AuthState = {
   isLogin: false,
   accessToken: "",
-  userSeq: null,
+  userInfo: null,
 };
 
 const authSlice = createSlice({
@@ -22,12 +23,12 @@ const authSlice = createSlice({
     updateAccessToken: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;
     },
-    updateUserSeq: (state, action: PayloadAction<number | null>) => {
-      state.userSeq = action.payload;
+    updateUserInfo: (state, action: PayloadAction<UserTypes | null>) => {
+      state.userInfo = action.payload;
     },
   },
 });
 
-export const { updateLoginStatus, updateAccessToken, updateUserSeq } =
+export const { updateLoginStatus, updateAccessToken, updateUserInfo } =
   authSlice.actions;
 export default authSlice;
