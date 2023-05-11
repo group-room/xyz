@@ -37,8 +37,21 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<String, KafkaMessage> stockChangeConsumer() {
 
         Map<String, Object> configs = new HashMap<>();
-        configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);//nextFetchOffset
         configs.put(ConsumerConfig.GROUP_ID_CONFIG, "grouproom");
+
+
+        // Adjust fetch configuration
+        configs.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, "1");
+        configs.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, "100");
+
+        // Adjust poll interval
+        configs.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "1000");
+
+        // Enable auto commit and set the interval
+        configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+        configs.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
+
         return new DefaultKafkaConsumerFactory<>(
                 configs,
                 new StringDeserializer(),
