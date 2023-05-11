@@ -4,4 +4,6 @@ import com.grouproom.xyz.domain.chat.entity.ChatUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatUserRepository extends JpaRepository<ChatUser, Long> {
+
+    ChatUser findByUserSequence_Sequence(Long userSeq);
 }

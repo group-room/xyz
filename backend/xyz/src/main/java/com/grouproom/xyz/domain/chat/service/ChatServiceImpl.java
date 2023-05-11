@@ -1,6 +1,9 @@
 package com.grouproom.xyz.domain.chat.service;
 
+import com.grouproom.xyz.domain.chat.dto.request.LoginUserRequest;
 import com.grouproom.xyz.domain.chat.dto.request.RegisterUserRequest;
+import com.grouproom.xyz.domain.chat.dto.response.LoginUser;
+import com.grouproom.xyz.domain.chat.dto.response.LoginUserResponse;
 import com.grouproom.xyz.domain.chat.dto.response.RegisterUser;
 import com.grouproom.xyz.domain.chat.dto.response.RegisterUserResponse;
 import com.grouproom.xyz.domain.chat.entity.ChatUser;
@@ -33,7 +36,6 @@ public class ChatServiceImpl implements ChatService {
     public ResponseEntity addChatUser(Long userSeq, String nickname, String identify) {
 
         logger.info("addChatUser 호출");
-        logger.info("loginSeq : " + userSeq);
         String userName = identify.replace("#", "");
         String random = String.format("%s", new Random().nextInt() + 'a');
         String email = new StringBuilder().append(identify).append(emailDomain).toString();
@@ -67,6 +69,31 @@ public class ChatServiceImpl implements ChatService {
         } else {
             logger.severe("채팅 회원가입 실패");
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "채팅 회원가입 실패");
+        }
+        return response;
+    }
+
+    @Transactional
+    @Override
+    public ResponseEntity modifyChatUserToLogin(Long userSeq, LoginUserRequest loginUserRequest) {
+
+        logger.info("modifyChatUserToLogin 호출");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        HttpEntity<LoginUserRequest> entity = new HttpEntity<>(loginUserRequest, headers);
+
+        String url = new StringBuilder().append(baseUrl).append("/login").toString();
+
+        ResponseEntity<LoginUserResponse> response = restTemplate.exchange(url, HttpMethod.POST, entity, LoginUserResponse.class);
+        logger.info("success? " + response.getBody().getStatus());
+        if (response.getBody().getStatus().equals("success")) {
+            LoginUser loginUser = response.getBody().getUser();
+            ChatUser chatUser = chatUserRepository.findByUserSequence_Sequence(userSeq);
+            chatUser.setAuthToken(loginUser.getAuthToken());
+        } else {
+            logger.severe("채팅 로그인 실패");
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "채팅 로그인 실패");
         }
         return response;
     }
