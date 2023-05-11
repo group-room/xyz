@@ -26,5 +26,7 @@ export const convertAddressToCoordinate = async (query: string) => {
       },
     }
   );
+  console.log("convertAddressToCoordinate")
+  console.log(res.data.documents[0].address)
   return res.data.documents[0].address;
 };

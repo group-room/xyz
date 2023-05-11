@@ -21,7 +21,7 @@ export default function CapsulePhotoUpload() {
     setDateRange(update);
   };
   return (
-    <div className="border border-black rounded-md h-[35vh]">
+    <div className="border border-black rounded-md h-[30vh]">
       <div className="flex items-center justify-center h-9 border-b border-black">
         <DatePicker
           className="flex text-center w-full text-lg"

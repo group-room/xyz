@@ -31,3 +31,30 @@ export type positionTypes = {
   lat: number;
   lng: number;
 }
+
+export type datialFilesType = {
+  fileType: string;
+  filePath: string;
+}
+
+export type detailContentTypes = {
+  userSeq: number;
+  nickname: string;
+  profileImage: string;
+  content: string;
+  files: datialFilesType[];
+}
+
+export type capsuleDetailTypes = {
+  tc: {
+    userSeq: number;
+    userNickname: string;
+    aztSeq: number;
+    aztName: string;
+    openedAt: string;
+    latitude: number;
+    longitude: number;
+    location: string;
+  },
+  contents: detailContentTypes[];
+}

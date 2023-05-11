@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/app/api/instance";
 import { API, queryKeys } from "@/constants/queryKeys";
-import { CapsuleAztTypes } from "@/types/capsule";
+import { CapsuleAztTypes, capsuleDetailTypes } from "@/types/capsule";
 import { useQuery } from "@tanstack/react-query";
 
 const CAPSULE = API.capsule;
@@ -41,8 +41,8 @@ export const useOpenCapsuleList = () => {
 };
 
 // 타임캡슐 랜덤 조회
-export const useRamdomCapsule = () => {
-  return useQuery<CapsuleAztTypes>({
+export const useRandomCapsule = () => {
+  return useQuery<capsuleDetailTypes>({
     queryKey: queryKeys.capsule.capsuleList(),
     queryFn: async () => {
       return axiosInstance
