@@ -1,18 +1,27 @@
+"use client";
+
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { convertAddressToCoordinate } from "@/app/api/kakao";
 import { CoordinateTypes, positionTypes } from "@/types/capsule";
-import React, { useEffect, useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { StaticMap } from "react-kakao-maps-sdk";
 
-export default function SearchPostCode() {
+type Props = {
+  address: string;
+  setAddress: Dispatch<SetStateAction<string>>;
+  position: positionTypes;
+  setPosition: (position: positionTypes) => void;
+};
+
+export default function SearchPostCode({
+  address,
+  setAddress,
+  position,
+  setPosition,
+}: Props) {
   const scriptUrl =
     "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
   const open = useDaumPostcodePopup(scriptUrl);
-  const [address, setAddress] = useState("");
-  const [position, setPosition] = useState<positionTypes>({
-    lat: 0,
-    lng: 0,
-  });
 
   const handleComplete = async (data: any) => {
     let fullAddress = data.address;
@@ -52,7 +61,7 @@ export default function SearchPostCode() {
       console.log("res");
       console.log(res);
       // console.log("lat -> ", res.y, " lng -> ", res.x);
-      // setPosition({ lat: res.y, lng: res.x });
+      setPosition({ lat: res.y, lng: res.x });
     });
   }, [address]);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
@@ -10,15 +10,33 @@ import Image from "next/image";
 // 한국어 설정
 registerLocale("ko", ko);
 
-export default function CapsulePhotoUpload() {
-  const today: Date = new Date();
-  const after7Days: Date = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+type Props = {
+  openStart: Date;
+  setOpenStart: Dispatch<SetStateAction<Date>>;
+  openEnd: Date;
+  setOpenEnd: Dispatch<SetStateAction<Date>>;
+  updateEnd: Date;
+  setUpdateEnd: Dispatch<SetStateAction<Date>>;
+};
 
-  const [dateRange, setDateRange] = useState<[Date, Date]>([today, after7Days]);
+export default function CapsulePhotoUpload({
+  openStart,
+  setOpenStart,
+  openEnd,
+  setOpenEnd,
+  updateEnd,
+  setUpdateEnd,
+}: Props) {
+  const [dateRange, setDateRange] = useState<[Date, Date]>([
+    openStart,
+    openEnd,
+  ]);
   const [startDate, endDate] = dateRange;
 
   const onChange = (update: [Date, Date]) => {
     setDateRange(update);
+    setOpenStart(dateRange[0]);
+    setOpenEnd(dateRange[1]);
   };
   return (
     <div className="border border-black rounded-md h-[30vh]">
@@ -50,8 +68,21 @@ export default function CapsulePhotoUpload() {
           />
         </div>
       </div>
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">ㅍr일을 첨부ぁĦ 주パㅔ요</div>
+      <div className="flex justify-center items-center border-b border-black h-9">
+        <div className="flex justify-center items-center w-2/5 border-r border-black h-9">
+          수정 마감 일
+        </div>
+        <DatePicker
+          className="flex text-center w-full text-lg"
+          locale="ko"
+          dateFormat="yy.MM.dd"
+          selected={updateEnd}
+          onChange={(date: Date) => setUpdateEnd(date)}
+          isClearable={true}
+        />
+      </div>
+      <div className="flex items-center justify-center h-[20vh]">
+      ㅍr일을 첨부ぁĦ 주パㅔ요
       </div>
     </div>
   );

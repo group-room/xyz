@@ -1,11 +1,11 @@
 import { API } from "@/constants/queryKeys";
-import { axiosInstance } from "./instance";
+import { axiosFileInstance, axiosInstance } from "./instance";
 
 const CAPSULE:string = `/${API.capsule}`;
 
 // 타임캡슐 등록
-export const postFollow = () => {
-  return axiosInstance.post(CAPSULE, {  });
+export const postCapsule = (formData: FormData) => {
+  return axiosFileInstance.post(CAPSULE, formData);
 };
 
 // 타임캡슐 내용 추가
