@@ -31,7 +31,7 @@ export const useWaitingCapsuleList = () => {
 // 열림 타임캡슐 목록 조회
 export const useOpenCapsuleList = () => {
   return useQuery<CapsuleAztTypes[]>({
-    queryKey: queryKeys.capsule.capsuleList(),
+    queryKey: queryKeys.capsule.openCapsuleList(),
     queryFn: async () => {
       return axiosInstance
         .get(`${CAPSULE}/opened`)
@@ -52,10 +52,10 @@ export const useRandomCapsule = () => {
   });
 };
 
-// 타임캡슐 상세 조회 - return 타입 수정해야 됨
-export const useDetailCapsule = (tcSeq: number) => {
-  return useQuery<CapsuleAztTypes>({
-    queryKey: queryKeys.capsule.capsuleList(tcSeq),
+// 타임캡슐 상세 조회
+export const useDetailCapsule = (tcSeq: string) => {
+  return useQuery<capsuleDetailTypes>({
+    queryKey: queryKeys.capsule.capsuleDetail(tcSeq),
     queryFn: async () => {
       return axiosInstance
         .get(`${CAPSULE}/${tcSeq}`)
