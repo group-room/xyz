@@ -5,19 +5,22 @@ import React from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
+import store from "@/store/store";
 
 interface ProfileMainProps {
-  userSeq: string;
+  userSeq: string | number | undefined;
 }
 
 function ProfileMain({ userSeq }: ProfileMainProps) {
+  const state = store.getState();
+  const myUserSeq = state.auth.userInfo?.userSeq;
   const router = useRouter();
   const { data: profileData, isLoading } = useUserList(userSeq);
   const pushToProfileEdit = () => {
     router.push("/profile/edit");
   };
   return (
-    <>
+    <div className={`box-content w-full h-full bg-yellow p-1`}>
       <div className="flex flex-row">
         <div className="mt-1 ml-1 mr-1">
           <img
@@ -32,7 +35,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
           <div className="flex pl-5 gap-10">
             {profileData?.identify}
 
-            {userSeq === "1" ? (
+            {userSeq === myUserSeq ? (
               <ProfileDropdown
                 firstText="프로필 편집"
                 firstFunc={pushToProfileEdit}
@@ -70,7 +73,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
         <div className="border-black border-b-2">자기소개 한 마디</div>
         <div className="">{profileData?.introduce}</div>
       </div>
-    </>
+    </div>
   );
 }
 

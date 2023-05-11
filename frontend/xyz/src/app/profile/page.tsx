@@ -14,8 +14,13 @@ import ProfileEdit from "@/components/profile/ProfileEdit";
 import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
 import Myroom from "@/components/profile/Myroom";
 import ProfileBtn from "@/components/profile/ProfileBtn";
+import store from "@/store/store";
 
 function ProfilePage() {
+  //리덕스 정보 가져오기
+  const state = store.getState();
+  const userSeq = state.auth.userInfo?.userSeq;
+
   const [isModal, setIsModal] = useState(false);
   const buttonClick = () => {};
 
@@ -23,7 +28,11 @@ function ProfilePage() {
     setIsModal(true);
   };
 
-  const { data: userList, isLoading: isUserLoading, error } = useUserList(1);
+  const {
+    data: userList,
+    isLoading: isUserLoading,
+    error,
+  } = useUserList(userSeq);
   // 나중에 state 에서 userSeq 가져와서 넣을 자리 : useUserList(userSeq)
   if (!isUserLoading && userList) {
     console.log(userList, "userList");
@@ -36,9 +45,9 @@ function ProfilePage() {
 
   return (
     <div className="w-full h-full">
-      <div className={`box-content w-full h-full bg-yellow p-1`}>
-        <ProfileMain userSeq="1" />
-      </div>
+      {/* <div className={`box-content w-full h-full bg-yellow p-1`}> */}
+      <ProfileMain userSeq={userSeq} />
+      {/* </div> */}
       {/* <div className="flex pt-5">
         <div>
           <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={buttonClick} />
