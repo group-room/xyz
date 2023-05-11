@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/chat")
 public class ChatRestController {
     private final MongoDBService mongoDBService;
     private final Producer producer;
