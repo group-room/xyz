@@ -41,7 +41,9 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
     setIsModal(true);
   };
 
-  const loggedInUserSeq = useAppSelector((state) => state.auth.userSeq);
+  const loggedInUserSeq = useAppSelector(
+    (state) => state.auth.userInfo?.userSeq
+  );
 
   if (isLoading) {
     return <div>로딩중 ㄱ-...</div>;

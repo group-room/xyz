@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/app/api/instance";
 import { API, queryKeys } from "@/constants/queryKeys";
-import { AztInfoTypes, AztTypes } from "@/types/azt";
+import { AztInfoTypes, AztMemberTypes, AztTypes } from "@/types/azt";
 import { useQuery } from "@tanstack/react-query";
 
 const AZT: string = `/${API.azt}`;
@@ -19,6 +19,19 @@ export const useAztInfo = (aztSeq: number) => {
     queryKey: queryKeys.azt.aztInfo(aztSeq),
     queryFn: async () => {
       return axiosInstance.get(`${AZT}/${aztSeq}`).then((res) => res.data.data);
+    },
+  });
+};
+
+export const useAztAvailableFriendList = (aztSeq: number) => {
+  return useQuery<AztMemberTypes[]>({
+    queryKey: queryKeys.azt.aztAvailableFriendList(aztSeq),
+    queryFn: async () => {
+      return axiosInstance
+        .get(`${AZT}/${API.friend}/all`, { params: { aztSeq } })
+        .then((res) => {
+          return res.data.data.members;
+        });
     },
   });
 };

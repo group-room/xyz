@@ -7,7 +7,7 @@ type ProfileImgProps = {
 
 export default function ProfileImg({ imgSrc }: ProfileImgProps) {
   return (
-    <div>
+    <div className="flex justify-center">
       <img
         className="w-14 h-14 object-cover rounded-full border border-pink p-1"
         src={imgSrc}

@@ -6,17 +6,17 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
 interface TabProps {
-  FirstLink: string;
-  SecondLink: string;
-  FirstMenu: string;
-  SecondMenu: string;
+  firstLink: string;
+  secondLink: string;
+  firstMenu: string;
+  secondMenu: string;
 }
 
 function Tab({
-  FirstLink,
-  SecondLink,
-  FirstMenu,
-  SecondMenu,
+  firstLink,
+  secondLink,
+  firstMenu,
+  secondMenu,
   children,
 }: PropsWithChildren<TabProps>) {
   const router = useRouter();
@@ -33,20 +33,20 @@ function Tab({
   return (
     <div className={`flex flex-nowrap left-0 top-0 w-full`}>
       <Link
-        href={FirstLink}
+        href={firstLink}
         className={`${defaultClass} ${
-          pathname === FirstLink ? activeClass : inactiveClass
+          pathname === firstLink ? activeClass : inactiveClass
         }`}
       >
-        {FirstMenu}
+        {firstMenu}
       </Link>
       <Link
-        href={SecondLink}
+        href={secondLink}
         className={`${defaultClass} ${
-          pathname === SecondLink ? activeClass : inactiveClass
+          pathname === secondLink ? activeClass : inactiveClass
         }`}
       >
-        {SecondMenu}
+        {secondMenu}
       </Link>
     </div>
   );

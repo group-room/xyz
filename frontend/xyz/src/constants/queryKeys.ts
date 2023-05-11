@@ -28,6 +28,7 @@ export const queryKeys = {
     myVisitorList: (userSeq?: number) => [...KEYS.user, "visitor", { userSeq }],
     // mymemoryList: (memory: string) => [...KEYS.user, { memory }],
   },
+
   memory: {
     memoryList: (
       date: string | null,
@@ -40,12 +41,28 @@ export const queryKeys = {
   azt: {
     aztList: () => [...KEYS.azt],
     aztInfo: (aztSeq: number) => [...KEYS.azt, { aztSeq }],
+    aztAvailableFriendList: (aztSeq: number) => [
+      ...KEYS.azt,
+      ...KEYS.friend,
+      "all",
+      { aztSeq },
+    ],
   },
   capsule: {
     aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],
+    capsuleList: (tcSeq?: number) => [...KEYS.capsule, { tcSeq }],
+    capsuleDetail: (tcSeq?: string) => [...KEYS.capsule, { tcSeq }],
+    openCapsuleList: () => [...KEYS.capsule],
   },
   friend: {
-    friendList: (isBlock:boolean) => [...KEYS.friend, {isBlock}],
-    searchList:(check:boolean, keyword: string) => [...KEYS.friend, {check}, {keyword}],
+    friendList: (isBlock: boolean) => [...KEYS.friend, { isBlock }],
+    searchList: (check: boolean, keyword: string) => [
+      ...KEYS.friend,
+      { check },
+      { keyword },
+    ],
+  },
+  notification: {
+    notificationList: (type: string) => [...KEYS.notification, { type }],
   },
 };

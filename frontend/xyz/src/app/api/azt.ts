@@ -1,8 +1,8 @@
-import { axiosInstance } from "./instance";
+import { axiosFileInstance, axiosInstance } from "./instance";
 import { API } from "@/constants/queryKeys";
 
 export const createAzt = (data: any) => {
-  return axiosInstance.post(`${API.azt}`, data);
+  return axiosFileInstance.post(`${API.azt}`, data);
 };
 
 export const withdrawAzt = (aztSeq: number) => {
