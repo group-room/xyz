@@ -1,5 +1,11 @@
+import MyTimecapsuleList from "@/components/timecapsule/MyTimecapsuleList";
+
 function ProfileMypage() {
-  return <div></div>;
+  return (
+    <div>
+      <MyTimecapsuleList />
+    </div>
+  );
 }
 
 export default ProfileMypage;
