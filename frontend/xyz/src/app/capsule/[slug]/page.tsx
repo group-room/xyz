@@ -3,7 +3,7 @@
 // import Image from "next/image";
 
 type Props = {
-  params: {
+  params?: {
     slug: string;
   };
 };
@@ -14,6 +14,7 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
   //   ]
   return (
     <div>
+      <h2>상세보기</h2>
       {/* <h2 className="mb-4 text-xl font-semibold">타임캡슐 상세 보기</h2>
         <div className="flex bg-pink border-2 border-black rounded-md h-10 mb-4">
           <div className="flex items-center justify-center mx-2 pr-1 border-r-2 border-black w-12 h-full"><Image src="/icons/users-white.svg" alt="users" width={20} height={20}/></div>
