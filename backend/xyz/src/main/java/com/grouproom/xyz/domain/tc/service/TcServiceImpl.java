@@ -343,6 +343,7 @@ public class TcServiceImpl implements TcService {
 
         if (tcOpenRepository.countTcOpensByTc_Sequence(tcSeq) >= requiredCnt) {
             tc.updateOpenStatus(OpenStatus.OPENED);
+            tcRepository.save(tc);
         }
 
         return tc.getOpenStatus().toString();
