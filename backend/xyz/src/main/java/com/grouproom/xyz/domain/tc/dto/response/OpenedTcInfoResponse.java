@@ -12,7 +12,7 @@ public class OpenedTcInfoResponse {
     private String userNickname;
     private Long aztSeq;
     private String aztName;
-    private String openStart;
+    private String openedAt;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String location;
@@ -23,7 +23,7 @@ public class OpenedTcInfoResponse {
         this.userNickname = tc.getUser().getNickname();
         this.aztSeq = tc.getAzt().getSequence();
         this.aztName = tc.getAzt().getAztName();
-        this.openStart = tc.getOpenStart().toString();
+        this.openedAt = tc.getUpdatedAt().toString();
         this.latitude = tc.getLatitude();
         this.longitude = tc.getLongitude();
         this.location = tc.getLocation();
