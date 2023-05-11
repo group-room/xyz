@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 public class OpenedTcResponse {
     private Long tcSeq;
     private String aztName;
-    private String updatedAt;
+    private String openedAt;
 
     public OpenedTcResponse(Long tcSeq, String aztName, LocalDateTime updatedAt) {
         this.tcSeq = tcSeq;
         this.aztName = aztName;
-        this.updatedAt = updatedAt.toString();
+        this.openedAt = updatedAt.toString();
     }
 }
