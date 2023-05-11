@@ -182,18 +182,47 @@ public class TcServiceImpl implements TcService {
 
     @Override
     @Transactional(readOnly = true)
-    public OpenedTcResponse findRandomOpenedTcDetails(Long userSeq) {
+    public OpenedTcDetailsResponse findRandomOpenedTcDetails(Long userSeq) {
         logger.info("findOpenedTcDetails 호출");
 
         User user = userRepository.findBySequence(userSeq);
+        Optional<Tc> randomTc = tcRepository.findRandomOpenedTcByUser_Seq(userSeq);
 
-        Optional<OpenedTcResponse> openedTcResponse = tcRepository.findRandomOpenedTcByUser_Seq(userSeq);
-
-        if (openedTcResponse.isEmpty()) {
+        if (randomTc.isEmpty()) {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "확인할 수 있는 타임캡슐이 없습니다.");
-        }
+        } else {
+            OpenedTcInfoResponse openedTcInfoResponse = OpenedTcInfoResponse.builder()
+                    .tc(randomTc.get())
+                    .build();
 
-        return openedTcResponse.get();
+            List<TcContent> tcContents = tcContentRepository.findByTc_Sequence(randomTc.get().getSequence());
+            List<TcContentResponse> tcContentResponses = new ArrayList<>();
+
+            for (TcContent tcContent : tcContents) {
+                List<TcContentFile> tcContentFiles = tcContentFileRepository.findByTcContent_Sequence(tcContent.getSequence());
+                List<TcContentFileResponse> tcContentFileResponses = new ArrayList<>();
+
+                for (TcContentFile tcContentFile : tcContentFiles) {
+                    TcContentFileResponse tcContentFileResponse = TcContentFileResponse
+                            .builder()
+                            .tcContentFile(tcContentFile)
+                            .build();
+                    tcContentFileResponses.add(tcContentFileResponse);
+                }
+
+                TcContentResponse tcContentResponse = TcContentResponse.builder()
+                        .tcContent(tcContent)
+                        .files(tcContentFileResponses)
+                        .build();
+
+                tcContentResponses.add(tcContentResponse);
+            }
+
+            return OpenedTcDetailsResponse.builder()
+                    .tc(openedTcInfoResponse)
+                    .contents(tcContentResponses)
+                    .build();
+        }
     }
 
     @Override
