@@ -46,11 +46,9 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
     }
 
     @Override
-    public Optional<OpenedTcResponse> findRandomOpenedTcByUser_Seq(Long userSeq) {
+    public Optional<Tc> findRandomOpenedTcByUser_Seq(Long userSeq) {
         return Optional.ofNullable(
-                jpaQueryFactory.select(Projections.constructor(OpenedTcResponse.class,
-                                tc.sequence.as("tcSeq"), tc.azt.aztName, tc.updatedAt))
-                        .from(tc)
+                jpaQueryFactory.selectFrom(tc)
                         .join(tc.azt, azt)
                         .where(azt.sequence.in(JPAExpressions.select(aztMember.azt.sequence)
                                 .from(aztMember)
