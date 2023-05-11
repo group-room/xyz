@@ -13,6 +13,7 @@ import { useUserList, useVisitorList } from "@/hooks/queries/user";
 import ProfileEdit from "@/components/profile/ProfileEdit";
 import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
 import Myroom from "@/components/profile/Myroom";
+import ProfileBtn from "@/components/profile/ProfileBtn";
 
 function ProfilePage() {
   const [isModal, setIsModal] = useState(false);
@@ -36,9 +37,9 @@ function ProfilePage() {
   return (
     <div className="w-full h-full">
       <div className={`box-content w-full h-full bg-yellow p-1`}>
-        <ProfileMain />
+        <ProfileMain userSeq="1" />
       </div>
-      <div className="flex pt-5">
+      {/* <div className="flex pt-5">
         <div>
           <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={buttonClick} />
         </div>
@@ -50,13 +51,14 @@ function ProfilePage() {
             btnFunc={buttonClick}
           />
         </div>
-      </div>
-      {/* <div onClick={handleClick}> ProfilePage</div> */}
-      {isModal && (
+      </div> */}
+      <ProfileBtn userSeq="1" />
+
+      {/* {isModal && (
         <Modal closeModal={() => setIsModal(false)}>
           {<div>친구하실래요?</div>}
         </Modal>
-      )}
+      )} */}
 
       <ProfileTab value={true} onChange={() => {}} />
       {/* <Myroom /> */}

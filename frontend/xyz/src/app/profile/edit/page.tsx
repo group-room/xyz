@@ -1,5 +1,11 @@
-function ProfileEdit() {
-  return <div>ProfileEdit</div>;
+import ProfileEdit from "@/components/profile/ProfileEdit";
+
+function ProfileEditPage() {
+  return (
+    <div>
+      <ProfileEdit />
+    </div>
+  );
 }
 
-export default ProfileEdit;
+export default ProfileEditPage;
