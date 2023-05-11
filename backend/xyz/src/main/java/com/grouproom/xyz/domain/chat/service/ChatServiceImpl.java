@@ -1,6 +1,7 @@
 package com.grouproom.xyz.domain.chat.service;
 
 import com.grouproom.xyz.domain.chat.dto.request.LoginUserRequest;
+import com.grouproom.xyz.domain.chat.dto.request.PostMessageRequest;
 import com.grouproom.xyz.domain.chat.dto.request.RegisterUserRequest;
 import com.grouproom.xyz.domain.chat.dto.response.LoginUser;
 import com.grouproom.xyz.domain.chat.dto.response.LoginUserResponse;
@@ -96,6 +97,24 @@ public class ChatServiceImpl implements ChatService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "채팅 로그인 실패");
         }
         return response;
+    }
+
+    @Override
+    public ResponseEntity addMessageToChannel(Long userSeq, PostMessageRequest postMessageRequest) {
+
+        logger.info("addMessageToChannel 호출");
+        ChatUser me = chatUserRepository.findByUserSequence_Sequence(userSeq);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("X-Auth-Token", me.getAuthToken());
+        headers.add("X-User-Id", me.getUserId());
+        HttpEntity<PostMessageRequest> entity = new HttpEntity<>(postMessageRequest, headers);
+
+        String url = new StringBuilder().append(baseUrl).append("/chat.postMessage").toString();
+
+        ResponseEntity<?> response = restTemplate.exchange(url, HttpMethod.POST, entity, PostMessageRequest.class);
+        return null;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.grouproom.xyz.domain.chat.controller;
 
 import com.grouproom.xyz.domain.chat.dto.request.LoginUserRequest;
+import com.grouproom.xyz.domain.chat.dto.request.PostMessageRequest;
 import com.grouproom.xyz.domain.chat.service.ChatService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import io.swagger.annotations.ApiOperation;
@@ -35,4 +36,11 @@ public class ChatController {
         return new BaseResponse(chatService.modifyChatUserToLogin(loginSeq, loginUserRequest));
     }
 
+    @ApiOperation(value = "채널에 메시지 전송", notes = "로켓챗 채널에 메시지를 보낸다.")
+    @PostMapping ("/channel")
+    public BaseResponse addMessageToChannel(@RequestBody PostMessageRequest postMessageRequest) {
+        logger.info("addMessageToChannel 호출");
+        Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        return new BaseResponse(chatService.addMessageToChannel(loginSeq, postMessageRequest));
+    }
 }
