@@ -157,4 +157,22 @@ public class ChatServiceImpl implements ChatService {
         return response.getBody();
     }
 
+    @Override
+    public RoomsResponse findRoom(Long userSeq) {
+
+        logger.info("findRoom 호출");
+        ChatUser me = chatUserRepository.findByUserSequence_Sequence(userSeq);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("X-Auth-Token", me.getAuthToken());
+        headers.add("X-User-Id", me.getUserId());
+        HttpEntity entity = new HttpEntity<>(headers);
+
+        String url = new StringBuilder().append(baseUrl).append("/rooms.get").toString();
+
+        ResponseEntity<RoomsResponse> response = restTemplate.exchange(url, HttpMethod.GET, entity, RoomsResponse.class);
+        return response.getBody();
+    }
+
 }

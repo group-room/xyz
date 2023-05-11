@@ -44,27 +44,12 @@ public class ChatController {
         return new BaseResponse(chatService.addMessageToChannel(loginSeq, postMessageRequest));
     }
 
-    @ApiOperation(value = "채널 및 대화방 목록 조회", notes = "본인이 소속된 채널 및 대화방 목록을 가져온다.")
+    @ApiOperation(value = "대화방 목록 조회", notes = "본인이 소속된 대화방 목록을 가져온다.")
     @GetMapping
-    public BaseResponse channelAndImList() {
-        logger.info("channelAndImList 호출");
+    public BaseResponse roomList() {
+        logger.info("roomList 호출");
         Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        return new BaseResponse(chatService.findChannelAndIm(loginSeq));
+        return new BaseResponse(chatService.findRoom(loginSeq));
     }
 
-//    @ApiOperation(value = "채널 목록 조회", notes = "본인이 소속된 채널 목록을 가져온다.")
-//    @GetMapping ("/channel")
-//    public BaseResponse channelList() {
-//        logger.info("channelList 호출");
-//        Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-//        return new BaseResponse(chatService.findChannel(loginSeq));
-//    }
-//
-//    @ApiOperation(value = "개인 대화방 목록 조회", notes = "본인이 소속된 대화방 목록을 가져온다.")
-//    @GetMapping ("/im")
-//    public BaseResponse imList() {
-//        logger.info("imList 호출");
-//        Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-//        return new BaseResponse(chatService.findIm(loginSeq));
-//    }
 }
