@@ -3,10 +3,7 @@ package com.grouproom.xyz.domain.chat.service;
 import com.grouproom.xyz.domain.chat.dto.request.LoginUserRequest;
 import com.grouproom.xyz.domain.chat.dto.request.PostMessageRequest;
 import com.grouproom.xyz.domain.chat.dto.request.RegisterUserRequest;
-import com.grouproom.xyz.domain.chat.dto.response.LoginUser;
-import com.grouproom.xyz.domain.chat.dto.response.LoginUserResponse;
-import com.grouproom.xyz.domain.chat.dto.response.RegisterUser;
-import com.grouproom.xyz.domain.chat.dto.response.RegisterUserResponse;
+import com.grouproom.xyz.domain.chat.dto.response.*;
 import com.grouproom.xyz.domain.chat.entity.ChatUser;
 import com.grouproom.xyz.domain.chat.repository.ChatUserRepository;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
@@ -113,8 +110,51 @@ public class ChatServiceImpl implements ChatService {
 
         String url = new StringBuilder().append(baseUrl).append("/chat.postMessage").toString();
 
-        ResponseEntity<?> response = restTemplate.exchange(url, HttpMethod.POST, entity, PostMessageRequest.class);
+        ResponseEntity<?> response = restTemplate.exchange(url, HttpMethod.POST, entity, PostMessageRequest.class); // 반환 타입 수정 필요
         return null;
+    }
+
+    @Override
+    public ChannelsAndImsResponse findChannelAndIm(Long userSeq) {
+        ChannelsAndImsResponse channelsAndImsResponse = new ChannelsAndImsResponse();
+        channelsAndImsResponse.setChannels(findChannel(userSeq));
+        channelsAndImsResponse.setIms(findIm(userSeq));
+        return channelsAndImsResponse;
+    }
+
+    @Override
+    public ChannelsResponse findChannel(Long userSeq) {
+
+        logger.info("findChannel 호출");
+        ChatUser me = chatUserRepository.findByUserSequence_Sequence(userSeq);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("X-Auth-Token", me.getAuthToken());
+        headers.add("X-User-Id", me.getUserId());
+        HttpEntity entity = new HttpEntity<>(headers);
+
+        String url = new StringBuilder().append(baseUrl).append("/channels.list.joined").toString();
+
+        ResponseEntity<ChannelsResponse> response = restTemplate.exchange(url, HttpMethod.GET, entity, ChannelsResponse.class);
+        return response.getBody();
+    }
+
+    @Override
+    public ImsResponse findIm(Long userSeq) {
+        logger.info("findIm 호출");
+        ChatUser me = chatUserRepository.findByUserSequence_Sequence(userSeq);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("X-Auth-Token", me.getAuthToken());
+        headers.add("X-User-Id", me.getUserId());
+        HttpEntity entity = new HttpEntity<>(headers);
+
+        String url = new StringBuilder().append(baseUrl).append("/im.list").toString();
+
+        ResponseEntity<ImsResponse> response = restTemplate.exchange(url, HttpMethod.GET, entity, ImsResponse.class);
+        return response.getBody();
     }
 
 }
