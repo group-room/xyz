@@ -1,16 +1,29 @@
 "use client";
 
+import React, { useState } from "react";
 import ProfileImg from "./../common/ProfileImg";
 import Image from "next/image";
 import Plus from "../../../public/icons/plus.svg";
 import Link from "next/link";
 import { useWaitingCapsuleList } from "@/hooks/queries/capsule";
+import Modal from "@/components/common/Modal";
+import TimecaplsuleModal from "./TimecaplsuleModal";
+import { CapsuleAztTypes } from "@/types/capsule";
 
 export default function TimecapsuleList() {
   const { data: capsuleList, isLoading } = useWaitingCapsuleList();
   if (capsuleList) {
     console.log(capsuleList);
   }
+
+  const [isModal, setIsModal] = useState({
+    is: false,
+    detail: {},
+  });
+
+  const handleClick = (list: CapsuleAztTypes) => {
+    setIsModal({ is: true, detail: list });
+  };
 
   const getDayDiff = (openStart: Date): string => {
     const today = new Date().getTime();
@@ -41,6 +54,7 @@ export default function TimecapsuleList() {
             return (
               <div
                 key={list.tcSeq}
+                onClick={() => handleClick(list)}
                 className="flex relative flex-col items-center justify-center shrink-0 mr-2"
               >
                 {list.openStatus === "LOCKED" && (
@@ -61,6 +75,19 @@ export default function TimecapsuleList() {
             );
           })}
       </div>
+      {/* 캡슐 잠김 여부에 따라  AbleTimecaplsuleModal or UnAbleTimecaplsuleModal*/}
+      {isModal.is && (
+        <Modal
+          closeModal={() =>
+            setIsModal({
+              is: false,
+              detail: isModal.detail,
+            })
+          }
+        >
+          <TimecaplsuleModal detail={isModal.detail} />
+        </Modal>
+      )}
     </div>
   );
 }
