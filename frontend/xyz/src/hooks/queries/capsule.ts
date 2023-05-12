@@ -67,7 +67,7 @@ export const useDetailCapsule = (tcSeq: string) => {
 // 나의 활동 - 타임캡슐 목록
 export const useMyCapsuleList = () => {
   return useQuery<CapsuleAztTypes[]>({
-    queryKey: queryKeys.capsule.capsuleList(),
+    queryKey: queryKeys.capsule.myCapsuleList(),
     queryFn: async () => {
       return axiosInstance
         .get(`${CAPSULE}/mytimecapsule`)
