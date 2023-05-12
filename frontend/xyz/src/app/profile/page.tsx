@@ -45,23 +45,10 @@ function ProfilePage() {
 
   return (
     <div className="w-full h-full">
-      {/* <div className={`box-content w-full h-full bg-yellow p-1`}> */}
       <ProfileMain userSeq={userSeq} />
-      {/* </div> */}
-      {/* <div className="flex pt-5">
-        <div>
-          <Btn width="w-40" bgColor="blue" text="친 구" btnFunc={buttonClick} />
-        </div>
-        <div className=" pl-7">
-          <Btn
-            width="w-40"
-            bgColor="blue"
-            text="나의 활동"
-            btnFunc={buttonClick}
-          />
-        </div>
-      </div> */}
-      <ProfileBtn userSeq="1" />
+      <div className="flex py-2 items-center justify-center">
+        <ProfileBtn userSeq={userSeq} />
+      </div>
 
       {/* {isModal && (
         <Modal closeModal={() => setIsModal(false)}>

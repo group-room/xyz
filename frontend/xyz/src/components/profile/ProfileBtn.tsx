@@ -6,17 +6,20 @@ import { useRouter } from "next/navigation";
 import { useUserList } from "@/hooks/queries/user";
 import ModalBtn from "../common/ModalBtn";
 import { useState } from "react";
+import store from "@/store/store";
 
-type Props = { userSeq: string };
+type Props = { userSeq: string | number | undefined };
 
 function ProfileBtn({ userSeq }: Props) {
+  const state = store.getState();
+  const myUserSeq = state.auth.userInfo?.userSeq;
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const {
     data: userList,
     isLoading: isUserLoading,
     error,
-  } = useUserList(parseInt(userSeq));
+  } = useUserList(userSeq);
 
   const PushtoProfileFriend = () => {
     router.push("/profile/friend");
@@ -28,25 +31,25 @@ function ProfileBtn({ userSeq }: Props) {
     // 추후에 친구 신청을 누르면 친구 신청이 감 (query 만들어놓으면 연결)
   };
 
-  if (userSeq === "1") {
+  if (userSeq === myUserSeq) {
     // 추후 1 대신 나의 userSeq 를 넣어야 함
     return (
-      <>
+      <div className="flex justify-start items-start relative gap-[15px]">
         <Btn
-          width="168"
+          className="w-[168px] h-[50px]"
           bgColor="blue"
           text="친구"
           btnFunc={PushtoProfileFriend}
         />
         <Btn
-          width="168"
+          className="w-[168px] h-[50px]"
           bgColor="blue"
           text="나의 활동"
           btnFunc={PushtoProfileMypage}
         />
-      </>
+      </div>
     );
-  } else if (userSeq !== "1" && userList?.friend === true) {
+  } else if (userSeq !== myUserSeq && userList?.friend === true) {
     return (
       <>
         <Btn
@@ -58,7 +61,7 @@ function ProfileBtn({ userSeq }: Props) {
         />
       </>
     );
-  } else if (userSeq !== "1" && userList?.friendRequest === true) {
+  } else if (userSeq !== myUserSeq && userList?.friendRequest === true) {
     return (
       <>
         <Btn width="168" bgColor="blue" text="수락 대기중" btnFunc={() => {}} />
@@ -71,7 +74,7 @@ function ProfileBtn({ userSeq }: Props) {
         />
       </>
     );
-  } else if (userSeq !== "1" && userList?.friendResponse === true) {
+  } else if (userSeq !== myUserSeq && userList?.friendResponse === true) {
     return (
       <>
         <Btn
