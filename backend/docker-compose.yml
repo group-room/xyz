@@ -1,5 +1,23 @@
 version: "3"
 services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 3.38.168.160
+      KAFKA_CREATE_TOPICS: "Topic:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock
+    depends_on:
+      - zookeeper
   spring_test:
     container_name: spring_test
     build: ./xyz
@@ -8,3 +26,19 @@ services:
     volumes:
       - /spring_test:/image
     restart: on-failure
+  spring_chat_first:
+    container_name: spring_chat_first
+    build: ./xyz-chat
+    ports:
+      - "8089:8080"
+    volumes:
+      - /spring_chat_first:/image
+    restart: on-failure
+  spring_chat_second:
+    container_name: spring_chat_second
+    build: ./xyz-chat
+    ports:
+      - "8088:8080"
+    volumes:
+      - /spring_chat_second:/image
+    restart: on-failure  

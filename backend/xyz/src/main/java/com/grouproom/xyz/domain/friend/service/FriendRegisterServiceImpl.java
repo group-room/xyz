@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.friend.service;
 
+import com.grouproom.xyz.domain.chat.entity.Chat;
+import com.grouproom.xyz.domain.chat.repository.ChatRepository;
 import com.grouproom.xyz.domain.friend.dto.response.UserListResponse;
 import com.grouproom.xyz.domain.friend.dto.response.UserResponse;
 import com.grouproom.xyz.domain.friend.entity.Friend;
@@ -30,6 +32,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
     private final UserRepository userRepository;
     private final UserBlockRepository userBlockRepository;
     private final FriendRepository friendRepository;
+    private final ChatRepository chatRepository;
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.friend.service.FriendRegisterServiceImpl");
@@ -183,6 +186,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
                             .isAccepted(false)
                             .isCanceled(false)
                             .isDeleted(false)
+                            .chatSeq(friend.getChatSeq())
                             .build();
                     friendRepository.save(newFriend);
                     friendRepository.delete(friend);
@@ -223,8 +227,14 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         if (null == friend) {
             logger.severe("수락할 수 있는 대상이 아님");
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "수락할 수 있는 대상이 아님");
+        } else if(null == friend.getChatSeq()) {
+            Chat chat = chatRepository.save(Chat.builder().build());
+            friend.setChatSeq(chat);
+            logger.info("chat 생성 성공");
         }
         friend.setIsAccepted(true);
+        logger.info("친구 수락 성공");
+
         Notification notification = notificationRepository.findByUser_SequenceAndTargetSequenceAndIsDeletedAndNotificationType(loginSeq, userSeq, false, NotificationType.FRIEND);
         notificationService.removeNotification(loginSeq, notification.getSequence());
         notificationService.addNotification(userSeq, loginSeq, NotificationType.FRIEND, "FRIEND ASK ACCEPTED", userRepository.findBySequence(loginSeq).getNickname());

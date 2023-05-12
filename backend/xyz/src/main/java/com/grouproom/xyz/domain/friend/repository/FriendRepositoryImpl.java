@@ -43,7 +43,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                 .when(fromUser.sequence.eq(userSeq))
                                 .then(toUser.profileImage)
                                 .otherwise(fromUser.profileImage).as("profileImage"),
-                        friend.chatId.as("chatId"),
+                        friend.chatSeq.sequence.as("chatSeq"),
                         Expressions.as(Expressions.constant(isFriend), "relation")
                         )
                 )
@@ -90,7 +90,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                         .when(fromUser.sequence.eq(userSeq))
                                         .then(toUser.profileImage)
                                         .otherwise(fromUser.profileImage).as("profileImage"),
-                        friend.chatId.as("chatId")
+                        friend.chatSeq.as("chatSeq")
                         )
                 )
                 .from(friend)
@@ -122,7 +122,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                         .when(fromUser.sequence.eq(userSeq))
                                         .then(toUser.profileImage)
                                         .otherwise(fromUser.profileImage).as("profileImage"),
-                        friend.chatId.as("chatId")
+                        friend.chatSeq.as("chatSeq")
                         )
                 )
                 .from(friend)

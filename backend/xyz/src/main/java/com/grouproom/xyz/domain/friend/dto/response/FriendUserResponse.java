@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 public class FriendUserResponse extends UserResponse {
 
-    private String chatId;
+    private Long chatSeq;
 
 }
