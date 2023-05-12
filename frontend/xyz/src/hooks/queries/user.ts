@@ -32,7 +32,7 @@ export const useUserList = (userSeq?: number | string) => {
   });
 };
 
-export const useVisitorList = (userSeq?: number) => {
+export const useVisitorList = (userSeq?: number | string) => {
   return useQuery<VisitorTypes[]>({
     queryKey: queryKeys.user.myVisitorList(),
     queryFn: async () => {
