@@ -13,6 +13,20 @@ module.exports = {
         yellow: "#FFE695",
         retro: "#F9F0EA",
       },
+      keyframes: {
+        spin: {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(180deg)" },
+        },
+        "fade-in-transform": {
+          from: { opacity: 0.2, transform: "translate(0px, 0px)" },
+          to: { opacity: 1, transform: "translate(-40px, 50px)" },
+        },
+      },
+      animation: {
+        "spin-slow": "spin 1s linear",
+        "fade-in-transform": "fade-in-transform 1.5s ease-in-out",
+      },
       // backgroundImage: {
       //   'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       //   'gradient-conic':
