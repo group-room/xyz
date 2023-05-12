@@ -60,38 +60,37 @@ export default function TimeCapsuleCreatePage() {
     console.log("openEnd -> ", openEnd);
     console.log("updateEnd -> ", updateEnd);
 
-    // const formData = new FormData();
-    // const stringifiedData = JSON.stringify({
-    //   aztSeq: currAzt[0].aztSeq!,
-    //   content: content,
-    //   latitude: position.lat,
-    //   address: address
-    //   longitude: position.lng,
-    //   openStart: openStart,
-    //   openEnd: openEnd,
-    //   updateEnd: updateEnd,
+    const formData = new FormData();
+    const stringifiedData = JSON.stringify({
+      aztSeq: currAzt[0].aztSeq!,
+      content: content,
+      latitude: position.lat,
+      location: address,
+      longitude: position.lng,
+      openEnd: openEnd,
+      openStart: openStart,
+      updateEnd: updateEnd,
+    });
+    const jsonData = new Blob([stringifiedData], {
+      type: "application/json",
+    });
+    // 음성이든 비디오든 할 경우...
+    // const videofile = new File([videoFiles], "videoFile.webm", {
+    //   type: "video/webm",
     // });
-    // const jsonData = new Blob([stringifiedData], {
-    //   type: "application/json",
-    // });
-    // // 음성이든 비디오든 할 경우...
-    // // const videofile = new File([videoFiles], "videoFile.webm", {
-    // //   type: "video/webm",
-    // // });
-    // formData.append("addMemoryRequest", jsonData);
-    // photos.forEach((photo) => {
-    //   formData.append("images", photo);
-    // });
+    formData.append("addTcRequest", jsonData);
+    photos.forEach((photo) => {
+      formData.append("images", photo);
+    });
 
-    // useCreateMemoryMutation.mutate(formData, {
-    //   onSuccess: (data) => {
-    //     // console.log(data);
-    //     const tcSeq = data.data.data.tcSeq;
-    //     router.push(`/capsule/${tcSeq}`); // 생성 완료후 상세로 이동
-    //   },
-    // });
+    useCreateCapsuleMutation.mutate(formData, {
+      onSuccess: (data) => {
+        const tcSeq = data.data.data.tcSeq;
+        console.log(tcSeq);
+        router.push(`/capsule/${tcSeq}`); // 생성 완료후 상세로 이동
+      },
+    });
   };
-
   return (
     <div>
       <h2 className="text-xl">타임캡슐 만들기</h2>
@@ -114,6 +113,10 @@ export default function TimeCapsuleCreatePage() {
           setOpenEnd={setOpenEnd}
           updateEnd={updateEnd}
           setUpdateEnd={setUpdateEnd}
+          photos={photos}
+          setPhotos={setPhotos}
+          photoPreviewList={photoPreviewList}
+          setPhotoPreviewList={setPhotoPreviewList}
         />
         <SearchPostCode
           address={address}

@@ -38,7 +38,6 @@ export default function SearchPostCode({
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
-    console.log(data);
     console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     setAddress(fullAddress);
   };
@@ -51,18 +50,16 @@ export default function SearchPostCode({
     if (address === "") {
       return;
     } else {
-      return await convertAddressToCoordinate(address);
+      return await convertAddressToCoordinate(address).then((res) => {
+        console.log(position.lat, " -before- ", position.lng);
+        setPosition({ lat: +res.y, lng: +res.x });
+        console.log(position.lat, " -after- ", position.lng);
+      });
     }
   }
 
   useEffect(() => {
-    // addressInfo.x = longitude, addressInfo.y = latitude
-    getCoordinate().then((res) => {
-      console.log("res");
-      console.log(res);
-      // console.log("lat -> ", res.y, " lng -> ", res.x);
-      setPosition({ lat: res.y, lng: res.x });
-    });
+    getCoordinate();
   }, [address]);
 
   return (
