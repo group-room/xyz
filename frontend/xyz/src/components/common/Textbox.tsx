@@ -29,7 +29,9 @@ function Textbox({
         <Image src={icon} alt={alt} width={16} height={16} />
         {text && <div className="ml-1">{text}</div>}
       </div>
-      <div className={`flex items-center justify-center px-1`}>{maintext}</div>
+      <div className={`flex items-center justify-center px-1 h-full`}>
+        {maintext}
+      </div>
     </div>
   );
 }

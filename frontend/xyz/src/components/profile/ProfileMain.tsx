@@ -20,7 +20,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     router.push("/profile/edit");
   };
   return (
-    <div className={`box-content w-full h-full bg-yellow p-1`}>
+    <div className={`box-content w-full h-full bg-yellow`}>
       <div className="flex flex-row">
         <div className="mt-1 ml-1 mr-1">
           <img

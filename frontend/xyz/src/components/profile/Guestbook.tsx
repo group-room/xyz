@@ -16,8 +16,8 @@ function Guestbook({ userSeq }: GuestbookProps) {
   console.log(visitorList, "visitorList333333");
 
   return (
-    <section className="w-full h-[300px]">
-      <div className="w-full h-full bg-cover bg-pink flex flex-col">
+    <section className="w-full h-full">
+      <div className="w-full h-full min-h-[300px] bg-cover bg-pink flex flex-col">
         {visitorList ? (
           visitorList.map((visitor) => (
             <GuestbookItem key={visitor.userSeq} visitor={visitor} />
