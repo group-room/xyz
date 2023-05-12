@@ -6,6 +6,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.UnicastProcessor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,13 +28,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class Consumer {
 
-    private final Map<String, DirectProcessor<KafkaMessage>> processorMap = new ConcurrentHashMap<>();
+    private final Map<String, UnicastProcessor<KafkaMessage>> processorMap = new ConcurrentHashMap<>();
     private final Map<String, Flux<KafkaMessage>> fluxMap = new ConcurrentHashMap<>();
 
 
     public Flux<KafkaMessage> getKafkaMessages(String room) {
         return fluxMap.computeIfAbsent(room, r -> {
-            DirectProcessor<KafkaMessage> processor = DirectProcessor.create();
+            UnicastProcessor<KafkaMessage> processor = UnicastProcessor.create();
             processorMap.put(r, processor);
             return processor.share();
         });
@@ -45,7 +46,7 @@ public class Consumer {
 
         // Send the Kafka message to all subscribers in a specific room
         String room = kafkaMessage.getRoom(); // Assuming KafkaMessage has a getRoom method
-        DirectProcessor<KafkaMessage> processor = processorMap.get(room);
+        UnicastProcessor<KafkaMessage> processor = processorMap.get(room);
         if (processor != null) {
             processor.onNext(kafkaMessage);
         }
