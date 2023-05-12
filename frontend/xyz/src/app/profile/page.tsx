@@ -50,15 +50,9 @@ function ProfilePage() {
         <ProfileBtn userSeq={userSeq} />
       </div>
 
-      {/* {isModal && (
-        <Modal closeModal={() => setIsModal(false)}>
-          {<div>친구하실래요?</div>}
-        </Modal>
-      )} */}
-
       <ProfileTab value={true} onChange={() => {}} />
       {/* <Myroom /> */}
-      <Guestbook />
+      <Guestbook userSeq={userSeq} />
     </div>
   );
 }
