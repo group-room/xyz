@@ -10,6 +10,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -36,7 +38,8 @@ public class Producer {
 
     public void orderSend(String topic, KafkaMessage message) {
         LocalDateTime localDateTimeNow = LocalDateTime.now();
-        String time = localDateTimeNow.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTimeNow, ZoneId.of("Asia/Seoul"));
+        String time = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         message.setTime(time);
         kafkaTemplate.send(topic, message);
