@@ -6,7 +6,7 @@ type TextboxProps = {
   text?: string;
   icon: string;
   alt: string;
-  maintext?: string;
+  maintext?: string | number;
   bgColor?: string;
   textColor?: string;
 };

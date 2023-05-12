@@ -28,7 +28,11 @@ function ProfileDropDown({
         className="text-center w-full py-1 focus:outline-none"
         onClick={() => setOpen(!open)}
       >
-        <Image src={ProfileEditImg} alt="프로필 수정" />
+        <Image
+          src={ProfileEditImg}
+          alt="프로필 수정"
+          className=" justify-end justify-items-end float-right"
+        />
       </button>
 
       <ul
