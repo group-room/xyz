@@ -11,7 +11,7 @@ type ButtonProps = {
 };
 
 export default function ProfileTab({ value, onChange }: ButtonProps) {
-  const [isClick, setIsClick] = useState(true);
+  const [isClick, setIsClick] = useState(false);
 
   const handleChange = (v: boolean) => {
     onChange(v);
