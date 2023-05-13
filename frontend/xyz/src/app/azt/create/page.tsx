@@ -56,7 +56,7 @@ function AzitCreatePage() {
           membersArr.push({ userSeq: member.userSeq });
         }
       });
-    console.log(membersArr);
+
     const formData = new FormData();
     const stringifiedData = JSON.stringify({
       name: aztNameInput,
@@ -93,7 +93,7 @@ function AzitCreatePage() {
                 autoFocus
                 value={aztNameInput}
                 onChange={onChangeAztNameInput}
-                className="w-full border border-black rounded mt-2 px-2 py-1 "
+                className="w-full border border-black rounded mt-2 px-2 py-1"
               />
             </div>
             <div>
@@ -136,7 +136,6 @@ function AzitCreatePage() {
                   ))}
                 </div>
                 <div className="mt-3">
-                  {/* TODO: 멤버 초대하기 링크 연결 */}
                   <Btn
                     bgColor="blue"
                     text="멤버 초대하기"
