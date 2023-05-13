@@ -34,7 +34,7 @@ function LoginPage() {
         profileImage,
       })
     );
-    router.push(API.memory);
+    router.push(`/${API.memory}`);
     axiosInstance.defaults.headers.common["Authorization"] = accessToken;
     axiosFileInstance.defaults.headers.common["Authorization"] = accessToken;
   }
