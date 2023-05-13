@@ -6,6 +6,15 @@ import ProfileDropdown from "./ProfileDropdown";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
 import store from "@/store/store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logOut } from "@/app/api/user";
+import { useDispatch } from "react-redux";
+import {
+  updateAccessToken,
+  updateLoginStatus,
+  updateUserInfo,
+} from "@/store/authSlice";
+import { queryKeys } from "@/constants/queryKeys";
 
 interface ProfileMainProps {
   userSeq: string | number | undefined;
@@ -17,8 +26,31 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
   const router = useRouter();
   const { data: profileData, isLoading } = useUserList(userSeq);
   const pushToProfileEdit = () => {
-    router.push("/profile/edit");
+    // router.push("/profile/edit");
+    console.log("hi");
+    handleClickLogOut();
   };
+
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  const useLogOutMutation = useMutation({
+    mutationFn: () => logOut(),
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKeys.user.userList(+userSeq!));
+      alert("로그아웃 되었습니다.");
+      dispatch(updateLoginStatus(false));
+      dispatch(updateAccessToken(""));
+      dispatch(updateUserInfo(null));
+      router.push("/");
+    },
+  });
+
+  const handleClickLogOut = () => {
+    console.log("hi");
+    useLogOutMutation.mutate();
+  };
+  const handleClickWithDraw = () => {};
+
   return (
     <div className={`box-content w-full h-full bg-yellow p-1`}>
       <div className="flex flex-row">
@@ -40,7 +72,9 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
                 firstText="프로필 편집"
                 firstFunc={pushToProfileEdit}
                 secondText="로그아웃"
+                secondFunc={handleClickLogOut}
                 thirdText="탈퇴하기"
+                thirdFunc={handleClickWithDraw}
               />
             ) : (
               <ProfileDropdown
