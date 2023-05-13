@@ -1,13 +1,13 @@
 "use client";
 import Textbox from "../common/Textbox";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
 import store from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logOut } from "@/app/api/user";
+import { logOut, withDraw } from "@/app/api/user";
 import { useDispatch } from "react-redux";
 import {
   updateAccessToken,
@@ -15,99 +15,124 @@ import {
   updateUserInfo,
 } from "@/store/authSlice";
 import { queryKeys } from "@/constants/queryKeys";
+import ModalBtn from "../common/ModalBtn";
+import { useAppSelector } from "@/hooks/redux";
 
 interface ProfileMainProps {
   userSeq: string | number | undefined;
 }
 
 function ProfileMain({ userSeq }: ProfileMainProps) {
-  const state = store.getState();
+  const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
+
+  const [isModal, setIsModal] = useState(false);
   const router = useRouter();
   const { data: profileData, isLoading } = useUserList(userSeq);
   const pushToProfileEdit = () => {
-    // router.push("/profile/edit");
-    console.log("hi");
-    handleClickLogOut();
+    router.push("/profile/edit");
   };
 
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  const deleteUserInfo = () => {
+    dispatch(updateLoginStatus(false));
+    dispatch(updateAccessToken(""));
+    dispatch(updateUserInfo(null));
+    router.push("/");
+  };
+
   const useLogOutMutation = useMutation({
     mutationFn: () => logOut(),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.user.userList(+userSeq!));
-      alert("로그아웃 되었습니다.");
-      dispatch(updateLoginStatus(false));
-      dispatch(updateAccessToken(""));
-      dispatch(updateUserInfo(null));
-      router.push("/");
+      alert("로그아웃 완료");
+      deleteUserInfo();
+    },
+  });
+
+  const useWithDrawMutation = useMutation({
+    mutationFn: () => withDraw(),
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKeys.user.userList(+userSeq!));
+      alert("회원탈퇴 되었어요 ㅠㅠ");
+      deleteUserInfo();
     },
   });
 
   const handleClickLogOut = () => {
-    console.log("hi");
     useLogOutMutation.mutate();
   };
-  const handleClickWithDraw = () => {};
+  const handleYesWithDraw = () => {
+    useWithDrawMutation.mutate();
+  };
 
   return (
-    <div className={`box-content w-full h-full bg-yellow p-1`}>
-      <div className="flex flex-row">
-        <div className="mt-1 ml-1 mr-1">
-          <img
-            src={profileData?.profileImage}
-            width={124}
-            height={181}
-            alt="example"
-          />
-        </div>
-        {/* 유저 본인일 때 이 드롭다운이 보이게 하기 */}
-        <div>
-          <div className="flex pl-5 gap-10">
-            {profileData?.identify}
-
-            {userSeq === myUserSeq ? (
-              <ProfileDropdown
-                firstText="프로필 편집"
-                firstFunc={pushToProfileEdit}
-                secondText="로그아웃"
-                secondFunc={handleClickLogOut}
-                thirdText="탈퇴하기"
-                thirdFunc={handleClickWithDraw}
-              />
-            ) : (
-              <ProfileDropdown
-                firstText="친구 추가"
-                firstFunc={pushToProfileEdit}
-              />
-            )}
+    <>
+      <div className={`box-content w-full h-full bg-yellow p-1`}>
+        <div className="flex flex-row">
+          <div className="mt-1 ml-1 mr-1">
+            <img
+              src={profileData?.profileImage}
+              width={124}
+              height={181}
+              alt="example"
+            />
           </div>
-          <Textbox
-            icon="/icons/edit.svg"
-            alt="pretty"
-            text="수식어"
-            maintext={profileData?.modifier}
-          />
-          <Textbox
-            icon="/icons/avatar.svg"
-            alt="nickname"
-            text="닉네임"
-            maintext={profileData?.nickname}
-          />
-          <Textbox
-            icon="/icons/user.svg"
-            alt="visitor"
-            text="방문자"
-            maintext={profileData?.visitCount}
-          />
+          {/* 유저 본인일 때 이 드롭다운이 보이게 하기 */}
+          <div>
+            <div className="flex pl-5 gap-10">
+              {profileData?.identify}
+
+              {userSeq === myUserSeq ? (
+                <ProfileDropdown
+                  firstText="프로필 편집"
+                  firstFunc={pushToProfileEdit}
+                  secondText="로그아웃"
+                  secondFunc={handleClickLogOut}
+                  thirdText="탈퇴하기"
+                  thirdFunc={() => setIsModal(true)}
+                />
+              ) : (
+                <ProfileDropdown
+                  firstText="친구 추가"
+                  firstFunc={pushToProfileEdit}
+                />
+              )}
+            </div>
+            <Textbox
+              icon="/icons/edit.svg"
+              alt="pretty"
+              text="수식어"
+              maintext={profileData?.modifier}
+            />
+            <Textbox
+              icon="/icons/avatar.svg"
+              alt="nickname"
+              text="닉네임"
+              maintext={profileData?.nickname}
+            />
+            <Textbox
+              icon="/icons/user.svg"
+              alt="visitor"
+              text="방문자"
+              maintext={profileData?.visitCount}
+            />
+          </div>
+        </div>
+        <div className="border-2 border-black m-1 h-[92px] shadow-lg pb-2">
+          <div className="border-black border-b-2">자기소개 한 마디</div>
+          <div className="">{profileData?.introduce}</div>
         </div>
       </div>
-      <div className="border-2 border-black m-1 h-[92px] shadow-lg pb-2">
-        <div className="border-black border-b-2">자기소개 한 마디</div>
-        <div className="">{profileData?.introduce}</div>
-      </div>
-    </div>
+      {isModal && (
+        <ModalBtn
+          yesFunc={handleYesWithDraw}
+          closeModal={() => setIsModal(false)}
+          text="정말 탈퇴할까요 ㅠㅠ?"
+        />
+      )}
+    </>
   );
 }
 

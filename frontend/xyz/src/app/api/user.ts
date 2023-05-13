@@ -9,3 +9,7 @@ export const updateProfile = (formData: FormData) => {
 export const logOut = () => {
   return axiosInstance.delete(`${USER}/logout`);
 };
+
+export const withDraw = () => {
+  return axiosInstance.delete(`${USER}`);
+};
