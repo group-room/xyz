@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import PhotoUpload from "@/components/memory/PhotoUpload";
 import { editMemory } from "@/app/api/memory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { KEYS } from "@/constants/queryKeys";
+import { queryKeys } from "@/constants/queryKeys";
 import { convertDate } from "@/utils/dateUtils";
 import { useMemoryDetail } from "@/hooks/queries/memory";
 import Textbox from "@/components/common/Textbox";
@@ -40,7 +40,7 @@ function MemoryEditPage({ params: { slug } }: Props) {
   const useEditMemoryMutation = useMutation({
     mutationFn: (formData: FormData) => editMemory(slug, formData),
     onSuccess: () => {
-      queryClient.invalidateQueries(KEYS.memory);
+      queryClient.invalidateQueries(queryKeys.memory.memoryDetail(slug));
     },
   });
 
