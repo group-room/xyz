@@ -1,14 +1,18 @@
 "use client";
 
+import { editAzt } from "@/app/api/azt";
 import MyFriendSearchArea from "@/components/azt/MyFriendSearchArea";
 import Btn from "@/components/common/Btn";
 import ProfileImg from "@/components/common/ProfileImg";
 import { LOCAL } from "@/constants/localUrl";
+import { API, queryKeys } from "@/constants/queryKeys";
 import { useAztInfo } from "@/hooks/queries/azt";
 import { useAppSelector } from "@/hooks/redux";
 import { SlugProps } from "@/types/common";
 import { UserTypes } from "@/types/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 function AzitEditPage({ params: { slug } }: SlugProps) {
@@ -22,6 +26,8 @@ function AzitEditPage({ params: { slug } }: SlugProps) {
     setIsFriendInviteOpen(true);
   };
   const loggedInUserInfo = useAppSelector((state) => state.auth.userInfo);
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (aztInfoData) {
@@ -38,7 +44,44 @@ function AzitEditPage({ params: { slug } }: SlugProps) {
       setPreviewPhoto(URL.createObjectURL(photo));
     }
   };
-  const handleEditAzt = () => {};
+
+  const useEditAztMutation = useMutation({
+    mutationFn: (formData: FormData) => editAzt(formData),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(queryKeys.azt.aztInfo(slug));
+      const aztSeq = data.data.data.aztSeq;
+      router.push(`${API.azt}/${aztSeq}`);
+    },
+  });
+
+  const handleEditAzt = () => {
+    if (!aztNameInput) {
+      alert("아지트 이름을 입력해주세요!");
+      return;
+    }
+    let membersArr: { userSeq: number }[] = [];
+    aztMembers
+      .filter((member) => member.userSeq !== loggedInUserInfo?.userSeq)
+      .forEach((member) => {
+        {
+          membersArr.push({ userSeq: member.userSeq });
+        }
+      });
+
+    const formData = new FormData();
+    const stringifiedData = JSON.stringify({
+      aztSeq: slug,
+      name: aztNameInput,
+      members: membersArr,
+    });
+    const jsonBlob = new Blob([stringifiedData], {
+      type: "application/json",
+    });
+    formData.append("modifyAztRequest", jsonBlob);
+    if (newAztPhoto) formData.append("image", newAztPhoto as File);
+
+    useEditAztMutation.mutate(formData);
+  };
 
   if (!isAztInfoLoading && aztInfoData && !isFriendInviteOpen) {
     const { aztSeq, name, createdAt, image, members, chatSeq } = aztInfoData;
