@@ -16,11 +16,7 @@ import { notFound, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 function AztInfoPage({ params: { slug } }: SlugProps) {
-  const {
-    data: aztInfoData,
-    isLoading: isAztInfoLoading,
-    isError,
-  } = useAztInfo(slug);
+  const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
 
   const [isModal, setIsModal] = useState(false);
   const router = useRouter();
@@ -97,7 +93,7 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
             <img
               src={image}
               alt={name}
-              className="rounded border-2 border-black mt-2"
+              className="rounded border-2 border-black mt-2 mx-auto"
             />
           </div>
           <div className="flex flex-col gap-y-2 my-2">

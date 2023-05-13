@@ -10,8 +10,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAztCapsuleList } from "@/hooks/queries/capsule";
 import { API } from "@/constants/queryKeys";
+import { useAztInfo } from "@/hooks/queries/azt";
 
 function AzitDetailPage({ params: { slug } }: SlugProps) {
+  const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
   const { data: aztMemoryData, isLoading: isAztMemoryLoading } = useMemoryList({
     date: null,
     aztSeq: slug,
@@ -70,7 +72,12 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
     <div>
       <div className="flex gap-x-5 justify-between pt-3 pb-5">
         <div className="grow">
-          <Textbox icon="/icons/users.svg" alt="아지트 아이콘" bgColor="pink" />
+          <Textbox
+            icon="/icons/users.svg"
+            alt="아지트 아이콘"
+            bgColor="pink"
+            maintext={aztInfoData?.name}
+          />
         </div>
         <div className="flex gap-x-2 items-center">
           <Link href={`/${API.chat}/${slug}`}>
