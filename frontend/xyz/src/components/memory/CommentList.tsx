@@ -24,7 +24,7 @@ function CommentList({ memorySeq, commentCnt, commentList }: CommentProps) {
         {commentList.length ? (
           <div className="divide-y divide-stone-300 px-4 py-1">
             {commentList.map(
-              ({ commentSeq, profileImage, nickname, content }) => {
+              ({ commentSeq, profileImage, nickname, content, userSeq }) => {
                 return (
                   <CommentItem
                     key={commentSeq}
@@ -33,6 +33,7 @@ function CommentList({ memorySeq, commentCnt, commentList }: CommentProps) {
                     nickname={nickname}
                     content={content}
                     memorySeq={memorySeq}
+                    userSeq={userSeq}
                   />
                 );
               }

@@ -30,7 +30,7 @@ function AztFilter({
           .filter((azt) => azt.aztSeq !== currAzt[0]?.aztSeq);
 
   return (
-    <div className="relative basis-8/12 border border-black shadow-md">
+    <div className="relative basis-8/12 border border-black shadow-md cursor-pointer">
       <div
         className="flex w-full h-full truncate leading-8 text-center"
         onClick={handleToggle}

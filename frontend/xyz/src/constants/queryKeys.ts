@@ -52,7 +52,8 @@ export const queryKeys = {
     aztCapsuleList: (aztSeq: number) => [...KEYS.capsule, { aztSeq }],
     capsuleList: (tcSeq?: number) => [...KEYS.capsule, { tcSeq }],
     capsuleDetail: (tcSeq?: string) => [...KEYS.capsule, { tcSeq }],
-    openCapsuleList: () => [...KEYS.capsule],
+    openCapsuleList: () => [...KEYS.capsule, "openlist"],
+    myCapsuleList: () => [...KEYS.capsule, "mylist"],
   },
   friend: {
     friendList: (isBlock: boolean) => [...KEYS.friend, { isBlock }],
