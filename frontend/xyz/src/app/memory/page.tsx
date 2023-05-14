@@ -64,7 +64,7 @@ function MemoryPage() {
     if (!isAztLoading && aztData) {
       setAztList(aztData);
     }
-  }, [selectedDate, currAzt, position]); // 선택 날짜 / currAzt / 현재 or 마커 위치 변경되면 추억 목록 다시 조회
+  }, [selectedDate, currAzt, position, aztData]); // 선택 날짜 / currAzt / 현재 or 마커 위치 변경되면 추억 목록 다시 조회
 
   return (
     <section>
@@ -93,8 +93,10 @@ function MemoryPage() {
         locations={memories}
       />
       <MemoryCreateBtn />
-      {isMemoryLoading ? (
+      {!memoryList ? (
         "로딩중..."
+      ) : memoryList.length === 0 ? (
+        <div className="py-5">볼 수 있는 추억이 없어요 ㅠㅠ</div>
       ) : (
         <div className="flex flex-col mt-4 gap-y-4">
           {memoryList?.map((memory, idx) => {
