@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
@@ -46,9 +46,8 @@ function DateFilter({
         selected={selectedDate}
         onChange={handleDateChange}
         popperClassName="z-10" // 지도에 겹쳐지는 것 방지
-        // className={styles.datePicker}
-        className="flex align-middle border border-black text-center py-1 cursor-pointer w-full"
-        // wrapperClassName="w-3/6"
+        className="flex align-middle border border-black text-center py-1 cursor-pointer w-full placeholder:text-black"
+        placeholderText="날짜 선택하기"
       />
     </div>
     /*{ <DatePicker
