@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import calendarIcon from "../../../public/icons/calendar.svg";
 import Image from "next/image";
+import { addDays } from "date-fns";
 
 interface DateFilterProps {
   selectedDate: Date | null;
@@ -48,6 +49,7 @@ function DateFilter({
         popperClassName="z-10" // 지도에 겹쳐지는 것 방지
         className="flex align-middle border border-black text-center py-1 cursor-pointer w-full placeholder:text-black"
         placeholderText="날짜 선택하기"
+        maxDate={new Date()}
       />
     </div>
     /*{ <DatePicker
