@@ -1,5 +1,5 @@
 "use client";
-import store from "@/store/store";
+import { useAppSelector } from "@/hooks/redux";
 import { useVisitorList } from "@/hooks/queries/user";
 import GuestbookItem from "./GuestbookItem";
 
@@ -8,7 +8,8 @@ interface GuestbookProps {
 }
 
 function Guestbook({ userSeq }: GuestbookProps) {
-  const state = store.getState();
+  const state = useAppSelector((state) => state);
+
   // const userSeq = state.auth.userInfo?.userSeq;
   const { data: visitorList, isLoading: isVisitorLoading } =
     useVisitorList(userSeq);

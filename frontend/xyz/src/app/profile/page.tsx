@@ -14,12 +14,14 @@ import ProfileEdit from "@/components/profile/ProfileEdit";
 import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
 import Myroom from "@/components/profile/Myroom";
 import ProfileBtn from "@/components/profile/ProfileBtn";
-import store from "@/store/store";
+import { useAppSelector } from "@/hooks/redux";
 
 function ProfilePage() {
   //리덕스 정보 가져오기
-  const state = store.getState();
+  const state = useAppSelector((state) => state);
+
   const userSeq = state.auth.userInfo?.userSeq;
+  console.log(userSeq, "userSeq-ProfilePage");
 
   const [isModal, setIsModal] = useState(false);
   const buttonClick = () => {};
@@ -33,9 +35,10 @@ function ProfilePage() {
     isLoading: isUserLoading,
     error,
   } = useUserList(userSeq);
+
   // 나중에 state 에서 userSeq 가져와서 넣을 자리 : useUserList(userSeq)
   if (!isUserLoading && userList) {
-    console.log(userList, "userList");
+    console.log(userList, "userList-ProfilePage");
   }
 
   const { data: visitorList, isLoading: isVisitorLoading } = useVisitorList(1);
@@ -45,14 +48,16 @@ function ProfilePage() {
 
   return (
     <div className="w-full h-full">
-      <ProfileMain userSeq={userSeq} />
+      <ProfileMain mainUserSeq={userSeq} />
       <div className="flex py-2 items-center justify-center">
-        <ProfileBtn userSeq={userSeq} />
+        <ProfileBtn btnUserSeq={userSeq} />
       </div>
 
-      <ProfileTab value={true} onChange={() => {}} />
-      {/* <Myroom /> */}
-      <Guestbook userSeq={userSeq} />
+      <ProfileTab
+        value={true}
+        onChange={() => {}}
+        profileTabUserSeq={userSeq}
+      />
     </div>
   );
 }

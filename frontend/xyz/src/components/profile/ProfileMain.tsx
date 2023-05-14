@@ -5,17 +5,18 @@ import React from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
-import store from "@/store/store";
+import { useAppSelector } from "@/hooks/redux";
 
 interface ProfileMainProps {
-  userSeq: string | number | undefined;
+  mainUserSeq: string | number | undefined;
 }
 
-function ProfileMain({ userSeq }: ProfileMainProps) {
-  const state = store.getState();
+function ProfileMain({ mainUserSeq }: ProfileMainProps) {
+  const { data: profileData, isLoading } = useUserList(mainUserSeq);
+  const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
   const router = useRouter();
-  const { data: profileData, isLoading } = useUserList(userSeq);
+  console.log(profileData, "profileData");
   const pushToProfileEdit = () => {
     router.push("/profile/edit");
   };
@@ -35,7 +36,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
           <div className="flex pl-5 gap-10">
             {profileData?.identify}
 
-            {userSeq === myUserSeq ? (
+            {mainUserSeq === myUserSeq ? (
               <ProfileDropdown
                 firstText="프로필 편집"
                 firstFunc={pushToProfileEdit}
