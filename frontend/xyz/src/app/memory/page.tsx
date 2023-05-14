@@ -64,7 +64,10 @@ function MemoryPage() {
     if (!isAztLoading && aztData) {
       setAztList(aztData);
     }
-  }, [selectedDate, currAzt, position, aztData]); // 선택 날짜 / currAzt / 현재 or 마커 위치 변경되면 추억 목록 다시 조회
+    if (memoryList) {
+      setMemories(memoryList);
+    }
+  }, [selectedDate, currAzt, position, aztData, memoryList]); // 선택 날짜 / currAzt / 현재 or 마커 위치 변경되면 추억 목록 다시 조회
 
   return (
     <section>
