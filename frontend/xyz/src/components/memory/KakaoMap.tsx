@@ -91,7 +91,11 @@ function KakaoMap({
               ? position?.lng
               : currLocation?.lng,
         }}
-        style={{ width: "100%", height: `${height?.toString() || "220"}px` }}
+        style={{
+          width: "100%",
+          height: `${height?.toString() || "220"}px`,
+          zIndex: 0,
+        }}
         level={3}
         onClick={(_t, mouseEvent) =>
           setPosition({
