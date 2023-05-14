@@ -1,7 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
+import React, { useCallback, useEffect } from "react";
+import {
+  CustomOverlayMap,
+  Map,
+  MapInfoWindow,
+  MapMarker,
+} from "react-kakao-maps-sdk";
 import pinIcon from "../../../public/icons/pin.svg";
 import Image from "next/image";
 import { convertAddress } from "@/app/api/kakao";
@@ -53,7 +58,7 @@ function KakaoMap({
     } else {
       handleFailConvertToAddress();
     }
-  }, [position]);
+  }, [position, locations]);
 
   const successHandler = (response: any) => {
     // console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
@@ -79,9 +84,10 @@ function KakaoMap({
         <Image src={pinIcon} alt="핀 아이콘" width={15} className="mr-1" />
         <span>{address}</span>
       </div>
-      <Map
+      <Map // 지도를 표시할 Container
         // 추억 등록하는 거라면 현재 위치 없애고 사진 메타데이터 위치 or 수정해서 마커 찍은 위치로 이동하도록 하기
         center={{
+          // 지도의 중심좌표
           lat:
             isPhotoUpload && position?.lat !== 0
               ? position?.lat
@@ -91,7 +97,12 @@ function KakaoMap({
               ? position?.lng
               : currLocation?.lng,
         }}
-        style={{ width: "100%", height: `${height?.toString() || "220"}px` }}
+        style={{
+          // 지도의 크기
+          width: "100%",
+          height: `${height?.toString() || "220"}px`,
+          zIndex: 0,
+        }}
         level={3}
         onClick={(_t, mouseEvent) =>
           setPosition({
@@ -103,22 +114,39 @@ function KakaoMap({
         <CustomOverlayMap
           position={{ lat: currLocation?.lat, lng: currLocation?.lng }}
         >
-          {position && <MapMarker position={position} />}
-          <div
-            style={{ padding: "1rem", backgroundColor: "#fff", color: "#000" }}
-          >
-            😉내위치!
-          </div>
+          {position && <MapMarker position={position} zIndex={10} />}
+          {/* <div className="p-2 bg-white/80 text-black">⭐내위치!</div> */}
         </CustomOverlayMap>
         {locations?.map(({ memorySeq, memoryImage, latitude, longitude }) => (
-          <MapMarker
-            key={memorySeq}
-            position={{ lat: latitude, lng: longitude }}
-            image={{
-              src: memoryImage,
-              size: { width: 24, height: 35 },
-            }}
-          />
+          <>
+            {/* <MapInfoWindow // 인포윈도우를 생성하고 지도에 표시
+              position={{
+                // 인포윈도우가 표시될 위치
+                lat: latitude,
+                lng: longitude,
+              }}
+              removable={true} // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시
+            >
+              <div style={{ padding: "5px", color: "#000" }}>
+                <img src={memoryImage} alt="" width={90} height={60} />
+              </div>
+            </MapInfoWindow> */}
+            <MapMarker
+              key={memorySeq}
+              position={{ lat: latitude, lng: longitude }}
+              clickable={true}
+              image={{
+                src: memoryImage,
+                size: { width: 90, height: 60 },
+                // options: {
+                //   offset: {
+                //     x: 27,
+                //     y: 69,
+                //   }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                // },
+              }}
+            />
+          </>
         ))}
       </Map>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Container from "../common/Container";
 import { MemoriesTypes } from "@/types/memory";
 import Link from "next/link";
@@ -26,6 +26,7 @@ function MemoryItem({ memory }: MemoryItemProps) {
     likeCnt,
     isLiked,
     commentCnt,
+    // userName,
   } = memory;
 
   return (
@@ -43,18 +44,41 @@ function MemoryItem({ memory }: MemoryItemProps) {
               src={memoryImage}
               alt="추억 사진"
               width={120}
-              className="rounded max-w-[120px]"
+              height={80}
+              className="rounded max-w-[120px] object-cover w-96 h-20 shadow"
             />
           </div>
           <div className="w-full flex flex-col justify-evenly">
-            <div className="flex justify-between mb-1">
-              <div className="flex gap-x-2">
-                <img src="/icons/calendar.svg" alt="캘린더 아이콘" />
-                <span>{sliceDate(date)}</span>
-              </div>
+            {/* <div className="flex items-center gap-x-3">
+              <Image
+                src="/icons/user.svg"
+                alt="유저 아이콘"
+                width={12}
+                height={12}
+              />
+              <span>
+                {userName.length > 15
+                  ? userName.slice(0, 15) + "..."
+                  : userName}{" "}
+              </span>
+            </div> */}
+            <div className="flex gap-x-3">
+              <Image
+                src="/icons/calendar.svg"
+                alt="캘린더 아이콘"
+                width={12}
+                height={12}
+              />
+              <span>{sliceDate(date)}</span>
             </div>
-            <div className="flex items-start gap-x-2">
-              <img src="/icons/pin.svg" alt="위치 아이콘" className="mt-1" />
+            <div className="flex items-start gap-x-3">
+              <Image
+                src="/icons/pin.svg"
+                alt="위치 아이콘"
+                className="mt-1"
+                width={12}
+                height={12}
+              />
               <span>{location}</span>
             </div>
           </div>
