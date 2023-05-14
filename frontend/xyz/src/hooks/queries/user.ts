@@ -21,7 +21,7 @@ export const useLogin = () => {
 //userSeq 없을 때 처리를 어떻게 하는게 맞는지 모르겠음(get 주소가 저런식이 맞나..?)
 //userSeq << 나의 것은 어디서 얻을 수 있는지?
 
-export const useUserList = (userSeq?: number | string) => {
+export const useUserList = (userSeq: number | string | undefined) => {
   return useQuery<UserProfileType>({
     queryKey: queryKeys.user.userList(),
     queryFn: async () => {
@@ -32,7 +32,7 @@ export const useUserList = (userSeq?: number | string) => {
   });
 };
 
-export const useVisitorList = (userSeq?: number | string) => {
+export const useVisitorList = (userSeq: number | string | undefined) => {
   return useQuery<VisitorTypes[]>({
     queryKey: queryKeys.user.myVisitorList(),
     queryFn: async () => {

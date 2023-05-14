@@ -11,6 +11,7 @@ import ProfileDropDown from "@/components/profile/ProfileDropdown";
 import { useAppSelector } from "@/hooks/redux";
 import ProfileMain from "@/components/profile/ProfileMain";
 import ProfileTab from "@/components/profile/ProfileTab";
+import { sl } from "date-fns/locale";
 
 type Props = { params: { slug: number | string } };
 
