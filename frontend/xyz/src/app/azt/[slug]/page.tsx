@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useAztCapsuleList } from "@/hooks/queries/capsule";
 import { API } from "@/constants/queryKeys";
 import { useAztInfo } from "@/hooks/queries/azt";
+import { LOCAL } from "@/constants/localUrl";
 
 function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
@@ -80,7 +81,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
           />
         </div>
         <div className="flex gap-x-2 items-center">
-          <Link href={`/${API.chat}/${slug}`}>
+          <Link href={`/${LOCAL.chatting}/${aztInfoData?.chatSeq}`}>
             <Image
               src="/icons/chat.svg"
               alt="아지트 채팅"
