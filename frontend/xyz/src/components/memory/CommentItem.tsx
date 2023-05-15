@@ -7,6 +7,7 @@ import { deleteMemoryComment } from "@/app/api/memory";
 import { queryKeys } from "@/constants/queryKeys";
 import ProfileImg from "../common/ProfileImg";
 import ModalBtn from "../common/ModalBtn";
+import { useAppSelector } from "@/hooks/redux";
 
 interface CommentItemProps {
   commentSeq: number;
@@ -14,6 +15,7 @@ interface CommentItemProps {
   nickname: string;
   content: string;
   memorySeq: number;
+  userSeq: number;
 }
 
 function CommentItem({
@@ -22,7 +24,12 @@ function CommentItem({
   nickname,
   content,
   memorySeq,
+  userSeq,
 }: CommentItemProps) {
+  const loggedInUserSeq = useAppSelector(
+    (state) => state.auth.userInfo?.userSeq
+  );
+
   const queryClient = useQueryClient();
   const useDeleteMemoryCommentMutation = useMutation({
     mutationFn: () => deleteMemoryComment(commentSeq),
@@ -50,14 +57,16 @@ function CommentItem({
         <div className="flex flex-col w-full">
           <div className="flex justify-between pr-2">
             <p className="mb-1 mt-2">{nickname} :</p>
-            <button onClick={handleDeleteClick}>
-              <Image
-                src="/icons/close.svg"
-                alt="삭제 아이콘"
-                width={12}
-                height={12}
-              />
-            </button>
+            {loggedInUserSeq === userSeq && (
+              <button onClick={handleDeleteClick}>
+                <Image
+                  src="/icons/close.svg"
+                  alt="삭제 아이콘"
+                  width={12}
+                  height={12}
+                />
+              </button>
+            )}
           </div>
           <p>{content}</p>
         </div>
