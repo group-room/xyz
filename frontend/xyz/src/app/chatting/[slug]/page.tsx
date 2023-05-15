@@ -3,7 +3,10 @@
 import { sendChat } from "@/app/api/chatting";
 import ChatInput from "@/components/chatting/ChatInput";
 import { queryKeys } from "@/constants/queryKeys";
-import { useChattingHistory } from "@/hooks/queries/chatting";
+import {
+  useChattingDetail,
+  useChattingHistory,
+} from "@/hooks/queries/chatting";
 import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
 import { SlugProps } from "@/types/common";
@@ -15,10 +18,31 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const loggedInUserSeq = useAppSelector(
     (state) => state.auth.userInfo?.userSeq
   );
+
+  // 채팅방 정보 조회
+  const { data: chatroomDetailData } = useChattingDetail(slug);
+  if (chatroomDetailData) console.log(chatroomDetailData);
+
+  // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
   const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
   if (chatHistory) console.log(chatHistory);
 
+  // 채팅 실시간 조회 - SSE
+  // useEffect(() => {
+  //   const eventSource = new EventSource("https://xyz-gen.com/chat/message");
+
+  //   eventSource.onmessage = (event) => {
+  //     const message = JSON.parse(event.data);
+  //     // Handle the received message, e.g., update the chat state
+  //   };
+
+  //   return () => {
+  //     eventSource.close();
+  //   };
+  // }, []);
+
+  // 채팅 전송
   const queryClient = useQueryClient();
   const useSendChatMutation = useMutation({
     mutationFn: () =>

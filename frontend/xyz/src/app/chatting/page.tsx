@@ -6,18 +6,6 @@ import React, { useEffect } from "react";
 
 function ChatPage() {
   const { data: chatroomList, isLoading } = useChattingList();
-  // useEffect(() => {
-  //   const eventSource = new EventSource("https://xyz-gen.com/chat/message");
-
-  //   eventSource.onmessage = (event) => {
-  //     const message = JSON.parse(event.data);
-  //     // Handle the received message, e.g., update the chat state
-  //   };
-
-  //   return () => {
-  //     eventSource.close();
-  //   };
-  // }, []);
   if (!chatroomList) {
     return <div>로딩중...</div>;
   }

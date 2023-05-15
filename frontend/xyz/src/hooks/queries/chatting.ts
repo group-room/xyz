@@ -1,6 +1,10 @@
 import { axiosChatInstance, axiosInstance } from "@/app/api/instance";
 import { API, queryKeys } from "@/constants/queryKeys";
-import { ChatDataTypes, ChattingRoomListTypes } from "@/types/chatting";
+import {
+  ChatDataTypes,
+  ChattingRoomDetailTypes,
+  ChattingRoomListTypes,
+} from "@/types/chatting";
 import { useQuery } from "@tanstack/react-query";
 
 // 채팅방 목록 조회
@@ -11,6 +15,18 @@ export const useChattingList = () => {
       return axiosInstance
         .get(`${API.chatroom}/list`)
         .then((res) => res.data.data.chats);
+    },
+  });
+};
+
+// 채팅방 상세 정보 조회
+export const useChattingDetail = (chatSeq: number) => {
+  return useQuery<ChattingRoomDetailTypes>({
+    queryKey: queryKeys.chatting.chatroomDetail(chatSeq),
+    queryFn: async () => {
+      return axiosInstance
+        .get(`${API.chatroom}`, { params: { chatSeq } })
+        .then((res) => res.data.data);
     },
   });
 };
