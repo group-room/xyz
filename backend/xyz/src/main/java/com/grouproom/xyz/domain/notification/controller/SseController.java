@@ -37,10 +37,15 @@ public class SseController {
         }
 
         sseService.addSseEmitter(userSeq, sseEmitter);
+        logger.info("userSeq:" + userSeq);
+        logger.info("sseEmitter:" + sseEmitter.toString());
 
         sseEmitter.onCompletion(() -> sseService.removeSseEmitter(userSeq));
         sseEmitter.onTimeout(() -> sseService.removeSseEmitter(userSeq));
         sseEmitter.onError(e -> sseService.removeSseEmitter(userSeq));
+
+        logger.info("userSeq:" + userSeq);
+        logger.info("sseEmitter:" + sseEmitter.toString());
 
         return sseEmitter;
     }
