@@ -5,7 +5,7 @@ import Textbox from "@/components/common/Textbox";
 import Btn from "@/components/common/Btn";
 import { BgColors } from "@/constants/style";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProfileMain from "../../components/profile/ProfileMain";
 import ProfileTab from "../../components/profile/ProfileTab";
 import Guestbook from "@/components/profile/Guestbook";
@@ -18,9 +18,14 @@ import { useAppSelector } from "@/hooks/redux";
 
 function ProfilePage() {
   //리덕스 정보 가져오기
-  const state = useAppSelector((state) => state);
+  const [userSeq, setUserSeq] = useState<number>(1);
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
+  useEffect(() => {
+    if (userInfo) {
+      setUserSeq(userInfo.userSeq);
+    }
+  }, [userInfo]);
 
-  const userSeq = state.auth.userInfo?.userSeq;
   console.log(userSeq, "userSeq-ProfilePage");
 
   const [isModal, setIsModal] = useState(false);
@@ -48,9 +53,9 @@ function ProfilePage() {
 
   return (
     <div className="w-full h-full">
-      <ProfileMain mainUserSeq={userSeq} />
+      <ProfileMain mainUserSeq={userSeq.toString()} />
       <div className="flex py-2 items-center justify-center">
-        <ProfileBtn btnUserSeq={userSeq} />
+        <ProfileBtn btnUserSeq={userSeq.toString()} />
       </div>
 
       <ProfileTab

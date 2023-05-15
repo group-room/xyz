@@ -7,10 +7,16 @@ import { useUserList } from "@/hooks/queries/user";
 import ModalBtn from "../common/ModalBtn";
 import { useState } from "react";
 import { useAppSelector } from "@/hooks/redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postFollow, putCancelFollow, deleteBlock } from "@/app/api/friend";
+import { KEYS } from "@/constants/queryKeys";
 
-type Props = { btnUserSeq: string | number | undefined };
+type Props = { btnUserSeq: string };
 
 function ProfileBtn({ btnUserSeq }: Props) {
+  const profileBtnUserSeq = parseInt(btnUserSeq);
+  const queryClient = useQueryClient();
+
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
   const router = useRouter();
@@ -19,7 +25,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
     data: userList,
     isLoading: isUserLoading,
     error,
-  } = useUserList(btnUserSeq);
+  } = useUserList(profileBtnUserSeq);
 
   const PushtoProfileFriend = () => {
     router.push("/profile/friend");
@@ -27,11 +33,33 @@ function ProfileBtn({ btnUserSeq }: Props) {
   const PushtoProfileMypage = () => {
     router.push("/profile/mypage");
   };
-  const MakeFriends = () => {
-    // 추후에 친구 신청을 누르면 친구 신청이 감 (query 만들어놓으면 연결)
+  const useMakeFriendsMutation = useMutation({
+    mutationFn: () => postFollow(profileBtnUserSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.friend);
+    },
+  });
+
+  const MakeFriends = useMakeFriendsMutation.mutate;
+
+  const useDeleteFriendRequestMutation = useMutation({
+    mutationFn: () => putCancelFollow(profileBtnUserSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.friend);
+      console.log("친구 요청 취소");
+    },
+  });
+
+  const DeleteFriendRequest = useDeleteFriendRequestMutation.mutate;
+  const AcceptFriendRequest = () => {
+    router.push("/notification");
   };
 
-  if (btnUserSeq === myUserSeq) {
+  console.log(typeof btnUserSeq, "btnUserSeq");
+  console.log(typeof myUserSeq, "myUserSeq");
+  console.log(userList, "userList-ProfileBtn");
+
+  if (profileBtnUserSeq === myUserSeq || btnUserSeq === myUserSeq?.toString()) {
     return (
       <div className="flex justify-start items-start relative gap-[15px]">
         <Btn
@@ -48,7 +76,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </div>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friend === true) {
+  } else if (profileBtnUserSeq !== myUserSeq && userList?.friend === true) {
     return (
       <>
         <Btn
@@ -60,7 +88,10 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friendRequest === true) {
+  } else if (
+    profileBtnUserSeq !== myUserSeq &&
+    userList?.friendRequest === true
+  ) {
     return (
       <>
         <Btn width="168" bgColor="blue" text="수락 대기중" btnFunc={() => {}} />
@@ -68,19 +99,22 @@ function ProfileBtn({ btnUserSeq }: Props) {
           width="168"
           bgColor="blue"
           text="친구 요청 취소"
-          btnFunc={() => {}}
+          btnFunc={DeleteFriendRequest}
           // 추후에 친구 완성 되면 친구 요청 취소 함수 연결
         />
       </>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friendResponse === true) {
+  } else if (
+    profileBtnUserSeq !== myUserSeq &&
+    userList?.friendResponse === true
+  ) {
     return (
       <>
         <Btn
           width="300"
           bgColor="blue"
           text="친구요청 수락하기"
-          btnFunc={() => {}}
+          btnFunc={AcceptFriendRequest}
           // 추후에 알림 완성 되면 친구 요청 수락 알림 페이지로 이동
         />
       </>

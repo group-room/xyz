@@ -18,17 +18,18 @@ import ModalBtn from "../common/ModalBtn";
 import { useAppSelector } from "@/hooks/redux";
 
 interface ProfileMainProps {
-  userSeq: string | number | undefined;
+  mainUserSeq: string;
 }
 
-function ProfileMain({ userSeq }: ProfileMainProps) {
+function ProfileMain({ mainUserSeq }: ProfileMainProps) {
+  const userSeq = parseInt(mainUserSeq);
   const { data: profileData, isLoading } = useUserList(userSeq);
+  console.log(profileData, "profileData");
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
 
   const [isModal, setIsModal] = useState(false);
   const router = useRouter();
-  console.log(profileData, "profileData");
   const pushToProfileEdit = () => {
     router.push("/profile/edit");
   };

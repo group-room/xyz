@@ -33,6 +33,11 @@ function ProfileUserPage({ params: { slug } }: Props) {
         <div className="flex py-2 items-center justify-center">
           <ProfileBtn btnUserSeq={slug.toString()} />
         </div>
+        <ProfileTab
+          value={true}
+          onChange={() => {}}
+          profileTabUserSeq={slug.toString()}
+        />
       </div>
     );
   }
