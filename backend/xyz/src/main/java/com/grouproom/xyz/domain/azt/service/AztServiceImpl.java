@@ -66,10 +66,10 @@ public class AztServiceImpl implements AztService {
         for (AztMember aztMember:aztMembers) {
             User user = aztMember.getUser();
             memberResponses.add(MemberResponse.builder()
-                            .userSeq(user.getSequence())
-                            .nickname(user.getNickname())
-                            .identify(user.getIdentify())
-                            .profileImage(user.getProfileImage())
+                    .userSeq(user.getSequence())
+                    .nickname(user.getNickname())
+                    .identify(user.getIdentify())
+                    .profileImage(user.getProfileImage())
                     .build());
         }
         logger.info("아지트 정보");
@@ -110,9 +110,9 @@ public class AztServiceImpl implements AztService {
         }
 
         Azt azt = aztRepository.save(Azt.builder()
-                        .aztName(addAztRequest.getName())
-                        .aztImage(imagePath)
-                        .isDeleted(false)
+                .aztName(addAztRequest.getName())
+                .aztImage(imagePath)
+                .isDeleted(false)
                 .build());
         logger.info("아지트 생성 성공");
 
@@ -130,9 +130,9 @@ public class AztServiceImpl implements AztService {
             for (MemberRequest member : addAztRequest.getMembers()) {
                 User user = userRepository.findBySequence(member.getUserSeq());
                 aztMemberRepository.save(AztMember.builder()
-                                .azt(azt)
-                                .user(user)
-                                .isDeleted(false)
+                        .azt(azt)
+                        .user(user)
+                        .isDeleted(false)
                         .build());
                 logger.info(user.getSequence() + " 멤버 가입 성공");
             }
@@ -218,11 +218,11 @@ public class AztServiceImpl implements AztService {
             } else {
                 logger.info(friend.getUserSeq() + " 초대 가능");
                 memberResponses.add(MemberResponse.builder()
-                                .userSeq(friend.getUserSeq())
-                                .profileImage(friend.getProfileImage())
-                                .identify(friend.getIdentify())
-                                .nickname(friend.getNickname())
-                                .chatSeq(friend.getChatSeq())
+                        .userSeq(friend.getUserSeq())
+                        .profileImage(friend.getProfileImage())
+                        .identify(friend.getIdentify())
+                        .nickname(friend.getNickname())
+                        .chatSeq(friend.getChatSeq())
                         .build());
             }
         }
