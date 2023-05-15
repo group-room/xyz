@@ -11,13 +11,11 @@ export const useFriendList = (isBlock: boolean) => {
     queryFn: async () => {
       if (isBlock) {
         // 차단한 친구 목록 불러오기
-        console.log("차단한 친구 목록 불러오기");
         return axiosInstance
           .get(`${FRIEND}/block`)
           .then((res) => res.data.data.users);
       } else {
         // 친구 목록 불러오기
-        console.log("친구 목록 불러오기");
         return axiosInstance
           .get(`${FRIEND}/all`)
           .then((res) => res.data.data.friends);
