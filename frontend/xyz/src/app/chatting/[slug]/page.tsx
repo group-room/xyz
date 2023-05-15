@@ -12,7 +12,7 @@ import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
 import { SlugProps } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 
 function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const [chatInput, onChangeChatInput, resetInputValue] = useInput("");
@@ -31,18 +31,21 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   }
 
   // 채팅 실시간 조회 - SSE
-  // useEffect(() => {
-  //   const eventSource = new EventSource("https://xyz-gen.com/chat/message");
+  useEffect(() => {
+    const eventSource = new EventSource(
+      `https://xyz-gen.com/chat/stream-sse?room=${slug}`
+    );
 
-  //   eventSource.onmessage = (event) => {
-  //     const message = JSON.parse(event.data);
-  //     // Handle the received message, e.g., update the chat state
-  //   };
+    eventSource.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log(message);
+      // Handle the received message, e.g., update the chat state
+    };
 
-  //   return () => {
-  //     eventSource.close();
-  //   };
-  // }, []);
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   // 채팅 전송
   const queryClient = useQueryClient();
