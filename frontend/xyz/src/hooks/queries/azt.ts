@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const AZT: string = `/${API.azt}`;
 
+// 아지트 목록 조회
 export const useAztList = () => {
   return useQuery<AztTypes[]>({
     queryKey: queryKeys.azt.aztList(),
@@ -14,6 +15,7 @@ export const useAztList = () => {
   });
 };
 
+// 아지트 상세 인포 조회
 export const useAztInfo = (aztSeq: number) => {
   return useQuery<AztInfoTypes>({
     queryKey: queryKeys.azt.aztInfo(aztSeq),
@@ -23,6 +25,7 @@ export const useAztInfo = (aztSeq: number) => {
   });
 };
 
+// 아지트 가입 가능한 친구 목록 조회 (내 친구 목록 중에)
 export const useAztAvailableFriendList = (aztSeq: number) => {
   return useQuery<AztMemberTypes[]>({
     queryKey: queryKeys.azt.aztAvailableFriendList(aztSeq),
@@ -32,15 +35,6 @@ export const useAztAvailableFriendList = (aztSeq: number) => {
         .then((res) => {
           return res.data.data.members;
         });
-    },
-  });
-};
-
-export const useAztWithdraw = (aztSeq: number) => {
-  return useQuery({
-    queryKey: queryKeys.azt.aztInfo(aztSeq),
-    queryFn: async () => {
-      return axiosInstance.delete(`${AZT}/member/${aztSeq}`);
     },
   });
 };

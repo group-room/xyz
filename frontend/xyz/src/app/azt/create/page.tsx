@@ -66,7 +66,11 @@ function AzitCreatePage() {
       type: "application/json",
     });
     formData.append("addAztRequest", jsonBlob);
-    if (aztPhoto) formData.append("image", aztPhoto as File);
+    if (aztPhoto) {
+      formData.append("image", aztPhoto as File);
+    } else {
+      formData.append("image", new Blob([]));
+    }
 
     useCreateAztMutation.mutate(formData);
   };
@@ -97,7 +101,9 @@ function AzitCreatePage() {
               />
             </div>
             <div>
-              <p>아지트 프로필 사진</p>
+              <p>
+                아지트 프로필 사진 <span className="text-sm">(선택)</span>
+              </p>
               <div className="w-full">
                 <label
                   htmlFor="input-file"
