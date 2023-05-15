@@ -1,11 +1,15 @@
 package com.grouproom.xyz.domain.friend.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Setter
-@Getter
-public class UserResponse extends FriendUserResponse {
+@Data
+@NoArgsConstructor
+public class UserResponse {
 
+    private Long userSeq;
+    private String nickname;
+    private String profileImage;
+    private String identify;
     private String relation;
 }

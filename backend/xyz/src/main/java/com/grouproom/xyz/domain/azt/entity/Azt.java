@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.azt.entity;
 
+import com.grouproom.xyz.domain.chat.entity.Chat;
 import com.grouproom.xyz.global.model.BaseTimeEntity;
 import lombok.*;
 
@@ -24,8 +25,9 @@ public class Azt extends BaseTimeEntity {
     @Column(name = "azt_image", length = 2083)
     private String aztImage;
 
-    @Column(name = "chat_sequence")
-    private Long chatSequence;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_seq")
+    private Chat chatSeq;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
     private Boolean isDeleted;

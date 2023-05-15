@@ -1,0 +1,18 @@
+#Kafka
+spring:
+  kafka:
+    bootstrap-servers: 3.38.168.160:9092
+#    bootstrap-servers: localhost:9092
+  data:
+    mongodb:
+      host: 3.38.168.160
+#      host: localhost
+      port: 27017
+#      authentication-database: admin
+#      username: qweqwe
+#      password: 123
+      database: xyz
+server:
+  port: 8080
+
+

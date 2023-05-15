@@ -5,6 +5,7 @@ import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.user.entity.QUser;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
    @Override
     public List<FriendUserResponse> findByFromUserOrToUser(Long userSeq, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
 
+       String isFriend = "친구";
         return jpaQueryFactory
                 .select(Projections.fields(FriendUserResponse.class,
                         new CaseBuilder()
@@ -41,7 +43,8 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                 .when(fromUser.sequence.eq(userSeq))
                                 .then(toUser.profileImage)
                                 .otherwise(fromUser.profileImage).as("profileImage"),
-                        friend.chatSequence.as("chatSeq")
+                        friend.chatSeq.sequence.as("chatSeq"),
+                        Expressions.as(Expressions.constant(isFriend), "relation")
                         )
                 )
                 .from(friend)
@@ -87,12 +90,12 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                         .when(fromUser.sequence.eq(userSeq))
                                         .then(toUser.profileImage)
                                         .otherwise(fromUser.profileImage).as("profileImage"),
-                        friend.chatSequence.as("chatSeq")
+                        friend.chatSeq.as("chatSeq")
                         )
                 )
                 .from(friend)
-                .where(fromUser.sequence.eq(userSeq).and(toUser.nickname.eq(nickname))
-                        .or(toUser.sequence.eq(userSeq).and(fromUser.nickname.eq(nickname)))
+                .where(fromUser.sequence.eq(userSeq).and(toUser.nickname.contains(nickname))
+                        .or(toUser.sequence.eq(userSeq).and(fromUser.nickname.contains(nickname)))
                         , friend.isAccepted.eq(isAccepted)
                         , friend.isCanceled.eq(isCanceled)
                         , friend.isDeleted.eq(isDeleted))
@@ -100,7 +103,7 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
     }
 
     @Override
-    public FriendUserResponse findIdentifyBYFromUserOrToUser(Long userSeq, String identify, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
+    public List<FriendUserResponse> findIdentifyBYFromUserOrToUser(Long userSeq, String identify, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted) {
         return jpaQueryFactory
                 .select(Projections.fields(FriendUserResponse.class,
                                 new CaseBuilder()
@@ -119,16 +122,16 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                                         .when(fromUser.sequence.eq(userSeq))
                                         .then(toUser.profileImage)
                                         .otherwise(fromUser.profileImage).as("profileImage"),
-                        friend.chatSequence.as("chatSeq")
+                        friend.chatSeq.as("chatSeq")
                         )
                 )
                 .from(friend)
-                .where(fromUser.sequence.eq(userSeq).and(toUser.identify.eq(identify))
-                                .or(toUser.sequence.eq(userSeq).and(fromUser.identify.eq(identify)))
+                .where(fromUser.sequence.eq(userSeq).and(toUser.identify.contains(identify))
+                                .or(toUser.sequence.eq(userSeq).and(fromUser.identify.contains(identify)))
                         , friend.isAccepted.eq(isAccepted)
                         , friend.isCanceled.eq(isCanceled)
                         , friend.isDeleted.eq(isDeleted))
-                .fetchFirst();
+                .fetch();
     }
 
     @Override

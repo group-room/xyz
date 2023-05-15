@@ -24,7 +24,7 @@ public class AztRepositoryImpl implements AztRepositoryCustom {
                         azt.aztName.as("name"),
                         Expressions.stringPath("DATE_FORMAT(azt.createdAt, '%Y년 %m월 %d일')").as("createdAt"),
                         Expressions.stringPath("DATE_FORMAT(azt.updatedAt, '%Y년 %m월 %d일')").as("updatedAt"),
-                        azt.chatSequence)
+                        azt.chatSeq.sequence)
                 )
                 .from(azt)
                 .join(aztMember)
