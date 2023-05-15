@@ -10,12 +10,14 @@ import {
 } from "@/hooks/queries/chatting";
 import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
+import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const [chatInput, onChangeChatInput, resetInputValue] = useInput("");
+  const [chatData, setChatData] = useState<ChatDataTypes[]>([]);
   const loggedInUserSeq = useAppSelector(
     (state) => state.auth.userInfo?.userSeq
   );
@@ -26,26 +28,28 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
   const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
-  if (chatHistory) {
-    console.log(chatHistory);
-  }
 
   // 채팅 실시간 조회 - SSE
   useEffect(() => {
+    if (chatHistory) {
+      const filtered = chatData.filter((item) => item.id === chatHistory.id);
+      setChatData((prev) => [...prev, ...filtered]);
+    }
+
     const eventSource = new EventSource(
       `https://xyz-gen.com/chat/stream-sse?room=${slug}`
     );
 
     eventSource.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      console.log(message);
-      // Handle the received message, e.g., update the chat state
+      setChatData((prev) => [...prev, message]);
+      console.log(chatData);
     };
 
     return () => {
       eventSource.close();
     };
-  }, []);
+  }, [chatData, chatHistory]);
 
   // 채팅 전송
   const queryClient = useQueryClient();
@@ -53,7 +57,6 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     mutationFn: () =>
       sendChat(chatroomSeq, loggedInUserSeq!.toString(), chatInput),
     onSuccess: () => {
-      console.log("성공");
       queryClient.invalidateQueries(
         queryKeys.chatting.chatHistory(chatroomSeq)
       );
