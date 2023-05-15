@@ -1,8 +1,14 @@
 package com.grouproom.xyz.domain.chat.dto.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class RoomResponse {
 
     // 채팅방 시퀀스, 사진, 이름, 인원수, 아지트시퀀스 또는 친구 시퀀스
@@ -14,4 +20,12 @@ public class RoomResponse {
     private Long aztSeq;
     private Long userSeq;
 
+    public RoomResponse(Long sequence, String image, String name, String type, Long count, Long aztSeq) {
+        this.sequence = sequence;
+        this.image = image;
+        this.name = name;
+        this.type = type;
+        this.count = count;
+        this.aztSeq = aztSeq;
+    }
 }
