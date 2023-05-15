@@ -78,7 +78,11 @@ function AzitEditPage({ params: { slug } }: SlugProps) {
       type: "application/json",
     });
     formData.append("modifyAztRequest", jsonBlob);
-    if (newAztPhoto) formData.append("image", newAztPhoto as File);
+    if (newAztPhoto) {
+      formData.append("image", newAztPhoto as File);
+    } else {
+      formData.append("image", new Blob([]));
+    }
 
     useEditAztMutation.mutate(formData);
   };
