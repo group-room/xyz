@@ -7,3 +7,11 @@ export interface ChattingRoomListTypes {
   aztSeq: number | null;
   userSeq: number | null; // aztSeq, userSeq 둘 중 하나는 null
 }
+
+export interface ChatDataTypes {
+  id: number;
+  room: string;
+  name: string; // useSeq
+  text: string;
+  time: string;
+}

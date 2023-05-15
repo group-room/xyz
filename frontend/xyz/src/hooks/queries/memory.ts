@@ -5,6 +5,7 @@ import { API, queryKeys } from "../../constants/queryKeys";
 
 const MEMORY: string = `/${API.memory}`;
 
+// 추억 피드 조회
 export const useMemoryList = ({
   date,
   aztSeq,
@@ -20,6 +21,7 @@ export const useMemoryList = ({
   });
 };
 
+// 추억 상세 조회
 export const useMemoryDetail = (memorySeq: number) => {
   return useQuery<MemoryTypes>({
     queryKey: queryKeys.memory.memoryDetail(memorySeq),

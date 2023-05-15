@@ -69,7 +69,7 @@ export const queryKeys = {
     notificationList: (type: string) => [...KEYS.notification, { type }],
   },
   chatting: {
-    chattingList: () => [...KEYS.chatroom],
-    chatDetail: (room: string) => [...KEYS.chat, { room }],
+    chatroomList: () => [...KEYS.chatroom],
+    chatHistory: (room: string) => [...KEYS.chat, "history", { room }],
   },
 };

@@ -3,6 +3,7 @@
 import { sendChat } from "@/app/api/chatting";
 import ChatInput from "@/components/chatting/ChatInput";
 import { queryKeys } from "@/constants/queryKeys";
+import { useChattingHistory } from "@/hooks/queries/chatting";
 import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
 import { SlugProps } from "@/types/common";
@@ -14,14 +15,18 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const loggedInUserSeq = useAppSelector(
     (state) => state.auth.userInfo?.userSeq
   );
+  const chatroomSeq = slug.toString();
+  const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
+  if (chatHistory) console.log(chatHistory);
+
   const queryClient = useQueryClient();
   const useSendChatMutation = useMutation({
     mutationFn: () =>
-      sendChat(slug.toString(), loggedInUserSeq!.toString(), chatInput),
+      sendChat(chatroomSeq, loggedInUserSeq!.toString(), chatInput),
     onSuccess: () => {
       console.log("성공");
       queryClient.invalidateQueries(
-        queryKeys.chatting.chatDetail(slug.toString())
+        queryKeys.chatting.chatHistory(chatroomSeq)
       );
       resetInputValue();
     },
