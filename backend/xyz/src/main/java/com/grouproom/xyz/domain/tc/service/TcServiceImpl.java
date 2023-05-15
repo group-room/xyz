@@ -74,6 +74,10 @@ public class TcServiceImpl implements TcService {
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "존재하지 않는 azt입니다.");
         }
 
+        if (addTcRequest.getOpenEnd() == null | addTcRequest.getUpdateEnd() == null | addTcRequest.getOpenStart() == null) {
+            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "타임캡슐 날짜를 지정해주세요.");
+        }
+
         Tc tc = Tc.builder()
                 .user(user)
                 .azt(azt)
