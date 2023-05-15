@@ -31,6 +31,7 @@ public class SseController {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
+            logger.info("connect success");
         } catch (IOException e) {
             logger.info(e.getMessage());
         }
