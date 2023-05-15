@@ -158,7 +158,12 @@ public class AztServiceImpl implements AztService {
                 logger.severe("삭제된 아지트");
                 throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 아지트");
             } else {
-                azt.setAztName(modifyAztRequest.getName());
+                if (null == modifyAztRequest.getName()) {
+                    logger.info("이름 없음");
+                } else {
+                    logger.info("이름 변경");
+                    azt.setAztName(modifyAztRequest.getName());
+                }
                 if(image.isEmpty()) {
                     logger.info("사진 변경 안함");
                 } else {
