@@ -129,6 +129,10 @@ public class AztServiceImpl implements AztService {
         } else {
             for (MemberRequest member : addAztRequest.getMembers()) {
                 User user = userRepository.findBySequence(member.getUserSeq());
+                if(null == user) {
+                    logger.severe("없는 멤버!");
+                    throw new ErrorResponse(HttpStatus.BAD_REQUEST, "없는 멤버");
+                }
                 aztMemberRepository.save(AztMember.builder()
                                 .azt(azt)
                                 .user(user)
