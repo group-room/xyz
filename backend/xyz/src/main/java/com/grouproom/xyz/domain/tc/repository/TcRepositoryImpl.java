@@ -99,7 +99,7 @@ public class TcRepositoryImpl implements TcRepositoryCustom {
     public List<Tc> findOpenableTcByUser_SeqAndCoordinates(Long userSeq, BigDecimal latitude, BigDecimal longitude) {
 
 //        일단 1km 반경
-        double maxDistance = 1000.0;
+        double maxDistance = 3000.0;
 
         NumberExpression<Double> distanceExpression = acos(sin(radians(Expressions.constant(latitude)))
                 .multiply(sin(radians(tc.latitude)))
