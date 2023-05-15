@@ -15,28 +15,66 @@ declare var ImageCapture: {
 const CameraCapture = () => {
   const [capturedPhoto, setCapturedPhoto] = useState<Blob | null>(null);
   const [isCaptured, setIsCaptured] = useState(false);
+  const [isPreviewing, setIsPreviewing] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const capturePicture = async (stream: MediaStream) => {
-    const videoTrack = stream.getVideoTracks()[0];
-    const imageCapture = new ImageCapture(videoTrack);
-    const photoBlob = await imageCapture.takePhoto();
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const photoDataUrl = reader.result as string;
-      fetch(photoDataUrl)
-        .then((res) => res.blob())
-        .then((blob) => {
-          setCapturedPhoto(blob); // Update the captured photo state to Blob
-          setIsCaptured(true); // Set the captured flag
-        });
-    };
-    reader.readAsDataURL(photoBlob);
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      }
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+    }
+  };
 
-    // Replace savePhoto with your actual function to save the photo
-    // You may need to convert the photoBlob to a file or base64 data before saving
+  const capturePicture = async () => {
+    if (videoRef.current) {
+      const canvas = document.createElement("canvas");
+      const video = videoRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            setCapturedPhoto(blob);
+            setIsPreviewing(true);
+          }
+        }, "image/jpeg");
+      }
+    }
+  };
 
-    // savePhoto(photoBlob);
+  // const capturePicture = async (stream: MediaStream) => {
+  //   const videoTrack = stream.getVideoTracks()[0];
+  //   const imageCapture = new ImageCapture(videoTrack);
+  //   const photoBlob = await imageCapture.takePhoto();
+
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     const photoDataUrl = reader.result as string;
+  //     fetch(photoDataUrl)
+  //       .then((res) => res.blob())
+  //       .then((blob) => {
+  //         setCapturedPhoto(blob); // Update the captured photo state to Blob
+  //         setIsCaptured(true); // Set the captured flag
+  //       });
+  //   };
+  //   reader.readAsDataURL(photoBlob);
+
+  // Replace savePhoto with your actual function to save the photo
+  // You may need to convert the photoBlob to a file or base64 data before saving
+
+  // savePhoto(photoBlob);
+  // };
+
+  const retakePicture = () => {
+    setCapturedPhoto(null);
+    setIsPreviewing(false);
   };
 
   const handleSavePhoto = () => {
@@ -47,14 +85,14 @@ const CameraCapture = () => {
     }
   };
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      capturePicture(stream);
-    } catch (error) {
-      console.error("Error accessing camera:", error);
-    }
-  };
+  // const startCamera = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  //     capturePicture(stream);
+  //   } catch (error) {
+  //     console.error("Error accessing camera:", error);
+  //   }
+  // };
 
   const savePhoto = async (photoBlob: Blob) => {
     // Implement your logic to save the photo here
@@ -72,14 +110,20 @@ const CameraCapture = () => {
     <div>
       <video ref={videoRef} />
       <button onClick={startCamera}>Start Camera</button>
-      {capturedPhoto && (
+
+      {!isPreviewing && (
+        <button onClick={capturePicture}>Capture Picture</button>
+      )}
+
+      {isPreviewing && (
         <div>
-          <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
-          <button onClick={handleSavePhoto}>Save Photo</button>{" "}
-          {/* Button to save the photo */}
+          {capturedPhoto && (
+            <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
+          )}
+          <button onClick={handleSavePhoto}>Save Photo</button>
+          <button onClick={retakePicture}>Retake Picture</button>
         </div>
       )}
-      {/* Display the captured photo */}
     </div>
   );
 };
