@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 좌표를 주소로 변환 : x = longitude, y = latitude
 export const convertAddress = async (x: string, y: string) => {
   const res = await axios.get(
     "https://dapi.kakao.com/v2/local/geo/coord2address",
@@ -15,7 +16,7 @@ export const convertAddress = async (x: string, y: string) => {
 
 // 주소를 좌표로 변환 : x = longitude, y = latitude
 export const convertAddressToCoordinate = async (query: string) => {
-  console.log("address -> ", query)
+  console.log("address -> ", query);
   // const query = encodeURI(encodeURIComponent(add))
   const res = await axios.get(
     "https://dapi.kakao.com/v2/local/search/address.json",
@@ -26,7 +27,7 @@ export const convertAddressToCoordinate = async (query: string) => {
       },
     }
   );
-  console.log("convertAddressToCoordinate")
-  console.log(res.data.documents[0].address)
+  console.log("convertAddressToCoordinate");
+  console.log(res.data.documents[0].address);
   return res.data.documents[0].address;
 };
