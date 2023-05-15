@@ -51,8 +51,8 @@ function ProfilePage() {
       </div>
 
       <ProfileTab value={true} onChange={() => {}} />
-      {/* <Myroom /> */}
-      <Guestbook userSeq={userSeq} />
+      <Myroom />
+      {/* <Guestbook userSeq={userSeq} /> */}
     </div>
   );
 }
