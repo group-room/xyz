@@ -22,7 +22,7 @@ public class SseController {
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.controller.SseController");
 
     @CrossOrigin
-    @GetMapping(consumes = MediaType.ALL_VALUE)
+    @GetMapping(consumes = MediaType.ALL_VALUE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter connect() {
         logger.info("connect 호출");
 
