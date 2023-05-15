@@ -27,9 +27,13 @@ public class ChatController {
     }
 
     @ApiOperation(value = "채팅 상세 조회", notes = "채팅 상세 정보를 반환한다.")
-    @PostMapping
-    public BaseResponse<?> chatDetail(@RequestBody ChatDetailRequest chatDetailRequest) {
+    @GetMapping
+    public BaseResponse<?> chatDetail(@RequestParam String type, @RequestParam Long chatSeq) {
         logger.info("chatDetail 호출");
+        ChatDetailRequest chatDetailRequest = ChatDetailRequest.builder()
+                .chatSeq(chatSeq)
+                .type(type)
+                .build();
         Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return new BaseResponse<>(chatService.findChat(loginSeq, chatDetailRequest));
     }
