@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import TabBar from "@/components/TabBar";
 import React from "react";
 
 type AppLayoutProps = {
@@ -11,7 +10,6 @@ function AppLayout({ children }: AppLayoutProps) {
     <>
       <Header />
       {children}
-      <TabBar />
     </>
   );
 }
