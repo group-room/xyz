@@ -12,12 +12,17 @@ function ChatInput({
   handleSumbitChat,
 }: ChatInputProps) {
   return (
-    <div className="flex">
+    <div className="flex border-t border-black fixed bottom-0 w-full -ml-5">
       <input
         type="text"
         value={chatInput}
         onChange={onChangeChatInput}
-        className="bg-amber-100 w-full py-3"
+        className="bg-amber-100 w-full px-2 py-3 border-r border-black"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSumbitChat();
+          }
+        }}
       />
       <button
         className="flex-none py-1 px-2 bg-yellow"

@@ -11,6 +11,8 @@ import Link from "next/link";
 import { useAztCapsuleList } from "@/hooks/queries/capsule";
 import { API } from "@/constants/queryKeys";
 import { useAztInfo } from "@/hooks/queries/azt";
+import { LOCAL } from "@/constants/localUrl";
+import { useRouter } from "next/navigation";
 
 function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
@@ -25,6 +27,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
   const handleChange = (selectedBtn: boolean) => {
     setBtnValue(selectedBtn);
   };
+  const router = useRouter();
 
   function SelectedContent() {
     if (btnValue) {
@@ -45,7 +48,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
     } else {
       if (isAztMemoryLoading) return <div>로딩중...</div>;
       return (
-        <>
+        <div className="flex flex-wrap ">
           {aztCapsuleData && aztCapsuleData.length ? (
             aztCapsuleData.map((capule) => (
               // TODO: 타임캡슐 컴포넌트 만들어지면 수정
@@ -54,8 +57,10 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
                 key={capule.tcSeq}
                 src="/images/capsule.svg"
                 alt="capsuleImg"
-                width={500}
-                height={500}
+                width="0"
+                height="0"
+                className="w-1/3 h-auto"
+                onClick={() => router.push(`/capsule/${capule.tcSeq}`)}
               />
             ))
           ) : (
@@ -63,7 +68,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
               <p>타임캡슐이 없어요 ㅠㅠ</p>
             </div>
           )}
-        </>
+        </div>
       );
     }
   }
@@ -80,7 +85,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
           />
         </div>
         <div className="flex gap-x-2 items-center">
-          <Link href={`/${API.chat}/${slug}`}>
+          <Link href={`/${LOCAL.chatting}/${aztInfoData?.chatSeq}`}>
             <Image
               src="/icons/chat.svg"
               alt="아지트 채팅"
