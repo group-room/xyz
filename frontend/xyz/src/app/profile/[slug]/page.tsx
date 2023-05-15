@@ -6,14 +6,12 @@ import { useRouter } from "next/navigation";
 
 import ProfilePage from "../page";
 import ProfileBtn from "@/components/profile/ProfileBtn";
-import DropDown from "@/components/memory/DropDown";
 import ProfileDropDown from "@/components/profile/ProfileDropdown";
 import { useAppSelector } from "@/hooks/redux";
 import ProfileMain from "@/components/profile/ProfileMain";
 import ProfileTab from "@/components/profile/ProfileTab";
-import { sl } from "date-fns/locale";
 
-type Props = { params: { slug: number | string } };
+type Props = { params: { slug: number } };
 
 function ProfileUserPage({ params: { slug } }: Props) {
   const router = useRouter();
@@ -26,7 +24,7 @@ function ProfileUserPage({ params: { slug } }: Props) {
   };
   // 나의 userSeq 와 slug 가 같을 때 === 나
 
-  if (slug === userSeq?.toString()) {
+  if (slug === userSeq) {
     return (
       <div className="w-full h-full">
         <ProfileMain mainUserSeq={slug.toString()} />

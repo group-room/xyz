@@ -24,7 +24,7 @@ function ProfilePage() {
     if (userInfo) {
       setUserSeq(userInfo.userSeq);
     }
-  }, [userInfo]);
+  }, [userInfo, userSeq]);
 
   console.log(userSeq, "userSeq-ProfilePage");
 

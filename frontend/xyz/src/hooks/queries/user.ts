@@ -18,15 +18,12 @@ export const useLogin = () => {
   });
 };
 
-//userSeq 없을 때 처리를 어떻게 하는게 맞는지 모르겠음(get 주소가 저런식이 맞나..?)
-//userSeq << 나의 것은 어디서 얻을 수 있는지?
-
-export const useUserList = (userSeq: number | string | undefined) => {
+export const useUserList = (userSeq: number) => {
   return useQuery<UserProfileType>({
     queryKey: queryKeys.user.userList(),
     queryFn: async () => {
       return axiosInstance
-        .get(`${USER}/profile?userSeq=${userSeq}`)
+        .get(`${USER}/profile`, { params: { userSeq } })
         .then((res) => res.data.data);
     },
   });
@@ -37,7 +34,7 @@ export const useVisitorList = (userSeq: number | string | undefined) => {
     queryKey: queryKeys.user.myVisitorList(),
     queryFn: async () => {
       return axiosInstance
-        .get(`${USER}/visitor?userSeq=${userSeq}`)
+        .get(`${USER}/visitor`, { params: { userSeq } })
         .then((res) => res.data.data);
     },
   });

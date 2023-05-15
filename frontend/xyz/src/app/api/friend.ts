@@ -3,7 +3,7 @@ import { axiosInstance } from "./instance";
 const FRIEND = "/friend";
 
 // 친구 요청
-export const postFollow = (userSeq: number | string | undefined) => {
+export const postFollow = (userSeq: number) => {
   return axiosInstance.post(FRIEND, { userSeq });
 };
 
@@ -13,17 +13,17 @@ export const putCancelFollow = (userSeq: number) => {
 };
 
 // 친구 요청 수락
-export const putAcceptFollow = (userSeq: number | string | undefined) => {
+export const putAcceptFollow = (userSeq: number) => {
   return axiosInstance.put(`${FRIEND}/accept`, { userSeq });
 };
 
 // 친구 요청 거절
-export const putRejectFollow = (userSeq: number | string | undefined) => {
+export const putRejectFollow = (userSeq: number) => {
   return axiosInstance.put(`${FRIEND}/reject`, { userSeq });
 };
 
 // 친구 끊기
-export const deleteFollow = (userSeq: number | string | undefined) => {
+export const deleteFollow = (userSeq: number) => {
   return axiosInstance.delete(`${FRIEND}/${userSeq}`);
 };
 
