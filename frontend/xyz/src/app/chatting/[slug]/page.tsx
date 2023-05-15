@@ -1,6 +1,7 @@
 "use client";
 
 import { sendChat } from "@/app/api/chatting";
+import ChatHeader from "@/components/chatting/ChatHeader";
 import ChatInput from "@/components/chatting/ChatInput";
 import { queryKeys } from "@/constants/queryKeys";
 import {
@@ -21,12 +22,13 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
   // 채팅방 정보 조회
   const { data: chatroomDetailData } = useChattingDetail(slug);
-  if (chatroomDetailData) console.log(chatroomDetailData);
 
   // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
   const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
-  if (chatHistory) console.log(chatHistory);
+  if (chatHistory) {
+    console.log(chatHistory);
+  }
 
   // 채팅 실시간 조회 - SSE
   // useEffect(() => {
@@ -64,13 +66,28 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     useSendChatMutation.mutate();
   };
 
-  return (
-    <ChatInput
-      chatInput={chatInput}
-      onChangeChatInput={onChangeChatInput}
-      handleSumbitChat={handleSumbitChat}
-    />
-  );
+  if (!chatroomDetailData) return <div>로딩중...</div>;
+
+  if (chatroomDetailData) {
+    const { name, type, aztSeq, userSeq, members } = chatroomDetailData;
+    return (
+      <div className="w-full">
+        <ChatHeader
+          name={name}
+          type={type}
+          userSeq={userSeq}
+          aztSeq={aztSeq}
+          count={members.length}
+        />
+        <div className="pt-10">dddd</div>
+        <ChatInput
+          chatInput={chatInput}
+          onChangeChatInput={onChangeChatInput}
+          handleSumbitChat={handleSumbitChat}
+        />
+      </div>
+    );
+  }
 }
 
 export default ChattingRoomPage;
