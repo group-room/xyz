@@ -17,16 +17,7 @@ import ProfileBtn from "@/components/profile/ProfileBtn";
 import { useAppSelector } from "@/hooks/redux";
 
 function ProfilePage() {
-  //리덕스 정보 가져오기
-  const [userSeq, setUserSeq] = useState<number>(1);
-  const userInfo = useAppSelector((state) => state.auth.userInfo);
-  useEffect(() => {
-    if (userInfo) {
-      setUserSeq(userInfo.userSeq);
-    }
-  }, [userInfo, userSeq]);
-
-  console.log(userSeq, "userSeq-ProfilePage");
+  const userSeq = useAppSelector((state) => state.auth.userInfo?.userSeq);
 
   const [isModal, setIsModal] = useState(false);
   const buttonClick = () => {};
@@ -39,7 +30,7 @@ function ProfilePage() {
     data: userList,
     isLoading: isUserLoading,
     error,
-  } = useUserList(userSeq);
+  } = useUserList(userSeq!);
 
   // 나중에 state 에서 userSeq 가져와서 넣을 자리 : useUserList(userSeq)
   if (!isUserLoading && userList) {
@@ -53,9 +44,9 @@ function ProfilePage() {
 
   return (
     <div className="w-full h-full">
-      <ProfileMain mainUserSeq={userSeq.toString()} />
+      <ProfileMain mainUserSeq={userSeq!.toString()} />
       <div className="flex py-2 items-center justify-center">
-        <ProfileBtn btnUserSeq={userSeq.toString()} />
+        <ProfileBtn btnUserSeq={userSeq!.toString()} />
       </div>
 
       <ProfileTab
