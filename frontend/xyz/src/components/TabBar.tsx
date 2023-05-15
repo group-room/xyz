@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { API } from "@/constants/queryKeys";
+import { LOCAL } from "@/constants/localUrl";
 
 function TabBar() {
   const pathname = usePathname();
@@ -17,8 +18,8 @@ function TabBar() {
         추억
       </Link>
       <Link
-        href={"/capsule"}
-        className={pathname.includes("/capsule") ? "text-pink" : ""}
+        href={`/${LOCAL.capsule}`}
+        className={pathname.includes(`/${LOCAL.capsule}`) ? "text-pink" : ""}
       >
         캡슐
       </Link>
@@ -29,14 +30,14 @@ function TabBar() {
         아지트
       </Link>
       <Link
-        href={`/${API.chat}`}
-        className={pathname.includes(`/${API.chat}`) ? "text-pink" : ""}
+        href={`/${LOCAL.chatting}`}
+        className={pathname.includes(`/${LOCAL.chatting}`) ? "text-pink" : ""}
       >
         채팅
       </Link>
       <Link
-        href={"/profile"}
-        className={pathname.includes("/profile") ? "text-pink" : ""}
+        href={`/${LOCAL.profile}`}
+        className={pathname.includes(`/${LOCAL.profile}`) ? "text-pink" : ""}
       >
         프로필
       </Link>
