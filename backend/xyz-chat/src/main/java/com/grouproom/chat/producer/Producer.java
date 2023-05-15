@@ -38,7 +38,7 @@ public class Producer {
 
     public void orderSend(String topic, KafkaMessage message) {
         LocalDateTime localDateTimeNow = LocalDateTime.now();
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTimeNow, ZoneId.of("Asia/Seoul"));
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         String time = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         message.setTime(time);

@@ -84,7 +84,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         notificationRepository.save(notification);
 
-//        notifyEvent(notification);
+        notifyEvent(notification);
     }
 
     @Override
@@ -98,6 +98,7 @@ public class NotificationServiceImpl implements NotificationService {
             SseEmitter sseEmitter = sseService.getSseEmitter(userSeq);
             try {
                 sseEmitter.send(SseEmitter.event().name("newNotification").data("새로운 알림이 있습니다."));
+                logger.info("notify success");
             } catch (Exception e) {
                 sseService.removeSseEmitter(userSeq);
             }

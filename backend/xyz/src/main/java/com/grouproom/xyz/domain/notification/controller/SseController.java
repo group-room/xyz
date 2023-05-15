@@ -31,15 +31,21 @@ public class SseController {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
+            logger.info("connect success");
         } catch (IOException e) {
             logger.info(e.getMessage());
         }
 
         sseService.addSseEmitter(userSeq, sseEmitter);
+        logger.info("userSeq:" + userSeq);
+        logger.info("sseEmitter:" + sseEmitter.toString());
 
         sseEmitter.onCompletion(() -> sseService.removeSseEmitter(userSeq));
         sseEmitter.onTimeout(() -> sseService.removeSseEmitter(userSeq));
         sseEmitter.onError(e -> sseService.removeSseEmitter(userSeq));
+
+        logger.info("userSeq:" + userSeq);
+        logger.info("sseEmitter:" + sseEmitter.toString());
 
         return sseEmitter;
     }
