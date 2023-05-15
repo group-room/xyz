@@ -9,8 +9,8 @@ export const postCapsule = (formData: FormData) => {
 };
 
 // 타임캡슐 내용 추가
-export const postContentCapsule = (tcSeq: number) => {
-  return axiosInstance.post(`${CAPSULE}/${tcSeq}`);
+export const postContentCapsule = (slug: number, formData: FormData) => {
+  return axiosInstance.post(`${CAPSULE}/${slug}`, formData);
 };
 
 // 타임캡슐 열기

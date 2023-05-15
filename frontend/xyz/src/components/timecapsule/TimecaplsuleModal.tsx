@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postOpenCapsule } from "@/app/api/capsule";
 import { KEYS } from "@/constants/queryKeys";
 import { useEffect, useState } from "react";
-import { LatLon } from "geolocation-utils";
+import { useRouter } from "next/navigation";
 
 type Props = {
   detail: CapsuleAztTypes;
@@ -18,6 +18,7 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
   const [latitude, setLatitude] = useState<number>(0);
   const [longitude, setLongitude] = useState<number>(0);
 
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const usePostOpenCapsuleMutation = useMutation({
@@ -47,8 +48,6 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
     };
 
     getLocation();
-    console.log(latitude);
-    console.log(longitude);
   }, []);
 
   const handleClick = (tcSeq: number) => {
@@ -73,6 +72,16 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
       )}
       {detail.openStatus === "LOCKED" && (
         <Image className="mb-8" src={capsuleImg} alt="capsuleImg"></Image>
+      )}
+      {detail.openStatus === "UPDATABLE" && (
+        <>
+          <Image className="mb-8" src={capsuleImg} alt="capsuleImg"></Image>
+          <Btn
+            bgColor="blue"
+            text="타임캡슐 내용 추가"
+            btnFunc={() => router.push(`/capsule/add/${detail.tcSeq}`)}
+          />
+        </>
       )}
     </div>
   );
