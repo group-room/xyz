@@ -87,7 +87,7 @@ export default function TimeCapsuleCreatePage() {
       onSuccess: (data) => {
         const tcSeq = data.data.data.tcSeq;
         console.log(tcSeq);
-        router.push(`/capsule/${tcSeq}`); // 생성 완료후 상세로 이동
+        router.push(`/capsule`);
       },
     });
   };

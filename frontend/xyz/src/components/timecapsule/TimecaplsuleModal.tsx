@@ -7,20 +7,49 @@ import Btn from "@/components/common/Btn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postOpenCapsule } from "@/app/api/capsule";
 import { KEYS } from "@/constants/queryKeys";
+import { useEffect, useState } from "react";
+import { LatLon } from "geolocation-utils";
 
 type Props = {
   detail: CapsuleAztTypes;
 };
 
 export default function AbleTimecaplsuleModal({ detail }: Props) {
+  const [latitude, setLatitude] = useState<number>(0);
+  const [longitude, setLongitude] = useState<number>(0);
+
   const queryClient = useQueryClient();
 
   const usePostOpenCapsuleMutation = useMutation({
-    mutationFn: (tcSeq: number) => postOpenCapsule(tcSeq),
+    mutationFn: (tcSeq: number) => postOpenCapsule(tcSeq, latitude, longitude),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.capsule);
     },
   });
+
+  useEffect(() => {
+    // 위치 정보를 가져오는 함수
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setLatitude(latitude);
+            setLongitude(longitude);
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+
+    getLocation();
+    console.log(latitude);
+    console.log(longitude);
+  }, []);
 
   const handleClick = (tcSeq: number) => {
     usePostOpenCapsuleMutation.mutate(tcSeq);

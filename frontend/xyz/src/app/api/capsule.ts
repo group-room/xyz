@@ -14,6 +14,6 @@ export const postContentCapsule = (tcSeq: number) => {
 };
 
 // 타임캡슐 열기
-export const postOpenCapsule = (tcSeq: number) => {
-  return axiosInstance.post(`${CAPSULE}/open/${tcSeq}`);
+export const postOpenCapsule = (tcSeq: number, latitude:number, longitude:number) => {
+  return axiosInstance.post(`${CAPSULE}/open/${tcSeq}`, {latitude, longitude});
 };
