@@ -3,6 +3,7 @@ export const API = {
   memory: "memory",
   capsule: "timecapsule",
   azt: "azt",
+  chat: "chat",
   chatroom: "chat-room",
   myroom: "myroom",
   friend: "friend",
@@ -14,6 +15,7 @@ export const KEYS = {
   memory: [API.memory],
   capsule: [API.capsule],
   azt: [API.azt],
+  chat: [API.chat],
   chatroom: [API.chatroom],
   myroom: [API.myroom],
   friend: [API.friend],
@@ -68,5 +70,6 @@ export const queryKeys = {
   },
   chatting: {
     chattingList: () => [...KEYS.chatroom],
+    chatDetail: (room: string) => [...KEYS.chat, { room }],
   },
 };

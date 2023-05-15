@@ -21,7 +21,7 @@ function ChatRoomItem({ chatroom }: { chatroom: ChattingRoomListTypes }) {
           <div className="flex gap-x-2 items-middle">
             <p>{name}</p>
             {count && (
-              <div className="flex gap-x-[2px] items-middle">
+              <div className="flex gap-x-[3px] items-middle">
                 <Image
                   src="/icons/users.svg"
                   alt="아지트 아이콘"
