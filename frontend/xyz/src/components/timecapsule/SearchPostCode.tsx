@@ -1,18 +1,27 @@
+"use client";
+
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { convertAddressToCoordinate } from "@/app/api/kakao";
 import { CoordinateTypes, positionTypes } from "@/types/capsule";
-import React, { useEffect, useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { StaticMap } from "react-kakao-maps-sdk";
 
-export default function SearchPostCode() {
+type Props = {
+  address: string;
+  setAddress: Dispatch<SetStateAction<string>>;
+  position: positionTypes;
+  setPosition: (position: positionTypes) => void;
+};
+
+export default function SearchPostCode({
+  address,
+  setAddress,
+  position,
+  setPosition,
+}: Props) {
   const scriptUrl =
     "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
   const open = useDaumPostcodePopup(scriptUrl);
-  const [address, setAddress] = useState("");
-  const [position, setPosition] = useState<positionTypes>({
-    lat: 0,
-    lng: 0,
-  });
 
   const handleComplete = async (data: any) => {
     let fullAddress = data.address;
@@ -29,7 +38,6 @@ export default function SearchPostCode() {
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
-    console.log(data);
     console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     setAddress(fullAddress);
   };
@@ -42,18 +50,16 @@ export default function SearchPostCode() {
     if (address === "") {
       return;
     } else {
-      return await convertAddressToCoordinate(address);
+      return await convertAddressToCoordinate(address).then((res) => {
+        console.log(position.lat, " -before- ", position.lng);
+        setPosition({ lat: +res.y, lng: +res.x });
+        console.log(position.lat, " -after- ", position.lng);
+      });
     }
   }
 
   useEffect(() => {
-    // addressInfo.x = longitude, addressInfo.y = latitude
-    getCoordinate().then((res) => {
-      console.log("res");
-      console.log(res);
-      // console.log("lat -> ", res.y, " lng -> ", res.x);
-      // setPosition({ lat: res.y, lng: res.x });
-    });
+    getCoordinate();
   }, [address]);
 
   return (

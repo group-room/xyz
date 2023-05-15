@@ -19,6 +19,7 @@ export interface MemoriesTypes {
   likeCnt: number;
   isLiked: boolean;
   commentCnt: number;
+  // userName: string;
 }
 
 // 추억 상세
