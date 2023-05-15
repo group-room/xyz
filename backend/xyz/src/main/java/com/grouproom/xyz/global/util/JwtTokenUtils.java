@@ -33,10 +33,11 @@ public class JwtTokenUtils {
 //    public static final long ACCESS_PERIOD = 1000L * 60L * 60L * 1L;
 
     // access 토큰 5일 개발용
-    public static final long ACCESS_PERIOD = 1000L * 60L * 60L * 24L * 5L;
+    public static final long ACCESS_PERIOD = 1000L * 60L * 60L * 24L * 14L;
 
     // refresh 토큰 보통 2주
-    public static final long REFRESH_PERIOD = 1000L * 60L * 60L * 24L * 2L;
+//    public static final long REFRESH_PERIOD = 1000L * 60L * 60L * 24L * 2L;
+    public static final long REFRESH_PERIOD = 1000L * 60L * 60L * 24L * 14L;
 
     //userSequence & role 토큰 발급
     public static JsonWebToken allocateToken(Long userSequence, String role) throws RuntimeException {
