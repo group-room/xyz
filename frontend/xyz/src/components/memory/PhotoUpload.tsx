@@ -111,6 +111,7 @@ function PhotoUpload({
             popperClassName="z-10" // 지도에 겹쳐지는 것 방지
             onChange={handleDateChange}
             className="flex align-middle py-1 rounded border border-black cursor-pointer w-full text-center"
+            maxDate={new Date()}
           />
         </div>
       </div>
