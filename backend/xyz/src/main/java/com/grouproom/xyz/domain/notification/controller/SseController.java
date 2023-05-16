@@ -3,6 +3,7 @@ package com.grouproom.xyz.domain.notification.controller;
 import com.grouproom.xyz.domain.notification.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,32 +22,50 @@ public class SseController {
     private final SseService sseService;
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.controller.SseController");
 
-    @CrossOrigin
-    @GetMapping(consumes = MediaType.ALL_VALUE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter connect() {
+    @GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> connect() {
         logger.info("connect 호출");
 
         Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 
-        SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+        SseEmitter emitter = new SseEmitter();
+        sseService.addSseEmitter(userSeq, emitter);
         try {
-            sseEmitter.send(SseEmitter.event().name("connect").data("connected"));
-            logger.info("connect success");
+            emitter.send(SseEmitter.event()
+                    .name("connect")
+                    .data("connected!"));
         } catch (IOException e) {
-            logger.info(e.getMessage());
+            throw new RuntimeException(e);
         }
-
-        sseService.addSseEmitter(userSeq, sseEmitter);
-        logger.info("userSeq:" + userSeq);
-        logger.info("sseEmitter:" + sseEmitter.toString());
-
-        sseEmitter.onCompletion(() -> sseService.removeSseEmitter(userSeq));
-        sseEmitter.onTimeout(() -> sseService.removeSseEmitter(userSeq));
-        sseEmitter.onError(e -> sseService.removeSseEmitter(userSeq));
-
-        logger.info("userSeq:" + userSeq);
-        logger.info("sseEmitter:" + sseEmitter.toString());
-
-        return sseEmitter;
+        return ResponseEntity.ok(emitter);
     }
+
+//    @CrossOrigin
+//    @GetMapping(consumes = MediaType.ALL_VALUE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//    public SseEmitter connect() {
+//        logger.info("connect 호출");
+//
+//        Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+//
+//        SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+//        try {
+//            sseEmitter.send(SseEmitter.event().name("connect").data("connected\n\n"));
+//            logger.info("connect success");
+//        } catch (IOException e) {
+//            logger.info(e.getMessage());
+//        }
+//
+//        sseService.addSseEmitter(userSeq, sseEmitter);
+//        logger.info("userSeq:" + userSeq);
+//        logger.info("sseEmitter:" + sseEmitter.toString());
+//
+//        sseEmitter.onCompletion(() -> sseService.removeSseEmitter(userSeq));
+//        sseEmitter.onTimeout(() -> sseService.removeSseEmitter(userSeq));
+//        sseEmitter.onError(e -> sseService.removeSseEmitter(userSeq));
+//
+//        logger.info("userSeq:" + userSeq);
+//        logger.info("sseEmitter:" + sseEmitter.toString());
+//
+//        return sseEmitter;
+//    }
 }
