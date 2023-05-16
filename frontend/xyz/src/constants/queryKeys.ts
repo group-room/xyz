@@ -68,6 +68,7 @@ export const queryKeys = {
   },
   notification: {
     notificationList: (type: string) => [...KEYS.notification, { type }],
+    unReadNotification: () => [...KEYS.notification],
   },
   chatting: {
     chatroomList: () => [...KEYS.chatroom],

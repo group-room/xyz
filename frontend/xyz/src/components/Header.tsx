@@ -8,9 +8,17 @@ import FriendIcon from "../../public/icons/user_plus.svg";
 import NotiIcon from "../../public/icons/notification.svg";
 import { useAppSelector } from "@/hooks/redux";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
+import { useUnreadNotifiacation } from "@/hooks/queries/notification";
 
 function Header() {
-  const [isAlert, setIsAlert] = useState(true);
+  const [isAlert, setIsAlert] = useState(false);
+  const { data: isNotification, isLoading } = useUnreadNotifiacation();
+
+  if (isNotification) {
+    console.log(isAlert);
+    setIsAlert(true);
+  }
+
   const accessToken: string = useAppSelector((state) => state.auth.accessToken);
 
   useEffect(() => {
@@ -74,7 +82,9 @@ function Header() {
             <Image src={FriendIcon} alt="xyz 로고" width={24} />
           </Link>
           <Link href={"/notification"} className="flex">
-            <div className="bg-red-500 rounded-full w-1 h-1 mr-[1px]"></div>
+            {isAlert && (
+              <div className="bg-red-500 rounded-full w-1 h-1 mr-[1px]"></div>
+            )}
             <Image src={NotiIcon} alt="xyz 로고" width={20} />
           </Link>
         </div>
