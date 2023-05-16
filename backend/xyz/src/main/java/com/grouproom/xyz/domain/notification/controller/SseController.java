@@ -34,7 +34,9 @@ public class SseController {
             emitter.send(SseEmitter.event()
                     .name("connect")
                     .data("connected!"));
+            logger.info("sse send success");
         } catch (IOException e) {
+            logger.info("sse send fail");
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok(emitter);
