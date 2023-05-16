@@ -20,13 +20,15 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class KafkaMessage {
+    private Long id;
     private String room;
     private String name;
     private String text;
     private String time;
 
     @Builder
-    public KafkaMessage(String room, String name, String text) {
+    public KafkaMessage(Long id,String room, String name, String text) {
+        this.id = id;
         this.room = room;
         this.name = name;
         this.text = text;

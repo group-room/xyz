@@ -22,5 +22,5 @@ import java.util.List;
 public interface MongoDBService {
     List<Chat> getHistory(String room);
     List<Chat> getHistory(String room,Long id);
-    List<LatestChatResponse> getLatestChat(String name);
+    List<Chat> getLatestChat(String name);
 }
