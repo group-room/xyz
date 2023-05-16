@@ -14,7 +14,7 @@ import useInput from "@/hooks/useInput";
 import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const [chatInput, onChangeChatInput, resetInputValue] = useInput("");
@@ -22,6 +22,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const loggedInUserSeq = useAppSelector(
     (state) => state.auth.userInfo?.userSeq
   );
+  const chatDataRef = useRef<HTMLDivElement | null>(null);
 
   // 채팅방 정보 조회
   const { data: chatroomDetailData } = useChattingDetail(slug);
@@ -53,7 +54,12 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     return () => {
       eventSource.close();
     };
-  }, [chatData, chatHistory]);
+  }, [chatData]);
+
+  // 채팅 페이지 조회될 때마다 스크롤 최하단으로 이동
+  useEffect(() => {
+    if (chatDataRef.current) chatDataRef.current.scrollIntoView();
+  }, [chatData]);
 
   // 채팅 전송
   const queryClient = useQueryClient();
@@ -80,7 +86,6 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
   if (chatroomDetailData && chatData) {
     const { name, type, aztSeq, userSeq, members } = chatroomDetailData;
-    console.log(members);
     return (
       <div className="w-full">
         <ChatHeader
@@ -108,6 +113,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
               isMine={chat.name === loggedInUserSeq?.toString()}
             />
           ))}
+          <div ref={chatDataRef}></div>
         </div>
         <ChatInput
           chatInput={chatInput}
