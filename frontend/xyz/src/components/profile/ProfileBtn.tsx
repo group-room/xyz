@@ -11,10 +11,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postFollow, putCancelFollow, deleteBlock } from "@/app/api/friend";
 import { KEYS } from "@/constants/queryKeys";
 
-type Props = { btnUserSeq: string };
+type Props = { btnUserSeq: number };
 
 function ProfileBtn({ btnUserSeq }: Props) {
-  const numBtnUserSeq = parseInt(btnUserSeq);
+  console.log(btnUserSeq, "btnUserSeq");
+  console.log(typeof btnUserSeq, "btnUserSeq");
   const queryClient = useQueryClient();
 
   const state = useAppSelector((state) => state);
@@ -25,7 +26,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
     data: userList,
     isLoading: isUserLoading,
     error,
-  } = useUserList(numBtnUserSeq);
+  } = useUserList(btnUserSeq);
 
   const PushtoProfileFriend = () => {
     router.push("/profile/friend");
@@ -34,7 +35,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
     router.push("/profile/mypage");
   };
   const useMakeFriendsMutation = useMutation({
-    mutationFn: () => postFollow(numBtnUserSeq),
+    mutationFn: () => postFollow(btnUserSeq),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.friend);
     },
@@ -43,7 +44,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
   const MakeFriends = useMakeFriendsMutation.mutate;
 
   const useDeleteFriendRequestMutation = useMutation({
-    mutationFn: () => putCancelFollow(numBtnUserSeq),
+    mutationFn: () => putCancelFollow(btnUserSeq),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.friend);
       console.log("친구 요청 취소");
@@ -55,11 +56,11 @@ function ProfileBtn({ btnUserSeq }: Props) {
     router.push("/notification");
   };
 
-  console.log(typeof numBtnUserSeq, "numBtnUserSeq");
+  console.log(typeof btnUserSeq, "numBtnUserSeq");
   console.log(typeof myUserSeq, "myUserSeq");
   console.log(userList, "userList-ProfileBtn");
 
-  if (numBtnUserSeq === myUserSeq) {
+  if (btnUserSeq === myUserSeq) {
     return (
       <div className="flex justify-start items-start relative gap-[15px]">
         <Btn
@@ -76,7 +77,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </div>
     );
-  } else if (numBtnUserSeq !== myUserSeq && userList?.friend === true) {
+  } else if (btnUserSeq !== myUserSeq && userList?.friend === true) {
     return (
       <>
         <Btn
@@ -88,7 +89,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </>
     );
-  } else if (numBtnUserSeq !== myUserSeq && userList?.friendRequest === true) {
+  } else if (btnUserSeq !== myUserSeq && userList?.friendRequest === true) {
     return (
       <>
         <Btn width="168" bgColor="blue" text="수락 대기중" btnFunc={() => {}} />
@@ -101,7 +102,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </>
     );
-  } else if (numBtnUserSeq !== myUserSeq && userList?.friendResponse === true) {
+  } else if (btnUserSeq !== myUserSeq && userList?.friendResponse === true) {
     return (
       <>
         <Btn

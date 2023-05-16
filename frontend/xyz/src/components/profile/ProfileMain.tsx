@@ -18,11 +18,10 @@ import ModalBtn from "../common/ModalBtn";
 import { useAppSelector } from "@/hooks/redux";
 
 interface ProfileMainProps {
-  mainUserSeq: string;
+  userSeq: number;
 }
 
-function ProfileMain({ mainUserSeq }: ProfileMainProps) {
-  const userSeq = parseInt(mainUserSeq);
+function ProfileMain({ userSeq }: ProfileMainProps) {
   const { data: profileData, isLoading } = useUserList(userSeq);
   console.log(profileData, "profileData");
   const state = useAppSelector((state) => state);
