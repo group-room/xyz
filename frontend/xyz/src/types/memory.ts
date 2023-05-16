@@ -44,6 +44,17 @@ export interface MemoryCommentTypes {
   createdAt: string;
 }
 
+// 내 추억 목록
+export interface MyMemoriesTypes {
+  memorySeq: number;
+  aztSeq: number;
+  aztName: string;
+  date: string;
+  latitude: number;
+  longitude: number;
+  location: string;
+}
+
 export interface KakaoMapProps {
   height?: number;
   position: PositionTypes;
