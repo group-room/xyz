@@ -78,11 +78,6 @@ function Header() {
               <Image src={NotiIcon} alt="xyz 로고" width={20} />
             </div>
           </Link>
-          {isAlert ? (
-            <div className="bg-red-500 rounded-full w-20 h-20"></div>
-          ) : (
-            <div></div>
-          )}
         </div>
       </nav>
     </header>
