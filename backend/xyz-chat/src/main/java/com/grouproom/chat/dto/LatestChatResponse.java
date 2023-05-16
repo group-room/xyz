@@ -3,34 +3,31 @@ package com.grouproom.chat.dto;
 import lombok.*;
 
 /**
- * packageName    : com.example.WebSocketAndKafka
- * fileName       : Message
+ * packageName    : com.grouproom.chat.dto
+ * fileName       : AllLatestChatResponse
  * author         : SSAFY
- * date           : 2023-05-09
+ * date           : 2023-05-15
  * description    :
  * <p>
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * <p>
- * 2023-05-09        SSAFY       최초 생성
+ * 2023-05-15        SSAFY       최초 생성
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class KafkaMessage {
-    private Long id;
+public class LatestChatResponse {
     private String room;
-    private String name;
     private String text;
     private String time;
 
     @Builder
-    public KafkaMessage(Long id,String room, String name, String text) {
-        this.id = id;
+    public LatestChatResponse(String room, String text, String time) {
         this.room = room;
-        this.name = name;
         this.text = text;
+        this.time = time;
     }
 }

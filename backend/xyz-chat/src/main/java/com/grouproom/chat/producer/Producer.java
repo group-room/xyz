@@ -41,12 +41,16 @@ public class Producer {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         String time = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+
+        Long curId = sequenceGeneratorService.generateSequence(Chat.SEQUENCE_NAME);
+
         message.setTime(time);
+        message.setId(curId);
         kafkaTemplate.send(topic, message);
         log.info("Kafka Producer send data from the order service = {}", message);
         mongoDBRepository.insert(
                 Chat.builder()
-                        .id(sequenceGeneratorService.generateSequence(Chat.SEQUENCE_NAME))
+                        .id(curId)
                         .text(message.getText())
                         .name(message.getName())
                         .room(message.getRoom())

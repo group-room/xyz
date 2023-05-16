@@ -1,5 +1,6 @@
 package com.grouproom.chat.service;
 
+import com.grouproom.chat.dto.LatestChatResponse;
 import com.grouproom.chat.entity.Chat;
 
 import java.util.List;
@@ -21,4 +22,5 @@ import java.util.List;
 public interface MongoDBService {
     List<Chat> getHistory(String room);
     List<Chat> getHistory(String room,Long id);
+    List<Chat> getLatestChat(String name);
 }
