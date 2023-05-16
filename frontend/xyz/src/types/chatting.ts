@@ -19,7 +19,7 @@ export interface ChattingRoomDetailTypes extends ChatBasicTypes {
 }
 
 export interface ChatDataTypes {
-  id?: number;
+  id: number;
   room: string;
   name: string; // useSeq
   text: string;

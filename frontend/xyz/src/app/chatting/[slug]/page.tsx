@@ -1,6 +1,7 @@
 "use client";
 
 import { sendChat } from "@/app/api/chatting";
+import ChatBubble from "@/components/chatting/ChatBubble";
 import ChatHeader from "@/components/chatting/ChatHeader";
 import ChatInput from "@/components/chatting/ChatInput";
 import { queryKeys } from "@/constants/queryKeys";
@@ -28,20 +29,23 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
   const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
+  if (chatHistory) console.log(chatHistory);
+
+  useEffect(() => {
+    if (chatHistory) {
+      setChatData(chatHistory);
+    }
+  }, [chatHistory]);
 
   // 채팅 실시간 조회 - SSE
   useEffect(() => {
-    if (chatHistory) {
-      const filtered = chatData.filter((item) => item.id === chatHistory.id);
-      setChatData((prev) => [...prev, ...filtered]);
-    }
-
     const eventSource = new EventSource(
       `https://xyz-gen.com/chat/stream-sse?room=${slug}`
     );
 
     eventSource.onmessage = (event) => {
       const message = JSON.parse(event.data);
+      console.log(chatData.concat(message));
       setChatData((prev) => [...prev, message]);
       console.log(chatData);
     };
@@ -74,8 +78,9 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
   if (!chatroomDetailData) return <div>로딩중...</div>;
 
-  if (chatroomDetailData) {
+  if (chatroomDetailData && chatData) {
     const { name, type, aztSeq, userSeq, members } = chatroomDetailData;
+    console.log(members);
     return (
       <div className="w-full">
         <ChatHeader
@@ -85,7 +90,24 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
           aztSeq={aztSeq}
           count={members.length}
         />
-        <div className="pt-10">dddd</div>
+        <div className="pt-14">
+          {chatData.map((chat) => (
+            <ChatBubble
+              key={chat.id}
+              chat={chat}
+              nickname={
+                members.find(
+                  (member) => member.userSeq.toString() === chat.name
+                )!.nickname
+              }
+              profileImg={
+                members.find(
+                  (member) => member.userSeq.toString() === chat.name
+                )!.profileImage
+              }
+            />
+          ))}
+        </div>
         <ChatInput
           chatInput={chatInput}
           onChangeChatInput={onChangeChatInput}
