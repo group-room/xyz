@@ -6,8 +6,6 @@ import Image from "next/image";
 import CloseModal from "../../../public/icons/close-box.svg";
 import No from "../../../public/icons/close.svg";
 import Yes from "../../../public/icons/check.svg";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 
 interface ModalBtnProps {
   closeModal: () => void;
