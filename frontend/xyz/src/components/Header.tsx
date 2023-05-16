@@ -22,7 +22,8 @@ function Header() {
           <Link href={"/friend"}>
             <Image src={FriendIcon} alt="xyz 로고" width={24} />
           </Link>
-          <Link href={"/notification"}>
+          <Link href={"/notification"} className="flex">
+            <div className="bg-red-500 rounded-full w-1 h-1 mr-[1px]"></div>
             <Image src={NotiIcon} alt="xyz 로고" width={20} />
           </Link>
         </div>
