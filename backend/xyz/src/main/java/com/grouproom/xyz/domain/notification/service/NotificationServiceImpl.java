@@ -97,7 +97,7 @@ public class NotificationServiceImpl implements NotificationService {
         if (sseService.containsSseEmitter(userSeq)) {
             SseEmitter sseEmitter = sseService.getSseEmitter(userSeq);
             try {
-                sseEmitter.send(SseEmitter.event().name("newNotification").data("새로운 알림이 있습니다."));
+                sseEmitter.send(SseEmitter.event().name("newNotification").data("new notification\n\n"));
                 logger.info("notify success");
             } catch (Exception e) {
                 sseService.removeSseEmitter(userSeq);
