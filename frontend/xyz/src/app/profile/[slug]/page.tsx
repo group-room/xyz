@@ -6,35 +6,37 @@ import { useRouter } from "next/navigation";
 
 import ProfilePage from "../page";
 import ProfileBtn from "@/components/profile/ProfileBtn";
-import DropDown from "@/components/memory/DropDown";
 import ProfileDropDown from "@/components/profile/ProfileDropdown";
-import store from "@/store/store";
+import { useAppSelector } from "@/hooks/redux";
 import ProfileMain from "@/components/profile/ProfileMain";
+import ProfileTab from "@/components/profile/ProfileTab";
 
-type Props = { params: { slug: number | string } };
+type Props = { params: { slug: number } };
 
 function ProfileUserPage({ params: { slug } }: Props) {
   const router = useRouter();
-  const state = store.getState();
+  const { data: userList, isLoading: isUserLoading, error } = useUserList(slug);
+  const state = useAppSelector((state) => state);
   const userSeq = state.auth.userInfo?.userSeq;
 
-  const { data: userList, isLoading: isUserLoading, error } = useUserList(slug);
   const PushtoProfileEdit = () => {
     router.push("/profile/edit");
   };
   // 나의 userSeq 와 slug 가 같을 때 === 나
-  console.log(userList, "userList");
-  if (slug === userSeq?.toString()) {
+
+  if (slug === userSeq) {
     return (
-      <>
-        <div>{userList && userList.identify}</div>
-        <ProfileDropDown
-          firstText="프로필 편집"
-          firstFunc={PushtoProfileEdit}
+      <div className="w-full h-full">
+        <ProfileMain mainUserSeq={slug.toString()} />
+        <div className="flex py-2 items-center justify-center">
+          <ProfileBtn btnUserSeq={slug.toString()} />
+        </div>
+        <ProfileTab
+          value={true}
+          onChange={() => {}}
+          profileTabUserSeq={slug.toString()}
         />
-        {userList && <img src={userList.profileImage} alt="profileimg" />}
-        <ProfileBtn userSeq={slug.toString()} />
-      </>
+      </div>
     );
   }
   // else if (slug !== "1" && userList?.friend === true) {
@@ -42,10 +44,18 @@ function ProfileUserPage({ params: { slug } }: Props) {
   // }
   else {
     return (
-      <>
-        <ProfileMain userSeq={slug.toString()} />
-        <ProfileBtn userSeq={slug.toString()} />
-      </>
+      <div className="w-full h-full">
+        <ProfileMain mainUserSeq={slug.toString()} />
+        <div className="flex py-2 items-center justify-center">
+          <ProfileBtn btnUserSeq={slug.toString()} />
+        </div>
+
+        <ProfileTab
+          value={true}
+          onChange={() => {}}
+          profileTabUserSeq={slug.toString()}
+        />
+      </div>
     );
   }
 }
