@@ -42,10 +42,10 @@ function ProfilePhotoEdit({
     }
   };
 
-  const handleImgSubmit = () => {
-    if (!ImgFile) return alert("이미지가 선택되지 않았습니다");
-    setImgUrl(URL.createObjectURL(ImgFile));
-  };
+  // const handleImgSubmit = () => {
+  //   if (!ImgFile) return alert("이미지가 선택되지 않았습니다");
+  //   setImgUrl(URL.createObjectURL(ImgFile));
+  // };
 
   const handleImgPreview = () => {
     if (!ImgFile) return alert("이미지가 선택되지 않았습니다");

@@ -21,7 +21,7 @@ function ProfileEdit() {
   const [ImgFile, setImgFile] = useState<File>();
   const [mainImage, setMainImage] = useState<string | null>(null);
   const [nickname, setNickname] = useState<string>(userList?.nickname || "");
-  const [introduce, setIntroduce] = useState<string>("");
+  const [introduce, setIntroduce] = useState<string>(userList?.introduce || "");
   const [isProfileImgChanged, setIsProfileImgChanged] =
     useState<boolean>(false);
   const queryClient = useQueryClient();
@@ -68,7 +68,7 @@ function ProfileEdit() {
         ></textarea>
         <textarea
           placeholder="자기소개 한마디"
-          value={introduce}
+          value={introduce === "" ? userList?.introduce : introduce}
           onChange={(e) => setIntroduce(e.target.value)}
           className="border-2 border-black"
         ></textarea>
