@@ -66,7 +66,7 @@ export default function ToggleBtn({
         }}
       >
         {imgR ? (
-          <div className="mr-2">
+          <div className="mr-[6px]">
             <Image
               src={imgR}
               alt="이미지"
