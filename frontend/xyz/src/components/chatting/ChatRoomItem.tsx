@@ -3,10 +3,16 @@ import ProfileImg from "../common/ProfileImg";
 import Image from "next/image";
 import { LOCAL } from "@/constants/localUrl";
 import { useRouter } from "next/navigation";
-import { ChattingRoomListTypes } from "@/types/chatting";
+import { ChatDataTypes, ChattingRoomListTypes } from "@/types/chatting";
 
-function ChatRoomItem({ chatroom }: { chatroom: ChattingRoomListTypes }) {
-  const { name, image, count, sequence } = chatroom;
+function ChatRoomItem({
+  chatroom,
+  recentMessage,
+}: {
+  chatroom: ChattingRoomListTypes;
+  recentMessage: ChatDataTypes;
+}) {
+  const { name, image, count, sequence, type } = chatroom;
   const router = useRouter();
   return (
     <div
@@ -14,7 +20,7 @@ function ChatRoomItem({ chatroom }: { chatroom: ChattingRoomListTypes }) {
       onClick={() => router.push(`/${LOCAL.chatting}/${sequence}`)}
     >
       <div className="flex-none">
-        <ProfileImg imgSrc={image} />
+        <ProfileImg imgSrc={image} isAzt={type === "azt"} />
       </div>
       <div className="w-full">
         <div className="flex justify-between">
@@ -32,10 +38,14 @@ function ChatRoomItem({ chatroom }: { chatroom: ChattingRoomListTypes }) {
               </div>
             )}
           </div>
-          <p className="text-gray-300">1:21 PM</p>
+          <p className="text-gray-300">
+            {recentMessage ? recentMessage.time.slice(11, 16) : ""}
+          </p>
         </div>
         <div>
-          <p className="text-gray-400">최근 채팅 내용</p>
+          <p className="text-gray-400">
+            {recentMessage ? recentMessage.text : "아직 채팅 기록이 없어요"}
+          </p>
         </div>
       </div>
     </div>
