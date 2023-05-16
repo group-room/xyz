@@ -12,7 +12,7 @@ function ChatRoomItem({
   chatroom: ChattingRoomListTypes;
   recentMessage: ChatDataTypes;
 }) {
-  const { name, image, count, sequence } = chatroom;
+  const { name, image, count, sequence, type } = chatroom;
   const router = useRouter();
   return (
     <div
@@ -20,7 +20,7 @@ function ChatRoomItem({
       onClick={() => router.push(`/${LOCAL.chatting}/${sequence}`)}
     >
       <div className="flex-none">
-        <ProfileImg imgSrc={image} />
+        <ProfileImg imgSrc={image} isAzt={type === "azt"} />
       </div>
       <div className="w-full">
         <div className="flex justify-between">
