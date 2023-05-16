@@ -7,6 +7,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * packageName    : com.example.WebSocketAndKafka.entity
  * fileName       : Chat
@@ -23,7 +26,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @Document(collection = "chat")
-public class Chat {
+public class Chat implements Comparable<Chat>{
 
     @Transient
     public static final String SEQUENCE_NAME = "chat_sequence";
@@ -44,5 +47,14 @@ public class Chat {
         this.text = text;
         this.time = time;
         this.type = type;
+    }
+
+    @Override
+    public int compareTo(Chat o) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime thisDate = LocalDateTime.parse(this.time, formatter);
+        LocalDateTime targetDate = LocalDateTime.parse(o.time, formatter);
+        return targetDate.compareTo(thisDate);
     }
 }

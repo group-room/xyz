@@ -91,8 +91,11 @@ public class MongoDBServiceImpl implements MongoDBService {
                         Chat.class,
                         Chat.class);
 
-        return aggregate.getMappedResults();
+        return aggregate.getMappedResults().stream().sorted().collect(Collectors.toList());
     }
 
+    public int timeCompare(String time){
+        return 0;
+    }
 
 }
