@@ -30,7 +30,7 @@ function ChatPage() {
                 chatroom={chatroom}
                 recentMessage={
                   chatroomListRecentMessage.filter(
-                    (message) => message.room === chatroom.sequence.toString()
+                    (message) => message.room === chatroom.sequence?.toString()
                   )[0]
                 }
               />

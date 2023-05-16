@@ -43,7 +43,9 @@ function MemoryCreatePage() {
   useEffect(() => {
     if (aztListData) {
       setAztList(aztListData);
-      setCurrAzt([aztListData[0]]);
+      if (aztListData.length > 0) {
+        setCurrAzt([aztListData[0]]);
+      }
     }
   }, [aztListData]);
 
