@@ -14,7 +14,8 @@ import useInput from "@/hooks/useInput";
 import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const [chatInput, onChangeChatInput, resetInputValue] = useInput("");
@@ -26,6 +27,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const scrollToBottom = () => {
     if (chatDataRef.current) chatDataRef.current.scrollIntoView();
   };
+  const router = useRouter();
 
   // 채팅방 정보 조회
   const { data: chatroomDetailData } = useChattingDetail(slug);
@@ -33,6 +35,18 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
   const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
+
+  // 채팅방에 속한 유저 아닐 시 채팅방 목록으로 이동
+  useLayoutEffect(() => {
+    if (
+      chatroomDetailData &&
+      chatroomDetailData.members.find(
+        (member) => member.userSeq === loggedInUserSeq
+      ) === undefined
+    ) {
+      router.push("/chatting");
+    }
+  }, []);
 
   // 스크롤 최하단으로 이동
   useEffect(() => {
@@ -92,6 +106,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
   if (chatroomDetailData && chatData) {
     const { name, type, aztSeq, userSeq, members } = chatroomDetailData;
+
     return (
       <div className="w-full">
         <ChatHeader
@@ -106,16 +121,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
             <ChatBubble
               key={chat.id}
               chat={chat}
-              nickname={
-                members.find(
-                  (member) => member.userSeq.toString() === chat.name
-                )!.nickname
-              }
-              profileImg={
-                members.find(
-                  (member) => member.userSeq.toString() === chat.name
-                )!.profileImage
-              }
+              members={members}
               isMine={chat.name === loggedInUserSeq?.toString()}
             />
           ))}

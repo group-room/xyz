@@ -38,10 +38,14 @@ function ChatRoomItem({
               </div>
             )}
           </div>
-          <p className="text-gray-300">{recentMessage.time.slice(0, 8)}</p>
+          <p className="text-gray-300">
+            {recentMessage ? recentMessage.time.slice(11, 16) : ""}
+          </p>
         </div>
         <div>
-          <p className="text-gray-400">{recentMessage.text}</p>
+          <p className="text-gray-400">
+            {recentMessage ? recentMessage.text : "아직 채팅 기록이 없어요"}
+          </p>
         </div>
       </div>
     </div>

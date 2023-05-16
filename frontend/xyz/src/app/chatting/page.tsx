@@ -6,12 +6,16 @@ import {
   useChattingList,
   useChattingListRecentMessage,
 } from "@/hooks/queries/chatting";
+import { useAppSelector } from "@/hooks/redux";
 import React from "react";
 
 function ChatPage() {
+  const loggedInUserSeq = useAppSelector(
+    (state) => state.auth.userInfo?.userSeq
+  )?.toString();
   const { data: chatroomList, isLoading } = useChattingList();
   const { data: chatroomListRecentMessage, isLoading: isLoadingRecentMessage } =
-    useChattingListRecentMessage();
+    useChattingListRecentMessage(loggedInUserSeq!);
   if (!chatroomList || !chatroomListRecentMessage) {
     return <div>로딩중...</div>;
   }
