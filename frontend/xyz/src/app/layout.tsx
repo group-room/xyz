@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import ReactQueryProvider from "./ReactQueryProvider";
 import { ReduxProviders } from "@/store/provider";
+import AuthProvider from "./AuthProvider";
 
 export const metadata = {
   title: "XYZ",
@@ -27,7 +28,9 @@ export default function RootLayout({
         <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
         <ReduxProviders>
           <ReactQueryProvider>
-            <main className="px-5 my-16">{children}</main>
+            <AuthProvider>
+              <main className="px-5 my-16">{children}</main>
+            </AuthProvider>
           </ReactQueryProvider>
         </ReduxProviders>
       </body>
