@@ -91,6 +91,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     usePostBlockMutation.mutate();
   };
 
+  // 여기 모달창 띄워야한다. 친구 끊기 / 차단할때
   return (
     <>
       <div className={`box-content w-full h-full bg-yellow p-1`}>

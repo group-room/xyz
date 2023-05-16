@@ -2,6 +2,7 @@
 import { useAppSelector } from "@/hooks/redux";
 import { useVisitorList } from "@/hooks/queries/user";
 import GuestbookItem from "./GuestbookItem";
+import GuestbookWrite from "./GuestbookWrite";
 
 interface GuestbookProps {
   userSeq: number;
@@ -19,6 +20,7 @@ function Guestbook({ userSeq }: GuestbookProps) {
   return (
     <section className="w-full h-full">
       <div className="w-full h-full min-h-[300px] bg-cover bg-pink flex flex-col">
+        <GuestbookWrite userSeq={userSeq} />
         {visitorList && visitorList.length > 0 ? (
           visitorList.map((visitor) => (
             <GuestbookItem key={visitor.userSeq} visitor={visitor} />
