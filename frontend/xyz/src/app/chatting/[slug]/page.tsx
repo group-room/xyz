@@ -23,6 +23,9 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     (state) => state.auth.userInfo?.userSeq
   );
   const chatDataRef = useRef<HTMLDivElement | null>(null);
+  const scrollToBottom = () => {
+    if (chatDataRef.current) chatDataRef.current.scrollIntoView();
+  };
 
   // 채팅방 정보 조회
   const { data: chatroomDetailData } = useChattingDetail(slug);
@@ -30,12 +33,17 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
   const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
-  if (chatHistory) console.log(chatHistory);
+
+  // 스크롤 최하단으로 이동
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatData]);
 
   useEffect(() => {
     if (chatHistory) {
       setChatData(chatHistory);
     }
+    scrollToBottom();
   }, [chatHistory]);
 
   // 채팅 실시간 조회 - SSE
@@ -47,18 +55,16 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     eventSource.onmessage = (event) => {
       const message = JSON.parse(event.data);
       console.log(chatData.concat(message));
-      setChatData((prev) => [...prev, message]);
-      console.log(chatData);
+      const sortedChatData = chatData
+        .concat(message)
+        .sort((a, b) => a.id - b.id);
+      setChatData(sortedChatData);
+      scrollToBottom();
     };
 
     return () => {
       eventSource.close();
     };
-  }, [chatData]);
-
-  // 채팅 페이지 조회될 때마다 스크롤 최하단으로 이동
-  useEffect(() => {
-    if (chatDataRef.current) chatDataRef.current.scrollIntoView();
   }, [chatData]);
 
   // 채팅 전송

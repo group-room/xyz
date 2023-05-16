@@ -3,9 +3,15 @@ import ProfileImg from "../common/ProfileImg";
 import Image from "next/image";
 import { LOCAL } from "@/constants/localUrl";
 import { useRouter } from "next/navigation";
-import { ChattingRoomListTypes } from "@/types/chatting";
+import { ChatDataTypes, ChattingRoomListTypes } from "@/types/chatting";
 
-function ChatRoomItem({ chatroom }: { chatroom: ChattingRoomListTypes }) {
+function ChatRoomItem({
+  chatroom,
+  recentMessage,
+}: {
+  chatroom: ChattingRoomListTypes;
+  recentMessage: ChatDataTypes;
+}) {
   const { name, image, count, sequence } = chatroom;
   const router = useRouter();
   return (
@@ -32,10 +38,10 @@ function ChatRoomItem({ chatroom }: { chatroom: ChattingRoomListTypes }) {
               </div>
             )}
           </div>
-          <p className="text-gray-300">1:21 PM</p>
+          <p className="text-gray-300">{recentMessage.time.slice(0, 8)}</p>
         </div>
         <div>
-          <p className="text-gray-400">최근 채팅 내용</p>
+          <p className="text-gray-400">{recentMessage.text}</p>
         </div>
       </div>
     </div>
