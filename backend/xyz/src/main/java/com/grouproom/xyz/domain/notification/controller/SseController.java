@@ -46,7 +46,7 @@ public class SseController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Connection", "keep-alive");
         headers.add("Cache-Control", "no-store");
-        headers.add("Content-Type", "text/event-stream");
+        headers.add("Content-Type", "text/event-stream;charset=UTF-8");
         headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
         emitter.onCompletion(() -> sseService.removeSseEmitter(userSeq));
         emitter.onTimeout(() -> sseService.removeSseEmitter(userSeq));
