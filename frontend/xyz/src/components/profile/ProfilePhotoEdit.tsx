@@ -2,9 +2,10 @@
 
 import { useUserList } from "@/hooks/queries/user";
 import React, { useEffect, useState, SetStateAction, Dispatch } from "react";
+import { useAppSelector } from "@/hooks/redux";
 
 interface ProfilePhotoEditProps {
-  ImgUrl: string;
+  ImgUrl: string | undefined;
   setImgUrl: Dispatch<SetStateAction<string>>;
   setIsProfileImgChanged: Dispatch<SetStateAction<boolean>>;
   setImgFile: Dispatch<SetStateAction<File | undefined>>;
@@ -18,7 +19,12 @@ function ProfilePhotoEdit({
   setImgFile,
   ImgFile,
 }: ProfilePhotoEditProps) {
-  const { data: userList, isLoading: isUserLoading, error } = useUserList(1);
+  const userSeq = useAppSelector((state) => state.auth.userInfo?.userSeq);
+  const {
+    data: userList,
+    isLoading: isUserLoading,
+    error,
+  } = useUserList(userSeq!);
 
   useEffect(() => {
     userList && setImgUrl(userList.profileImage);
@@ -41,6 +47,16 @@ function ProfilePhotoEdit({
     setImgUrl(URL.createObjectURL(ImgFile));
   };
 
+  const handleImgPreview = () => {
+    if (!ImgFile) return alert("이미지가 선택되지 않았습니다");
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const previewUrl = reader.result as string;
+      setImgUrl(previewUrl);
+    };
+    reader.readAsDataURL(ImgFile);
+  };
+
   console.log(ImgUrl, "ImgUrl");
   console.log(userList?.profileImage, "userList?.profileImage");
   return (
@@ -53,7 +69,7 @@ function ProfilePhotoEdit({
         accept="image/*"
         onChange={handleImgChange}
       />
-      <button onClick={handleImgSubmit}>이미지 변경 미리보기</button>
+      <button onClick={handleImgPreview}>확인</button>
     </div>
   );
 }

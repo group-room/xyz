@@ -7,12 +7,20 @@ import { updateProfile } from "@/app/api/user";
 import Btn from "../common/Btn";
 import { useUserList } from "@/hooks/queries/user";
 import ProfilePhotoEdit from "./ProfilePhotoEdit";
+import { useAppSelector } from "@/hooks/redux";
 
 function ProfileEdit() {
-  const [ImgUrl, setImgUrl] = useState<string>("");
+  const userSeq = useAppSelector((state) => state.auth.userInfo?.userSeq);
+  const {
+    data: userList,
+    isLoading: isUserLoading,
+    error,
+  } = useUserList(userSeq!);
+  console.log(userList, "userList-ProfileEdit");
+  const [ImgUrl, setImgUrl] = useState<string>(userList?.profileImage || "");
   const [ImgFile, setImgFile] = useState<File>();
   const [mainImage, setMainImage] = useState<string | null>(null);
-  const [nickname, setNickname] = useState<string>("");
+  const [nickname, setNickname] = useState<string>(userList?.nickname || "");
   const [introduce, setIntroduce] = useState<string>("");
   const [isProfileImgChanged, setIsProfileImgChanged] =
     useState<boolean>(false);
@@ -21,7 +29,6 @@ function ProfileEdit() {
     mutationFn: (formData: FormData) => updateProfile(formData),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.user);
-      console.log("성공");
     },
   });
 
@@ -54,7 +61,8 @@ function ProfileEdit() {
       <form action="" onSubmit={handleBtnClick}>
         <textarea
           placeholder="닉네임"
-          value={nickname}
+          // value={nickname}
+          value={nickname === "" ? userList?.nickname : nickname}
           onChange={(e) => setNickname(e.target.value)}
           className="border-2 border-black"
         ></textarea>
@@ -66,11 +74,17 @@ function ProfileEdit() {
         ></textarea>
         <ProfilePhotoEdit
           setImgUrl={setImgUrl}
-          ImgUrl={ImgUrl}
+          ImgUrl={ImgUrl === "" ? userList?.profileImage : ImgUrl}
           setIsProfileImgChanged={setIsProfileImgChanged}
           setImgFile={setImgFile}
           ImgFile={ImgFile}
         />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
         <Btn
           width="w-full"
           bgColor="blue"
