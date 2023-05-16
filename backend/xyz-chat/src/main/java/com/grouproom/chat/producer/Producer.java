@@ -55,6 +55,30 @@ public class Producer {
                         .name(message.getName())
                         .room(message.getRoom())
                         .time(time)
+                        .type("text")
+                        .build());
+    }
+
+    public void orderfile(String topic, KafkaMessage message) {
+        LocalDateTime localDateTimeNow = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        String time = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+
+        Long curId = sequenceGeneratorService.generateSequence(Chat.SEQUENCE_NAME);
+
+        message.setTime(time);
+        message.setId(curId);
+        kafkaTemplate.send(topic, message);
+        log.info("Kafka Producer send file  from the order service = {}", message);
+        mongoDBRepository.insert(
+                Chat.builder()
+                        .id(curId)
+                        .text(message.getText())
+                        .name(message.getName())
+                        .room(message.getRoom())
+                        .time(time)
+                        .type(message.getType())
                         .build());
     }
 }

@@ -25,12 +25,14 @@ public class KafkaMessage {
     private String name;
     private String text;
     private String time;
+    private String type;
 
     @Builder
-    public KafkaMessage(Long id,String room, String name, String text) {
+    public KafkaMessage(Long id,String room, String name, String text, String type) {
         this.id = id;
         this.room = room;
         this.name = name;
         this.text = text;
+        this.type = type;
     }
 }

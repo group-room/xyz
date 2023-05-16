@@ -34,13 +34,15 @@ public class Chat {
     private String name;
     private String text;
     private String time;
+    private String type;
 
     @Builder
-    public Chat(Long id,String room, String name, String text,String time) {
+    public Chat(Long id,String room, String name, String text,String time,String type) {
         this.id = id;
         this.room = room;
         this.name = name;
         this.text = text;
         this.time = time;
+        this.type = type;
     }
 }
