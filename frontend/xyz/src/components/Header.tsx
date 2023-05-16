@@ -9,14 +9,9 @@ import NotiIcon from "../../public/icons/notification.svg";
 import { useAppSelector } from "@/hooks/redux";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 
-// 기본적으로 제공되는 eventsource 가 아닌 추가로 설치한 eventsource 를 사용
-// const EventSource = require("eventsource");
-
 function Header() {
-  const [isAlert, setIsAlert] = useState(false);
+  const [isAlert, setIsAlert] = useState(true);
   const accessToken: string = useAppSelector((state) => state.auth.accessToken);
-
-  const EventSource = EventSourcePolyfill;
 
   useEffect(() => {
     if (accessToken) {
@@ -36,7 +31,6 @@ function Header() {
           //sse 최초 연결되었을 때
           eventSource.onopen = (event) => {
             console.log("open");
-            console.log(event);
           };
 
           eventSource.addEventListener("connect", (event: any) => {
@@ -52,7 +46,6 @@ function Header() {
             console.log(event);
             if (eventSource !== undefined) {
               eventSource.close();
-              console.log("연결 닫힘");
             }
           };
         } catch (error) {
@@ -82,10 +75,14 @@ function Header() {
           </Link>
           <Link href={"/notification"}>
             <div>
-              {isAlert && <div className="bg-red-500 rounded-full"></div>}
               <Image src={NotiIcon} alt="xyz 로고" width={20} />
             </div>
           </Link>
+          {isAlert ? (
+            <div className="bg-red-500 rounded-full w-20 h-20"></div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </nav>
     </header>
