@@ -69,7 +69,7 @@ function ProfilePhotoEdit({
         accept="image/*"
         onChange={handleImgChange}
       />
-      <button onClick={handleImgPreview}>확인</button>
+      <div onClick={handleImgPreview}>확인</div>
     </div>
   );
 }

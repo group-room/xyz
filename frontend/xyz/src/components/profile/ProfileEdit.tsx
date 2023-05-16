@@ -8,8 +8,10 @@ import Btn from "../common/Btn";
 import { useUserList } from "@/hooks/queries/user";
 import ProfilePhotoEdit from "./ProfilePhotoEdit";
 import { useAppSelector } from "@/hooks/redux";
+import { useRouter } from "next/navigation";
 
 function ProfileEdit() {
+  const router = useRouter();
   const userSeq = useAppSelector((state) => state.auth.userInfo?.userSeq);
   const {
     data: userList,
@@ -52,6 +54,7 @@ function ProfileEdit() {
     useUpdateProfileMutation.mutate(formData, {
       onSuccess: (data) => {
         console.log(data, "data");
+        router.push("/profile");
       },
     });
   };
@@ -74,7 +77,7 @@ function ProfileEdit() {
         ></textarea>
         <ProfilePhotoEdit
           setImgUrl={setImgUrl}
-          ImgUrl={ImgUrl === "" ? userList?.profileImage : ImgUrl}
+          ImgUrl={ImgUrl}
           setIsProfileImgChanged={setIsProfileImgChanged}
           setImgFile={setImgFile}
           ImgFile={ImgFile}
