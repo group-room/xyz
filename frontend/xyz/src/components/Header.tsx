@@ -10,88 +10,59 @@ import { useAppSelector } from "@/hooks/redux";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 
 // 기본적으로 제공되는 eventsource 가 아닌 추가로 설치한 eventsource 를 사용
-const EventSource = require("eventsource");
+// const EventSource = require("eventsource");
 
 function Header() {
   const [isAlert, setIsAlert] = useState(false);
   const accessToken: string = useAppSelector((state) => state.auth.accessToken);
 
-  // Server Sent Event 로 가져온 data 를 화면에 보여주기 위한 state 변수
-  const [sseDate, setSseDate] = useState();
-  const [sseHeader, setSseHeader] = useState();
+  const EventSource = EventSourcePolyfill;
 
   useEffect(() => {
-    // EventSource 로 Server Sent Event 를 호출하는 부분
-    const eventSource = new EventSource(
-      "https://xyz-gen.com/backend/api/connect",
-      {
-        headers: {
-          Authorization: accessToken,
-        },
-        withCredentials: true,
-      }
-    );
+    if (accessToken) {
+      const eventSource = new EventSourcePolyfill(
+        "https://xyz-gen.com/backend/api/connect",
+        {
+          headers: {
+            Authorization: accessToken,
+            "Content-Type": "text/event-stream;charset=UTF-8",
+          },
+          withCredentials: true,
+        }
+      );
 
-    // EventSource 로 data 를 받아서 처리하는 event listener 설정
-    eventSource.addEventListener("connect", async function (event: any) {
-      const data = JSON.parse(event.data);
-      setSseHeader(data["auth-user"]);
-      setSseDate(data["date"]);
-    });
+      const fetchSse = async () => {
+        try {
+          //sse 최초 연결되었을 때
+          eventSource.onopen = (event) => {
+            console.log("open");
+            console.log(event);
+          };
 
-    // Server Sent Event 가 종료되는 경우 연결된 EventSource 를 close 하는 부분
-    eventSource.addEventListener("close", () => eventSource.close());
-    return () => eventSource.close();
-  }, []);
+          eventSource.addEventListener("connect", (event: any) => {
+            console.log(event.data);
+          });
+          eventSource.addEventListener("newNotification", (event: any) => {
+            console.log(event);
+            setIsAlert(true);
+          });
 
-  // const EventSource = EventSourcePolyfill || NativeEventSource;
-
-  // useEffect(() => {
-  //   const eventSource = new EventSource(
-  //     `https://xyz-gen.com/backend/api/connect`,
-  //     {
-  //       headers: {
-  //         Authorization: accessToken,
-  //       },
-  //       heartbeatTimeout: 30000,
-  //       withCredentials: true,
-  //     }
-  //   );
-
-  //     eventSource.addEventListener("connect", function(event) {
-  //       console.log("connect")
-  //   })
-
-  //     eventSource.addEventListener("newNotification", function(event) {
-  //       console.log("newNotification")
-  //   })
-
-  //   // if (accessToken) {
-  //   //   console.log("토큰이 있음");
-  //   //   const fetchSse = async () => {
-  //   //     console.log("fetchSse 안에 들어옴");
-  //   //     try {
-  //   //       console.log("try 안에 들어옴");
-
-  //   //       eventSource.addEventListener("open", (e) => {
-  //   //         console.log("The connection has been established.");
-  //   //       });
-
-  //   //       /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
-  //   //       eventSource.onmessage = async (event) => {
-  //   //         console.log("연결전");
-  //   //         const res = await event.data;
-  //   //         setIsAlert(true);
-  //   //         console.log("연결됨!!!!!!!!!!!!!!!!!!!");
-  //   //       };
-  //   //     } catch (error) {
-  //   //       console.log(error);
-  //   //     }
-  //   //   };
-  //   //   fetchSse();
-  //   //   return () => eventSource.close();
-  //   // }
-  // });
+          //sse 에러
+          eventSource.onerror = (event) => {
+            console.log(event);
+            if (eventSource !== undefined) {
+              eventSource.close();
+              console.log("연결 닫힘");
+            }
+          };
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchSse();
+      return () => eventSource.close();
+    }
+  });
 
   return (
     <header>
