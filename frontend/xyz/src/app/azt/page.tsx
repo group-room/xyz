@@ -28,9 +28,18 @@ function AztPage() {
       >
         <div className="grid grid-cols-2">
           {aztData ? (
-            aztData?.map(({ aztSeq, name, image }) => (
-              <AztItem key={aztSeq} aztSeq={aztSeq} name={name} image={image} />
-            ))
+            aztData.length ? (
+              aztData?.map(({ aztSeq, name, image }) => (
+                <AztItem
+                  key={aztSeq}
+                  aztSeq={aztSeq}
+                  name={name}
+                  image={image}
+                />
+              ))
+            ) : (
+              <div className="py-2 w-full">아지트가 없어요 ㅠㅠ</div>
+            )
           ) : (
             <p>로딩중...</p>
           )}
