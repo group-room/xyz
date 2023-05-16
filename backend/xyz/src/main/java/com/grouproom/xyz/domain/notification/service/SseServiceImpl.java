@@ -5,11 +5,13 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 @Service
 public class SseServiceImpl implements SseService {
 
     private final Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
+    private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.service.SseService");
 
     @Override
     public Map<Long, SseEmitter> getSseEmitters() {
@@ -24,6 +26,7 @@ public class SseServiceImpl implements SseService {
     @Override
     public void addSseEmitter(Long userSeq, SseEmitter sseEmitter) {
         sseEmitters.put(userSeq, sseEmitter);
+        logger.info(String.valueOf(sseEmitters.size()));
     }
 
     @Override
