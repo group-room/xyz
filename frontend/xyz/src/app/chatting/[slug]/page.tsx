@@ -1,6 +1,7 @@
 "use client";
 
 import { sendChat } from "@/app/api/chatting";
+import ChatBubble from "@/components/chatting/ChatBubble";
 import ChatHeader from "@/components/chatting/ChatHeader";
 import ChatInput from "@/components/chatting/ChatInput";
 import { queryKeys } from "@/constants/queryKeys";
@@ -10,15 +11,18 @@ import {
 } from "@/hooks/queries/chatting";
 import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
+import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const [chatInput, onChangeChatInput, resetInputValue] = useInput("");
+  const [chatData, setChatData] = useState<ChatDataTypes[]>([]);
   const loggedInUserSeq = useAppSelector(
     (state) => state.auth.userInfo?.userSeq
   );
+  const chatDataRef = useRef<HTMLDivElement | null>(null);
 
   // 채팅방 정보 조회
   const { data: chatroomDetailData } = useChattingDetail(slug);
@@ -26,9 +30,13 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
   // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
   const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
-  if (chatHistory) {
-    console.log(chatHistory);
-  }
+  if (chatHistory) console.log(chatHistory);
+
+  useEffect(() => {
+    if (chatHistory) {
+      setChatData(chatHistory);
+    }
+  }, [chatHistory]);
 
   // 채팅 실시간 조회 - SSE
   useEffect(() => {
@@ -38,14 +46,20 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
     eventSource.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      console.log(message);
-      // Handle the received message, e.g., update the chat state
+      console.log(chatData.concat(message));
+      setChatData((prev) => [...prev, message]);
+      console.log(chatData);
     };
 
     return () => {
       eventSource.close();
     };
-  }, []);
+  }, [chatData]);
+
+  // 채팅 페이지 조회될 때마다 스크롤 최하단으로 이동
+  useEffect(() => {
+    if (chatDataRef.current) chatDataRef.current.scrollIntoView();
+  }, [chatData]);
 
   // 채팅 전송
   const queryClient = useQueryClient();
@@ -53,7 +67,6 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     mutationFn: () =>
       sendChat(chatroomSeq, loggedInUserSeq!.toString(), chatInput),
     onSuccess: () => {
-      console.log("성공");
       queryClient.invalidateQueries(
         queryKeys.chatting.chatHistory(chatroomSeq)
       );
@@ -71,7 +84,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
   if (!chatroomDetailData) return <div>로딩중...</div>;
 
-  if (chatroomDetailData) {
+  if (chatroomDetailData && chatData) {
     const { name, type, aztSeq, userSeq, members } = chatroomDetailData;
     return (
       <div className="w-full">
@@ -82,7 +95,26 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
           aztSeq={aztSeq}
           count={members.length}
         />
-        <div className="pt-10">dddd</div>
+        <div className="pt-14">
+          {chatData.map((chat) => (
+            <ChatBubble
+              key={chat.id}
+              chat={chat}
+              nickname={
+                members.find(
+                  (member) => member.userSeq.toString() === chat.name
+                )!.nickname
+              }
+              profileImg={
+                members.find(
+                  (member) => member.userSeq.toString() === chat.name
+                )!.profileImage
+              }
+              isMine={chat.name === loggedInUserSeq?.toString()}
+            />
+          ))}
+          <div ref={chatDataRef}></div>
+        </div>
         <ChatInput
           chatInput={chatInput}
           onChangeChatInput={onChangeChatInput}

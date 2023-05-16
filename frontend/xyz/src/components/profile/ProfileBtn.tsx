@@ -6,12 +6,18 @@ import { useRouter } from "next/navigation";
 import { useUserList } from "@/hooks/queries/user";
 import ModalBtn from "../common/ModalBtn";
 import { useState } from "react";
-import store from "@/store/store";
+import { useAppSelector } from "@/hooks/redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postFollow, putCancelFollow, deleteBlock } from "@/app/api/friend";
+import { KEYS } from "@/constants/queryKeys";
 
-type Props = { userSeq: string | number | undefined };
+type Props = { btnUserSeq: string };
 
-function ProfileBtn({ userSeq }: Props) {
-  const state = store.getState();
+function ProfileBtn({ btnUserSeq }: Props) {
+  const numBtnUserSeq = parseInt(btnUserSeq);
+  const queryClient = useQueryClient();
+
+  const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
@@ -19,7 +25,7 @@ function ProfileBtn({ userSeq }: Props) {
     data: userList,
     isLoading: isUserLoading,
     error,
-  } = useUserList(userSeq);
+  } = useUserList(numBtnUserSeq);
 
   const PushtoProfileFriend = () => {
     router.push("/profile/friend");
@@ -27,12 +33,33 @@ function ProfileBtn({ userSeq }: Props) {
   const PushtoProfileMypage = () => {
     router.push("/profile/mypage");
   };
-  const MakeFriends = () => {
-    // 추후에 친구 신청을 누르면 친구 신청이 감 (query 만들어놓으면 연결)
+  const useMakeFriendsMutation = useMutation({
+    mutationFn: () => postFollow(numBtnUserSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.friend);
+    },
+  });
+
+  const MakeFriends = useMakeFriendsMutation.mutate;
+
+  const useDeleteFriendRequestMutation = useMutation({
+    mutationFn: () => putCancelFollow(numBtnUserSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.friend);
+      console.log("친구 요청 취소");
+    },
+  });
+
+  const DeleteFriendRequest = useDeleteFriendRequestMutation.mutate;
+  const AcceptFriendRequest = () => {
+    router.push("/notification");
   };
 
-  if (userSeq === myUserSeq) {
-    // 추후 1 대신 나의 userSeq 를 넣어야 함
+  console.log(typeof numBtnUserSeq, "numBtnUserSeq");
+  console.log(typeof myUserSeq, "myUserSeq");
+  console.log(userList, "userList-ProfileBtn");
+
+  if (numBtnUserSeq === myUserSeq) {
     return (
       <div className="flex justify-start items-start relative gap-[15px]">
         <Btn
@@ -49,7 +76,7 @@ function ProfileBtn({ userSeq }: Props) {
         />
       </div>
     );
-  } else if (userSeq !== myUserSeq && userList?.friend === true) {
+  } else if (numBtnUserSeq !== myUserSeq && userList?.friend === true) {
     return (
       <>
         <Btn
@@ -61,7 +88,7 @@ function ProfileBtn({ userSeq }: Props) {
         />
       </>
     );
-  } else if (userSeq !== myUserSeq && userList?.friendRequest === true) {
+  } else if (numBtnUserSeq !== myUserSeq && userList?.friendRequest === true) {
     return (
       <>
         <Btn width="168" bgColor="blue" text="수락 대기중" btnFunc={() => {}} />
@@ -69,19 +96,19 @@ function ProfileBtn({ userSeq }: Props) {
           width="168"
           bgColor="blue"
           text="친구 요청 취소"
-          btnFunc={() => {}}
+          btnFunc={DeleteFriendRequest}
           // 추후에 친구 완성 되면 친구 요청 취소 함수 연결
         />
       </>
     );
-  } else if (userSeq !== myUserSeq && userList?.friendResponse === true) {
+  } else if (numBtnUserSeq !== myUserSeq && userList?.friendResponse === true) {
     return (
       <>
         <Btn
           width="300"
           bgColor="blue"
           text="친구요청 수락하기"
-          btnFunc={() => {}}
+          btnFunc={AcceptFriendRequest}
           // 추후에 알림 완성 되면 친구 요청 수락 알림 페이지로 이동
         />
       </>

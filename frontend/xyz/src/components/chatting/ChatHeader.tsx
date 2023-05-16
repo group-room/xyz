@@ -22,7 +22,7 @@ function ChatHeader({ name, type, userSeq, aztSeq, count }: ChatHeaderProps) {
           />
           <span>{count}</span>
         </div>
-        <div className="flex-auto flex items-center px-2 border-l border-r border-black">
+        <div className="flex-auto flex items-center px-2 border-l border-r border-black bg-white">
           <p>{name.length > 12 ? name.slice(0, 12) + "..." : name}</p>
         </div>
         <div className="flex items-center bg-yellow px-4">
@@ -56,7 +56,7 @@ function ChatHeader({ name, type, userSeq, aztSeq, count }: ChatHeaderProps) {
   };
 
   return (
-    <div className="flex border-t border-b border-black fixed top-[57px] w-full -ml-5">
+    <div className="flex border-t border-b border-black fixed top-[56px] w-full -ml-5 z-10">
       {type === "azt" ? <AztHeader /> : <UserHeader />}
     </div>
   );

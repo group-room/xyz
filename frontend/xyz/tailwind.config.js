@@ -34,5 +34,9 @@ module.exports = {
       // },
     },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [require("tailwind-scrollbar-hide"), require("daisyui")],
+  daisyui: {
+    // styled: false,
+    themes: false,
+  },
 };
