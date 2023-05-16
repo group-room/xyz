@@ -55,7 +55,7 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
             <div className="flex justify-between mb-1">
               <p>아지트 이름</p>
               <div className="flex gap-x-2">
-                <Link href={`/${API.chat}/${chatSeq}`}>
+                <Link href={`/${LOCAL.chatting}/${chatSeq}`}>
                   <Image
                     src="/icons/chat.svg"
                     alt="채팅 아이콘"

@@ -1,8 +1,8 @@
 export type CapsuleAztTypes = {
   aztImage?: string;
-  tcSeq: number;
+  tcSeq?: number;
   aztSeq?: number;
-  aztName: string;
+  aztName?: string;
   openStatus?: string;
   openStart?: Date;
   openEnd?: Date;

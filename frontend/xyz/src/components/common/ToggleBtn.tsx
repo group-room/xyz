@@ -29,7 +29,7 @@ export default function ToggleBtn({
   return (
     <div className="flex rounded h-10">
       <div
-        className={`flex w-1/2 items-center justify-center rounded rounded-b-none  ${
+        className={`flex w-1/2 items-center justify-center rounded rounded-b-none cursor-pointer  ${
           isClick
             ? "border border-b-0 border-black"
             : "bg-neutral-100 border-b border-black"
@@ -55,7 +55,7 @@ export default function ToggleBtn({
         {textL}
       </div>
       <div
-        className={`flex w-1/2 items-center justify-center rounded rounded-b-none ${
+        className={`flex w-1/2 items-center justify-center rounded rounded-b-none cursor-pointer ${
           !isClick
             ? "border border-b-0 border-black"
             : "bg-neutral-100 border-b border-black"
@@ -67,10 +67,13 @@ export default function ToggleBtn({
       >
         {imgR ? (
           <div className="mr-2">
-            <Image src={imgR} alt="이미지" 
+            <Image
+              src={imgR}
+              alt="이미지"
               width="0"
               height="0"
-              className="w-full h-auto" />
+              className="w-full h-auto"
+            />
           </div>
         ) : (
           ""

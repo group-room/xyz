@@ -2,47 +2,30 @@
 
 import Btn from "@/components/common/Btn";
 import React, { useEffect, useState } from "react";
-import DropDown from "@/components/memory/DropDown";
-import { useAztList } from "@/hooks/queries/azt";
-import { AztTypes } from "@/types/azt";
 import CapsulePhotoUpload from "@/components/timecapsule/CapsulePhotoUpload";
-import SearchPostCode from "@/components/timecapsule/SearchPostCode";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { KEYS } from "@/constants/queryKeys";
-import { postCapsule } from "@/app/api/capsule";
+import { postContentCapsule } from "@/app/api/capsule";
 import { useRouter } from "next/navigation";
-import { positionTypes } from "@/types/capsule";
 
-export default function TimeCapsuleCreatePage() {
+type Props = {
+  params: {
+    slug: number;
+  };
+};
+
+export default function TimeCapsuleCreatePage({ params: { slug } }: Props) {
   const router = useRouter();
-  const today: Date = new Date();
-  const after7Days: Date = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
 
   const [content, setContent] = useState<string>("");
-  const [currAzt, setCurrAzt] = useState<AztTypes[]>([]);
-  const [aztList, setAztList] = useState<AztTypes[]>([]);
-  const [address, setAddress] = useState("");
-  const [position, setPosition] = useState<positionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
-  const [openStart, setOpenStart] = useState(today);
-  const [openEnd, setOpenEnd] = useState(after7Days);
-  const [updateEnd, setUpdateEnd] = useState(after7Days);
 
   const queryClient = useQueryClient();
   const useCreateCapsuleMutation = useMutation({
-    mutationFn: (formData: FormData) => postCapsule(formData),
+    mutationFn: (formData: FormData) => postContentCapsule(slug, formData),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.capsule);
     },
   });
-
-  // 그룹(아지트) 리스트 불러오기
-  const { data: aztListData, isLoading } = useAztList();
-  useEffect(() => {
-    if (aztListData) {
-      setAztList(aztListData);
-      setCurrAzt([aztListData[0]]);
-    }
-  }, [aztListData]);
 
   const [photos, setPhotos] = useState<File[]>([]); // 업로드한 사진 파일들
   const [photoPreviewList, setPhotoPreviewList] = useState<string[]>([]); // 사진 미리보기용
@@ -53,14 +36,7 @@ export default function TimeCapsuleCreatePage() {
 
     const formData = new FormData();
     const stringifiedData = JSON.stringify({
-      aztSeq: currAzt[0].aztSeq!,
       content: content,
-      latitude: position.lat,
-      location: address,
-      longitude: position.lng,
-      openEnd: openEnd,
-      openStart: openStart,
-      updateEnd: updateEnd,
     });
     const jsonData = new Blob([stringifiedData], {
       type: "application/json",
@@ -69,7 +45,7 @@ export default function TimeCapsuleCreatePage() {
     // const videofile = new File([videoFiles], "videoFile.webm", {
     //   type: "video/webm",
     // });
-    formData.append("addTcRequest", jsonData);
+    formData.append("addTcContentRequest", jsonData);
     photos.forEach((photo) => {
       formData.append("images", photo);
     });
@@ -84,37 +60,18 @@ export default function TimeCapsuleCreatePage() {
   };
   return (
     <div>
-      <h2 className="text-xl">타임캡슐 만들기</h2>
+      <h2 className="text-xl">타임캡슐 내용 추가하기</h2>
       <form
         action=""
         className="flex flex-col justify-center align-middle gap-y-5 mt-5"
         onSubmit={handleSubmitCapsule}
       >
-        <DropDown
-          isAzt
-          iconSrc="/icons/users.svg"
-          aztList={aztList}
-          currAzt={currAzt}
-          setCurrAzt={setCurrAzt}
-        />
         <CapsulePhotoUpload
-          isAdd={false}
-          openStart={openStart}
-          setOpenStart={setOpenStart}
-          openEnd={openEnd}
-          setOpenEnd={setOpenEnd}
-          updateEnd={updateEnd}
-          setUpdateEnd={setUpdateEnd}
+          isAdd={true}
           photos={photos}
           setPhotos={setPhotos}
           photoPreviewList={photoPreviewList}
           setPhotoPreviewList={setPhotoPreviewList}
-        />
-        <SearchPostCode
-          address={address}
-          setAddress={setAddress}
-          position={position}
-          setPosition={setPosition}
         />
         <textarea
           rows={3}

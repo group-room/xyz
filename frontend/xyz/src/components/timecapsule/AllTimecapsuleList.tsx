@@ -27,7 +27,7 @@ export default function AllTimecapsuleList() {
               width="0"
               height="0"
               className="w-1/3 h-auto"
-              onClick={() => moveToDetail(list.tcSeq)}
+              onClick={() => moveToDetail(list.tcSeq as number)}
             />
           );
         })
