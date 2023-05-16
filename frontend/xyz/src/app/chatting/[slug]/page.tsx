@@ -105,6 +105,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
                   (member) => member.userSeq.toString() === chat.name
                 )!.profileImage
               }
+              isMine={chat.name === loggedInUserSeq?.toString()}
             />
           ))}
         </div>
