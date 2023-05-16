@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
-import store from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logOut, withDraw } from "@/app/api/user";
 import { useDispatch } from "react-redux";
@@ -19,16 +18,18 @@ import ModalBtn from "../common/ModalBtn";
 import { useAppSelector } from "@/hooks/redux";
 
 interface ProfileMainProps {
-  userSeq: string | number | undefined;
+  mainUserSeq: string;
 }
 
-function ProfileMain({ userSeq }: ProfileMainProps) {
+function ProfileMain({ mainUserSeq }: ProfileMainProps) {
+  const userSeq = parseInt(mainUserSeq);
+  const { data: profileData, isLoading } = useUserList(userSeq);
+  console.log(profileData, "profileData");
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
 
   const [isModal, setIsModal] = useState(false);
   const router = useRouter();
-  const { data: profileData, isLoading } = useUserList(userSeq);
   const pushToProfileEdit = () => {
     router.push("/profile/edit");
   };

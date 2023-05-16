@@ -1,4 +1,9 @@
-import { MemoriesTypes, MemoryListParams, MemoryTypes } from "@/types/memory";
+import {
+  MemoriesTypes,
+  MemoryListParams,
+  MemoryTypes,
+  MyMemoriesTypes,
+} from "@/types/memory";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../app/api/instance";
 import { API, queryKeys } from "../../constants/queryKeys";
@@ -30,5 +35,16 @@ export const useMemoryDetail = (memorySeq: number) => {
         .get(`${MEMORY}/${memorySeq}`)
         .then((res) => res.data.data);
     },
+  });
+};
+
+// 내가 작성한 추억 조회
+export const useMyMemoryList = () => {
+  return useQuery<MyMemoriesTypes[]>({
+    queryKey: queryKeys.memory.myMemoryList(),
+    queryFn: async () =>
+      axiosInstance
+        .get(`${MEMORY}/mymemories`)
+        .then((res) => res.data.data.memories),
   });
 };
