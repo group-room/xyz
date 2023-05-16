@@ -2,6 +2,7 @@ package com.grouproom.chat.controller;
 
 import com.grouproom.chat.consumer.Consumer;
 import com.grouproom.chat.dto.KafkaMessage;
+import com.grouproom.chat.dto.LatestChatResponse;
 import com.grouproom.chat.entity.Chat;
 import com.grouproom.chat.producer.Producer;
 import com.grouproom.chat.service.MongoDBService;
@@ -45,6 +46,11 @@ public class ChatRestController {
     String transferChar(@RequestBody KafkaMessage kafkaMessage) {
         producer.orderSend("xyz", kafkaMessage);
         return "SUCCESS";
+    }
+
+    @GetMapping("/recent-chat")
+    List<LatestChatResponse> transferChar(@RequestParam String name) {
+        return mongoDBService.getLatestChat(name);
     }
 
     @GetMapping(value = "/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
