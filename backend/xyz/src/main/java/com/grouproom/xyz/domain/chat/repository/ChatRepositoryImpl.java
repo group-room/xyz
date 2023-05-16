@@ -45,7 +45,13 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
                         )
                 )
                 .from(friend)
-                .where(friend.fromUser.sequence.eq(loginSeq).or(friend.toUser.sequence.eq(loginSeq)))
+                .where(
+                        friend.fromUser.sequence.eq(loginSeq).or(friend.toUser.sequence.eq(loginSeq))
+                        ,
+                        friend.isAccepted.eq(true),
+                        friend.isCanceled.eq(false),
+                        friend.isDeleted.eq(false)
+                        )
                 .fetch();
 
         SubQueryExpression<Long> countSubQuery = JPAExpressions
