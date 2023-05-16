@@ -107,4 +107,21 @@ public class MyRoomServiceImpl implements MyRoomService {
     public List<MyRoomResponse> findMyRoomByUserSeq(Long userSeq) {
         return userStickerRepository.selectMyRoomByUserSeq(userSeq);
     }
+
+    @Override
+    @Transactional
+    public void modifyMyRoomPhoto(Long userSeq, String imagePath) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다."));
+
+        user.changeMyRoomImage(imagePath);
+
+    }
+
+    @Override
+    public String findMyRoomPhotoByUserSeq(Long userSeq) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다."));
+        return user.getMyRoomImage();
+    }
 }
