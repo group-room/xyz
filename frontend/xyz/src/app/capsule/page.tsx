@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ToggleBtn from "./../../components/common/ToggleBtn";
 import TimecapsuleList from "./../../components/timecapsule/TimecapsuleList";
 import TimecapsuleMachine from "@/components/timecapsule/TimecapsuleMachine";

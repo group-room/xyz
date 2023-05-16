@@ -32,7 +32,7 @@ export default function Home() {
             <div className="text-xl text-black">카카오 로그인</div>
           </div>
         </Link>
-        <Link href={"https://xyz-gen.com/backend/api/user/login/naver"}>
+        <Link href={"https://xyz-gen.com//user/login/naver"}>
           <div className="flex flex-row justify-center items-center gap-4 w-[255px] h-[66px] rounded-[5px] bg-[#1dc800] border border-black">
             <div>
               <Image src={Naver} alt="네이버 로고" width={30} height={30} />
