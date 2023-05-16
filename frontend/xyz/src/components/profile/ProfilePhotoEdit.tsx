@@ -37,15 +37,9 @@ function ProfilePhotoEdit({
     if (!e.target.files) return;
     const file = e.target.files[0];
     if (file) {
-      //   let image = window.URL.createObjectURL(file);
       setImgFile(file);
     }
   };
-
-  // const handleImgSubmit = () => {
-  //   if (!ImgFile) return alert("이미지가 선택되지 않았습니다");
-  //   setImgUrl(URL.createObjectURL(ImgFile));
-  // };
 
   const handleImgPreview = () => {
     if (!ImgFile) return alert("이미지가 선택되지 않았습니다");
@@ -63,13 +57,15 @@ function ProfilePhotoEdit({
     <div>
       프로필사진
       <img src={ImgUrl} />
-      <input
-        type="file"
-        id="profile-edit"
-        accept="image/*"
-        onChange={handleImgChange}
-      />
-      <div onClick={handleImgPreview}>확인</div>
+      <div className="flex">
+        <input
+          type="file"
+          id="profile-edit"
+          accept="image/*"
+          onChange={handleImgChange}
+        />
+        <div onClick={handleImgPreview}>확인</div>
+      </div>
     </div>
   );
 }

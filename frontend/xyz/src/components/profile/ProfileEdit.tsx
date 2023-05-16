@@ -24,6 +24,7 @@ function ProfileEdit() {
   const [mainImage, setMainImage] = useState<string | null>(null);
   const [nickname, setNickname] = useState<string>(userList?.nickname || "");
   const [introduce, setIntroduce] = useState<string>(userList?.introduce || "");
+
   const [isProfileImgChanged, setIsProfileImgChanged] =
     useState<boolean>(false);
   const queryClient = useQueryClient();
@@ -64,14 +65,13 @@ function ProfileEdit() {
       <form action="" onSubmit={handleBtnClick}>
         <textarea
           placeholder="닉네임"
-          // value={nickname}
-          value={nickname === "" ? userList?.nickname : nickname}
+          value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           className="border-2 border-black"
         ></textarea>
         <textarea
           placeholder="자기소개 한마디"
-          value={introduce === "" ? userList?.introduce : introduce}
+          value={introduce}
           onChange={(e) => setIntroduce(e.target.value)}
           className="border-2 border-black"
         ></textarea>
@@ -82,11 +82,6 @@ function ProfileEdit() {
           setImgFile={setImgFile}
           ImgFile={ImgFile}
         />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
 
         <Btn
           width="w-full"
