@@ -31,10 +31,11 @@ function ProfileMypage() {
         </>
       );
     } else {
-      if (isMyMemoryLoading) return <div>로딩중...</div>;
-      else {
-        return <div>dddd</div>;
-      }
+      return (
+        <div>
+          <MyTimecapsuleList />;
+        </div>
+      );
     }
   }
 
@@ -52,7 +53,6 @@ function ProfileMypage() {
       <div className="flex flex-col gap-y-5 px-4 py-6 rounded rounded-t-none border border-t-0 border-black">
         <SelectedContent />
       </div>
-      <MyTimecapsuleList />
     </div>
   );
 }
