@@ -14,6 +14,8 @@ import { KEYS } from "@/constants/queryKeys";
 type Props = { btnUserSeq: number };
 
 function ProfileBtn({ btnUserSeq }: Props) {
+  console.log(btnUserSeq, "btnUserSeq");
+  console.log(typeof btnUserSeq, "btnUserSeq");
   const queryClient = useQueryClient();
 
   const state = useAppSelector((state) => state);
