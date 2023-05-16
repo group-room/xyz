@@ -15,4 +15,6 @@ public interface MyRoomService {
     void removeMyRoomByStickerSeq(Long userSeq,Long stickerSeq);
     void removeMyRoom(Long userSeq);
     List<MyRoomResponse> findMyRoomByUserSeq(Long userSeq);
+    void modifyMyRoomPhoto(Long userSeq,String imagePath);
+    String findMyRoomPhotoByUserSeq(Long userSeq);
 }
