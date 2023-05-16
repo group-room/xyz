@@ -9,7 +9,11 @@ import {
 } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { axiosFileInstance, axiosInstance } from "../api/instance";
+import {
+  axiosChatInstance,
+  axiosFileInstance,
+  axiosInstance,
+} from "../api/instance";
 import { API } from "@/constants/queryKeys";
 
 function LoginPage() {
@@ -37,6 +41,7 @@ function LoginPage() {
     router.push(`/${API.memory}`);
     axiosInstance.defaults.headers.common["Authorization"] = accessToken;
     axiosFileInstance.defaults.headers.common["Authorization"] = accessToken;
+    axiosChatInstance.defaults.headers.common["Authorization"] = accessToken;
   }
   return <div>로그인중...!</div>;
 }

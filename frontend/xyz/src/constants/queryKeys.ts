@@ -4,6 +4,7 @@ export const API = {
   capsule: "timecapsule",
   azt: "azt",
   chat: "chat",
+  chatroom: "chat-room",
   myroom: "myroom",
   friend: "friend",
   notification: "notification",
@@ -15,6 +16,7 @@ export const KEYS = {
   capsule: [API.capsule],
   azt: [API.azt],
   chat: [API.chat],
+  chatroom: [API.chatroom],
   myroom: [API.myroom],
   friend: [API.friend],
   notification: [API.notification],
@@ -65,5 +67,10 @@ export const queryKeys = {
   },
   notification: {
     notificationList: (type: string) => [...KEYS.notification, { type }],
+  },
+  chatting: {
+    chatroomList: () => [...KEYS.chatroom],
+    chatroomDetail: (chatSeq: number) => [...KEYS.chatroom, { chatSeq }],
+    chatHistory: (room: string) => [...KEYS.chat, "history", { room }],
   },
 };
