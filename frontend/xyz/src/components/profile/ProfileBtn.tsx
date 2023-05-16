@@ -14,12 +14,11 @@ import { KEYS } from "@/constants/queryKeys";
 type Props = { btnUserSeq: number };
 
 function ProfileBtn({ btnUserSeq }: Props) {
-  console.log(btnUserSeq, "btnUserSeq");
-  console.log(typeof btnUserSeq, "btnUserSeq");
   const queryClient = useQueryClient();
 
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
+  const myProfileImage = state.auth.userInfo?.profileImage;
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const {
@@ -56,11 +55,8 @@ function ProfileBtn({ btnUserSeq }: Props) {
     router.push("/notification");
   };
 
-  console.log(typeof btnUserSeq, "numBtnUserSeq");
-  console.log(typeof myUserSeq, "myUserSeq");
-  console.log(userList, "userList-ProfileBtn");
-
-  if (btnUserSeq === myUserSeq) {
+  // 약간 임시로 해두었음,,, 타입 어떻게 해야할지,,? 사실 get 해올때 나인지 넣어주거나, login 할때 identify 도 넣어주면 좋은데
+  if (userList?.profileImage === myProfileImage) {
     return (
       <div className="flex justify-start items-start relative gap-[15px]">
         <Btn
@@ -77,7 +73,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </div>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friend === true) {
+  } else if (userList?.friend === true) {
     return (
       <>
         <Btn
@@ -89,7 +85,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friendRequest === true) {
+  } else if (userList?.friendRequest === true) {
     return (
       <>
         <Btn width="168" bgColor="blue" text="수락 대기중" btnFunc={() => {}} />
@@ -102,7 +98,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friendResponse === true) {
+  } else if (userList?.friendResponse === true) {
     return (
       <>
         <Btn
