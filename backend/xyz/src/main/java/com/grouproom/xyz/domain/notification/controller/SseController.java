@@ -7,14 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 @RestController
@@ -23,8 +21,6 @@ import java.util.logging.Logger;
 public class SseController {
 
     private final SseService sseService;
-//    Executors.newSingleThreadExecutor()
-
     private final Logger logger = Logger.getLogger("com.grouproom.xyz.domain.notification.controller.SseController");
 
     @GetMapping(consumes = MediaType.ALL_VALUE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
