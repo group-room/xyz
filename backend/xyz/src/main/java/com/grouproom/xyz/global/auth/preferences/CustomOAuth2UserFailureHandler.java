@@ -1,16 +1,22 @@
 package com.grouproom.xyz.global.auth.preferences;
 
 import com.grouproom.xyz.domain.user.entity.Bgm;
+import com.grouproom.xyz.domain.user.entity.Modifier;
 import com.grouproom.xyz.domain.user.entity.User;
+import com.grouproom.xyz.domain.user.entity.UserModifier;
 import com.grouproom.xyz.domain.user.repository.BgmRepository;
+import com.grouproom.xyz.domain.user.repository.ModifierRepository;
+import com.grouproom.xyz.domain.user.repository.UserModifierRepository;
 import com.grouproom.xyz.domain.user.repository.UserRepository;
 import com.grouproom.xyz.global.auth.jwt.JsonWebToken;
 import com.grouproom.xyz.global.auth.oauth.CustomOAuth2User;
+import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.exception.OAuth2LoginException;
 import com.grouproom.xyz.global.util.CookieUtils;
 import com.grouproom.xyz.global.util.JsonUtils;
 import com.grouproom.xyz.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.AuthenticationException;
@@ -42,10 +48,13 @@ import static com.grouproom.xyz.global.util.JwtTokenUtils.REFRESH_PERIOD;
  */
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private final UserRepository userRepository;
     private final BgmRepository bgmRepository;
+    private final ModifierRepository modifierRepository;
+    private final UserModifierRepository userModifierRepository;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -98,6 +107,15 @@ public class CustomOAuth2UserFailureHandler extends SimpleUrlAuthenticationFailu
                         .link("https://ssafy-xyz.s3.ap-northeast-2.amazonaws.com/music/Sabana+Havana+-+Jimmy+Fontanez_Media+Right+Productions.mp3")
                         .build()
         );
+
+        try {
+            Modifier modifier = modifierRepository.selectModifierByRandom().orElseThrow(() -> new ErrorResponse(HttpStatus.BAD_REQUEST, "수식어가 없는 것 같아요 ㅠㅠ"));
+            UserModifier userModifier = UserModifier.builder().isSelected(true).user(user).modifier(modifier).build();
+            userModifierRepository.save(userModifier);
+        }
+        catch (ErrorResponse errorResponse){
+            log.error("수식어가 DB에 없어요.");
+        }
 
         //jwt 토큰을 발급한다.
         JsonWebToken jsonWebToken = JwtTokenUtils.allocateToken(userSeq, "ROLE_USER");
