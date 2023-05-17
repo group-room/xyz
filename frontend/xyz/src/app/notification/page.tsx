@@ -33,16 +33,16 @@ export default function NotificationPage() {
 
   return (
     <div>
-      <div className="flex space-x-4">
+      <div className="flex justify-center items-center w-full space-x-3">
         {arr.map((list, idx) => (
-          <div className="" key={idx}>
-            <Btn
-              width="w-[75px]"
-              bgColor="bg-white"
-              text={list.name}
-              btnFunc={list.func}
-            />
-          </div>
+          <Btn
+            key={idx}
+            width="w-[20vw]"
+            bgColor="bg-white"
+            text={list.name}
+            btnFunc={list.func}
+            className="hover:bg-pink"
+          />
         ))}
       </div>
 

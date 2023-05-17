@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteNotification } from "@/app/api/notification";
 import { KEYS } from "@/constants/queryKeys";
 import { putAcceptFollow, putRejectFollow, postBlock } from "@/app/api/friend";
+import LoadingLottie from "../lottie/Loading";
+import NotResultLottie from "../lottie/NotResult";
 
 type Props = {
   type: string;
@@ -15,10 +17,6 @@ type Props = {
 export default function Notification({ type }: Props) {
   const { data: notiList, isLoading } = useNotifiacationList(type);
   const router = useRouter();
-
-  if (notiList) {
-    console.log(notiList);
-  }
 
   const queryClient = useQueryClient();
 
@@ -53,7 +51,7 @@ export default function Notification({ type }: Props) {
 
   return (
     <div>
-      {notiList ? (
+      {notiList && notiList.length !== 0 ? (
         notiList.map((list, idx) => {
           return (
             <div
@@ -61,13 +59,16 @@ export default function Notification({ type }: Props) {
               className="w-full mt-4 border-2 border-black rounded-md"
             >
               <div className="flex border-b-2 border-black h-10 w-full">
-                <div className="flex items-center justify-center w-14 border-r-2 border-black bg-slate-300">
+                <div className="flex items-center justify-center w-2/12 border-r-2 border-black bg-slate-300">
                   <p>{list.type}</p>
                 </div>
-                <div className="w-[250px] flex items-center justify-center">
-                  <p>{list.content}</p>
+                <div className="w-8/12 flex flex-col items-center justify-center text-center py-2">
+                  <div>{list.content}</div>
+                  {list.content === "NEW FRIEND ASK" && (
+                    <div className="text-sm">FROM {list.fromUserName}</div>
+                  )}
                 </div>
-                <div className="w-10 border-l-2 border-black flex items-center justify-center bg-slate-300">
+                <div className="w-2/12 border-l-2 border-black flex items-center justify-center bg-slate-300">
                   <Image
                     src="/icons/check.svg"
                     alt="checkImg"
@@ -139,7 +140,10 @@ export default function Notification({ type }: Props) {
           );
         })
       ) : (
-        <div>로딩중</div>
+        <div className="flex flex-col justify-center items-center mt-[10vh]">
+          <NotResultLottie />
+          <div className="mt-8"> {type} 리스트가 없습니다. </div>
+        </div>
       )}
     </div>
   );
