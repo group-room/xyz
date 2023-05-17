@@ -7,7 +7,7 @@ import LogoImg from "../../public/images/logo.svg";
 import FriendIcon from "../../public/icons/user_plus.svg";
 import NotiIcon from "../../public/icons/notification.svg";
 import { useAppSelector } from "@/hooks/redux";
-import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
+import { EventSourcePolyfill } from "event-source-polyfill";
 import { useUnreadNotifiacation } from "@/hooks/queries/notification";
 
 function Header() {
@@ -18,7 +18,6 @@ function Header() {
   useEffect(() => {
     // 미확인 알람 유무 확인
     if (isUnreadNotification) {
-      console.log(isUnreadNotification);
       setIsAlert(true);
       return;
     }
@@ -37,16 +36,15 @@ function Header() {
 
       const fetchSse = async () => {
         try {
-          //sse 최초 연결되었을 때
-          eventSource.onopen = () => {
-            console.log("open");
-          };
+          // //sse 최초 연결되었을 때
+          // eventSource.onopen = () => {
+          //   console.log("open");
+          // };
 
-          eventSource.addEventListener("connect", (event: any) => {
-            console.log(event.data);
-          });
+          // eventSource.addEventListener("connect", (event: any) => {
+          //   console.log(event.data);
+          // });
           eventSource.addEventListener("newNotification", (event: any) => {
-            console.log(event);
             setIsAlert(true);
           });
 
