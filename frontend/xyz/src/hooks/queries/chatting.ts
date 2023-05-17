@@ -19,6 +19,18 @@ export const useChattingList = () => {
   });
 };
 
+// 채팅방 목록에 보여줄 최근 메시지 조회
+export const useChattingListRecentMessage = (userSeq: string) => {
+  return useQuery<ChatDataTypes[]>({
+    queryKey: queryKeys.chatting.chatroomListRecentMessage(),
+    queryFn: async () => {
+      return axiosChatInstance
+        .get(`${API.chat}/recent-chat`, { params: { name: userSeq } })
+        .then((res) => res.data);
+    },
+  });
+};
+
 // 채팅방 상세 정보 조회
 export const useChattingDetail = (chatSeq: number) => {
   return useQuery<ChattingRoomDetailTypes>({
@@ -32,12 +44,12 @@ export const useChattingDetail = (chatSeq: number) => {
 };
 
 // 채팅방 채팅 기록 조회
-export const useChattingHistory = (slug: string) => {
+export const useChattingHistory = (room: string) => {
   return useQuery<ChatDataTypes[]>({
-    queryKey: queryKeys.chatting.chatHistory(slug),
+    queryKey: queryKeys.chatting.chatHistory(room),
     queryFn: async () => {
       return axiosChatInstance
-        .get(`${API.chat}/history`, { params: { room: slug } })
+        .get(`${API.chat}/history`, { params: { room } })
         .then((res) => res.data);
     },
   });

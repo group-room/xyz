@@ -45,7 +45,7 @@ function ChatHeader({ name, type, userSeq, aztSeq, count }: ChatHeaderProps) {
             height={15}
           />
         </div>
-        <div className="flex-auto flex items-center px-2 border-l border-r border-black">
+        <div className="flex-auto flex items-center px-2 border-l border-r border-black bg-white">
           <p>{name.length > 12 ? name.slice(0, 12) + "..." : name}</p>
         </div>
         <div className="flex items-center bg-yellow px-2">

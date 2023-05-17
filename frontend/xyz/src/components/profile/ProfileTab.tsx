@@ -10,7 +10,7 @@ import Myroom from "./Myroom";
 type ButtonProps = {
   value: boolean;
   onChange: (value: boolean) => void;
-  profileTabUserSeq: number | string | undefined;
+  profileTabUserSeq: number;
 };
 
 function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
@@ -39,7 +39,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
 
   return (
     <>
-      <div className="flex border-t-2 border-l-2 border-r-2 border- border-black rounded-md h-10">
+      <div className="flex border-t-2 border-l-2 border-r-2 border-black rounded-t-md h-10">
         <div
           className={`flex w-1/2 items-center justify-center border-r-2 border-black bg-yellow ${
             isClick ? "" : "border-b-2"

@@ -37,23 +37,24 @@ function ProfilePage() {
     console.log(userList, "userList-ProfilePage");
   }
 
-  const { data: visitorList, isLoading: isVisitorLoading } = useVisitorList(1);
-  if (!isVisitorLoading && visitorList) {
-    console.log(visitorList, "visitorList");
-  }
-
   return (
     <div className="w-full h-full">
-      <ProfileMain mainUserSeq={userSeq!.toString()} />
-      <div className="flex py-2 items-center justify-center">
-        <ProfileBtn btnUserSeq={userSeq!.toString()} />
-      </div>
+      {userSeq ? (
+        <>
+          <ProfileMain userSeq={userSeq} />
+          <div className="flex py-2 items-center justify-center">
+            <ProfileBtn btnUserSeq={userSeq} />
+          </div>
 
-      <ProfileTab
-        value={true}
-        onChange={() => {}}
-        profileTabUserSeq={userSeq}
-      />
+          <ProfileTab
+            value={true}
+            onChange={() => {}}
+            profileTabUserSeq={userSeq}
+          />
+        </>
+      ) : (
+        <div>로딩중...</div>
+      )}
     </div>
   );
 }

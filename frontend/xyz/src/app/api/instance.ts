@@ -1,15 +1,15 @@
 import axios from "axios";
 
 export const SERVER_URL = "https://xyz-gen.com";
-const BACKEND = "/backend/api";
+export const BACKEND_URL = "/backend/api";
 
 export const axiosInstance = axios.create({
-  baseURL: `${SERVER_URL}${BACKEND}`,
+  baseURL: `${SERVER_URL}${BACKEND_URL}`,
   withCredentials: true,
 });
 
 export const axiosFileInstance = axios.create({
-  baseURL: `${SERVER_URL}${BACKEND}`,
+  baseURL: `${SERVER_URL}${BACKEND_URL}`,
   headers: {
     "Content-type": "multipart/form-data",
   },

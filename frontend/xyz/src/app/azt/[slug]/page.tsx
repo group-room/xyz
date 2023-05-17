@@ -105,7 +105,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
       </div>
       <ToggleBtn
         textL={`추억앨범 ${aztMemoryData ? `(${aztMemoryData?.length})` : ""}`}
-        textR={`타임캡슐 ${
+        textR={`열린 타임캡슐 ${
           aztCapsuleData ? `(${aztCapsuleData?.length})` : ""
         }`}
         imgL="/icons/folder.svg"
