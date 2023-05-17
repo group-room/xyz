@@ -36,7 +36,7 @@ export default function AllTimecapsuleList({ openCapsuleList }: Props) {
         ) : (
           <div className="flex flex-col justify-center items-center h-[60vh]">
             <NotResultLottie width="90%" height="90%" />
-            <div className="mt-8 text-lg">열린 타임캡슐 목록이 없습니다</div>
+            <div className="mt-8 text-lg">열린 타임캡슐이 없습니다</div>
           </div>
         )
       ) : (

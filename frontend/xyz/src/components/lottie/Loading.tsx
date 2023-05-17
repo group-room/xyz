@@ -2,8 +2,8 @@ import Lottie from "react-lottie";
 import LottieData from "../../../public/lottie/loading.json";
 
 type Props = {
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
 };
 
 const LoadingLottie = ({ width, height }: Props) => {

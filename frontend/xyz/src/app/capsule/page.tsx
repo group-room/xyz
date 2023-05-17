@@ -26,7 +26,7 @@ function CapsulePage() {
       <div className={`${value ? "mb-2" : ""}`}>
         <ToggleBtn
           textL="타임캡슐 뽑기"
-          textR="타임캡슐 목록"
+          textR="열린 타임캡슐"
           imgL="/icons/gift.svg"
           imgR="/icons/folder.svg"
           value={value}

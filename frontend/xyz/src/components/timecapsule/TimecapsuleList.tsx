@@ -12,9 +12,6 @@ import { CapsuleAztTypes } from "@/types/capsule";
 
 export default function TimecapsuleList() {
   const { data: capsuleList, isLoading } = useWaitingCapsuleList();
-  if (capsuleList) {
-    console.log(capsuleList);
-  }
 
   const [isModal, setIsModal] = useState({
     is: false,

@@ -38,7 +38,7 @@ export default function TimecapsuleMachine({ openCapsuleList }: Props) {
           onClick={handleButtonClick}
           src="/images/button.png"
           alt="machine"
-          className={`absolute w-[15vw] h-auto bottom-[32%] left-[18%] ${
+          className={`absolute w-[15vw] h-[7vh] bottom-[32%] left-[18%] ${
             isRotated ? "animate-spin-slow" : ""
           }`}
         />
@@ -62,7 +62,7 @@ export default function TimecapsuleMachine({ openCapsuleList }: Props) {
             isModal && (
               <Modal closeModal={() => setIsModal(false)}>
                 <div className="flex flex-col justify-center items-center p-10">
-                  <div className="mb-6 text-xl">열린 타임캡슐이 없습니다.</div>
+                  <div className="mb-6 text-lg">열린 타임캡슐이 없습니다.</div>
                   <div>
                     <Btn
                       className="mr-2"
