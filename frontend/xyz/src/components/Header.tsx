@@ -4,13 +4,28 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LogoImg from "../../public/images/logo.svg";
+import ArrowLeft from "../../public/icons/arrow-left.svg";
 import FriendIcon from "../../public/icons/user_plus.svg";
 import NotiIcon from "../../public/icons/notification.svg";
 import { useAppSelector } from "@/hooks/redux";
 import { EventSourcePolyfill } from "event-source-polyfill";
+import { usePathname, useRouter } from "next/navigation";
+import { API } from "@/constants/queryKeys";
+import { LOCAL } from "@/constants/localUrl";
 import { useUnreadNotifiacation } from "@/hooks/queries/notification";
 
 function Header() {
+  const pathname = usePathname();
+  const currPathname = pathname.slice(1, pathname.length);
+  const router = useRouter();
+  const mainPathnameWithLogo = [
+    API.memory,
+    LOCAL.capsule,
+    API.azt,
+    LOCAL.chatting,
+    LOCAL.profile,
+  ];
+
   const [isAlert, setIsAlert] = useState(false);
   const { data: isUnreadNotification, isLoading } = useUnreadNotifiacation();
   const accessToken: string = useAppSelector((state) => state.auth.accessToken);
@@ -66,15 +81,21 @@ function Header() {
   return (
     <header>
       <nav className="fixed flex items-center justify-between top-0 left-0 right-0 bg-white px-5 py-4 shadow-sm shadow-slate-50 h-14 z-50">
-        <Link href={"/memory"}>
-          <Image
-            src={LogoImg}
-            alt="xyz 로고"
-            width="0"
-            height="0"
-            className="w-[80px] h-[24px]"
-          />
-        </Link>
+        {mainPathnameWithLogo.find((path) => path === currPathname) ? (
+          <Link href={"/memory"}>
+            <Image
+              src={LogoImg}
+              alt="xyz 로고"
+              width="0"
+              height="0"
+              className="w-[80px] h-[24px]"
+            />
+          </Link>
+        ) : (
+          <div onClick={() => router.back()}>
+            <Image src={ArrowLeft} alt="xyz 로고" width={13} height={13} />
+          </div>
+        )}
         <div className="flex gap-x-4">
           <Link href={"/friend"}>
             <Image src={FriendIcon} alt="xyz 로고" width={24} />
