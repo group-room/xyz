@@ -29,7 +29,7 @@ export default function RootLayout({
         <ReduxProviders>
           <ReactQueryProvider>
             <AuthProvider>
-              <main className="px-5 my-16">{children}</main>
+              <div className="px-5 my-[68px]">{children}</div>
             </AuthProvider>
           </ReactQueryProvider>
         </ReduxProviders>

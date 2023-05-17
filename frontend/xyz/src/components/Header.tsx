@@ -13,6 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { API } from "@/constants/queryKeys";
 import { LOCAL } from "@/constants/localUrl";
 import { useUnreadNotifiacation } from "@/hooks/queries/notification";
+import { numberString } from "@/utils/colorUtils";
 
 function Header() {
   const pathname = usePathname();
@@ -80,7 +81,9 @@ function Header() {
 
   return (
     <header>
-      <nav className="fixed flex items-center justify-between top-0 left-0 right-0 bg-white px-5 py-4 shadow-sm shadow-slate-50 h-14 z-50">
+      <nav
+        className={`fixed ${numberString} bg-no-repeat bg-cover flex items-center justify-between top-0 left-0 right-0 bg-white/8 px-5 py-4 shadow-sm shadow-slate-50 h-14 z-50`}
+      >
         {mainPathnameWithLogo.find((path) => path === currPathname) ? (
           <Link href={"/memory"}>
             <Image

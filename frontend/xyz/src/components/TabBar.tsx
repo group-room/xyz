@@ -5,39 +5,65 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { API } from "@/constants/queryKeys";
 import { LOCAL } from "@/constants/localUrl";
+import { numberString } from "@/utils/colorUtils";
 
 function TabBar() {
   const pathname = usePathname();
 
+  const textColorWhite = ["five", "six", "seven", "eight", "nine"];
+  const highlightColorNotPink = ["two", "three"];
+
+  const isTextColorWhite = textColorWhite.some(
+    (color) => numberString.slice(3, numberString.length) === color
+  );
+  const highlightTextColor = highlightColorNotPink.some(
+    (color) => numberString.slice(3, numberString.length) === color
+  )
+    ? "text-fuchsia-500"
+    : "text-pink";
+  console.log(numberString, isTextColorWhite);
+
   return (
-    <div className="fixed flex items-center justify-evenly bottom-0 left-0 right-0 h-14 bg-white shadow-[0_-3px_20px_-20px_rgba(0,0,0,0.3)] z-50">
+    <div
+      className={`fixed ${numberString} bg-no-repeat bg-cover flex items-center justify-evenly bottom-0 left-0 right-0 h-14 shadow-[0_-3px_20px_-20px_rgba(0,0,0,0.3)] z-50 ${
+        isTextColorWhite ? "text-gray-200" : "text-black"
+      }`}
+    >
       <Link
         href={`/${API.memory}`}
-        className={pathname.includes(`/${API.memory}`) ? "text-pink" : ""}
+        className={
+          pathname.includes(`/${API.memory}`) ? highlightTextColor : ""
+        }
       >
         추억
       </Link>
       <Link
         href={`/${LOCAL.capsule}`}
-        className={pathname.includes(`/${LOCAL.capsule}`) ? "text-pink" : ""}
+        className={
+          pathname.includes(`/${LOCAL.capsule}`) ? highlightTextColor : ""
+        }
       >
         캡슐
       </Link>
       <Link
         href={`/${API.azt}`}
-        className={pathname.includes(`/${API.azt}`) ? "text-pink" : ""}
+        className={pathname.includes(`/${API.azt}`) ? highlightTextColor : ""}
       >
         아지트
       </Link>
       <Link
         href={`/${LOCAL.chatting}`}
-        className={pathname.includes(`/${LOCAL.chatting}`) ? "text-pink" : ""}
+        className={
+          pathname.includes(`/${LOCAL.chatting}`) ? highlightTextColor : ""
+        }
       >
         채팅
       </Link>
       <Link
         href={`/${LOCAL.profile}`}
-        className={pathname.includes(`/${LOCAL.profile}`) ? "text-pink" : ""}
+        className={
+          pathname.includes(`/${LOCAL.profile}`) ? highlightTextColor : ""
+        }
       >
         프로필
       </Link>
