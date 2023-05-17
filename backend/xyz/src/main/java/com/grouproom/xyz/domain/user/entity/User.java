@@ -86,7 +86,7 @@ public class User extends BaseTimeEntity {
     }
 
     public void changeIsDeleted(Boolean isDeleted) {
-        this.socialIdentify = this.socialIdentify + "delete";
+        this.socialIdentify = "delete";
         this.isDeleted = isDeleted;
     }
 
