@@ -75,7 +75,6 @@ export default function TimecapsuleList() {
             );
           })}
       </div>
-      {/* 캡슐 잠김 여부에 따라  AbleTimecaplsuleModal or UnAbleTimecaplsuleModal*/}
       {isModal.is && (
         <Modal
           closeModal={() =>

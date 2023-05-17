@@ -5,9 +5,17 @@ import ToggleBtn from "./../../components/common/ToggleBtn";
 import TimecapsuleList from "./../../components/timecapsule/TimecapsuleList";
 import TimecapsuleMachine from "@/components/timecapsule/TimecapsuleMachine";
 import AllTimecapsuleList from "@/components/timecapsule/AllTimecapsuleList";
+import { useOpenCapsuleList } from "@/hooks/queries/capsule";
+import { CapsuleAztTypes } from "@/types/capsule";
 
 function CapsulePage() {
   const [value, setValue] = useState(true);
+
+  const { data: openCapsuleList, isLoading } = useOpenCapsuleList();
+  if (openCapsuleList) {
+    console.log("open capsule list");
+    console.log(openCapsuleList);
+  }
 
   const handleChange = (newValue: boolean) => {
     setValue(newValue);
@@ -31,7 +39,15 @@ function CapsulePage() {
         />
       </div>
 
-      {value ? <TimecapsuleMachine /> : <AllTimecapsuleList />}
+      {value ? (
+        <TimecapsuleMachine
+          openCapsuleList={openCapsuleList as CapsuleAztTypes[]}
+        />
+      ) : (
+        <AllTimecapsuleList
+          openCapsuleList={openCapsuleList as CapsuleAztTypes[]}
+        />
+      )}
     </div>
   );
 }

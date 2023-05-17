@@ -1,15 +1,14 @@
 import { useOpenCapsuleList } from "@/hooks/queries/capsule";
+import { CapsuleAztTypes } from "@/types/capsule";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function AllTimecapsuleList() {
-  const router = useRouter();
+type Props = {
+  openCapsuleList: CapsuleAztTypes[];
+};
 
-  const { data: openCapsuleList, isLoading } = useOpenCapsuleList();
-  if (openCapsuleList) {
-    console.log("open capsule list");
-    console.log(openCapsuleList);
-  }
+export default function AllTimecapsuleList({ openCapsuleList }: Props) {
+  const router = useRouter();
 
   const moveToDetail = (tcSeq: number) => {
     router.push(`/capsule/${tcSeq}`);
