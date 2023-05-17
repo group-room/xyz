@@ -77,7 +77,7 @@ const MyPhotoCreate = () => {
       onSuccess: () => {
         setIsCaptured(true);
         console.log("사진 전송 완료");
-        router.push(`/profile/${userSeq}/myphoto/edit`);
+        router.push(`/profile/${userSeq}`);
       },
     });
 
@@ -114,11 +114,7 @@ const MyPhotoCreate = () => {
             <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
           )}
           <div className="flex gap-5 items-center justify-center">
-            <Btn
-              btnFunc={handleSavePhoto}
-              bgColor="pink"
-              text="저장 후 수정하기"
-            />
+            <Btn btnFunc={handleSavePhoto} bgColor="pink" text="저장하기" />
             <Btn btnFunc={retakePicture} bgColor="pink" text="재촬영!" />
           </div>
         </div>

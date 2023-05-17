@@ -5,10 +5,11 @@ import Image from "next/image";
 import MyroomIcon from "../../../public/icons/home.svg";
 import Visitor from "../../../public/icons/reciept.svg";
 import Guestbook from "./Guestbook";
-import Myroom from "./Myroom";
+
 import { useUserList } from "@/hooks/queries/user";
 import { is } from "date-fns/locale";
 import GuestbookWrite from "./GuestbookWrite";
+import MyPhotoEdit from "./MyPhotoEdit";
 
 type ButtonProps = {
   value: boolean;
@@ -22,7 +23,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     isLoading: isUserLoading,
     error,
   } = useUserList(profileTabUserSeq);
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState(true);
   const isFriend = userList?.friend;
 
   const handleChange = (v: boolean) => {
@@ -33,7 +34,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     if (isClick) {
       return (
         <div className="w-full h-full">
-          <Myroom />
+          <MyPhotoEdit userSeq={profileTabUserSeq} />
         </div>
       );
     } else {

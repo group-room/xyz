@@ -1,7 +1,12 @@
+import MyPhotoCreate from "@/components/profile/MyPhotoCreate";
 import React from "react";
 
 function MyPhotoCreatepage() {
-  return <div>MyPhotoCreatepage</div>;
+  return (
+    <div>
+      <MyPhotoCreate />
+    </div>
+  );
 }
 
 export default MyPhotoCreatepage;
