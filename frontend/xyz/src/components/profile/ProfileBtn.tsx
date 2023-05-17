@@ -14,6 +14,7 @@ import { KEYS } from "@/constants/queryKeys";
 type Props = { btnUserSeq: number };
 
 function ProfileBtn({ btnUserSeq }: Props) {
+  console.log(typeof btnUserSeq);
   const queryClient = useQueryClient();
 
   const state = useAppSelector((state) => state);
@@ -55,8 +56,13 @@ function ProfileBtn({ btnUserSeq }: Props) {
     router.push("/notification");
   };
 
-  // 약간 임시로 해두었음,,, 타입 어떻게 해야할지,,? 사실 get 해올때 나인지 넣어주거나, login 할때 identify 도 넣어주면 좋은데
-  if (userList?.profileImage === myProfileImage) {
+  let compareSeq;
+  if (typeof btnUserSeq === "string") {
+    compareSeq = +btnUserSeq;
+  } else {
+    compareSeq = btnUserSeq;
+  }
+  if (compareSeq === myUserSeq) {
     return (
       <div className="flex justify-start items-start relative gap-[15px]">
         <Btn

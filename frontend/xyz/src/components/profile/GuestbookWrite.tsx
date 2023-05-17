@@ -21,10 +21,12 @@ function GuestbookWrite({ userSeq }: GuestbookWriteProps) {
   const queryClient = useQueryClient();
   const [contentInput, onChangeContentInput, resetInputValue] = useInput("");
 
+  console.log(typeof userSeq, ".....");
+  const userSeqToNumber = +userSeq;
   const useCreateGuestbookMutation = useMutation({
-    mutationFn: () => createGuestbook(userSeq, contentInput.trim()),
+    mutationFn: () => createGuestbook(userSeqToNumber, contentInput.trim()),
     onSuccess: () => {
-      queryClient.invalidateQueries(queryKeys.user.visitor(userSeq));
+      queryClient.invalidateQueries(queryKeys.user.visitor(userSeqToNumber));
       resetInputValue();
     },
   });
