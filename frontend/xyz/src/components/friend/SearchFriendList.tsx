@@ -3,6 +3,7 @@
 import React from "react";
 import { useAllSearch } from "@/hooks/queries/friend";
 import FriendBox from "./FriendBox";
+import NotResultLottie from "../lottie/NotResult";
 
 interface Props {
   check: boolean;
@@ -16,7 +17,7 @@ export default function SearchFriendList({ check, keyword }: Props) {
     <div>
       <div className="text-lg mb-2">검색된 유저</div>
       <hr className="border-1 border-black mb-4"></hr>
-      {searchList ? (
+      {searchList && searchList.length !== 0 ? (
         searchList.map((list) => {
           return (
             <FriendBox
@@ -30,7 +31,10 @@ export default function SearchFriendList({ check, keyword }: Props) {
           );
         })
       ) : (
-        <div>로딩중</div>
+        <div className="flex flex-col justify-center items-center mt-[10vh]">
+          <NotResultLottie />
+          <div className="mt-8"> 검색된 친구 리스트가 없습니다. </div>
+        </div>
       )}
     </div>
   );
