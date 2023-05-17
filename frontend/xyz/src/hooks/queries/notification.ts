@@ -21,7 +21,7 @@ export const useUnreadNotifiacation = () => {
     queryKey: queryKeys.notification.unReadNotification(),
     queryFn: async () => {
         return axiosInstance
-        .get(NOTIFICATION)
+        .get(`${NOTIFICATION}/unread`)
         .then((res) => res.data.data);
     },
   });

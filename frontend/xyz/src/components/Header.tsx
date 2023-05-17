@@ -8,12 +8,21 @@ import FriendIcon from "../../public/icons/user_plus.svg";
 import NotiIcon from "../../public/icons/notification.svg";
 import { useAppSelector } from "@/hooks/redux";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
+import { useUnreadNotifiacation } from "@/hooks/queries/notification";
 
 function Header() {
   const [isAlert, setIsAlert] = useState(false);
+  const { data: isUnreadNotification, isLoading } = useUnreadNotifiacation();
   const accessToken: string = useAppSelector((state) => state.auth.accessToken);
 
   useEffect(() => {
+    // 미확인 알람 유무 확인
+    if (isUnreadNotification) {
+      console.log(isUnreadNotification);
+      setIsAlert(true);
+      return;
+    }
+
     if (accessToken) {
       const eventSource = new EventSourcePolyfill(
         "https://xyz-gen.com/backend/api/connect",
@@ -29,7 +38,7 @@ function Header() {
       const fetchSse = async () => {
         try {
           //sse 최초 연결되었을 때
-          eventSource.onopen = (event) => {
+          eventSource.onopen = () => {
             console.log("open");
           };
 
@@ -42,8 +51,7 @@ function Header() {
           });
 
           //sse 에러
-          eventSource.onerror = (event) => {
-            console.log(event);
+          eventSource.onerror = () => {
             if (eventSource !== undefined) {
               eventSource.close();
             }
