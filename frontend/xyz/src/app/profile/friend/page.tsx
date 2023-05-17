@@ -9,7 +9,7 @@ export default function ProfileFriend() {
 
   return (
     <div>
-      <div className="absolute right-1 top-16">
+      <div className="absolute right-8 top-16">
         <ProfileDropDown
           firstText={isBlock ? "친구 목록" : "차단한 친구 목록"}
           firstFunc={isBlock ? () => setIsBlock(false) : () => setIsBlock(true)}

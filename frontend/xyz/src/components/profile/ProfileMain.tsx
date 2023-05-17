@@ -16,6 +16,8 @@ import {
 import { queryKeys } from "@/constants/queryKeys";
 import ModalBtn from "../common/ModalBtn";
 import { useAppSelector } from "@/hooks/redux";
+import { deleteFollow, postBlock } from "@/app/api/friend";
+import { KEYS } from "@/constants/queryKeys";
 
 interface ProfileMainProps {
   userSeq: number;
@@ -67,6 +69,30 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     useWithDrawMutation.mutate();
   };
 
+  const useDeleteFollowMutation = useMutation({
+    mutationFn: () => deleteFollow(userSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.friend);
+    },
+  });
+
+  const usePostBlockMutation = useMutation({
+    mutationFn: () => postBlock(userSeq),
+    onSuccess: () => {
+      queryClient.invalidateQueries(KEYS.friend);
+    },
+  });
+
+  const handleClickDeleteFollow = () => {
+    useDeleteFollowMutation.mutate();
+  };
+
+  const handleClickBlock = () => {
+    usePostBlockMutation.mutate();
+  };
+
+  const userSeqToNumber = +userSeq;
+  // 여기 모달창 띄워야한다. 친구 끊기 / 차단할때
   return (
     <>
       <div className={`box-content w-full h-full bg-yellow p-1`}>
@@ -83,8 +109,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
           <div>
             <div className="flex pl-5 gap-10">
               {profileData?.identify}
-
-              {userSeq === myUserSeq ? (
+              {userSeqToNumber === myUserSeq ? (
                 <ProfileDropdown
                   firstText="프로필 편집"
                   firstFunc={pushToProfileEdit}
@@ -93,10 +118,17 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
                   thirdText="탈퇴하기"
                   thirdFunc={() => setIsModal(true)}
                 />
+              ) : profileData?.friend === true ? (
+                <ProfileDropdown
+                  firstText="친구 끊기"
+                  firstFunc={handleClickDeleteFollow}
+                  secondText="차단하기"
+                  secondFunc={handleClickBlock}
+                />
               ) : (
                 <ProfileDropdown
-                  firstText="친구 추가"
-                  firstFunc={pushToProfileEdit}
+                  firstText="차단하기"
+                  firstFunc={handleClickBlock}
                 />
               )}
             </div>
