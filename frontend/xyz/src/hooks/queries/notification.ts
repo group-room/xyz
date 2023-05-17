@@ -15,3 +15,14 @@ export const useNotifiacationList = (type: string) => {
     },
   });
 };
+
+export const useUnreadNotifiacation = () => {
+  return useQuery<boolean>({
+    queryKey: queryKeys.notification.unReadNotification(),
+    queryFn: async () => {
+        return axiosInstance
+        .get(NOTIFICATION)
+        .then((res) => res.data.data);
+    },
+  });
+};
