@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@types/event-source-polyfill": "^1.0.1",
+    "@types/react-lottie": "^1.2.6",
     "kakao.maps.d.ts": "^0.1.36"
   }
 }
