@@ -161,12 +161,14 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, userSeq);
         if (null == friend) {
             logger.info("최초 요청");
+            Chat chat = chatRepository.save(Chat.builder().build());
             Friend newFriend = Friend.builder()
                     .fromUser(userRepository.findBySequence(loginSeq))
                     .toUser(userRepository.findBySequence(userSeq))
                     .isAccepted(false)
                     .isCanceled(false)
                     .isDeleted(false)
+                    .chatSeq(chat)
                     .build();
             friendRepository.save(newFriend);
         } else {
