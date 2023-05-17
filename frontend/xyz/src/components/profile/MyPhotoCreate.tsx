@@ -5,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createMyPhoto } from "@/app/api/myphoto";
 import { KEYS } from "@/constants/queryKeys";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/hooks/redux";
+import Btn from "../common/Btn";
 
 interface ImageCapture {
   takePhoto(): Promise<Blob>;
@@ -17,6 +19,8 @@ declare var ImageCapture: {
 
 const MyPhotoCreate = () => {
   const router = useRouter();
+  const state = useAppSelector((state) => state);
+  const userSeq = state.auth.userInfo?.userSeq;
   const [capturedPhoto, setCapturedPhoto] = useState<Blob | null>(null);
   const [isCaptured, setIsCaptured] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
@@ -73,7 +77,7 @@ const MyPhotoCreate = () => {
       onSuccess: () => {
         setIsCaptured(true);
         console.log("사진 전송 완료");
-        router.push("/profile/myphoto/edit");
+        router.push(`/profile/${userSeq}/myphoto/edit`);
       },
     });
 
@@ -96,19 +100,27 @@ const MyPhotoCreate = () => {
   return (
     <div>
       <video ref={videoRef} />
-      <button onClick={startCamera}>Start Camera</button>
+      <div className="flex gap-5 items-center justify-center">
+        <Btn btnFunc={startCamera} bgColor="pink" text="촬영시작" />
 
-      {!isPreviewing && (
-        <button onClick={capturePicture}>Capture Picture</button>
-      )}
+        {!isPreviewing && (
+          <Btn btnFunc={capturePicture} bgColor="pink" text="찰칵" />
+        )}
+      </div>
 
       {isPreviewing && (
         <div>
           {capturedPhoto && (
             <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
           )}
-          <button onClick={handleSavePhoto}>Save Photo</button>
-          <button onClick={retakePicture}>Retake Picture</button>
+          <div className="flex gap-5 items-center justify-center">
+            <Btn
+              btnFunc={handleSavePhoto}
+              bgColor="pink"
+              text="저장 후 수정하기"
+            />
+            <Btn btnFunc={retakePicture} bgColor="pink" text="재촬영!" />
+          </div>
         </div>
       )}
     </div>
