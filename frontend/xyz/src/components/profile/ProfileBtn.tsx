@@ -112,7 +112,6 @@ function ProfileBtn({ btnUserSeq }: Props) {
           bgColor="blue"
           text="친구요청 수락하기"
           btnFunc={AcceptFriendRequest}
-          // 추후에 알림 완성 되면 친구 요청 수락 알림 페이지로 이동
         />
       </>
     );

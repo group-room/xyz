@@ -91,6 +91,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     usePostBlockMutation.mutate();
   };
 
+  const userSeqToNumber = +userSeq;
   // 여기 모달창 띄워야한다. 친구 끊기 / 차단할때
   return (
     <>
@@ -108,8 +109,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
           <div>
             <div className="flex pl-5 gap-10">
               {profileData?.identify}
-
-              {userSeq === myUserSeq ? (
+              {userSeqToNumber === myUserSeq ? (
                 <ProfileDropdown
                   firstText="프로필 편집"
                   firstFunc={pushToProfileEdit}

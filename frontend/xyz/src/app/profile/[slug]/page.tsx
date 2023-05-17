@@ -22,14 +22,12 @@ function ProfileUserPage({ params: { slug } }: Props) {
   const PushtoProfileEdit = () => {
     router.push("/profile/edit");
   };
-  // 나의 userSeq 와 slug 가 같을 때 === 나
-  console.log("😭😭😭😭😭😭");
-  console.log(typeof slug, "slug");
-  console.log(slug, "slug");
-  console.log(typeof userSeq, "userSeq");
-  console.log(userSeq, "userSeq");
 
-  if (slug === userSeq) {
+  const slugToNumber = +slug;
+
+  if (isUserLoading) {
+    return <div>로딩중...</div>;
+  } else if (slugToNumber === userSeq) {
     return (
       <div className="w-full h-full">
         <ProfileMain userSeq={slug} />
@@ -39,11 +37,9 @@ function ProfileUserPage({ params: { slug } }: Props) {
         <ProfileTab value={true} onChange={() => {}} profileTabUserSeq={slug} />
       </div>
     );
-  }
-  // else if (slug !== "1" && userList?.friend === true) {
-  //   return <></>;
-  // }
-  else {
+  } else if (!userList) {
+    return <div>존재하지 않는 유저입니다...</div>;
+  } else {
     return (
       <div className="w-full h-full">
         <ProfileMain userSeq={slug} />
