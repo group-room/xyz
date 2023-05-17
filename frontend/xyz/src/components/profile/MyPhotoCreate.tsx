@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createMyPhoto } from "@/app/api/myphoto";
 import { KEYS } from "@/constants/queryKeys";
+import { useRouter } from "next/navigation";
 
 interface ImageCapture {
   takePhoto(): Promise<Blob>;
@@ -14,7 +15,8 @@ declare var ImageCapture: {
   new (track: MediaStreamTrack): ImageCapture;
 };
 
-const CameraCapture = () => {
+const MyPhotoCreate = () => {
+  const router = useRouter();
   const [capturedPhoto, setCapturedPhoto] = useState<Blob | null>(null);
   const [isCaptured, setIsCaptured] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
@@ -71,6 +73,7 @@ const CameraCapture = () => {
       onSuccess: () => {
         setIsCaptured(true);
         console.log("사진 전송 완료");
+        router.push("/profile/myphoto/edit");
       },
     });
 
@@ -112,4 +115,4 @@ const CameraCapture = () => {
   );
 };
 
-export default CameraCapture;
+export default MyPhotoCreate;
