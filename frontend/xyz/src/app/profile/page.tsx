@@ -54,7 +54,7 @@ function ProfilePage() {
           />
         </>
       ) : (
-        <div>
+        <div className="flex justify-center align-middle py-60">
           <LoadingLottie />
         </div>
       )}

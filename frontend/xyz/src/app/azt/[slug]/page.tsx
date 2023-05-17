@@ -66,8 +66,6 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
         <div className="flex flex-wrap ">
           {aztCapsuleData && aztCapsuleData.length ? (
             aztCapsuleData.map((capule) => (
-              // TODO: 타임캡슐 컴포넌트 만들어지면 수정
-              // <MemoryItem key={capule.tcSeq} />
               <Image
                 key={capule.tcSeq}
                 src="/images/capsule.svg"

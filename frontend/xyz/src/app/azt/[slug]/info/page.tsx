@@ -113,7 +113,6 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
               ))}
             </div>
             <div className="my-3 mx-auto">
-              {/* TODO: 멤버 초대하기 링크 연결 */}
               <Btn
                 bgColor="blue"
                 text="멤버 초대하기"
