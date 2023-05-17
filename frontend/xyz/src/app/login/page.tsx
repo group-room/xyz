@@ -16,6 +16,7 @@ import {
 } from "../api/instance";
 import { API } from "@/constants/queryKeys";
 import LoadingLottie from "@/components/lottie/Loading";
+import BrowserHeader from "@/components/common/BrowserHeader";
 
 function LoginPage() {
   const { data: loginRes, isLoading } = useLogin();
@@ -45,9 +46,12 @@ function LoginPage() {
     axiosChatInstance.defaults.headers.common["Authorization"] = accessToken;
   }
   return (
-    <div className="flex justify-center align-middle py-60">
-      <LoadingLottie />
-    </div>
+    <>
+      <BrowserHeader />
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    </>
   );
 }
 
