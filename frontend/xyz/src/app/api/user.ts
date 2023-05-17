@@ -21,3 +21,10 @@ export const withDraw = () => {
 export const createGuestbook = (userSeq: number, content: string) => {
   return axiosInstance.post(`${USER}/visitor`, { userSeq, content });
 };
+
+// 방명록 삭제
+export const deleteGuestbook = (userSeq: number, visitorSeq: number) => {
+  return axiosInstance.delete(`${USER}/visitor/${visitorSeq}`, {
+    params: { userSeq },
+  });
+};

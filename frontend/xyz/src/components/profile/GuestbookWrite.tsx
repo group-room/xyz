@@ -21,7 +21,6 @@ function GuestbookWrite({ userSeq }: GuestbookWriteProps) {
   const queryClient = useQueryClient();
   const [contentInput, onChangeContentInput, resetInputValue] = useInput("");
 
-  console.log(typeof userSeq, ".....");
   const userSeqToNumber = +userSeq;
   const useCreateGuestbookMutation = useMutation({
     mutationFn: () => createGuestbook(userSeqToNumber, contentInput.trim()),
