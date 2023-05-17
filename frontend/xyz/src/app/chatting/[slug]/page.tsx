@@ -14,27 +14,41 @@ import useInput from "@/hooks/useInput";
 import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { is } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 function ChattingRoomPage({ params: { slug } }: SlugProps) {
   const [chatInput, onChangeChatInput, resetInputValue] = useInput("");
-  const [chatData, setChatData] = useState<ChatDataTypes[]>([]);
+  const [chatData, setChatData] = useState<ChatDataTypes[]>([]); // 채팅 메시지 데이터
   const loggedInUserSeq = useAppSelector(
     (state) => state.auth.userInfo?.userSeq
   );
-  const chatDataRef = useRef<HTMLDivElement | null>(null);
+  const chatDataRef = useRef() as React.MutableRefObject<HTMLDivElement>; // 바닥으로 스크롤 위한 Ref
+  const isFirstRendered = useRef(true); // 처음 렌더링 여부
   const scrollToBottom = () => {
     if (chatDataRef.current) chatDataRef.current.scrollIntoView();
   };
   const router = useRouter();
+
+  const [chatTopRef, inView] = useInView(); // 무한 스크롤 위한 Ref'
+
+  const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const [lastId, setLastId] = useState<number | null>(null); // 마지막 페이지
+  const [isLast, setIsLast] = useState<boolean>(false); // 마지막 페이지인지 여부
 
   // 채팅방 정보 조회
   const { data: chatroomDetailData } = useChattingDetail(slug);
 
   // 채팅 기록 조회 - GET
   const chatroomSeq = slug.toString();
-  const { data: chatHistory, isLoading } = useChattingHistory(chatroomSeq);
+  const {
+    data: chatHistoryData,
+    fetchPreviousPage,
+    hasPreviousPage,
+    isFetchingPreviousPage,
+  } = useChattingHistory(chatroomSeq, lastId);
 
   // 채팅방에 속한 유저 아닐 시 채팅방 목록으로 이동
   useLayoutEffect(() => {
@@ -48,17 +62,34 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     }
   }, []);
 
-  // 스크롤 최하단으로 이동
+  // 처음 페이지 진입시 스크롤 최하단으로 이동
   useEffect(() => {
-    scrollToBottom();
-  }, [chatData]);
+    if (isFirstRendered.current) {
+      scrollToBottom();
+      isFirstRendered.current = false;
+    }
+  }, []);
 
   useEffect(() => {
-    if (chatHistory) {
-      setChatData(chatHistory);
+    console.log(chatHistoryData, hasPreviousPage);
+
+    if (inView && hasPreviousPage && !isFetchingPreviousPage) {
+      console.log("상단 스크롤");
+      fetchPreviousPage();
     }
-    scrollToBottom();
-  }, [chatHistory]);
+    //   if (
+    //     !isLast &&
+    //     inView &&
+    //     chatHistoryData &&
+    //     chatHistoryData.pages[0].result.length > 0
+    //   ) {
+    //     setChatData(chatHistoryData.pages[0].result);
+    //     setLastId(chatHistoryData.pages[0].prevId);
+    //     fetchPreviousPage();
+    //   } else {
+    //     setIsLast(false);
+    //   }
+  }, [inView]);
 
   // 채팅 실시간 조회 - SSE
   useEffect(() => {
@@ -73,7 +104,6 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
         .concat(message)
         .sort((a, b) => a.id - b.id);
       setChatData(sortedChatData);
-      scrollToBottom();
     };
 
     return () => {
@@ -91,6 +121,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
         queryKeys.chatting.chatHistory(chatroomSeq)
       );
       resetInputValue();
+      scrollToBottom();
     },
   });
 
@@ -117,9 +148,10 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
           count={members.length}
         />
         <div className="pt-14">
-          {chatData.map((chat) => (
+          <div ref={chatTopRef} />
+          {chatHistoryData?.pages[0].result.map((chat, idx) => (
             <ChatBubble
-              key={chat.id}
+              key={idx}
               chat={chat}
               members={members}
               isMine={chat.name === loggedInUserSeq?.toString()}
