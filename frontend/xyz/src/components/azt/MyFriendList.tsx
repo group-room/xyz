@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { API } from "@/constants/queryKeys";
 import { UserTypes } from "@/types/user";
 import LoadingLottie from "../lottie/Loading";
+import NotResultLottie from "../lottie/NotResult";
 
 type Props = {
   slug: number;
@@ -33,7 +34,10 @@ function MyFriendList({ slug, aztMembers, handleClickMemberInvite }: Props) {
   if (!isLoading && availableFriendList && availableFriendList.length === 0) {
     return (
       <div className="text-center">
-        <p className="p-5">아직 친구가 없어요 ㅠㅠ</p>
+        <p className="p-5">
+          <NotResultLottie />
+          아직 친구가 없어요 ㅠㅠ
+        </p>
         <Btn
           bgColor="blue"
           text={"친구 추가하러 가기"}

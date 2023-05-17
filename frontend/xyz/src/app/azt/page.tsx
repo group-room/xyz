@@ -6,6 +6,7 @@ import AztItem from "@/components/azt/AztItem";
 import Container from "@/components/common/Container";
 import { useAztList } from "@/hooks/queries/azt";
 import LoadingLottie from "@/components/lottie/Loading";
+import NotResultLottie from "@/components/lottie/NotResult";
 
 function AztPage() {
   const { data: aztData, isLoading: isAztLoading } = useAztList();
@@ -27,24 +28,27 @@ function AztPage() {
         titleImgSrc="/icons/users.svg"
         titleImgAlt="아지트 아이콘"
       >
-        <div className="grid grid-cols-2">
-          {aztData ? (
-            aztData.length ? (
-              aztData?.map(({ aztSeq, name, image }) => (
+        {aztData ? (
+          aztData.length ? (
+            <div className="grid grid-cols-2">
+              {aztData?.map(({ aztSeq, name, image }) => (
                 <AztItem
                   key={aztSeq}
                   aztSeq={aztSeq}
                   name={name}
                   image={image}
                 />
-              ))
-            ) : (
-              <div className="py-2 w-full">아지트가 없어요 ㅠㅠ</div>
-            )
+              ))}
+            </div>
           ) : (
-            <LoadingLottie />
-          )}
-        </div>
+            <div className="flex flex-col justify-center py-2 w-full text-center">
+              <NotResultLottie />
+              아지트가 없어요 ㅠㅠ
+            </div>
+          )
+        ) : (
+          <LoadingLottie />
+        )}
       </Container>
     </div>
   );

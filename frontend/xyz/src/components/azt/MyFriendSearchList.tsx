@@ -3,6 +3,7 @@ import MyFriendBox from "./MyFriendBox";
 import { FriendListTypes } from "@/types/friend";
 import { UserTypes } from "@/types/user";
 import LoadingLottie from "../lottie/Loading";
+import NotResultLottie from "../lottie/NotResult";
 
 interface MyFriendSearchListProps {
   searchList: FriendListTypes[];
@@ -43,8 +44,10 @@ function MyFriendSearchList({
             );
           })
         ) : (
-          <div>
-            <p className="p-5">검색된 유저가 없어요 ㅠㅠ</p>
+          <div className="text-center">
+            <p className="p-5">
+              <NotResultLottie /> 검색된 유저가 없어요 ㅠㅠ
+            </p>
           </div>
         )
       ) : (

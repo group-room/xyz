@@ -15,6 +15,7 @@ import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
 import Myroom from "@/components/profile/Myroom";
 import ProfileBtn from "@/components/profile/ProfileBtn";
 import { useAppSelector } from "@/hooks/redux";
+import LoadingLottie from "@/components/lottie/Loading";
 
 function ProfilePage() {
   const userSeq = useAppSelector((state) => state.auth.userInfo?.userSeq);
@@ -53,7 +54,9 @@ function ProfilePage() {
           />
         </>
       ) : (
-        <div>로딩중...</div>
+        <div>
+          <LoadingLottie />
+        </div>
       )}
     </div>
   );

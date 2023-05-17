@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
 import LoadingLottie from "@/components/lottie/Loading";
 import CapsuleCreateBtn from "@/components/azt/CapsuleCreateBtn";
+import NotResultLottie from "@/components/lottie/NotResult";
 
 function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
@@ -47,7 +48,8 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
               <MemoryItem key={memory.memorySeq} memory={memory} />
             ))
           ) : (
-            <div>
+            <div className="text-center">
+              <NotResultLottie />
               <p>추억이 없어요 ㅠㅠ</p>
             </div>
           )}
@@ -77,7 +79,8 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
               />
             ))
           ) : (
-            <div>
+            <div className="text-center">
+              <NotResultLottie />
               <p>타임캡슐이 없어요 ㅠㅠ</p>
             </div>
           )}

@@ -3,6 +3,7 @@ import Container from "../common/Container";
 import { MemoryCommentTypes } from "@/types/memory";
 import CommentCreate from "./CommentCreate";
 import CommentItem from "./CommentItem";
+import NotResultLottie from "../lottie/NotResult";
 
 interface CommentProps {
   memorySeq: number;

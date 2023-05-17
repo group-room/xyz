@@ -8,6 +8,7 @@ import { useFriendSearch } from "@/hooks/queries/friend";
 import { UserTypes } from "@/types/user";
 import Btn from "../common/Btn";
 import ProfileImg from "../common/ProfileImg";
+import NotResultLottie from "../lottie/NotResult";
 
 type MyFriendSearchAreaProps = {
   slug: number;
@@ -106,7 +107,10 @@ function MyFriendSearchArea({
               handleClickMemberInvite={handleClickMemberInvite}
             />
           ) : (
-            <p>검색결과가 없어요 ㅠㅠ</p>
+            <div className="text-center">
+              <NotResultLottie />
+              <p>검색결과가 없어요 ㅠㅠ</p>
+            </div>
           )
         ) : (
           <p>검색중..</p>

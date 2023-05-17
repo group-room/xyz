@@ -3,6 +3,7 @@
 import TabBar from "@/components/TabBar";
 import ChatRoomItem from "@/components/chatting/ChatRoomItem";
 import LoadingLottie from "@/components/lottie/Loading";
+import NotResultLottie from "@/components/lottie/NotResult";
 import {
   useChattingList,
   useChattingListRecentMessage,
@@ -46,6 +47,7 @@ function ChatPage() {
             })
           ) : (
             <div className="p-5 text-center">
+              <NotResultLottie />
               <p>아직 채팅방이 없어요 ㅠㅠ</p>
               <p>아지트 혹은 친구를 만들어볼까요?</p>
             </div>
