@@ -7,13 +7,21 @@ import LogoImg from "../../public/images/logo.svg";
 import FriendIcon from "../../public/icons/user_plus.svg";
 import NotiIcon from "../../public/icons/notification.svg";
 import { useAppSelector } from "@/hooks/redux";
-import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
+import { EventSourcePolyfill } from "event-source-polyfill";
+import { useUnreadNotifiacation } from "@/hooks/queries/notification";
 
 function Header() {
-  const [isAlert, setIsAlert] = useState(true);
+  const [isAlert, setIsAlert] = useState(false);
+  const { data: isUnreadNotification, isLoading } = useUnreadNotifiacation();
   const accessToken: string = useAppSelector((state) => state.auth.accessToken);
 
   useEffect(() => {
+    // 미확인 알람 유무 확인
+    if (isUnreadNotification) {
+      setIsAlert(true);
+      return;
+    }
+
     if (accessToken) {
       const eventSource = new EventSourcePolyfill(
         "https://xyz-gen.com/backend/api/connect",
@@ -28,22 +36,20 @@ function Header() {
 
       const fetchSse = async () => {
         try {
-          //sse 최초 연결되었을 때
-          eventSource.onopen = (event) => {
-            console.log("open");
-          };
+          // //sse 최초 연결되었을 때
+          // eventSource.onopen = () => {
+          //   console.log("open");
+          // };
 
-          eventSource.addEventListener("connect", (event: any) => {
-            console.log(event.data);
-          });
+          // eventSource.addEventListener("connect", (event: any) => {
+          //   console.log(event.data);
+          // });
           eventSource.addEventListener("newNotification", (event: any) => {
-            console.log(event);
             setIsAlert(true);
           });
 
           //sse 에러
-          eventSource.onerror = (event) => {
-            console.log(event);
+          eventSource.onerror = () => {
             if (eventSource !== undefined) {
               eventSource.close();
             }
@@ -74,7 +80,9 @@ function Header() {
             <Image src={FriendIcon} alt="xyz 로고" width={24} />
           </Link>
           <Link href={"/notification"} className="flex">
-            <div className="bg-red-500 rounded-full w-1 h-1 mr-[1px]"></div>
+            {isAlert && (
+              <div className="bg-red-500 rounded-full w-1 h-1 mr-[1px]"></div>
+            )}
             <Image src={NotiIcon} alt="xyz 로고" width={20} />
           </Link>
         </div>
