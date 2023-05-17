@@ -70,7 +70,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           <div className="mr-2">
             <Image src={MyroomIcon} alt="이미지" width={20} height={20} />
           </div>
-          마이룸
+          XYZ 대문사진
         </div>
         <div
           className={`flex w-1/2 items-center justify-center border-black bg-pink text-white ${

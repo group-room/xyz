@@ -39,3 +39,8 @@ export interface VisitorTypes {
   content: string;
   createdTime: string;
 }
+
+//마이포토
+export interface MyPhotoTypes {
+  data: string;
+}
