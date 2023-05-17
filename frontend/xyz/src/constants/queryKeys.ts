@@ -71,6 +71,7 @@ export const queryKeys = {
   },
   chatting: {
     chatroomList: () => [...KEYS.chatroom],
+    chatroomListRecentMessage: () => [...KEYS.chat, "recent-chat"],
     chatroomDetail: (chatSeq: number) => [...KEYS.chatroom, { chatSeq }],
     chatHistory: (room: string) => [...KEYS.chat, "history", { room }],
   },

@@ -30,7 +30,7 @@ export const useUserList = (userSeq: number) => {
   });
 };
 
-export const useVisitorList = (userSeq: number | string | undefined) => {
+export const useVisitorList = (userSeq: number) => {
   return useQuery<VisitorTypes[]>({
     queryKey: queryKeys.user.myVisitorList(),
     queryFn: async () => {

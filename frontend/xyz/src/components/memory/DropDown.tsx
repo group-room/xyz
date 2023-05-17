@@ -28,10 +28,18 @@ function DropDown({
   setRangeOption,
 }: DropDownProps) {
   const [toggle, setToggle] = useState<boolean>(false);
-  const handleToggle = () => setToggle((prev) => !prev);
   const aztListForDropDown = aztList?.filter(
     (azt) => azt.aztSeq !== currAzt![0].aztSeq
   );
+
+  const handleToggle = () => {
+    if (
+      (isAzt && currAzt?.length === 0) ||
+      (aztListForDropDown && aztListForDropDown?.length < 1)
+    )
+      return;
+    setToggle((prev) => !prev);
+  };
 
   const optionListForDropDown = Object.keys(MEMORY_OPTIONS).filter(
     (opt) => opt !== rangeOption
@@ -47,35 +55,42 @@ function DropDown({
     handleToggle();
   };
 
+  console.log(currAzt);
+
   return (
     <div className="flex items-center w-full gap-3">
       <div className="flex-none">
         <img src={iconSrc} alt="화살표" width={20} />
       </div>
-      <div className="relative grow rounded border border-black ">
+      <div className="relative grow rounded border border-black cursor-pointer">
         <div
           className="flex w-full h-full truncate leading-8 text-center"
           onClick={handleToggle}
         >
           {isAzt ? (
-            <div className="grow">
-              {currAzt![0]?.name.length > 25
-                ? currAzt![0]?.name.slice(0, 25) + "..."
-                : currAzt![0]?.name}
-            </div>
+            currAzt?.length ? (
+              <div className="grow">
+                {currAzt![0]?.name.length > 25
+                  ? currAzt![0]?.name.slice(0, 25) + "..."
+                  : currAzt![0]?.name}
+              </div>
+            ) : (
+              <div className="grow">아지트를 먼저 생성해주세요</div>
+            )
           ) : (
             <div className="grow">
               {MEMORY_OPTIONS[rangeOption as keyof typeof MEMORY_OPTIONS]}
             </div>
           )}
-
-          <div
-            className={`flex-none ${
-              isAzt ? "bg-yellow" : "bg-blue"
-            } flex align-middle px-2 border-l border-black`}
-          >
-            <Image src={arrowDownIcon} alt="화살표" width={15} />
-          </div>
+          {isAzt && currAzt && currAzt?.length < 1 ? null : (
+            <div
+              className={`flex-none ${
+                isAzt ? "bg-yellow" : "bg-blue"
+              } flex align-middle px-2 border-l border-black`}
+            >
+              <Image src={arrowDownIcon} alt="화살표" width={15} />
+            </div>
+          )}
         </div>
         {toggle && (
           <div className="absolute top-10 left-0 border border-black w-full bg-white z-10 divide-y divide-slate-700">
