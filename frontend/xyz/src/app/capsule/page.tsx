@@ -12,14 +12,9 @@ function CapsulePage() {
   const [value, setValue] = useState(true);
 
   const { data: openCapsuleList, isLoading } = useOpenCapsuleList();
-  if (openCapsuleList) {
-    console.log("open capsule list");
-    console.log(openCapsuleList);
-  }
 
   const handleChange = (newValue: boolean) => {
     setValue(newValue);
-    console.log("value", value);
   };
 
   return (

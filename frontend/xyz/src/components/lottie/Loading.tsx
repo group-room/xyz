@@ -1,7 +1,12 @@
 import Lottie from "react-lottie";
 import LottieData from "../../../public/lottie/loading.json";
 
-const LoadingLottie = () => {
+type Props = {
+  width: string;
+  height: string;
+};
+
+const LoadingLottie = ({ width, height }: Props) => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -10,6 +15,10 @@ const LoadingLottie = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  return <div><Lottie options={defaultOptions} height="80%" width="80%" /></div>;
+  return (
+    <div>
+      <Lottie options={defaultOptions} height={height} width={width} />
+    </div>
+  );
 };
 export default LoadingLottie;
