@@ -58,18 +58,23 @@ export default function FriendBox({
   };
 
   return (
-    <div className="flex items-center">
-      <div className="basis-1/4">
-        <ProfileImg imgSrc={imgSrc} />
-      </div>
+    <div className="flex items-center w-full">
+      <div
+        className="flex items-center w-4/6 mr-2"
+        onClick={() => router.push(`/profile/${userSeq}`)}
+      >
+        <div className="basis-2/6">
+          <ProfileImg imgSrc={imgSrc} />
+        </div>
 
-      <div className="basis-2/4 flex flex-col ml-4">
-        <div>{nickname}</div>
-        <div>{identify}</div>
+        <div className="basis-6/3 flex flex-col ml-4">
+          <div>{nickname}</div>
+          <div>{identify}</div>
+        </div>
       </div>
       {relation === "친구" && (
         <div
-          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          className="flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
           onClick={() => router.push("/chat")}
         >
           채팅
@@ -77,7 +82,7 @@ export default function FriendBox({
       )}
       {relation === "관계 없음" && (
         <div
-          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          className="flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
           onClick={(e) => handleClickFollow(e)}
         >
           친구추가
@@ -85,7 +90,7 @@ export default function FriendBox({
       )}
       {relation === "요청 함" && (
         <div
-          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          className="flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
           onClick={(e) => handleClickFollow(e)}
         >
           요청중
@@ -93,7 +98,7 @@ export default function FriendBox({
       )}
       {relation === "요청 받음" && (
         <div
-          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          className="flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
           onClick={(e) => handleClickFollow(e)}
         >
           요청 받음
@@ -101,7 +106,7 @@ export default function FriendBox({
       )}
       {relation === "차단함" && (
         <div
-          className="basis-1/4 flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
+          className="flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
           onClick={(e) => handleClickFollow(e)}
         >
           차단 해제

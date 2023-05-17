@@ -14,12 +14,12 @@ import { KEYS } from "@/constants/queryKeys";
 type Props = { btnUserSeq: number };
 
 function ProfileBtn({ btnUserSeq }: Props) {
-  console.log(btnUserSeq, "btnUserSeq");
-  console.log(typeof btnUserSeq, "btnUserSeq");
+  console.log(typeof btnUserSeq);
   const queryClient = useQueryClient();
 
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
+  const myProfileImage = state.auth.userInfo?.profileImage;
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const {
@@ -56,11 +56,13 @@ function ProfileBtn({ btnUserSeq }: Props) {
     router.push("/notification");
   };
 
-  console.log(typeof btnUserSeq, "numBtnUserSeq");
-  console.log(typeof myUserSeq, "myUserSeq");
-  console.log(userList, "userList-ProfileBtn");
-
-  if (btnUserSeq === myUserSeq) {
+  let compareSeq;
+  if (typeof btnUserSeq === "string") {
+    compareSeq = +btnUserSeq;
+  } else {
+    compareSeq = btnUserSeq;
+  }
+  if (compareSeq === myUserSeq) {
     return (
       <div className="flex justify-start items-start relative gap-[15px]">
         <Btn
@@ -77,7 +79,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </div>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friend === true) {
+  } else if (userList?.friend === true) {
     return (
       <>
         <Btn
@@ -89,7 +91,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friendRequest === true) {
+  } else if (userList?.friendRequest === true) {
     return (
       <>
         <Btn width="168" bgColor="blue" text="수락 대기중" btnFunc={() => {}} />
@@ -102,7 +104,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         />
       </>
     );
-  } else if (btnUserSeq !== myUserSeq && userList?.friendResponse === true) {
+  } else if (userList?.friendResponse === true) {
     return (
       <>
         <Btn
@@ -110,7 +112,6 @@ function ProfileBtn({ btnUserSeq }: Props) {
           bgColor="blue"
           text="친구요청 수락하기"
           btnFunc={AcceptFriendRequest}
-          // 추후에 알림 완성 되면 친구 요청 수락 알림 페이지로 이동
         />
       </>
     );
