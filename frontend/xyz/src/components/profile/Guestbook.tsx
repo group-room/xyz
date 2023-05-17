@@ -22,7 +22,11 @@ function Guestbook({ userSeq }: GuestbookProps) {
       <div className="w-full h-full min-h-[300px] bg-cover bg-pink flex flex-col">
         {visitorList && visitorList.length > 0 ? (
           visitorList.map((visitor) => (
-            <GuestbookItem key={visitor.userSeq} visitor={visitor} />
+            <GuestbookItem
+              key={visitor.userSeq}
+              visitor={visitor}
+              userSeq={userSeq}
+            />
           ))
         ) : (
           <div className=" text-white">방명록이 없어요ㅠㅠ</div>
