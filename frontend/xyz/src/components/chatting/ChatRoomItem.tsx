@@ -4,6 +4,7 @@ import Image from "next/image";
 import { LOCAL } from "@/constants/localUrl";
 import { useRouter } from "next/navigation";
 import { ChatDataTypes, ChattingRoomListTypes } from "@/types/chatting";
+import NotResultLottie from "../lottie/NotResult";
 
 function ChatRoomItem({
   chatroom,

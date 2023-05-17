@@ -136,7 +136,7 @@ function PhotoUpload({
         <input
           type="file"
           id="input-file"
-          accept="image/*"
+          accept="image/jpeg, image/png"
           onChange={handlePhotoChange}
           multiple
           className="hidden"

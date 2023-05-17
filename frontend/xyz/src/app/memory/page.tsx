@@ -11,6 +11,8 @@ import { useMemoryList } from "../../hooks/queries/memory";
 import { convertDate } from "@/utils/dateUtils";
 import { useAztList } from "@/hooks/queries/azt";
 import { AztTypes } from "@/types/azt";
+import LoadingLottie from "@/components/lottie/Loading";
+import NotResultLottie from "@/components/lottie/NotResult";
 
 function MemoryPage() {
   // 달력에서 선택된 날짜
@@ -97,9 +99,11 @@ function MemoryPage() {
       />
       <MemoryCreateBtn />
       {!memoryList ? (
-        "로딩중..."
+        <LoadingLottie />
       ) : memoryList.length === 0 ? (
-        <div className="py-5">볼 수 있는 추억이 없어요 ㅠㅠ</div>
+        <div className="py-5 text-center">
+          <NotResultLottie />볼 수 있는 추억이 없어요 ㅠㅠ
+        </div>
       ) : (
         <div className="flex flex-col mt-4 gap-y-4">
           {memoryList?.map((memory, idx) => {

@@ -12,6 +12,7 @@ import { queryKeys } from "@/constants/queryKeys";
 import { convertDate } from "@/utils/dateUtils";
 import { useMemoryDetail } from "@/hooks/queries/memory";
 import Textbox from "@/components/common/Textbox";
+import LoadingLottie from "@/components/lottie/Loading";
 
 type Props = {
   params: {
@@ -177,7 +178,9 @@ function MemoryEditPage({ params: { slug } }: Props) {
           />
         </form>
       ) : (
-        <div className="py-4">로딩중 ㄱ-...</div>
+        <div className="flex justify-center align-middle py-60">
+          <LoadingLottie />
+        </div>
       )}
     </div>
   );
