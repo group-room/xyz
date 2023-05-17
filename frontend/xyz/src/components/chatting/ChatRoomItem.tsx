@@ -3,16 +3,15 @@ import ProfileImg from "../common/ProfileImg";
 import Image from "next/image";
 import { LOCAL } from "@/constants/localUrl";
 import { useRouter } from "next/navigation";
-import { ChatDataTypes, ChattingRoomListTypes } from "@/types/chatting";
+import { ChattingRoomListTypes } from "@/types/chatting";
 
-function ChatRoomItem({
-  chatroom,
-  recentMessage,
-}: {
-  chatroom: ChattingRoomListTypes;
-  recentMessage: ChatDataTypes;
-}) {
-  const { name, image, count, sequence, type } = chatroom;
+interface unionType extends ChattingRoomListTypes {
+  text: string;
+  time: string;
+}
+
+function ChatRoomItem({ sortedChatroom }: { sortedChatroom: unionType }) {
+  const { name, image, count, sequence, type, text, time } = sortedChatroom;
   const router = useRouter();
   return (
     <div
@@ -38,13 +37,11 @@ function ChatRoomItem({
               </div>
             )}
           </div>
-          <p className="text-gray-300">
-            {recentMessage ? recentMessage.time.slice(11, 16) : ""}
-          </p>
+          <p className="text-gray-300">{time ? time.slice(11, 16) : ""}</p>
         </div>
         <div>
           <p className="text-gray-400">
-            {recentMessage ? recentMessage.text : "아직 채팅 기록이 없어요"}
+            {text ? text : "아직 채팅 기록이 없어요"}
           </p>
         </div>
       </div>

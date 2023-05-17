@@ -18,6 +18,7 @@ import { notFound, useRouter } from "next/navigation";
 import ModalBtn from "@/components/common/ModalBtn";
 import { SlugProps } from "@/types/common";
 import { useAppSelector } from "@/hooks/redux";
+import LoadingLottie from "@/components/lottie/Loading";
 
 function MemoryDetailPage({ params: { slug } }: SlugProps) {
   const router = useRouter();
@@ -46,7 +47,11 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
   );
 
   if (isLoading) {
-    return <div>로딩중 ㄱ-...</div>;
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
   }
   if (!memory) {
     // 없는 memorySeq라면 not found

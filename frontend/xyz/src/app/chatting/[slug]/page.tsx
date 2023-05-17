@@ -4,6 +4,7 @@ import { sendChat } from "@/app/api/chatting";
 import ChatBubble from "@/components/chatting/ChatBubble";
 import ChatHeader from "@/components/chatting/ChatHeader";
 import ChatInput from "@/components/chatting/ChatInput";
+import LoadingLottie from "@/components/lottie/Loading";
 import { queryKeys } from "@/constants/queryKeys";
 import {
   useChattingDetail,
@@ -102,7 +103,12 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     useSendChatMutation.mutate();
   };
 
-  if (!chatroomDetailData) return <div>로딩중...</div>;
+  if (!chatroomDetailData)
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
 
   if (chatroomDetailData && chatData) {
     const { name, type, aztSeq, userSeq, members } = chatroomDetailData;

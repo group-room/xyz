@@ -5,6 +5,7 @@ import Btn from "@/components/common/Btn";
 import ModalBtn from "@/components/common/ModalBtn";
 import ProfileImg from "@/components/common/ProfileImg";
 import Textbox from "@/components/common/Textbox";
+import LoadingLottie from "@/components/lottie/Loading";
 import { LOCAL } from "@/constants/localUrl";
 import { API, queryKeys } from "@/constants/queryKeys";
 import { useAztInfo } from "@/hooks/queries/azt";
@@ -39,7 +40,11 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
   };
 
   if (isAztInfoLoading) {
-    return <div>로딩중 ㄱ-...</div>;
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
   }
 
   if (!aztInfoData) {
@@ -108,7 +113,6 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
               ))}
             </div>
             <div className="my-3 mx-auto">
-              {/* TODO: 멤버 초대하기 링크 연결 */}
               <Btn
                 bgColor="blue"
                 text="멤버 초대하기"
