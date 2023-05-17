@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface TcRepositoryCustom {
     List<OpenedTcResponse> findOpenedTcListByUser_Seq(Long userSeq);
 
-    Optional<OpenedTcResponse> findRandomOpenedTcByUser_Seq(Long userSeq);
+    Optional<Tc> findRandomOpenedTcByUser_Seq(Long userSeq);
 
     List<TcResponse> findWaitingTcListByUser_Seq(Long userSeq);
 

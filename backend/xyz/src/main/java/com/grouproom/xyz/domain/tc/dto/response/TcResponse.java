@@ -12,6 +12,7 @@ public class TcResponse {
     private Long tcSeq;
     private Long aztSeq;
     private String aztName;
+    private String aztImage;
     private String openStatus;
     private String openStart;
     private String openEnd;
@@ -20,10 +21,11 @@ public class TcResponse {
     private Long requiredCnt;
     private Long openCnt;
 
-    public TcResponse(Long tcSeq, Long aztSeq, String aztName, OpenStatus openStatus, LocalDateTime openStart, LocalDateTime openEnd, LocalDateTime updatedAt, String location) {
+    public TcResponse(Long tcSeq, Long aztSeq, String aztName, String aztImage, OpenStatus openStatus, LocalDateTime openStart, LocalDateTime openEnd, LocalDateTime updatedAt, String location) {
         this.tcSeq = tcSeq;
         this.aztSeq = aztSeq;
         this.aztName = aztName;
+        this.aztImage = aztImage;
         this.openStatus = openStatus.toString();
         this.openStart = openStart.toString();
         this.openEnd = openEnd.toString();
@@ -37,6 +39,7 @@ public class TcResponse {
         this.tcSeq = tc.getSequence();
         this.aztSeq = tc.getAzt().getSequence();
         this.aztName = tc.getAzt().getAztName();
+        this.aztImage = tc.getAzt().getAztImage();
         this.openStatus = tc.getOpenStatus().toString();
         this.openStart = tc.getOpenStart().toString();
         this.openEnd = tc.getOpenEnd().toString();

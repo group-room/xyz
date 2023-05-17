@@ -9,6 +9,8 @@ import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.azt.entity.AztMember;
 import com.grouproom.xyz.domain.azt.repository.AztMemberRepository;
 import com.grouproom.xyz.domain.azt.repository.AztRepository;
+import com.grouproom.xyz.domain.chat.entity.Chat;
+import com.grouproom.xyz.domain.chat.repository.ChatRepository;
 import com.grouproom.xyz.domain.friend.dto.response.FriendListResponse;
 import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
 import com.grouproom.xyz.domain.friend.service.FriendManageService;
@@ -36,6 +38,7 @@ public class AztServiceImpl implements AztService {
     private final AztRepository aztRepository;
     private final AztMemberRepository aztMemberRepository;
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
     private final FriendManageService friendManageService;
     private final S3UploadService s3UploadService;
 
@@ -84,7 +87,7 @@ public class AztServiceImpl implements AztService {
                 .name(azt.getAztName())
                 .createdAt(azt.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .updatedAt(azt.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
-                .chatSeq(azt.getChatId())
+                .chatSeq(azt.getChatSeq().getSequence())
                 .members(memberResponses)
                 .build();
     }
@@ -109,10 +112,14 @@ public class AztServiceImpl implements AztService {
             imagePath = s3UploadService.upload(image, "azt");
         }
 
+        Chat chat = chatRepository.save(Chat.builder().build());
+        logger.info("채팅방 생성 성공");
+
         Azt azt = aztRepository.save(Azt.builder()
                         .aztName(addAztRequest.getName())
                         .aztImage(imagePath)
                         .isDeleted(false)
+                        .chatSeq(chat)
                 .build());
         logger.info("아지트 생성 성공");
 
@@ -222,7 +229,7 @@ public class AztServiceImpl implements AztService {
                                 .profileImage(friend.getProfileImage())
                                 .identify(friend.getIdentify())
                                 .nickname(friend.getNickname())
-                                .chatId(friend.getChatId())
+                                .chatSeq(friend.getChatSeq())
                         .build());
             }
         }

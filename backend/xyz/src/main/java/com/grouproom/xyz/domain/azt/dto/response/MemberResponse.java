@@ -15,5 +15,5 @@ public class MemberResponse {
     private String nickname;
     private String identify;
     private String profileImage;
-    private String chatId;
+    private Long chatSeq;
 }
