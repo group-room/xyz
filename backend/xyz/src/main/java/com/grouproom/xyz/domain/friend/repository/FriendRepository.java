@@ -12,4 +12,5 @@ public interface FriendRepository extends JpaRepository<Friend, FriendID>, Frien
     Friend findByFromUser_SequenceAndToUser_SequenceAndIsAcceptedAndIsCanceledAndIsDeleted(Long from, Long to, Boolean isAccepted, Boolean isCanceled, Boolean isDeleted);
     Friend findByChatSeq_Sequence(Long chatSeq);
     Friend findByFromUserAndToUser(User from, User to);
+    Integer deleteByFromUser_SequenceAndToUser_Sequence(Long from, Long to);
 }

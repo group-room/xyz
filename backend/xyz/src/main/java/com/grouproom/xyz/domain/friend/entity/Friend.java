@@ -43,7 +43,7 @@ public class Friend extends BaseTimeEntity {
     private Boolean isAccepted;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_seq")
+    @JoinColumn(name = "chat_sequence")
     private Chat chatSeq;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1)")
