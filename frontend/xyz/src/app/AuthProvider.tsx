@@ -4,6 +4,7 @@ import React, { PropsWithChildren } from "react";
 import { useAppSelector } from "@/hooks/redux";
 import { axiosFileInstance, axiosInstance } from "./api/instance";
 import { usePathname, useRouter } from "next/navigation";
+import { API } from "@/constants/queryKeys";
 
 function AuthProvider({ children }: PropsWithChildren) {
   const state = useAppSelector((state) => state);
@@ -16,6 +17,8 @@ function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
   if (pathname !== "/" && !pathname.includes("login")) {
     if (!isLogin || accessToken === "") router.push("/");
+  } else {
+    if (isLogin && accessToken !== "") router.push(`/${API.memory}`);
   }
   return <>{children}</>;
 }
