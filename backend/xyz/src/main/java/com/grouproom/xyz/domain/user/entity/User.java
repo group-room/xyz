@@ -63,6 +63,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "identify", length = 500)
     private String identify;
 
+    @Column(name = "myroom_image", length = 500)
+    private String myRoomImage;
+
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
@@ -83,7 +86,7 @@ public class User extends BaseTimeEntity {
     }
 
     public void changeIsDeleted(Boolean isDeleted) {
-        this.socialIdentify = this.socialIdentify + "delete";
+        this.socialIdentify = "delete";
         this.isDeleted = isDeleted;
     }
 
@@ -96,6 +99,10 @@ public class User extends BaseTimeEntity {
         if (profileImage != null) this.profileImage = profileImage;
         if (backgroundImage != null) this.backgroundImage = backgroundImage;
         if (introduce != null) this.introduce = introduce;
+    }
+
+    public void changeMyRoomImage (String myRoomImage) {
+        this.myRoomImage = myRoomImage;
     }
 
     public void changeToken(String token){

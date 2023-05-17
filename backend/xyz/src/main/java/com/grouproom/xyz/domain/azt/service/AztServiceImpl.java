@@ -69,10 +69,10 @@ public class AztServiceImpl implements AztService {
         for (AztMember aztMember:aztMembers) {
             User user = aztMember.getUser();
             memberResponses.add(MemberResponse.builder()
-                            .userSeq(user.getSequence())
-                            .nickname(user.getNickname())
-                            .identify(user.getIdentify())
-                            .profileImage(user.getProfileImage())
+                    .userSeq(user.getSequence())
+                    .nickname(user.getNickname())
+                    .identify(user.getIdentify())
+                    .profileImage(user.getProfileImage())
                     .build());
         }
         logger.info("아지트 정보");
@@ -136,10 +136,14 @@ public class AztServiceImpl implements AztService {
         } else {
             for (MemberRequest member : addAztRequest.getMembers()) {
                 User user = userRepository.findBySequence(member.getUserSeq());
+                if(null == user) {
+                    logger.severe("없는 멤버!");
+                    throw new ErrorResponse(HttpStatus.BAD_REQUEST, "없는 멤버");
+                }
                 aztMemberRepository.save(AztMember.builder()
-                                .azt(azt)
-                                .user(user)
-                                .isDeleted(false)
+                        .azt(azt)
+                        .user(user)
+                        .isDeleted(false)
                         .build());
                 logger.info(user.getSequence() + " 멤버 가입 성공");
             }
@@ -161,7 +165,12 @@ public class AztServiceImpl implements AztService {
                 logger.severe("삭제된 아지트");
                 throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 아지트");
             } else {
-                azt.setAztName(modifyAztRequest.getName());
+                if (null == modifyAztRequest.getName()) {
+                    logger.info("이름 없음");
+                } else {
+                    logger.info("이름 변경");
+                    azt.setAztName(modifyAztRequest.getName());
+                }
                 if(image.isEmpty()) {
                     logger.info("사진 변경 안함");
                 } else {
@@ -225,11 +234,11 @@ public class AztServiceImpl implements AztService {
             } else {
                 logger.info(friend.getUserSeq() + " 초대 가능");
                 memberResponses.add(MemberResponse.builder()
-                                .userSeq(friend.getUserSeq())
-                                .profileImage(friend.getProfileImage())
-                                .identify(friend.getIdentify())
-                                .nickname(friend.getNickname())
-                                .chatSeq(friend.getChatSeq())
+                        .userSeq(friend.getUserSeq())
+                        .profileImage(friend.getProfileImage())
+                        .identify(friend.getIdentify())
+                        .nickname(friend.getNickname())
+                        .chatSeq(friend.getChatSeq())
                         .build());
             }
         }

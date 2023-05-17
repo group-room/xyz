@@ -161,12 +161,14 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, userSeq);
         if (null == friend) {
             logger.info("최초 요청");
+            Chat chat = chatRepository.save(Chat.builder().build());
             Friend newFriend = Friend.builder()
                     .fromUser(userRepository.findBySequence(loginSeq))
                     .toUser(userRepository.findBySequence(userSeq))
                     .isAccepted(false)
                     .isCanceled(false)
                     .isDeleted(false)
+                    .chatSeq(chat)
                     .build();
             friendRepository.save(newFriend);
         } else {
@@ -174,7 +176,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
                 if (friend.getFromUser().getSequence().equals(loginSeq) && friend.getToUser().getSequence().equals(userSeq)) {
                     logger.info("요청 취소 상태 또는 친구 삭제 상태 : 과거 신청 주체가 로그인 유저");
                     friend.setCreatedAt(LocalDateTime.now());
-                    friend.setUpdatedAt(null);
+                    friend.setUpdatedAt(LocalDateTime.now());
                     friend.setIsAccepted(false);
                     friend.setIsCanceled(false);
                     friend.setIsDeleted(false);
@@ -189,7 +191,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
                             .chatSeq(friend.getChatSeq())
                             .build();
                     friendRepository.save(newFriend);
-                    friendRepository.delete(friend);
+                    friendRepository.deleteByFromUser_SequenceAndToUser_Sequence(userSeq, loginSeq);
                 }
             } else {
                 logger.severe("친구 요청 후 수락 대기 상태 혹은 친구 상태");

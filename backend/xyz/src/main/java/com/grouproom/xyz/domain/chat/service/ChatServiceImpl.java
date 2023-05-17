@@ -1,6 +1,5 @@
 package com.grouproom.xyz.domain.chat.service;
 
-import com.grouproom.xyz.domain.chat.dto.request.ChatDetailRequest;
 import com.grouproom.xyz.domain.chat.dto.response.RoomDetailResponse;
 import com.grouproom.xyz.domain.chat.dto.response.RoomMemberResponse;
 import com.grouproom.xyz.domain.chat.dto.response.RoomsResponse;
@@ -8,9 +7,7 @@ import com.grouproom.xyz.domain.chat.repository.ChatRepository;
 import com.grouproom.xyz.domain.friend.entity.Friend;
 import com.grouproom.xyz.domain.friend.repository.FriendRepository;
 import com.grouproom.xyz.domain.user.entity.User;
-import com.grouproom.xyz.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,14 +34,12 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public RoomDetailResponse findChat(Long loginSeq, ChatDetailRequest chatDetailRequest) {
+    public RoomDetailResponse findChat(Long loginSeq, Long chatSeq) {
 
         logger.info("채팅 상세 조회 호출");
-        String type = chatDetailRequest.getType();
-        logger.info("type : " + type);
-        if(type.equals("azt")) {
-            RoomDetailResponse response = chatRepository.selectAztChat(chatDetailRequest.getChatSeq());
-            List<User> users = chatRepository.selectAztChatMember(chatDetailRequest.getChatSeq());
+        RoomDetailResponse response = chatRepository.selectAztChat(chatSeq);
+        if(null != response) {
+            List<User> users = chatRepository.selectAztChatMember(chatSeq);
             List<RoomMemberResponse> members = new ArrayList<>();
             for (User user:users) {
                 members.add(RoomMemberResponse.builder()
@@ -55,9 +50,9 @@ public class ChatServiceImpl implements ChatService {
             }
             response.setMembers(members);
             return response;
-        } else if(type.equals("friend")) {
-            RoomDetailResponse response = chatRepository.selectFriendChat(loginSeq, chatDetailRequest.getChatSeq());
-            Friend friend = friendRepository.findByChatSeq_Sequence(chatDetailRequest.getChatSeq());
+        } else {
+            response = chatRepository.selectFriendChat(loginSeq, chatSeq);
+            Friend friend = friendRepository.findByChatSeq_Sequence(chatSeq);
             List<RoomMemberResponse> members = new ArrayList<>();
             members.add(RoomMemberResponse.builder()
                     .userSeq(friend.getFromUser().getSequence())
@@ -71,8 +66,6 @@ public class ChatServiceImpl implements ChatService {
                     .build());
             response.setMembers(members);
             return response;
-        } else {
-            throw new ErrorResponse(HttpStatus.BAD_REQUEST, "잘못된 요청");
         }
     }
 }

@@ -69,8 +69,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
     @Override
     public Optional<FriendshipResponse> selectFriendshipByUserSeq(User fromUser, User toUser) {
-        BooleanExpression firstCondition = new CaseBuilder().when(friend.fromUser.eq(fromUser).and(friend.isAccepted.eq(false))).then(true).otherwise(false);
-        BooleanExpression secondCondition = new CaseBuilder().when(friend.toUser.eq(fromUser).and(friend.isAccepted.eq(false))).then(true).otherwise(false);
+        BooleanExpression firstCondition = new CaseBuilder().when(friend.fromUser.eq(fromUser).and(friend.isAccepted.eq(false)).and(friend.isCanceled.eq(false) )).then(true).otherwise(false);
+        BooleanExpression secondCondition = new CaseBuilder().when(friend.toUser.eq(fromUser).and(friend.isAccepted.eq(false)).and(friend.isCanceled.eq(false)) ).then(true).otherwise(false);
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.or(friend.fromUser.eq(fromUser).and(friend.toUser.eq(toUser)));

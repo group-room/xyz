@@ -7,6 +7,7 @@ import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -80,4 +81,27 @@ public class MyRoomController {
         }
     }
 
+
+    @GetMapping("/photo")
+    public BaseResponse myRoomPhotoDetails(){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSequence));
+    }
+
+    @PostMapping("/photo")
+    public BaseResponse updateMyRoomPhoto(@RequestPart MultipartFile photoImage){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        String photoImagePath = s3UploadService.upload(photoImage, "user");
+        myRoomService.modifyMyRoomPhoto(userSequence,photoImagePath);
+
+        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSequence));
+    }
+
+    @DeleteMapping("/photo")
+    public BaseResponse removeMyRoomPhoto(){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.modifyMyRoomPhoto(userSequence,null);
+
+        return new BaseResponse(null);
+    }
 }

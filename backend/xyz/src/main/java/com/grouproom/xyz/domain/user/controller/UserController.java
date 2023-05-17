@@ -1,6 +1,7 @@
 package com.grouproom.xyz.domain.user.controller;
 
 import com.grouproom.xyz.domain.user.dto.request.ProfileRequest;
+import com.grouproom.xyz.domain.user.dto.request.VisitorRequest;
 import com.grouproom.xyz.domain.user.dto.response.ProfileResponse;
 import com.grouproom.xyz.domain.user.service.UserService;
 import com.grouproom.xyz.global.exception.ErrorResponse;
@@ -84,9 +85,9 @@ public class UserController {
     }
 
     @PostMapping("/visitor")
-    public BaseResponse saveVisitor(Long userSeq,String content){
+    public BaseResponse saveVisitor(@RequestBody  VisitorRequest visitorRequest){
         Long fromUserSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        userService.addVisitor(fromUserSeq,userSeq,content);
+        userService.addVisitor(fromUserSeq,visitorRequest.getUserSeq(),visitorRequest.getContent());
         return new BaseResponse(null);
     }
 
