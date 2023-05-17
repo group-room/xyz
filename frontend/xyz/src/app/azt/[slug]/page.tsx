@@ -14,6 +14,7 @@ import { useAztInfo } from "@/hooks/queries/azt";
 import { LOCAL } from "@/constants/localUrl";
 import { useRouter } from "next/navigation";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
+import LoadingLottie from "@/components/lottie/Loading";
 import CapsuleCreateBtn from "@/components/azt/CapsuleCreateBtn";
 
 function AzitDetailPage({ params: { slug } }: SlugProps) {
@@ -33,7 +34,12 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
 
   function SelectedContent() {
     if (btnValue) {
-      if (isAztMemoryLoading) return <div>로딩중...</div>;
+      if (isAztMemoryLoading)
+        return (
+          <div>
+            <LoadingLottie />
+          </div>
+        );
       return (
         <>
           {aztMemoryData && aztMemoryData.length ? (
@@ -48,7 +54,12 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
         </>
       );
     } else {
-      if (isAztMemoryLoading) return <div>로딩중...</div>;
+      if (isAztMemoryLoading)
+        return (
+          <div className="flex justify-center align-middle py-60">
+            <LoadingLottie />
+          </div>
+        );
       return (
         <div className="flex flex-wrap ">
           {aztCapsuleData && aztCapsuleData.length ? (

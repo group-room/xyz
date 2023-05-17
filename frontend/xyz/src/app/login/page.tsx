@@ -15,13 +15,14 @@ import {
   axiosInstance,
 } from "../api/instance";
 import { API } from "@/constants/queryKeys";
+import LoadingLottie from "@/components/lottie/Loading";
 
 function LoginPage() {
   const { data: loginRes, isLoading } = useLogin();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   if (loginRes) {
-    // console.log(loginRes);
     const loginHeaders = loginRes.headers;
     const accessToken = loginHeaders["authorization"];
     const userSeq = +loginHeaders["sequence"];
@@ -43,7 +44,11 @@ function LoginPage() {
     axiosFileInstance.defaults.headers.common["Authorization"] = accessToken;
     axiosChatInstance.defaults.headers.common["Authorization"] = accessToken;
   }
-  return <div>로그인중...!</div>;
+  return (
+    <div className="flex justify-center align-middle py-60">
+      <LoadingLottie />
+    </div>
+  );
 }
 
 export default LoginPage;

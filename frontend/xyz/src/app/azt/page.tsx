@@ -5,6 +5,7 @@ import Link from "next/link";
 import AztItem from "@/components/azt/AztItem";
 import Container from "@/components/common/Container";
 import { useAztList } from "@/hooks/queries/azt";
+import LoadingLottie from "@/components/lottie/Loading";
 
 function AztPage() {
   const { data: aztData, isLoading: isAztLoading } = useAztList();
@@ -41,7 +42,7 @@ function AztPage() {
               <div className="py-2 w-full">아지트가 없어요 ㅠㅠ</div>
             )
           ) : (
-            <p>로딩중...</p>
+            <LoadingLottie />
           )}
         </div>
       </Container>
