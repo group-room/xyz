@@ -1,6 +1,5 @@
 package com.grouproom.chat.service;
 
-import com.grouproom.chat.dto.LatestChatResponse;
 import com.grouproom.chat.entity.Chat;
 import com.grouproom.chat.repository.MongoDBRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +8,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +46,7 @@ public class MongoDBServiceImpl implements MongoDBService {
 
     @Override
     public List<Chat> getHistory(String room, Long id) {
-        log.error("getHistory {} {}",room,id);
+        log.error("getHistory {} {}", room, id);
 //        return mongoDBRepository.findTop20ByIdLessThanOrderByIdDesc(id).stream().sorted(Comparator.comparing(Chat::getId)).collect(Collectors.toList());
         //조건문 같은 방
         Criteria firstCriteria = new Criteria().where("room").is(room);
@@ -57,14 +57,14 @@ public class MongoDBServiceImpl implements MongoDBService {
         MatchOperation secondMatchOperation = Aggregation.match(secondCriteria);
 
         //역정렬
-        SortOperation sortOperation = Aggregation.sort(Sort.Direction.DESC,"_id");
+        SortOperation sortOperation = Aggregation.sort(Sort.Direction.DESC, "_id");
 
         //limit
         LimitOperation limitOperation = Aggregation.limit(20);
 
 
         AggregationResults<Chat> aggregate =
-                this.mongoTemplate.aggregate(newAggregation(firstMatchOperation, secondMatchOperation,sortOperation,limitOperation),
+                this.mongoTemplate.aggregate(newAggregation(firstMatchOperation, secondMatchOperation, sortOperation, limitOperation),
 //                        this.mongoTemplate.aggregate(newAggregation(firstMatchOperation),
                         Chat.class,
                         Chat.class);
@@ -74,28 +74,74 @@ public class MongoDBServiceImpl implements MongoDBService {
 
     @Override
     public List<Chat> getLatestChat(String name) {
+        List<Chat> result = new ArrayList<>();
 
-        //조건문
-        Criteria criteria = new Criteria().where("name").is(name);
-        MatchOperation matchOperation = Aggregation.match(criteria);
+        //1. 해당 유저의 모든 방 탐색
+        Criteria searchCriteria = new Criteria().where("name").is(name);
+        MatchOperation searchMatchOperation = Aggregation.match(searchCriteria);
 
-        //그룹화
-        GroupOperation groupOperation = Aggregation.group("room")
-                .last("room").as("room")
-                .last("name").as("name")
-                .last("text").as("text")
-                .last("time").as("time");
+        GroupOperation searchGroupOperation = Aggregation.group("room");
 
-        AggregationResults<Chat> aggregate =
-                this.mongoTemplate.aggregate(newAggregation(matchOperation, groupOperation),
+
+        AggregationResults<HashMap> searchAggregate =
+                this.mongoTemplate.aggregate(newAggregation(searchMatchOperation, searchGroupOperation),
                         Chat.class,
-                        Chat.class);
+                        HashMap.class);
+        for (HashMap hashMap : searchAggregate.getMappedResults()) {
+            log.info(" result {} ", hashMap.get("_id"));
+            //2. 각 방의 마지막 내용을 뽑기
 
-        return aggregate.getMappedResults().stream().sorted().collect(Collectors.toList());
+            Criteria selectCriteria = new Criteria().where("room").is(hashMap.get("_id"));
+            MatchOperation selectMatchOperation = Aggregation.match(selectCriteria);
+            SortOperation selectSortOperation = Aggregation.sort(Sort.Direction.DESC, "_id");
+            LimitOperation selectLimitOperation = Aggregation.limit(1);
+
+            AggregationResults<Chat> selectAggregate =
+                    this.mongoTemplate.aggregate(newAggregation(selectMatchOperation, selectSortOperation, selectLimitOperation),
+                            Chat.class,
+                            Chat.class);
+
+            result.addAll(selectAggregate.getMappedResults());
+        }
+
+
+        return  result.stream().sorted().collect(Collectors.toList());
+
+        /*
+        *
+        [
+          {
+            $match: {
+              "name" : "testHuman"
+            }
+          },
+          {
+            $group: {
+              _id: "$room",
+            }
+          }
+        ]
+
+        ->
+        [
+            {
+            $match: {
+              "room" : "94813215648947"
+            }
+            },
+            {
+              $sort: {
+                _id: -1
+              }
+            },
+            {
+                $limit: 1
+            }
+        ]
+
+        * */
+
     }
 
-    public int timeCompare(String time){
-        return 0;
-    }
 
 }

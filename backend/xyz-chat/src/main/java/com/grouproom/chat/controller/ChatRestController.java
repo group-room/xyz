@@ -56,6 +56,7 @@ public class ChatRestController {
 
     @GetMapping("/recent-chat")
     List<Chat> transferChar(@RequestParam String name) {
+        log.info("test name {}",name);
         return mongoDBService.getLatestChat(name);
     }
 
