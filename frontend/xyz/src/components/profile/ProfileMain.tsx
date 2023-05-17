@@ -137,18 +137,27 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               alt="pretty"
               text="수식어"
               maintext={profileData?.modifier}
+              firstClass="border border-black flex my-2 items-center"
+              secondClass="flex items-center justify-center mx-1 h-full "
+              textClass=" whitespace-nowrap ml-1"
+              maintextClass=" px-1 border-black border-l h-full"
             />
             <Textbox
               icon="/icons/avatar.svg"
               alt="nickname"
               text="닉네임"
               maintext={profileData?.nickname}
+              firstClass="border border-black flex my-3 items-center "
+              secondClass="flex flex-none items-center justify-center mx-1"
+              textClass="whitespace-nowrap ml-1"
+              maintextClass="px-1 border-black border-l"
             />
             <Textbox
               icon="/icons/user.svg"
               alt="visitor"
               text="방문자"
               maintext={profileData?.visitCount}
+              firstClass="border border-black flex my-2 items-center"
             />
           </div>
         </div>
