@@ -98,6 +98,7 @@ public class UserServiceImpl implements UserService {
             if (userModifier == null) {
                 throw new ErrorResponse(HttpStatus.BAD_REQUEST, "소유하지 않은 수식어를 선택했습니다.");
             } else {
+                userModifierRepository.updateAntotherModifierSet(user);
                 userModifier.changeIsSelected(true);
             }
         }
