@@ -83,9 +83,8 @@ public class MyRoomController {
 
 
     @GetMapping("/photo")
-    public BaseResponse myRoomPhotoDetails(){
-        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSequence));
+    public BaseResponse myRoomPhotoDetails(@RequestParam Long userSeq){
+        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSeq));
     }
 
     @PostMapping("/photo")
