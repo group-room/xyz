@@ -13,6 +13,8 @@ import { API } from "@/constants/queryKeys";
 import { useAztInfo } from "@/hooks/queries/azt";
 import { LOCAL } from "@/constants/localUrl";
 import { useRouter } from "next/navigation";
+import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
+import CapsuleCreateBtn from "@/components/azt/CapsuleCreateBtn";
 
 function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
@@ -23,7 +25,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztCapsuleData, isLoading: isAztCapsuleLoading } =
     useAztCapsuleList(slug);
 
-  const [btnValue, setBtnValue] = useState(true);
+  const [btnValue, setBtnValue] = useState(true); // true면 추억앨범, false면 타임캡슐
   const handleChange = (selectedBtn: boolean) => {
     setBtnValue(selectedBtn);
   };
@@ -116,6 +118,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
       <div className="flex flex-col gap-y-5 px-4 py-6 rounded rounded-t-none border border-t-0 border-black">
         <SelectedContent />
       </div>
+      {btnValue ? <MemoryCreateBtn /> : <CapsuleCreateBtn />}
     </div>
   );
 }

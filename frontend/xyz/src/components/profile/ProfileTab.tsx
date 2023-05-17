@@ -6,6 +6,9 @@ import MyroomIcon from "../../../public/icons/home.svg";
 import Visitor from "../../../public/icons/reciept.svg";
 import Guestbook from "./Guestbook";
 import Myroom from "./Myroom";
+import { useUserList } from "@/hooks/queries/user";
+import { is } from "date-fns/locale";
+import GuestbookWrite from "./GuestbookWrite";
 
 type ButtonProps = {
   value: boolean;
@@ -14,7 +17,13 @@ type ButtonProps = {
 };
 
 function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
+  const {
+    data: userList,
+    isLoading: isUserLoading,
+    error,
+  } = useUserList(profileTabUserSeq);
   const [isClick, setIsClick] = useState(false);
+  const isFriend = userList?.friend;
 
   const handleChange = (v: boolean) => {
     onChange(v);
@@ -30,8 +39,17 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     } else {
       return (
         <div className="w-full h-full">
-          {" "}
-          <Guestbook userSeq={profileTabUserSeq} />{" "}
+          {isFriend === true ? (
+            <div>
+              <Guestbook userSeq={profileTabUserSeq} />
+              <GuestbookWrite userSeq={profileTabUserSeq} />
+            </div>
+          ) : (
+            <div className="bg-pink text-white">
+              <Guestbook userSeq={profileTabUserSeq} /> 친구가 아니면 방명록을
+              남길 수 없습니다...
+            </div>
+          )}
         </div>
       );
     }
