@@ -74,9 +74,10 @@ export default function SelectOpenDay({
     let openStartDay = dateToString(openStart);
     let updateEndDay = dateToString(date);
     const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+    const formattedyesterday = dateToString(yesterday);
 
-    if (openStartDay < updateEndDay) {
-      confirmSwalWarning("수정 마감일은 오픈 마감일 이후로 선택해주세요");
+    if (openStartDay < updateEndDay || date === null) {
+      confirmSwalWarning("수정 마감일은 오픈 시작일 이후로 선택해주세요");
       setUpdateEnd(yesterday);
     } else {
       setUpdateEnd(date!);

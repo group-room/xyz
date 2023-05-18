@@ -22,8 +22,6 @@ export default function TimeCapsuleCreatePage() {
   const after7Days: Date = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
-  console.log("after7Days ---> ", after7Days);
-  console.log("yesterday ---> ", yesterday);
   const [content, setContent] = useState<string>("");
   const [currAzt, setCurrAzt] = useState<AztTypes[]>([]);
   const [aztList, setAztList] = useState<AztTypes[]>([]);
