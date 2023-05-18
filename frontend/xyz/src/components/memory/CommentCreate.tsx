@@ -39,6 +39,11 @@ function CommentCreate({ memorySeq }: CommentCreateTypes) {
         placeholder="댓글을 입력하세요"
         value={commentInput}
         onChange={onChangeCommentInput}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleCommentCreateClick();
+          }
+        }}
       />
       <Btn bgColor="yellow" text="등 록" btnFunc={handleCommentCreateClick} />
     </div>

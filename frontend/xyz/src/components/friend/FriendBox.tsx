@@ -11,6 +11,7 @@ type Props = {
   identify: string;
   relation: string;
   userSeq: number;
+  chatSeq?: number;
 };
 
 export default function FriendBox({
@@ -19,6 +20,7 @@ export default function FriendBox({
   identify,
   relation,
   userSeq,
+  chatSeq,
 }: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -75,7 +77,7 @@ export default function FriendBox({
       {relation === "친구" && (
         <div
           className="flex items-center justify-center border-2 border-black w-20 h-10 bg-pink board-2 rounded-md"
-          onClick={() => router.push("/chat")}
+          onClick={() => router.push(`/chatting/${chatSeq}`)}
         >
           채팅
         </div>

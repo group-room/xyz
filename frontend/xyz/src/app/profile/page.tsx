@@ -39,7 +39,7 @@ function ProfilePage() {
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       {userSeq ? (
         <>
           <ProfileMain userSeq={userSeq} />

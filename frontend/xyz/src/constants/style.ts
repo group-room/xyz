@@ -4,6 +4,7 @@ type BgColorType = {
   [blue: string]: string;
   pink: string;
   yellow: string;
+  retro: string;
 };
 
 type RandomBgType = {
@@ -14,6 +15,7 @@ export const BgColors: BgColorType = {
   blue: "bg-blue",
   pink: "bg-pink",
   yellow: "bg-yellow",
+  retro: "bg-retro",
 };
 
 export const TextColors: BgColorType = {
@@ -21,6 +23,7 @@ export const TextColors: BgColorType = {
   pink: "text-pink",
   yellow: "text-yellow",
   white: "text-white",
+  retro: "text-retro",
 };
 
 export const RandomBg: RandomBgType = {

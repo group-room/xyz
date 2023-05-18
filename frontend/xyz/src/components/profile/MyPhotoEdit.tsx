@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useAppSelector } from "@/hooks/redux";
 import { useMyPhoto } from "@/hooks/queries/myphoto";
 import { useRouter } from "next/navigation";
-import { API, queryKeys } from "@/constants/queryKeys";
+import { queryKeys } from "@/constants/queryKeys";
 import Btn from "../common/Btn";
 import Img1 from "../../../public/images/background/bg (1).png";
 import Img2 from "../../../public/images/background/bg (2).png";
@@ -17,9 +17,7 @@ import Img8 from "../../../public/images/background/bg (8).png";
 import Img9 from "../../../public/images/background/bg (9).png";
 import Img10 from "../../../public/images/background/bg (10).png";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { KEYS } from "@/constants/queryKeys";
 import { createMyPhotoFilter } from "@/app/api/myphoto";
-import { type } from "os";
 
 interface MyPhotoEditProps {
   userSeq: number;
@@ -30,7 +28,6 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
   const router = useRouter();
   const state = useAppSelector((state) => state);
   const queryClient = useQueryClient();
-  const [imageNumber, setImageNumber] = useState<number>(0);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [selectedImageNumber, setSelectedImageNumber] = useState<number>(20);
 
@@ -56,9 +53,8 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
   };
 
   return (
-    //만약에 대문 사진 없다면, 임의의 배경사진 넣어주기 (background img들 중)
-    <div className=" w-full h-full ">
-      <div className="flex flex-col gap-3 w-full h-full">
+    <div className=" w-full ">
+      <div className="flex flex-col gap-3 w-full">
         <div className="relative flex items-center justify-center p-4">
           <img src={myPhotoList?.data} />
         </div>
