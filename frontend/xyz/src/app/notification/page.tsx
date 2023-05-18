@@ -11,23 +11,29 @@ type BtnType = {
 
 export default function NotificationPage() {
   const [type, setType] = useState("ALL");
+  const [activeButton, setActiveButton] = useState(0);
 
   const arr: BtnType[] = [
     {
       name: "전체",
-      func: () => setType("ALL"),
-    },
-    {
-      name: "마이룸",
-      func: () => setType("MYROOM"),
+      func: () => {
+        setType("ALL");
+        setActiveButton(0);
+      },
     },
     {
       name: "친구",
-      func: () => setType("FRIEND"),
+      func: () => {
+        setType("FRIEND");
+        setActiveButton(1);
+      },
     },
     {
       name: "추억",
-      func: () => setType("MEMORY"),
+      func: () => {
+        setType("MEMORY");
+        setActiveButton(2);
+      },
     },
   ];
 
@@ -37,11 +43,11 @@ export default function NotificationPage() {
         {arr.map((list, idx) => (
           <Btn
             key={idx}
-            width="w-[20vw]"
-            bgColor="bg-white"
+            width="w-1/3"
+            bgColor={activeButton === idx ? "bg-pink" : "bg-white"}
             text={list.name}
             btnFunc={list.func}
-            className="hover:bg-pink"
+            className={activeButton === idx ? "bg-pink" : ""}
           />
         ))}
       </div>

@@ -63,9 +63,10 @@ export default function Notification({ type }: Props) {
                   <p>{list.type}</p>
                 </div>
                 <div className="w-8/12 flex flex-col items-center justify-center text-center py-2">
-                  <div>{list.content}</div>
                   {list.content === "NEW FRIEND ASK" && (
-                    <div className="text-sm">FROM {list.fromUserName}</div>
+                    <div className="text-sm">
+                      {list.fromUserName}님으로 부터 친구요청이 왔습니다
+                    </div>
                   )}
                 </div>
                 <div className="w-2/12 border-l-2 border-black flex items-center justify-center bg-slate-300">
