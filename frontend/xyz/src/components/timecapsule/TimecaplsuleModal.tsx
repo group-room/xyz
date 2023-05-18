@@ -57,10 +57,12 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
   const repeatCnt = (repeat: number) => {
     console.log("repeat", repeat);
     const repeatArr = [];
-    for (let i = 0; i < repeat; i++) {
-      repeatArr.push(
-        <div key={i} className="w-10 h-10 bg-pink rounded-full"></div>
-      );
+    if (repeat !== 0) {
+      for (let i = 0; i < repeat; i++) {
+        repeatArr.push(
+          <div key={i} className="w-10 h-10 bg-pink rounded-full"></div>
+        );
+      }
     }
     return repeatArr;
   };
@@ -74,7 +76,9 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
       {detail.openStatus === "OPENABLE" && (
         <>
           <Image className="mb-8" src={capsuleImg} alt="capsuleImg"></Image>
-          <div>{detail.openCnt && repeatCnt(detail.openCnt)}</div>
+          {detail.openCnt && detail.openCnt !== 0 ? (
+            <div className="flex mb-8 gap-2">{repeatCnt(detail.openCnt)}</div>
+          ) : null}
           <Btn
             bgColor="blue"
             text="타임캡슐 열기"
