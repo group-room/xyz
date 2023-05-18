@@ -19,13 +19,13 @@ module.exports = {
           to: { transform: "rotate(180deg)" },
         },
         "fade-in-transform": {
-          from: { opacity: 0.2, transform: "translate(0px, 0px)" },
-          to: { opacity: 1, transform: "translate(-40px, 50px)" },
+          from: { opacity: 0.5, transform: "translate(0px, 0px)" },
+          to: { opacity: 1, transform: "translate(-20%, 40%)" },
         },
       },
       animation: {
         "spin-slow": "spin 1s linear",
-        "fade-in-transform": "fade-in-transform 1.5s ease-in-out",
+        "fade-in-transform": "fade-in-transform 1.5s forwards",
       },
       // backgroundImage: {
       //   'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
