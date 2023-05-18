@@ -16,21 +16,41 @@ export default function AllTimecapsuleList({ openCapsuleList }: Props) {
     router.push(`/capsule/${tcSeq}`);
   };
 
+  if (openCapsuleList) {
+    console.log(openCapsuleList);
+  }
+
+  const formatDate = (dateString: string) => {
+    console.log("dateString -> ", dateString);
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(5, 7);
+    const day = dateString.slice(8, 10);
+    return `${year}.${month}.${day}`;
+  };
+
   return (
     <div className="flex flex-wrap border-x border-b-2 rounded rounded-t-none border-black p-2">
       {openCapsuleList ? (
         openCapsuleList.length !== 0 ? (
           openCapsuleList.map((list) => {
             return (
-              <Image
+              <div
+                className="flex flex-col justify-center items-center"
                 key={list.tcSeq}
-                src="/images/capsule.svg"
-                alt="capsuleImg"
-                width="0"
-                height="0"
-                className="w-1/3 h-auto"
-                onClick={() => moveToDetail(list.tcSeq as number)}
-              />
+              >
+                <Image
+                  src="/images/capsule.svg"
+                  alt="capsuleImg"
+                  width="0"
+                  height="0"
+                  className="w-1/3 h-auto"
+                  onClick={() => moveToDetail(list.tcSeq as number)}
+                />
+                <div className="text-sm">{list.aztName}</div>
+                <div className="text-sm">
+                  {list.openedAt && formatDate(list.openedAt)}
+                </div>
+              </div>
             );
           })
         ) : (
@@ -41,7 +61,7 @@ export default function AllTimecapsuleList({ openCapsuleList }: Props) {
         )
       ) : (
         <div>
-          <LoadingLottie width="90%" height="90%"/>
+          <LoadingLottie width="90%" height="90%" />
         </div>
       )}
     </div>

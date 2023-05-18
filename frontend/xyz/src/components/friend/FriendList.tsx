@@ -14,6 +14,7 @@ export default function FriendList({ isBlock }: Props) {
 
   const { data: friendList, isLoading } = useFriendList(isBlock);
   if (friendList) {
+    console.log(friendList);
   }
   return (
     <div>
@@ -33,6 +34,7 @@ export default function FriendList({ isBlock }: Props) {
               identify={list.identify}
               relation={list.relation as string}
               userSeq={list.userSeq}
+              chatSeq={list.chatSeq}
             />
           );
         })
