@@ -96,7 +96,7 @@ function Header() {
             />
           </Link>
         ) : (
-          <div onClick={() => router.back()}>
+          <div onClick={() => router.back()} className="cursor-pointer">
             <Image src={ArrowLeft} alt="xyz 로고" width={13} height={13} />
           </div>
         )}

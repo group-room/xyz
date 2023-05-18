@@ -11,8 +11,8 @@ import { bgRandomNumber } from "@/utils/bgUtils";
 function TabBar() {
   const pathname = usePathname();
 
-  const textColorWhite = [3, 5, 6, 7, 9];
-  const highlightColorNotPink = [2, 3, 8];
+  const textColorWhite = [3, 5, 7, 9, 10];
+  const highlightColorNotPink = [3, 6, 8, 10];
 
   const isTextColorWhite = textColorWhite.some(
     (color) => bgRandomNumber === color
@@ -20,7 +20,7 @@ function TabBar() {
   const highlightTextColor = highlightColorNotPink.some(
     (color) => bgRandomNumber === color
   )
-    ? "text-fuchsia-500"
+    ? "text-fuchsia-600"
     : "text-pink";
 
   return (
