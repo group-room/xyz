@@ -18,6 +18,8 @@ import Img9 from "../../../public/images/background/bg (9).png";
 import Img10 from "../../../public/images/background/bg (10).png";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createMyPhotoFilter } from "@/app/api/myphoto";
+import Image from "next/image";
+import LogoImg from "../../../public/images/logo.svg";
 
 interface MyPhotoEditProps {
   userSeq: number;
@@ -53,18 +55,32 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
   };
 
   return (
-    <div className=" w-full ">
-      <div className="flex flex-col gap-3 w-full">
-        <div className="relative flex items-center justify-center p-4">
+    <div>
+      <div className="flex justify-center object-cover relative pt-8">
+        <img src={selectedImage} className="h-[238px] items-center" />
+        <div className="absolute pt-2 max-w-[72%]">
           <img src={myPhotoList?.data} />
         </div>
-        <div className="-z-10 absolute">
-          <img src={selectedImage} />
-        </div>
-        <div className="flex items-center justify-center w-full pb-6">
-          <Btn btnFunc={PushToMyProfile} bgColor="pink" text="편집완료" />
+        <div className="fixed top-[44%]">
+          <Image
+            src={LogoImg}
+            alt="xyz 로고"
+            width="0"
+            height="0"
+            className="w-[80px] h-[24px]"
+          />
         </div>
       </div>
+
+      <div className="flex justify-center p-7">
+        <Btn
+          btnFunc={PushToMyProfile}
+          bgColor="pink"
+          text="꾸미기 끝!"
+          className="text-lg py-2 px-4"
+        />
+      </div>
+
       <div className="flex flex-wrap">
         {images.map((image, index) => (
           <div

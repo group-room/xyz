@@ -105,7 +105,7 @@ const MyPhotoCreate = () => {
       setIsImageCaptured(true);
     }
   };
-  console.log(isPreviewing, "isPreviewing");
+
   if (isPhotoEdit === false) {
     return (
       <div>
