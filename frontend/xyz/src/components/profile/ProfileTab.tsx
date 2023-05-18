@@ -35,13 +35,13 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
   function SelectedContent() {
     if (isClick) {
       return (
-        <div className="w-full">
+        <div>
           <MyPhotoMain userSeq={profileTabUserSeq} />
         </div>
       );
     } else {
       return (
-        <div className="w-full ">
+        <div>
           {isFriend === true ? (
             <div>
               <Guestbook userSeq={profileTabUserSeq} />
@@ -50,12 +50,12 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           ) : (
             <div className="bg-pink text-white">
               {profileTabUserSeqToNumber !== userSeq ? (
-                <div>
+                <div className="border-black border-x border-b p-1">
                   <Guestbook userSeq={profileTabUserSeq} /> 친구가 아니면
                   방명록을 남길 수 없습니다...
                 </div>
               ) : (
-                <div>
+                <div className="border-black border-x border-b p-1">
                   <Guestbook userSeq={profileTabUserSeq} />
                 </div>
               )}
@@ -100,7 +100,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           방명록
         </div>
       </div>
-      <div className="w-full">
+      <div>
         <SelectedContent />
       </div>
     </>

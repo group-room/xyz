@@ -54,8 +54,8 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
   const backgroundImgIdx = myPhotoFilter?.data;
 
   return (
-    <div className=" w-full  border-black border-x border-b p-1">
-      <div className="w-full ">
+    <div className="  border-black border-x border-b p-1">
+      <div>
         {myPhotoFilter?.data && myPhotoList?.data ? (
           <div className=" w-full">
             <div className=" flex items-center justify-center object-cover relative">
