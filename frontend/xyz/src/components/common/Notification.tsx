@@ -99,8 +99,8 @@ export default function Notification({ type, name }: Props) {
                   <Image
                     src="/icons/check.svg"
                     alt="checkImg"
-                    width={20}
-                    height={20}
+                    width="10"
+                    height="10"
                   />
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function Notification({ type, name }: Props) {
                     거절
                   </div>
                   <div
-                    className="flex items-center justify-center w-1/3 bg-slate-100 h-10"
+                    className="flex items-center justify-center w-1/3 h-10 bg-slate-100"
                     onClick={() => {
                       list.targetSeq &&
                         usePostBlockMutation.mutate(list.targetSeq);
