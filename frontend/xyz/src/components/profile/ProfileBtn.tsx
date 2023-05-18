@@ -86,7 +86,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
           className="text-xl"
           width="300"
           bgColor="blue"
-          text={`친구 된 지 ${userList.friendTime}일 째`.toString()}
+          text={`˚ ༘༘♡⋆｡˚ 친구 된 지 ${userList.friendTime}일 째... .•✰.*•﻿`.toString()}
           btnFunc={() => {}}
           // 추후에 축하합니다 css 같은거 three.js 로 넣을 수 있으면 더 좋음
         />
