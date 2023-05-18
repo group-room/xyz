@@ -7,6 +7,7 @@ import { KEYS } from "@/constants/queryKeys";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/hooks/redux";
 import Btn from "../common/Btn";
+import MyPhotoEdit from "./MyPhotoEdit";
 
 interface ImageCapture {
   takePhoto(): Promise<Blob>;
@@ -25,6 +26,7 @@ const MyPhotoCreate = () => {
   const [isCaptured, setIsCaptured] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [isImageCaptured, setIsImageCaptured] = useState(false);
+  const [isPhotoEdit, setIsPhotoEdit] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const queryClient = useQueryClient();
   const useCreateMyPhotoMutation = useMutation({
@@ -84,7 +86,8 @@ const MyPhotoCreate = () => {
       onSuccess: () => {
         setIsCaptured(true);
         console.log("사진 전송 완료");
-        router.push(`/profile/${userSeq}/myphoto/edit`);
+        // router.push(`/profile/${userSeq}/myphoto/edit`);
+        setIsPhotoEdit(true);
       },
     });
 
@@ -97,39 +100,46 @@ const MyPhotoCreate = () => {
   };
 
   const handleSavePhoto = () => {
-    // Implement your logic to save the photo
     if (capturedPhoto) {
-      // Implement your logic to save the photo
       savePhoto(capturedPhoto);
       setIsImageCaptured(true);
     }
   };
 
-  return (
-    <div>
-      {!isPreviewing && !isImageCaptured && (
-        <div>
-          <video ref={videoRef} />
-          <div className="flex gap-5 items-center justify-center">
-            <Btn btnFunc={startCamera} bgColor="pink" text="촬영시작" />
-            <Btn btnFunc={capturePicture} bgColor="pink" text="찰칵" />
+  if (isPhotoEdit === false) {
+    return (
+      <div>
+        {!isPreviewing && !isImageCaptured && (
+          <div>
+            <video ref={videoRef} />
+            <div className="flex gap-5 items-center justify-center">
+              <Btn btnFunc={startCamera} bgColor="pink" text="촬영시작" />
+              <Btn btnFunc={capturePicture} bgColor="pink" text="찰칵" />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {isPreviewing && (
-        <div>
-          {capturedPhoto && (
-            <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
-          )}
-          <div className="flex gap-5 items-center justify-center">
-            <Btn btnFunc={handleSavePhoto} bgColor="pink" text="저장하기" />
-            <Btn btnFunc={retakePicture} bgColor="pink" text="재촬영!" />
+        {isPreviewing && (
+          <div>
+            {capturedPhoto && (
+              <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
+            )}
+            <div className="flex gap-5 items-center justify-center">
+              <Btn btnFunc={handleSavePhoto} bgColor="pink" text="저장하기" />
+              <Btn btnFunc={retakePicture} bgColor="pink" text="재촬영!" />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        {" "}
+        <MyPhotoEdit userSeq={userSeq!} />{" "}
+      </div>
+    );
+  }
 };
 
 export default MyPhotoCreate;
