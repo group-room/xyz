@@ -6,6 +6,7 @@ import useInput from "@/hooks/useInput";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
 import { createMemoryComment } from "@/app/api/memory";
+import { timerSwal } from "@/utils/swalUtils";
 
 type CommentCreateTypes = {
   memorySeq: number;
@@ -24,7 +25,7 @@ function CommentCreate({ memorySeq }: CommentCreateTypes) {
 
   const handleCommentCreateClick = () => {
     if (commentInput === "") {
-      alert("댓글 내용을 작성해주세요");
+      timerSwal("댓글 내용을 작성해주세요");
       return;
     }
     useCreateMemoryCommentMutation.mutate();

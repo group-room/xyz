@@ -5,27 +5,29 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { API } from "@/constants/queryKeys";
 import { LOCAL } from "@/constants/localUrl";
-import { numberString } from "@/utils/colorUtils";
+import { RandomBg } from "@/constants/style";
+import { bgRandomNumber } from "@/utils/bgUtils";
 
 function TabBar() {
   const pathname = usePathname();
 
-  const textColorWhite = ["five", "six", "seven", "eight", "nine"];
-  const highlightColorNotPink = ["two", "three"];
+  const textColorWhite = [3, 5, 7, 9, 10];
+  const highlightColorNotPink = [3, 6, 8, 10];
 
   const isTextColorWhite = textColorWhite.some(
-    (color) => numberString.slice(3, numberString.length) === color
+    (color) => bgRandomNumber === color
   );
   const highlightTextColor = highlightColorNotPink.some(
-    (color) => numberString.slice(3, numberString.length) === color
+    (color) => bgRandomNumber === color
   )
-    ? "text-fuchsia-500"
+    ? "text-fuchsia-600"
     : "text-pink";
-  console.log(numberString, isTextColorWhite);
 
   return (
     <div
-      className={`fixed ${numberString} bg-no-repeat bg-cover flex items-center justify-evenly bottom-0 left-0 right-0 h-14 shadow-[0_-3px_20px_-20px_rgba(0,0,0,0.3)] z-50 ${
+      className={`fixed ${
+        RandomBg[bgRandomNumber]
+      } bg-no-repeat bg-cover flex items-center justify-evenly bottom-0 left-0 right-0 h-14 shadow-[0_-3px_20px_-20px_rgba(0,0,0,0.3)] z-50 ${
         isTextColorWhite ? "text-gray-200" : "text-black"
       }`}
     >
