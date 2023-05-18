@@ -8,12 +8,17 @@ import { useFriendSearch } from "@/hooks/queries/friend";
 import { UserTypes } from "@/types/user";
 import Btn from "../common/Btn";
 import ProfileImg from "../common/ProfileImg";
+import NotResultLottie from "../lottie/NotResult";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { inviteFriendDirectly } from "@/app/api/azt";
+import { queryKeys } from "@/constants/queryKeys";
 
 type MyFriendSearchAreaProps = {
   slug: number;
   aztMembers: UserTypes[];
   setAztMembers: React.Dispatch<React.SetStateAction<UserTypes[]>>;
   setIsFriendInviteOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isDirectFriendInvite?: boolean; // 상세에서 바로 추가 여부
 };
 
 function MyFriendSearchArea({
@@ -21,11 +26,13 @@ function MyFriendSearchArea({
   aztMembers,
   setAztMembers,
   setIsFriendInviteOpen,
+  isDirectFriendInvite,
 }: MyFriendSearchAreaProps) {
   // true : 닉네임 검색, false : 고유 코드 검색
   const [check, setCheck] = useState(true);
   const [keyword, setKeyword] = useState("");
   const { data: searchList, isLoading } = useFriendSearch(check, keyword);
+
   const handleClickMemberInvite = (
     nickname: string,
     profileImage: string,
@@ -40,6 +47,29 @@ function MyFriendSearchArea({
     }
   };
 
+  const queryClient = useQueryClient();
+  const useInviteFriendDirectly = useMutation({
+    mutationFn: (data: { aztSeq: number; members: UserTypes[] }) =>
+      inviteFriendDirectly(data),
+    onSuccess: () => {
+      setIsFriendInviteOpen(false);
+      queryClient.invalidateQueries(queryKeys.azt.aztInfo(slug));
+    },
+  });
+
+  const handleClickInviteDone = () => {
+    if (isDirectFriendInvite) {
+      // 상세에서 바로 추가하는거면 POST 요청
+      const inviteData = {
+        aztSeq: slug,
+        members: aztMembers,
+      };
+      useInviteFriendDirectly.mutate(inviteData);
+    } else {
+      setIsFriendInviteOpen(false);
+    }
+  };
+
   return (
     <div>
       <div>
@@ -48,7 +78,7 @@ function MyFriendSearchArea({
           <Btn
             bgColor="blue"
             text="추가 완료"
-            btnFunc={() => setIsFriendInviteOpen(false)}
+            btnFunc={handleClickInviteDone}
           />
         </div>
         <div className="grid grid-cols-4 my-5">
@@ -106,7 +136,10 @@ function MyFriendSearchArea({
               handleClickMemberInvite={handleClickMemberInvite}
             />
           ) : (
-            <p>검색결과가 없어요 ㅠㅠ</p>
+            <div className="text-center">
+              <NotResultLottie />
+              <p>검색결과가 없어요 ㅠㅠ</p>
+            </div>
           )
         ) : (
           <p>검색중..</p>

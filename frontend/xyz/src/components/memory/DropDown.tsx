@@ -55,8 +55,6 @@ function DropDown({
     handleToggle();
   };
 
-  console.log(currAzt);
-
   return (
     <div className="flex items-center w-full gap-3">
       <div className="flex-none">

@@ -14,7 +14,9 @@ import { useAztInfo } from "@/hooks/queries/azt";
 import { LOCAL } from "@/constants/localUrl";
 import { useRouter } from "next/navigation";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
+import LoadingLottie from "@/components/lottie/Loading";
 import CapsuleCreateBtn from "@/components/azt/CapsuleCreateBtn";
+import NotResultLottie from "@/components/lottie/NotResult";
 
 function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
@@ -33,7 +35,12 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
 
   function SelectedContent() {
     if (btnValue) {
-      if (isAztMemoryLoading) return <div>로딩중...</div>;
+      if (isAztMemoryLoading)
+        return (
+          <div>
+            <LoadingLottie />
+          </div>
+        );
       return (
         <>
           {aztMemoryData && aztMemoryData.length ? (
@@ -41,20 +48,24 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
               <MemoryItem key={memory.memorySeq} memory={memory} />
             ))
           ) : (
-            <div>
-              <p>추억이 없어요 ㅠㅠ</p>
+            <div className="text-center">
+              <NotResultLottie />
+              <p>추억이 아직 없어요 ㅠㅠ</p>
             </div>
           )}
         </>
       );
     } else {
-      if (isAztMemoryLoading) return <div>로딩중...</div>;
+      if (isAztMemoryLoading)
+        return (
+          <div className="flex justify-center align-middle py-60">
+            <LoadingLottie />
+          </div>
+        );
       return (
         <div className="flex flex-wrap ">
           {aztCapsuleData && aztCapsuleData.length ? (
             aztCapsuleData.map((capule) => (
-              // TODO: 타임캡슐 컴포넌트 만들어지면 수정
-              // <MemoryItem key={capule.tcSeq} />
               <Image
                 key={capule.tcSeq}
                 src="/images/capsule.svg"
@@ -66,8 +77,9 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
               />
             ))
           ) : (
-            <div>
-              <p>타임캡슐이 없어요 ㅠㅠ</p>
+            <div className="text-center">
+              <NotResultLottie />
+              <p>열린 타임캡슐이 없어요 ㅠㅠ</p>
             </div>
           )}
         </div>

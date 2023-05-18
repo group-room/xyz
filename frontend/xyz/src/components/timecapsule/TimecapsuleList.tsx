@@ -12,9 +12,6 @@ import { CapsuleAztTypes } from "@/types/capsule";
 
 export default function TimecapsuleList() {
   const { data: capsuleList, isLoading } = useWaitingCapsuleList();
-  if (capsuleList) {
-    console.log(capsuleList);
-  }
 
   const [isModal, setIsModal] = useState({
     is: false,
@@ -75,7 +72,6 @@ export default function TimecapsuleList() {
             );
           })}
       </div>
-      {/* 캡슐 잠김 여부에 따라  AbleTimecaplsuleModal or UnAbleTimecaplsuleModal*/}
       {isModal.is && (
         <Modal
           closeModal={() =>

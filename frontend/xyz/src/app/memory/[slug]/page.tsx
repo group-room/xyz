@@ -18,6 +18,8 @@ import { notFound, useRouter } from "next/navigation";
 import ModalBtn from "@/components/common/ModalBtn";
 import { SlugProps } from "@/types/common";
 import { useAppSelector } from "@/hooks/redux";
+import LoadingLottie from "@/components/lottie/Loading";
+import { confirmSwal } from "@/utils/swalUtils";
 
 function MemoryDetailPage({ params: { slug } }: SlugProps) {
   const router = useRouter();
@@ -27,7 +29,7 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
     mutationFn: () => deleteMemory(slug),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.memory.memoryDetail(slug));
-      alert("추억이 삭제되었어요 ㅠㅠ");
+      confirmSwal("추억이 삭제되었어요 ㅠㅠ");
       router.push("/memory");
     },
   });
@@ -46,7 +48,11 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
   );
 
   if (isLoading) {
-    return <div>로딩중 ㄱ-...</div>;
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
   }
   if (!memory) {
     // 없는 memorySeq라면 not found

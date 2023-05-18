@@ -32,7 +32,7 @@ export default function SearchFriendList({ check, keyword }: Props) {
         })
       ) : (
         <div className="flex flex-col justify-center items-center mt-[10vh]">
-          <NotResultLottie />
+          <NotResultLottie width="90%" height="90%"/>
           <div className="mt-8"> 검색된 친구 리스트가 없습니다. </div>
         </div>
       )}

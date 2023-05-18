@@ -12,6 +12,8 @@ import { KEYS } from "@/constants/queryKeys";
 import { postCapsule } from "@/app/api/capsule";
 import { useRouter } from "next/navigation";
 import { positionTypes } from "@/types/capsule";
+import LoadingLottie from "@/components/lottie/Loading";
+import { timerSwal } from "../../../utils/swalUtils";
 
 export default function TimeCapsuleCreatePage() {
   const router = useRouter();
@@ -37,12 +39,6 @@ export default function TimeCapsuleCreatePage() {
 
   // 그룹(아지트) 리스트 불러오기
   const { data: aztListData, isLoading } = useAztList();
-  useEffect(() => {
-    if (aztListData) {
-      setAztList(aztListData);
-      setCurrAzt([aztListData[0]]);
-    }
-  }, [aztListData]);
 
   const [photos, setPhotos] = useState<File[]>([]); // 업로드한 사진 파일들
   const [photoPreviewList, setPhotoPreviewList] = useState<string[]>([]); // 사진 미리보기용
@@ -82,54 +78,73 @@ export default function TimeCapsuleCreatePage() {
       },
     });
   };
+
+  const openModal = () => {
+    console.log("모달이다");
+    timerSwal("생성된 아지트가 없습니다😥\n아지트를 생성해주세요");
+    router.push(`/capsule`);
+  };
+
+  if (aztListData) {
+    console.log(aztListData);
+  }
+
   return (
     <div>
       <h2 className="text-xl">타임캡슐 만들기</h2>
-      <form
-        action=""
-        className="flex flex-col justify-center align-middle gap-y-5 mt-5"
-        onSubmit={handleSubmitCapsule}
-      >
-        <DropDown
-          isAzt
-          iconSrc="/icons/users.svg"
-          aztList={aztList}
-          currAzt={currAzt}
-          setCurrAzt={setCurrAzt}
-        />
-        <CapsulePhotoUpload
-          isAdd={false}
-          openStart={openStart}
-          setOpenStart={setOpenStart}
-          openEnd={openEnd}
-          setOpenEnd={setOpenEnd}
-          updateEnd={updateEnd}
-          setUpdateEnd={setUpdateEnd}
-          photos={photos}
-          setPhotos={setPhotos}
-          photoPreviewList={photoPreviewList}
-          setPhotoPreviewList={setPhotoPreviewList}
-        />
-        <SearchPostCode
-          address={address}
-          setAddress={setAddress}
-          position={position}
-          setPosition={setPosition}
-        />
-        <textarea
-          rows={3}
-          className="border rounded border-black p-2 resize-none"
-          placeholder="추억을 작성ぁĦ주パㅔ요"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        ></textarea>
-        <Btn
-          width="w-full"
-          bgColor="yellow"
-          text="등&nbsp;&nbsp;록"
-          btnFunc={handleSubmitCapsule}
-        />
-      </form>
+      {aztListData ? (
+        aztListData.length === 0 ? (
+          <>{openModal()}</>
+        ) : (
+          <form
+            action=""
+            className="flex flex-col justify-center align-middle gap-y-5 mt-5"
+            onSubmit={handleSubmitCapsule}
+          >
+            <DropDown
+              isAzt
+              iconSrc="/icons/users.svg"
+              aztList={aztList}
+              currAzt={currAzt}
+              setCurrAzt={setCurrAzt}
+            />
+            <CapsulePhotoUpload
+              isAdd={false}
+              openStart={openStart}
+              setOpenStart={setOpenStart}
+              openEnd={openEnd}
+              setOpenEnd={setOpenEnd}
+              updateEnd={updateEnd}
+              setUpdateEnd={setUpdateEnd}
+              photos={photos}
+              setPhotos={setPhotos}
+              photoPreviewList={photoPreviewList}
+              setPhotoPreviewList={setPhotoPreviewList}
+            />
+            <SearchPostCode
+              address={address}
+              setAddress={setAddress}
+              position={position}
+              setPosition={setPosition}
+            />
+            <textarea
+              rows={3}
+              className="border rounded border-black p-2 resize-none"
+              placeholder="추억을 작성ぁĦ주パㅔ요"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></textarea>
+            <Btn
+              width="w-full"
+              bgColor="yellow"
+              text="등&nbsp;&nbsp;록"
+              btnFunc={handleSubmitCapsule}
+            />
+          </form>
+        )
+      ) : (
+        <LoadingLottie />
+      )}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import ko from "date-fns/locale/ko";
 import Image from "next/image";
+import { timerSwal } from "@/utils/swalUtils";
 
 // 한국어 설정
 registerLocale("ko", ko);
@@ -61,7 +62,7 @@ export default function CapsulePhotoUpload({
     const fileList: any = event.target.files;
     if (fileList) {
       if (fileList.length > 10) {
-        alert("사진은 최대 10장까지 업로드 가능합니다.");
+        timerSwal("사진은 최대 10장까지 업로드 가능합니다.");
         return;
       }
 

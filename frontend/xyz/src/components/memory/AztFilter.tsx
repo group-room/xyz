@@ -46,7 +46,7 @@ function AztFilter({
           <Image src={arrowDownIcon} alt="화살표" width={12} />
         </div>
       </div>
-      {toggle && (
+      {toggle && aztListForDropdown && aztListForDropdown.length > 0 && (
         <div className="absolute top-10 left-0 border border-black w-full bg-white z-10 divide-y divide-slate-700 shadow-md">
           {/* <DropDown /> */}
           {aztListForDropdown?.map((item, idx) => {

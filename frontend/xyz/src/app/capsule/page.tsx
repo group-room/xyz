@@ -5,13 +5,16 @@ import ToggleBtn from "./../../components/common/ToggleBtn";
 import TimecapsuleList from "./../../components/timecapsule/TimecapsuleList";
 import TimecapsuleMachine from "@/components/timecapsule/TimecapsuleMachine";
 import AllTimecapsuleList from "@/components/timecapsule/AllTimecapsuleList";
+import { useOpenCapsuleList } from "@/hooks/queries/capsule";
+import { CapsuleAztTypes } from "@/types/capsule";
 
 function CapsulePage() {
   const [value, setValue] = useState(true);
 
+  const { data: openCapsuleList, isLoading } = useOpenCapsuleList();
+
   const handleChange = (newValue: boolean) => {
     setValue(newValue);
-    console.log("value", value);
   };
 
   return (
@@ -23,7 +26,7 @@ function CapsulePage() {
       <div className={`${value ? "mb-2" : ""}`}>
         <ToggleBtn
           textL="타임캡슐 뽑기"
-          textR="타임캡슐 목록"
+          textR="열린 타임캡슐"
           imgL="/icons/gift.svg"
           imgR="/icons/folder.svg"
           value={value}
@@ -31,7 +34,15 @@ function CapsulePage() {
         />
       </div>
 
-      {value ? <TimecapsuleMachine /> : <AllTimecapsuleList />}
+      {value ? (
+        <TimecapsuleMachine
+          openCapsuleList={openCapsuleList as CapsuleAztTypes[]}
+        />
+      ) : (
+        <AllTimecapsuleList
+          openCapsuleList={openCapsuleList as CapsuleAztTypes[]}
+        />
+      )}
     </div>
   );
 }
