@@ -21,6 +21,7 @@ import { deleteMyPhoto } from "@/app/api/myphoto";
 import { queryKeys } from "@/constants/queryKeys";
 import LogoImg from "../../../public/images/logo.svg";
 import Image from "next/image";
+import { confirmSwal } from "@/utils/swalUtils";
 
 interface MyPhotoMainProps {
   userSeq: number;
@@ -44,7 +45,7 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
     mutationFn: () => deleteMyPhoto(),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.myroom.myroomList());
-      alert("사진이 삭제되었습니다.");
+      confirmSwal("사진이 삭제되었습니다.");
     },
   });
   const DeleteMyPhoto = () => {
