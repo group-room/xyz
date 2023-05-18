@@ -54,6 +54,17 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
     usePostOpenCapsuleMutation.mutate(tcSeq);
   };
 
+  const repeatCnt = (repeat: number) => {
+    console.log("repeat", repeat);
+    const repeatArr = [];
+    for (let i = 0; i < repeat; i++) {
+      repeatArr.push(
+        <div key={i} className="w-10 h-10 bg-pink rounded-full"></div>
+      );
+    }
+    return repeatArr;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center my-8 mx-4 w-72">
       <h1 className="text-2xl mb-4">[ {detail.aztName} ]</h1>
@@ -63,6 +74,7 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
       {detail.openStatus === "OPENABLE" && (
         <>
           <Image className="mb-8" src={capsuleImg} alt="capsuleImg"></Image>
+          <div>{detail.openCnt && repeatCnt(detail.openCnt)}</div>
           <Btn
             bgColor="blue"
             text="타임캡슐 열기"
