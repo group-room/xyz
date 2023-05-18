@@ -5,16 +5,16 @@ import { useAppSelector } from "@/hooks/redux";
 import { useMyPhoto } from "@/hooks/queries/myphoto";
 import { useRouter } from "next/navigation";
 import Btn from "../common/Btn";
-import Img1 from "../../../public/images/photos/img1.jpg";
-import Img2 from "../../../public/images/photos/img2.jpg";
-import Img3 from "../../../public/images/photos/img3.jpg";
-import Img4 from "../../../public/images/photos/img4.jpg";
-import Img5 from "../../../public/images/photos/img5.jpg";
-import Img6 from "../../../public/images/photos/img6.jpg";
-import Img7 from "../../../public/images/photos/img7.jpg";
-import Img8 from "../../../public/images/photos/img8.jpg";
-import Img9 from "../../../public/images/photos/img9.jpg";
-import Img10 from "../../../public/images/photos/img10.jpg";
+import Img1 from "../../../public/images/background/bg (1).png";
+import Img2 from "../../../public/images/background/bg (2).png";
+import Img3 from "../../../public/images/background/bg (3).png";
+import Img4 from "../../../public/images/background/bg (4).png";
+import Img5 from "../../../public/images/background/bg (5).png";
+import Img6 from "../../../public/images/background/bg (6).png";
+import Img7 from "../../../public/images/background/bg (7).png";
+import Img8 from "../../../public/images/background/bg (8).png";
+import Img9 from "../../../public/images/background/bg (9).png";
+import Img10 from "../../../public/images/background/bg (10).png";
 
 interface MyPhotoEditProps {
   userSeq: number;
