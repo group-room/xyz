@@ -18,6 +18,10 @@ export default function TimecapsuleList() {
     detail: {},
   });
 
+  if (capsuleList) {
+    console.log(capsuleList);
+  }
+
   const handleClick = (list: CapsuleAztTypes) => {
     setIsModal({ is: true, detail: list });
   };
@@ -47,6 +51,8 @@ export default function TimecapsuleList() {
       </Link>
       <div className="flex overflow-x-auto scrollbar-hide ">
         {capsuleList &&
+          Array.isArray(capsuleList) &&
+          capsuleList.length !== 0 &&
           capsuleList.map((list) => {
             return (
               <div

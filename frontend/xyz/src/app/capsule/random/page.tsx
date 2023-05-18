@@ -20,44 +20,47 @@ export default function TimecapsuleRamdomDetailPage() {
           <Textbox
             icon={"/icons/users.svg"}
             alt={"그룹 아이콘"}
-            maintext={randomDetail.tc.aztName}
+            maintext={randomDetail.tc?.aztName}
             bgColor="pink"
           />
           <Textbox
             icon={"/icons/calendar.svg"}
             alt={"캘린더 아이콘"}
-            maintext={randomDetail.tc.openedAt}
+            maintext={randomDetail.tc?.openedAt}
           />
           <Textbox
             icon={"/icons/pin.svg"}
             alt={"달력 아이콘"}
-            maintext={randomDetail.tc.location}
+            maintext={randomDetail.tc?.location}
           />
-          <Container
-            title
-            titleText={"타임캡슐 사진"}
-            titleImgSrc={"/icons/images.svg"}
-            titleImgAlt={"사진 아이콘"}
-          >
-            <div className="flex flex-col gap-y-2 p-2">
-              <MultiCarousel>
-                {randomDetail.contents.map((content) => {
-                  return content.files.map((file, idx) => {
-                    return <img key={idx} src={file.filePath} alt="image" />;
-                  });
-                })}
-              </MultiCarousel>
-            </div>
-          </Container>
+          {randomDetail.contents && (
+            <Container
+              title
+              titleText={"타임캡슐 사진"}
+              titleImgSrc={"/icons/images.svg"}
+              titleImgAlt={"사진 아이콘"}
+            >
+              <div className="flex flex-col gap-y-2 p-2">
+                <MultiCarousel>
+                  {randomDetail.contents?.map((content) => {
+                    return content.files.map((file, idx) => {
+                      return <img key={idx} src={file.filePath} alt="image" />;
+                    });
+                  })}
+                </MultiCarousel>
+              </div>
+            </Container>
+          )}
+
           <div className="mt-2 border border-black rounded-sm p-2">
-            {randomDetail.contents.map((item, idx) => {
+            {randomDetail.contents?.map((item, idx) => {
               return <div key={idx}>{item.content}</div>;
             })}
           </div>
         </div>
       ) : (
         <div className="flex justify-center items-center">
-          <LoadingLottie width="90%" height="90%"/>
+          <LoadingLottie width="90%" height="90%" />
         </div>
       )}
     </div>
