@@ -14,12 +14,14 @@ import { useRouter } from "next/navigation";
 import { positionTypes } from "@/types/capsule";
 import LoadingLottie from "@/components/lottie/Loading";
 import { timerSwal } from "../../../utils/swalUtils";
+import SelectOpenDay from "@/components/timecapsule/SelectOpenDay";
 
 export default function TimeCapsuleCreatePage() {
   const router = useRouter();
   const today: Date = new Date();
   const after7Days: Date = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
 
+  console.log("after7Days ---> ", after7Days);
   const [content, setContent] = useState<string>("");
   const [currAzt, setCurrAzt] = useState<AztTypes[]>([]);
   const [aztList, setAztList] = useState<AztTypes[]>([]);
@@ -42,6 +44,15 @@ export default function TimeCapsuleCreatePage() {
 
   const [photos, setPhotos] = useState<File[]>([]); // 업로드한 사진 파일들
   const [photoPreviewList, setPhotoPreviewList] = useState<string[]>([]); // 사진 미리보기용
+
+  useEffect(() => {
+    if (aztListData) {
+      setAztList(aztListData);
+      if (aztListData.length > 0) {
+        setCurrAzt([aztListData[0]]);
+      }
+    }
+  }, [aztListData]);
 
   // 타임 캡슐 생성 폼 제출
   const handleSubmitCapsule = (e?: React.FormEvent): void => {
@@ -98,7 +109,7 @@ export default function TimeCapsuleCreatePage() {
         ) : (
           <form
             action=""
-            className="flex flex-col justify-center align-middle gap-y-5 mt-5"
+            className="flex flex-col justify-center align-middle gap-y-3 mt-5"
             onSubmit={handleSubmitCapsule}
           >
             <DropDown
@@ -107,6 +118,14 @@ export default function TimeCapsuleCreatePage() {
               aztList={aztList}
               currAzt={currAzt}
               setCurrAzt={setCurrAzt}
+            />
+            <SelectOpenDay
+              openStart={openStart}
+              setOpenStart={setOpenStart}
+              openEnd={openEnd}
+              setOpenEnd={setOpenEnd}
+              updateEnd={updateEnd}
+              setUpdateEnd={setUpdateEnd}
             />
             <CapsulePhotoUpload
               isAdd={false}
