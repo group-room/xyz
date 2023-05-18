@@ -10,6 +10,7 @@ export type CapsuleAztTypes = {
   location?: string;
   requiredCnt?: number;
   openCnt?: number | null;
+  openedAt?: string;
 };
 
 export type CoordinateTypes = {
