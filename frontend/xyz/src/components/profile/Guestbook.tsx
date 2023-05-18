@@ -18,7 +18,7 @@ function Guestbook({ userSeq }: GuestbookProps) {
   console.log(visitorList, "visitorList333333");
 
   return (
-    <section className="w-full h-full">
+    <section>
       <div className="w-full h-[280px] bg-cover bg-pink flex flex-col overflow-y-auto">
         {visitorList && visitorList.length > 0 ? (
           visitorList.map((visitor) => (

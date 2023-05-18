@@ -29,7 +29,7 @@ function ProfileUserPage({ params: { slug } }: Props) {
     return <div>로딩중...</div>;
   } else if (slugToNumber === userSeq) {
     return (
-      <div className="w-full h-full">
+      <div className="w-full">
         <ProfileMain userSeq={slug} />
         <div className="flex py-2 items-center justify-center">
           <ProfileBtn btnUserSeq={slug} />
@@ -41,7 +41,7 @@ function ProfileUserPage({ params: { slug } }: Props) {
     return <div>존재하지 않는 유저입니다...</div>;
   } else {
     return (
-      <div className="w-full h-full">
+      <div className="w-full ">
         <ProfileMain userSeq={slug} />
         <div className="flex py-2 items-center justify-center">
           <ProfileBtn btnUserSeq={slug} />
