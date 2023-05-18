@@ -44,7 +44,9 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
         <div>
           {isFriend === true ? (
             <div>
-              <Guestbook userSeq={profileTabUserSeq} />
+              <div className="border-black border-x border-b p-1">
+                <Guestbook userSeq={profileTabUserSeq} />
+              </div>
               <GuestbookWrite userSeq={profileTabUserSeq} />
             </div>
           ) : (
