@@ -18,7 +18,6 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
   }
 
   const formatDate = (dateString: string) => {
-    console.log("dateString -> ", dateString);
     const year = dateString.slice(0, 4);
     const month = dateString.slice(5, 7);
     const day = dateString.slice(8, 10);
@@ -69,11 +68,13 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
               </MultiCarousel>
             </div>
           </Container>
-          <div className="mt-2 border border-black rounded-sm p-2">
-            {capsuleDetail.contents.map((item, idx) => {
-              return <div key={idx}>{item.content}</div>;
-            })}
-          </div>
+          {capsuleDetail.contents.map((item, idx) => {
+            return (
+              <div className="mt-2 border border-black rounded-sm p-2 mb-2">
+                <div key={idx}>{item.content}</div>
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div>로딩중</div>
