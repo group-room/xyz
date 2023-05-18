@@ -77,7 +77,7 @@ const MyPhotoCreate = () => {
       onSuccess: () => {
         setIsCaptured(true);
         console.log("사진 전송 완료");
-        router.push(`/profile/${userSeq}`);
+        router.push(`/profile/${userSeq}/myphoto/edit`);
       },
     });
 

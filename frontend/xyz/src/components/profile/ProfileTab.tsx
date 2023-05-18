@@ -9,7 +9,7 @@ import Guestbook from "./Guestbook";
 import { useUserList } from "@/hooks/queries/user";
 import { is } from "date-fns/locale";
 import GuestbookWrite from "./GuestbookWrite";
-import MyPhotoEdit from "./MyPhotoEdit";
+import MyPhotoMain from "./MyPhotoMain";
 
 type ButtonProps = {
   value: boolean;
@@ -34,7 +34,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     if (isClick) {
       return (
         <div className="w-full h-full">
-          <MyPhotoEdit userSeq={profileTabUserSeq} />
+          <MyPhotoMain userSeq={profileTabUserSeq} />
         </div>
       );
     } else {
