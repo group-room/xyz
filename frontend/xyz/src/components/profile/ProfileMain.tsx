@@ -96,19 +96,18 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
   // 여기 모달창 띄워야한다. 친구 끊기 / 차단할때
   return (
     <>
-      <div className={`box-content w-full h-full bg-yellow p-1`}>
-        <div className="flex flex-row">
-          <div className="mt-1 ml-1 mr-1">
+      <div className={`box-content w-full h-full bg-yellow py-2 px-2`}>
+        <div className="flex flex-row gap-2 items-center justify-center h-full w-full">
+          <div className="object-cover h-[90%] w-[90%]">
             <img
               src={profileData?.profileImage}
-              width={124}
-              height={181}
-              alt="example"
+              height={150}
+              alt="profileImg"
             />
           </div>
           {/* 유저 본인일 때 이 드롭다운이 보이게 하기 */}
           <div>
-            <div className="flex pl-5 gap-10">
+            <div className="flex gap-10 item-center">
               {profileData?.identify}
               {userSeqToNumber === myUserSeq ? (
                 <ProfileDropdown
@@ -138,18 +137,27 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               alt="pretty"
               text="수식어"
               maintext={profileData?.modifier}
+              firstClass="border border-black flex my-2 items-center"
+              secondClass="flex items-center justify-center mx-1 h-full "
+              textClass=" whitespace-nowrap ml-1"
+              maintextClass=" px-1 border-black border-l h-full"
             />
             <Textbox
               icon="/icons/avatar.svg"
               alt="nickname"
               text="닉네임"
               maintext={profileData?.nickname}
+              firstClass="border border-black flex my-3 items-center "
+              secondClass="flex flex-none items-center justify-center mx-1"
+              textClass="whitespace-nowrap ml-1"
+              maintextClass="px-1 border-black border-l"
             />
             <Textbox
               icon="/icons/user.svg"
               alt="visitor"
               text="방문자"
               maintext={profileData?.visitCount}
+              firstClass="border border-black flex my-2 items-center"
             />
           </div>
         </div>

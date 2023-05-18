@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 
+
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -11,6 +12,7 @@ const Toast = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
+
 
 // 경고 모달 (굳이 확인 없어도 되는 경우)
 export const timerSwal = (text: string) => {
@@ -28,5 +30,13 @@ export const confirmSwal = (text: string) => {
     icon: "success",
     confirmButtonColor: "#F39FBF",
     width: "22em",
+  });
+};
+
+// 확인 버튼 모달 - 경고
+export const confirmSwalWarning = (text: string) => {
+  return Swal.fire({
+    text: text,
+    icon: "warning",
   });
 };

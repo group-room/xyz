@@ -5,7 +5,7 @@ export const API = {
   azt: "azt",
   chat: "chat",
   chatroom: "chat-room",
-  myroom: "myroom",
+  myroom: "my-room",
   friend: "friend",
   notification: "notification",
 };
@@ -75,5 +75,9 @@ export const queryKeys = {
     chatroomListRecentMessage: () => [...KEYS.chat, "recent-chat"],
     chatroomDetail: (chatSeq: number) => [...KEYS.chatroom, { chatSeq }],
     chatHistory: (room: string) => [...KEYS.chat, "history", { room }],
+  },
+  myroom: {
+    myroomList: () => [...KEYS.myroom],
+    myroomFilter: () => [...KEYS.myroom, "filter"],
   },
 };
