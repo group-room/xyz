@@ -33,16 +33,29 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
   const PushToMyPhotoCreate = () => {
     router.push(`profile/${userSeq}/myphoto/create`);
   };
-  const backgroundImgIdx = myPhotoFilter!.data;
+  const backgroundImgIdx = myPhotoFilter?.data;
 
   return (
-    //만약에 대문 사진 없다면, 임의의 배경사진 넣어주기 (background img들 중)
-    <div className=" w-full h-full border-black border-x border-b ">
-      <div className="flex flex-col gap-3 w-full h-full">
-        {myPhotoList?.data ? (
-          <div className="flex items-center justify-center p-4">
-            <img src={images[backgroundImgIdx].src} />
-            <img src={myPhotoList?.data} />
+    <div className=" w-full h-full border-black border-x border-b min-h-[300px] pt-10">
+      <div className="w-full h-full">
+        {myPhotoFilter?.data ? (
+          <div className="h-full w-full">
+            <div className="h-full w-full flex items-center justify-center object-cover relative">
+              <img src={images[backgroundImgIdx!].src} height="full" />
+              <div className="absolute p-4">
+                <img src={myPhotoList?.data} />
+              </div>
+            </div>
+
+            {myUserSeq === userSeqToNumber ? (
+              <div className="flex items-center justify-center w-full pb-6">
+                <Btn
+                  btnFunc={PushToMyPhotoCreate}
+                  bgColor="pink"
+                  text="사진찍기"
+                />
+              </div>
+            ) : null}
           </div>
         ) : (
           <div className="flex items-center justify-center w-full h-full min-h-[300px]">
@@ -50,13 +63,17 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
               <NotResultLottie />
               대문 사진이 없어요ㅠㅠ
             </div>
+            {myUserSeq === userSeqToNumber ? (
+              <div className="flex items-center justify-center w-full pb-6">
+                <Btn
+                  btnFunc={PushToMyPhotoCreate}
+                  bgColor="pink"
+                  text="사진찍기"
+                />
+              </div>
+            ) : null}
           </div>
         )}
-        {myUserSeq === userSeqToNumber ? (
-          <div className="flex items-center justify-center w-full pb-6">
-            <Btn btnFunc={PushToMyPhotoCreate} bgColor="pink" text="사진찍기" />
-          </div>
-        ) : null}
       </div>
     </div>
   );
