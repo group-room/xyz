@@ -10,8 +10,6 @@ interface GuestbookItemProps {
   userSeq: number;
 }
 
-//방명록 delete 만들기
-
 function GuestbookItem({ visitor, userSeq }: GuestbookItemProps) {
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;

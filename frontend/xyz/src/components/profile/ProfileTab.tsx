@@ -5,10 +5,9 @@ import Image from "next/image";
 import MyroomIcon from "../../../public/icons/home.svg";
 import Visitor from "../../../public/icons/reciept.svg";
 import Guestbook from "./Guestbook";
-import Myroom from "./Myroom";
 import { useUserList } from "@/hooks/queries/user";
-import { is } from "date-fns/locale";
 import GuestbookWrite from "./GuestbookWrite";
+import MyPhotoMain from "./MyPhotoMain";
 
 type ButtonProps = {
   value: boolean;
@@ -22,7 +21,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     isLoading: isUserLoading,
     error,
   } = useUserList(profileTabUserSeq);
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState(true);
   const isFriend = userList?.friend;
 
   const handleChange = (v: boolean) => {
@@ -33,7 +32,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     if (isClick) {
       return (
         <div className="w-full h-full">
-          <Myroom />
+          <MyPhotoMain userSeq={profileTabUserSeq} />
         </div>
       );
     } else {
@@ -57,9 +56,9 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
 
   return (
     <>
-      <div className="flex border-t-2 border-l-2 border-r-2 border-black rounded-t-md h-10">
+      <div className="flex border-t border-l border-r border-black rounded-t-md h-10">
         <div
-          className={`flex w-1/2 items-center justify-center border-r-2 border-black bg-yellow ${
+          className={`flex w-1/2 items-center justify-center border-r border-black ${
             isClick ? "" : "border-b-2"
           }`}
           onClick={() => {
@@ -70,7 +69,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           <div className="mr-2">
             <Image src={MyroomIcon} alt="이미지" width={20} height={20} />
           </div>
-          마이룸
+          대문사진
         </div>
         <div
           className={`flex w-1/2 items-center justify-center border-black bg-pink text-white ${
