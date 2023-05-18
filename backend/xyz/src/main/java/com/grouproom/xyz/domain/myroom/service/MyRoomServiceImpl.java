@@ -124,4 +124,21 @@ public class MyRoomServiceImpl implements MyRoomService {
                 .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
         return user.getMyRoomImage();
     }
+
+    @Override
+    public Integer findMyRoomBackgroundByUserSeq(Long userSeq) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+        return user.getMyRoomBackground();
+    }
+
+    @Override
+    @Transactional
+    public void modifyMyRoomBackground(Long userSeq, Integer background) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+
+        user.changeMyRoomBackground(background);
+
+    }
 }
