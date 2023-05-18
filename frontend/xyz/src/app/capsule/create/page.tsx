@@ -13,7 +13,7 @@ import { postCapsule } from "@/app/api/capsule";
 import { useRouter } from "next/navigation";
 import { positionTypes } from "@/types/capsule";
 import LoadingLottie from "@/components/lottie/Loading";
-import { timerSwal } from "../../../utils/swalUtils";
+import { confirmSwalWarning, timerSwal } from "../../../utils/swalUtils";
 import SelectOpenDay from "@/components/timecapsule/SelectOpenDay";
 
 export default function TimeCapsuleCreatePage() {
@@ -58,36 +58,42 @@ export default function TimeCapsuleCreatePage() {
   const handleSubmitCapsule = (e?: React.FormEvent): void => {
     e!.preventDefault();
 
-    const formData = new FormData();
-    const stringifiedData = JSON.stringify({
-      aztSeq: currAzt[0].aztSeq!,
-      content: content,
-      latitude: position.lat,
-      location: address,
-      longitude: position.lng,
-      openEnd: openEnd,
-      openStart: openStart,
-      updateEnd: updateEnd,
-    });
-    const jsonData = new Blob([stringifiedData], {
-      type: "application/json",
-    });
-    // 음성이든 비디오든 할 경우...
-    // const videofile = new File([videoFiles], "videoFile.webm", {
-    //   type: "video/webm",
-    // });
-    formData.append("addTcRequest", jsonData);
-    photos.forEach((photo) => {
-      formData.append("images", photo);
-    });
+    if (photos.length === 0) {
+      confirmSwalWarning("타임캡슐에 사진을 첨부해주세요");
+    } else if (position.lat === 0 || position.lng === 0) {
+      confirmSwalWarning("타임캡슐 저장 위치를 지정해주세요");
+    } else if (content.length === 0) {
+      confirmSwalWarning("추억을 작성해주세요");
+    } else {
+      const formData = new FormData();
+      const stringifiedData = JSON.stringify({
+        aztSeq: currAzt[0].aztSeq!,
+        content: content,
+        latitude: position.lat,
+        location: address,
+        longitude: position.lng,
+        openEnd: openEnd,
+        openStart: openStart,
+        updateEnd: updateEnd,
+      });
 
-    useCreateCapsuleMutation.mutate(formData, {
-      onSuccess: (data) => {
-        const tcSeq = data.data.data.tcSeq;
-        console.log(tcSeq);
-        router.push(`/capsule`);
-      },
-    });
+      const jsonData = new Blob([stringifiedData], {
+        type: "application/json",
+      });
+
+      formData.append("addTcRequest", jsonData);
+      photos.forEach((photo) => {
+        formData.append("images", photo);
+      });
+
+      useCreateCapsuleMutation.mutate(formData, {
+        onSuccess: (data) => {
+          const tcSeq = data.data.data.tcSeq;
+          console.log(tcSeq);
+          router.push(`/capsule`);
+        },
+      });
+    }
   };
 
   const openModal = () => {
