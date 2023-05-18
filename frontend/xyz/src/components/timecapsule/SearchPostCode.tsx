@@ -63,7 +63,7 @@ export default function SearchPostCode({
   }, [address]);
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center border border-black rounded-md p-2 gap-2">
       <button type="button" onClick={handleClick}>
         타임캡슐 저장 위치 찾기
       </button>
