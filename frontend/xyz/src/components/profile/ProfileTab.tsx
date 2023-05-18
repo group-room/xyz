@@ -9,6 +9,7 @@ import { useUserList } from "@/hooks/queries/user";
 import GuestbookWrite from "./GuestbookWrite";
 import MyPhotoMain from "./MyPhotoMain";
 import { useAppSelector } from "@/hooks/redux";
+import LoadingLottie from "@/components/lottie/Loading";
 
 type ButtonProps = {
   value: boolean;
@@ -31,6 +32,14 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
   const handleChange = (v: boolean) => {
     onChange(v);
   };
+
+  if (isUserLoading) {
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
+  }
 
   function SelectedContent() {
     if (isClick) {

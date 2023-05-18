@@ -19,13 +19,15 @@ import { useAppSelector } from "@/hooks/redux";
 import { deleteFollow, postBlock } from "@/app/api/friend";
 import { KEYS } from "@/constants/queryKeys";
 import { confirmSwal } from "@/utils/swalUtils";
+import LoadingLottie from "@/components/lottie/Loading";
 
 interface ProfileMainProps {
   userSeq: number;
 }
 
 function ProfileMain({ userSeq }: ProfileMainProps) {
-  const { data: profileData, isLoading } = useUserList(userSeq);
+  const { data: profileData, isLoading: isProfilMainLoading } =
+    useUserList(userSeq);
   console.log(profileData, "profileData");
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
@@ -93,6 +95,15 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
   };
 
   const userSeqToNumber = +userSeq;
+
+  if (isProfilMainLoading) {
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
+  }
+
   // 여기 모달창 띄워야한다. 친구 끊기 / 차단할때
   return (
     <>
