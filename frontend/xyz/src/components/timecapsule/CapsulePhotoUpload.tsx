@@ -7,6 +7,7 @@ import { registerLocale } from "react-datepicker";
 import ko from "date-fns/locale/ko";
 import Image from "next/image";
 import { timerSwal, confirmSwalWarning } from "@/utils/swalUtils";
+import MultiCarousel from "./MultiCarousel";
 
 // 한국어 설정
 registerLocale("ko", ko);
@@ -84,40 +85,38 @@ export default function CapsulePhotoUpload({
   }, [photos]);
 
   return (
-    <div className="border border-black rounded-md bg-pink">
+    <div className="border border-black rounded-md bg-retro p-2">
       {/* 사진 첨부 영역 */}
-      <div className="w-full ">
-        <div className="flex items-center justify-center  ">
-          <label
-            htmlFor="input-file"
-            className="w-full py-1 text-center cursor-pointer"
-          >
-            {photos?.length > 0
-              ? "ヘㅏ진 ㉰시 선택㉭ドブl"
-              : "バr진을 첨부ぁĦ 주パㅔ요"}
-          </label>
-          <input
-            type="file"
-            id="input-file"
-            accept="image/gif, image/jpeg, image/png"
-            onChange={handlePhotoChange}
-            multiple
-            className="hidden"
-          />
-        </div>
-        <div className="flex flex-wrap items-center justify-center">
-          {/* 첨부 사진 보여주는 영역 */}
-          {photoPreviewList.length > 0 &&
-            photoPreviewList?.map((url) => (
-              <img
-                key={url}
-                src={url}
-                alt="Preview"
-                className="object-scale-down h-20 w-30 p-1"
-              />
-            ))}
-        </div>
+      <div className="flex items-center justify-center">
+        <label
+          htmlFor="input-file"
+          className={`flex flex-col w-full py-1 text-center cursor-pointer ${
+            photos?.length > 0 && "mb-2"
+          }`}
+        >
+          {photos?.length > 0 ? (
+            <div>ヘㅏ진 ㉰시 선택㉭ドブl</div>
+          ) : (
+            <div>バr진을 첨부ぁĦ 주パㅔ요</div>
+          )}
+        </label>
+        <input
+          type="file"
+          id="input-file"
+          accept="image/gif, image/jpeg, image/png"
+          onChange={handlePhotoChange}
+          multiple
+          className="hidden"
+        />
       </div>
+      {/* 첨부 사진 보여주는 영역 */}
+      {photoPreviewList.length > 0 && (
+        <MultiCarousel>
+          {photoPreviewList?.map((url) => (
+            <img key={url} src={url} alt="Preview" />
+          ))}
+        </MultiCarousel>
+      )}
     </div>
   );
 }

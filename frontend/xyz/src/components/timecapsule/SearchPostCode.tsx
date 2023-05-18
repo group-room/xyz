@@ -1,8 +1,7 @@
 "use client";
-
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useEffect, Dispatch, SetStateAction } from "react";
 import { convertAddressToCoordinate } from "@/app/api/kakao";
-import { CoordinateTypes, positionTypes } from "@/types/capsule";
+import { positionTypes } from "@/types/capsule";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { StaticMap } from "react-kakao-maps-sdk";
 
@@ -38,7 +37,7 @@ export default function SearchPostCode({
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    console.log(fullAddress);
     setAddress(fullAddress);
   };
 
@@ -51,9 +50,8 @@ export default function SearchPostCode({
       return;
     } else {
       return await convertAddressToCoordinate(address).then((res) => {
-        console.log(position.lat, " -before- ", position.lng);
-        setPosition({ lat: +res.y, lng: +res.x });
-        console.log(position.lat, " -after- ", position.lng);
+        const newPosition = { lat: +res.y, lng: +res.x };
+        setPosition(newPosition);
       });
     }
   }
@@ -63,21 +61,24 @@ export default function SearchPostCode({
   }, [address]);
 
   return (
-    <div>
-      <button type="button" onClick={handleClick}>
+    <div className="flex flex-col border border-black rounded-md p-3">
+      <button
+        type="button"
+        onClick={handleClick}
+        className={position.lat !== 0 && position.lng !== 0 ? "mb-2" : ""}
+      >
         타임캡슐 저장 위치 찾기
       </button>
       {position.lat !== 0 && position.lng !== 0 && (
-        <StaticMap // 지도를 표시할 Container
-          // 지도의 중심좌표
+        <StaticMap
           center={position}
           style={{
-            // 지도의 크기
             width: "100%",
             height: "150px",
           }}
           marker={{ position }}
-          level={3} // 지도의 확대 레벨
+          level={3}
+          key={`${position.lat}-${position.lng}`} // position 값이 변경될 때마다 key 값을 업데이트
         />
       )}
     </div>
