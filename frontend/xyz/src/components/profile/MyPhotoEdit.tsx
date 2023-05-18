@@ -40,7 +40,7 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
     useMyPhoto(userSeq);
 
   const useCreateMyPhotoMutation = useMutation({
-    mutationFn: () => createMyPhotoFilter(selectedImageNumber),
+    mutationFn: () => createMyPhotoFilter(selectedImageNumber + 1),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.myroom.myroomFilter());
       alert("배경사진 변경 완료");
