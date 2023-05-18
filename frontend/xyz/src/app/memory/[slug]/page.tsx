@@ -153,6 +153,7 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
                     key={idx}
                     src={imgSrc}
                     alt={`${idx}번째 이미지`}
+                    className="w-full text-center"
                     width={290}
                     height={100}
                   />
