@@ -147,18 +147,20 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
             titleImgAlt={"사진 아이콘"}
           >
             <div className="flex flex-col gap-y-2 p-2">
-              <MultiCarousel>
-                {imgList.map((imgSrc, idx) => (
-                  <img
-                    key={idx}
-                    src={imgSrc}
-                    alt={`${idx}번째 이미지`}
-                    className="w-full text-center"
-                    width={290}
-                    height={100}
-                  />
-                ))}
-              </MultiCarousel>
+              {imgList.length > 0 ? (
+                <MultiCarousel>
+                  {imgList.map((imgSrc, idx) => (
+                    <img
+                      key={idx}
+                      src={imgSrc}
+                      alt={`${idx}번째 이미지`}
+                      className="w-full text-center"
+                      width={290}
+                      height={100}
+                    />
+                  ))}
+                </MultiCarousel>
+              ) : null}
               <div>{content}</div>
               <LikeBtn memorySeq={slug} isLiked={isLiked} likeCnt={likeCnt} />
             </div>
