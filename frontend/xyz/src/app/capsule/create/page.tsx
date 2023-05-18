@@ -20,8 +20,10 @@ export default function TimeCapsuleCreatePage() {
   const router = useRouter();
   const today: Date = new Date();
   const after7Days: Date = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
   console.log("after7Days ---> ", after7Days);
+  console.log("yesterday ---> ", yesterday);
   const [content, setContent] = useState<string>("");
   const [currAzt, setCurrAzt] = useState<AztTypes[]>([]);
   const [aztList, setAztList] = useState<AztTypes[]>([]);
@@ -29,7 +31,7 @@ export default function TimeCapsuleCreatePage() {
   const [position, setPosition] = useState<positionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
   const [openStart, setOpenStart] = useState(today);
   const [openEnd, setOpenEnd] = useState(after7Days);
-  const [updateEnd, setUpdateEnd] = useState(after7Days);
+  const [updateEnd, setUpdateEnd] = useState(yesterday);
 
   const queryClient = useQueryClient();
   const useCreateCapsuleMutation = useMutation({

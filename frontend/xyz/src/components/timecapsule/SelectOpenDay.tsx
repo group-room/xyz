@@ -53,6 +53,7 @@ export default function SelectOpenDay({
       setOpenEnd(after7Days);
     }
   };
+
   const onChangeOpenEndDate = (date: Date) => {
     let openStartDay = dateToString(openStart);
     let openEndDay = dateToString(date);
@@ -68,13 +69,15 @@ export default function SelectOpenDay({
       setUpdateEnd(date);
     }
   };
-  const onChangeUpdateEndDate = (date: Date) => {
-    let openEndDay = dateToString(openEnd);
-    let updateEndDay = dateToString(date);
 
-    if (openEndDay > updateEndDay) {
+  const onChangeUpdateEndDate = (date: Date) => {
+    let openStartDay = dateToString(openStart);
+    let updateEndDay = dateToString(date);
+    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+
+    if (openStartDay < updateEndDay) {
       confirmSwalWarning("수정 마감일은 오픈 마감일 이후로 선택해주세요");
-      setUpdateEnd(openEnd);
+      setUpdateEnd(yesterday);
     } else {
       setUpdateEnd(date!);
     }
@@ -101,6 +104,7 @@ export default function SelectOpenDay({
             selected={openStart}
             onChange={(date) => onChangeOpenStartDate(date!)}
             isClearable={true}
+            minDate={new Date()}
           />
         </div>
       </div>
@@ -124,6 +128,7 @@ export default function SelectOpenDay({
             selected={openEnd}
             onChange={(date) => onChangeOpenEndDate(date!)}
             isClearable={true}
+            minDate={new Date()}
           />
         </div>
       </div>
@@ -147,6 +152,7 @@ export default function SelectOpenDay({
             selected={updateEnd}
             onChange={(date) => onChangeUpdateEndDate(date!)}
             isClearable={true}
+            maxDate={openStart}
           />
         </div>
       </div>
