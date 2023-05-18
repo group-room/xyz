@@ -1,20 +1,25 @@
 import Swal from "sweetalert2";
 
-const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end",
-  showConfirmButton: false,
-  timer: 1800,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.addEventListener("mouseenter", Swal.stopTimer);
-    toast.addEventListener("mouseleave", Swal.resumeTimer);
-  },
-});
 
 export const timerSwal = (text: string) => {
-  return Toast.fire({
+  return Swal.fire({
     icon: "warning",
     title: text,
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1800,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+};
+
+export const confirmSwal = (text: string) => {
+  return Swal.fire({
+    icon: "warning",
+    text: text,
   });
 };

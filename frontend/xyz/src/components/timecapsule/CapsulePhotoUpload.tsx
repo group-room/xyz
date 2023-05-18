@@ -28,30 +28,12 @@ type Props = {
 
 export default function CapsulePhotoUpload({
   isAdd,
-  openStart,
-  setOpenStart,
-  openEnd,
-  setOpenEnd,
-  updateEnd,
-  setUpdateEnd,
   photos,
   setPhotos,
   photoPreviewList,
   setPhotoPreviewList,
   setIsPhotoChanged,
 }: Props) {
-  const [dateRange, setDateRange] = useState<[Date, Date]>([
-    openStart as Date,
-    openEnd as Date,
-  ]);
-  const [startDate, endDate] = dateRange;
-
-  const onChange = (update: [Date, Date]) => {
-    setDateRange(update);
-    update && setOpenStart && setOpenStart(update[0]);
-    update && setOpenEnd && setOpenEnd(update[1]);
-  };
-
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // 사진을 편집했다면, 사진 변경 여부를 true로 설정
     if (photos && setIsPhotoChanged) {
@@ -89,55 +71,7 @@ export default function CapsulePhotoUpload({
   }, [photos]);
 
   return (
-    <div className="border border-black rounded-md">
-      {isAdd ? (
-        <div></div>
-      ) : (
-        <>
-          <div className="flex items-center justify-center h-9 border-b border-black">
-            <DatePicker
-              className="flex text-center w-full text-lg"
-              locale="ko"
-              dateFormat="yy.MM.dd"
-              selectsRange={true}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={onChange}
-              isClearable={true}
-            />
-            <div className="flex items-center justify-center bg-pink px-2 border-l border-black h-full">
-              <Image
-                src="/icons/save.svg"
-                alt="icon"
-                width="0"
-                height="0"
-                className="w-full h-9 py-1 px-2 border-r border-black"
-              />
-              <Image
-                src="/icons/close.svg"
-                alt="icon"
-                width="0"
-                height="0"
-                className="w-full h-9 p-2"
-              />
-            </div>
-          </div>
-          <div className="flex justify-center items-center border-b border-black h-9">
-            <div className="flex justify-center items-center w-2/5 border-r border-black h-9">
-              수정 마감 일
-            </div>
-            <DatePicker
-              className="flex text-center w-full text-lg"
-              locale="ko"
-              dateFormat="yy.MM.dd"
-              selected={updateEnd}
-              onChange={(date: Date) => setUpdateEnd && setUpdateEnd(date)}
-              isClearable={true}
-            />
-          </div>
-        </>
-      )}
-
+    <div className="border border-black rounded-md bg-pink">
       {/* 사진 첨부 영역 */}
       <div className="w-full ">
         <div className="flex items-center justify-center  ">
