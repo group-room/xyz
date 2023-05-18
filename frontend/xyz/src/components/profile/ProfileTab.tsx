@@ -5,9 +5,7 @@ import Image from "next/image";
 import MyroomIcon from "../../../public/icons/home.svg";
 import Visitor from "../../../public/icons/reciept.svg";
 import Guestbook from "./Guestbook";
-
 import { useUserList } from "@/hooks/queries/user";
-import { is } from "date-fns/locale";
 import GuestbookWrite from "./GuestbookWrite";
 import MyPhotoMain from "./MyPhotoMain";
 
@@ -71,7 +69,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           <div className="mr-2">
             <Image src={MyroomIcon} alt="이미지" width={20} height={20} />
           </div>
-          XYZ 대문사진
+          대문사진
         </div>
         <div
           className={`flex w-1/2 items-center justify-center border-black bg-pink text-white ${

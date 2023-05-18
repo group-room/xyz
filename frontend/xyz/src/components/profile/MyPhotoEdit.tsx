@@ -31,8 +31,8 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
   const { data: myPhotoList, isLoading: isMyPhotoLoading } =
     useMyPhoto(userSeq);
 
-  const PushToMyPhotoCreate = () => {
-    router.push(`profile/${userSeq}/myphoto/create`);
+  const PushToMyProfile = () => {
+    router.push(`profile`);
   };
 
   return (
@@ -46,7 +46,7 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
           <img src={selectedImage} />
         </div>
         <div className="flex items-center justify-center w-full pb-6">
-          <Btn btnFunc={PushToMyPhotoCreate} bgColor="pink" text="사진찍기" />
+          <Btn btnFunc={PushToMyProfile} bgColor="pink" text="편집완료" />
         </div>
       </div>
       <div className="flex flex-wrap">
