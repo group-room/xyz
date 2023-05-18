@@ -8,18 +8,31 @@ body {
   overflow-y: auto;
 }
 
+/* 스크롤바 전체 영역 */
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
+
+/* 스크롤바 막대 */
 *::-webkit-scrollbar-thumb {
   background-color: rgba(243, 159, 191, 1);
-  border-radius: 10px;
+  border-radius: 16px;
   height: 10%;
-  max-width: 1px;
+  /* max-width: 1px; */
 }
+
+/* 스크롤이 움직이는 뒷 배경 */
 *::-webkit-scrollbar-track {
   background-color: rgba(249, 240, 234, 1);
-  border-radius: 10px;
-  padding: 1px;
+  padding: 3px;
+  border: 1px solid rgba(243, 159, 191, 1);
+}
+
+/* 스크롤의 화살표가 포함된 영역 */
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+  display: block;
+  height: 58px;
+  /* background-color: #000; */
 }
