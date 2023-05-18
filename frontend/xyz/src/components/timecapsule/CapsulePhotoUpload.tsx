@@ -85,7 +85,7 @@ export default function CapsulePhotoUpload({
   }, [photos]);
 
   return (
-    <div className="border border-black rounded-md bg-blue p-3">
+    <div className="border border-black rounded-md bg-retro p-3">
       {/* 사진 첨부 영역 */}
       <div className="flex items-center justify-center">
         <label
