@@ -32,7 +32,9 @@ function MemoryItem({ memory }: MemoryItemProps) {
   return (
     <Container
       title={true}
-      titleBgColor="blue"
+      titleBgColor={
+        memorySeq % 3 === 0 ? "yellow" : memorySeq % 3 === 1 ? "pink" : "blue"
+      } // 컨테이너 상단 랜덤 색상
       titleText={aztName}
       titleImgSrc="/icons/users.svg"
       titleImgAlt="그룹 아이콘"

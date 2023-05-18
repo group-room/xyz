@@ -31,9 +31,9 @@ function Textbox({
     <div
       className={` ${
         firstClass ? firstClass : " border border-black flex my-2 h-8"
-      } ${bgColor ? BgColors[bgColor] : ""} ${
-        textColor ? TextColors[textColor] : ""
-      } `}
+      } ${
+        bgColor ? (bgColor !== "retro" ? BgColors[bgColor] : "bg-retro") : ""
+      } ${textColor ? TextColors[textColor] : ""} `}
     >
       <div
         className={` ${
