@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import ko from "date-fns/locale/ko";
 import Image from "next/image";
-import { confirmSwal } from "@/utils/swalUtils";
+import { confirmSwal, confirmSwalWarning } from "@/utils/swalUtils";
 
 // 한국어 설정
 registerLocale("ko", ko);
@@ -42,7 +42,7 @@ export default function CapsulePhotoUpload({
       const fileExtension = file.name.split(".").pop()?.toLowerCase();
 
       if (fileExtension && !allowedExtensions.includes(fileExtension)) {
-        confirmSwal("지원되지 않는 확장자입니다.");
+        confirmSwalWarning("지원되지 않는 확장자입니다.");
         event.target.value = ""; // 선택한 파일 초기화
         return;
       }

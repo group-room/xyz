@@ -7,7 +7,7 @@ import { registerLocale } from "react-datepicker";
 import ko from "date-fns/locale/ko";
 import calendarIconImg from "../../../public/icons/calendar.svg";
 import Image from "next/image";
-import { confirmSwal } from "@/utils/swalUtils";
+import { confirmSwal, confirmSwalWarning } from "@/utils/swalUtils";
 
 // 한국어 설정
 registerLocale("ko", ko);
@@ -43,7 +43,7 @@ export default function SelectOpenDay({
     const formattedToday = dateToString(today);
     let openStartDay = dateToString(date);
     if (openStartDay < formattedToday) {
-      confirmSwal("오픈 시작일은 오늘 이후로 선택해주세요");
+      confirmSwalWarning("오픈 시작일은 오늘 이후로 선택해주세요");
       setOpenStart(today);
     } else {
       setOpenStart && setOpenStart(date!);
@@ -58,7 +58,7 @@ export default function SelectOpenDay({
     let openEndDay = dateToString(date);
 
     if (openStartDay > openEndDay) {
-      confirmSwal("오픈 마감일은 오픈 시작일 이후로 선택해주세요");
+      confirmSwalWarning("오픈 마감일은 오픈 시작일 이후로 선택해주세요");
       const after7Days: Date = new Date(
         openStart.getTime() + 7 * 24 * 60 * 60 * 1000
       );
@@ -73,7 +73,7 @@ export default function SelectOpenDay({
     let updateEndDay = dateToString(date);
 
     if (openEndDay > updateEndDay) {
-      confirmSwal("수정 마감일은 오픈 마감일 이후로 선택해주세요");
+      confirmSwalWarning("수정 마감일은 오픈 마감일 이후로 선택해주세요");
       setUpdateEnd(openEnd);
     } else {
       setUpdateEnd(date!);
