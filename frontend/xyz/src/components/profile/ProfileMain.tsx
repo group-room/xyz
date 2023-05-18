@@ -138,7 +138,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               alt="pretty"
               text="수식어"
               maintext={profileData?.modifier}
-              firstClass={`border border-black flex my-2 items-center bg-[#f9f0ea]`}
+              firstClass={`border border-black flex my-2 items-center bg-retro py-1`}
               secondClass="flex items-center justify-center mx-1 h-full  "
               textClass=" whitespace-nowrap ml-1"
               maintextClass=" px-1 border-black border-l h-full"
@@ -148,7 +148,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               alt="nickname"
               text="닉네임"
               maintext={profileData?.nickname}
-              firstClass="border border-black flex my-3 items-center bg-[#f9f0ea]"
+              firstClass="border border-black flex my-3 items-center bg-retro py-1"
               secondClass="flex flex-none items-center justify-center mx-1"
               textClass="whitespace-nowrap ml-1"
               maintextClass="px-1 border-black border-l"
@@ -158,11 +158,11 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               alt="visitor"
               text="방문자"
               maintext={profileData?.visitCount}
-              firstClass="border border-black flex my-2 items-center bg-[#f9f0ea]"
+              firstClass="border border-black flex my-2 items-center bg-retro py-1"
             />
           </div>
         </div>
-        <div className="border border-black h-[92px] shadow-lg pb-2 mt-1 bg-[#f9f0ea]">
+        <div className="border border-black h-[92px] shadow-lg pb-2 mt-1 bg-retro">
           <div className="border-black border-b pl-2">자기소개 한 마디</div>
           <div className="pl-2 pt-1">{profileData?.introduce}</div>
         </div>
