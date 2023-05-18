@@ -5,6 +5,7 @@ import { useRandomCapsule } from "@/hooks/queries/capsule";
 import Textbox from "@/components/common/Textbox";
 import Container from "@/components/common/Container";
 import MultiCarousel from "@/components/timecapsule/MultiCarousel";
+import LoadingLottie from "@/components/lottie/Loading";
 
 export default function TimecapsuleRamdomDetailPage() {
   const { data: randomDetail, isLoading } = useRandomCapsule();
@@ -55,7 +56,9 @@ export default function TimecapsuleRamdomDetailPage() {
           </div>
         </div>
       ) : (
-        <div>로딩중</div>
+        <div className="flex justify-center items-center">
+          <LoadingLottie width="90%" height="90%"/>
+        </div>
       )}
     </div>
   );
