@@ -4,5 +4,5 @@ export type FriendListTypes = {
   profileImage: string;
   identify: string;
   relation?: string;
-  chatSeq: string | null;
+  chatSeq: number;
 };
