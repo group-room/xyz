@@ -24,6 +24,7 @@ const MyPhotoCreate = () => {
   const [capturedPhoto, setCapturedPhoto] = useState<Blob | null>(null);
   const [isCaptured, setIsCaptured] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const [isImageCaptured, setIsImageCaptured] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const queryClient = useQueryClient();
   const useCreateMyPhotoMutation = useMutation({
@@ -34,14 +35,18 @@ const MyPhotoCreate = () => {
   });
 
   const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
+    if (!isImageCaptured) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
+      } catch (error) {
+        console.error("Error accessing camera:", error);
       }
-    } catch (error) {
-      console.error("Error accessing camera:", error);
     }
   };
 
@@ -67,6 +72,8 @@ const MyPhotoCreate = () => {
   const retakePicture = () => {
     setCapturedPhoto(null);
     setIsPreviewing(false);
+    setIsImageCaptured(false);
+    startCamera();
   };
 
   const savePhoto = async (photoBlob: Blob) => {
@@ -94,19 +101,21 @@ const MyPhotoCreate = () => {
     if (capturedPhoto) {
       // Implement your logic to save the photo
       savePhoto(capturedPhoto);
+      setIsImageCaptured(true);
     }
   };
 
   return (
     <div>
-      <video ref={videoRef} />
-      <div className="flex gap-5 items-center justify-center">
-        <Btn btnFunc={startCamera} bgColor="pink" text="촬영시작" />
-
-        {!isPreviewing && (
-          <Btn btnFunc={capturePicture} bgColor="pink" text="찰칵" />
-        )}
-      </div>
+      {!isPreviewing && !isImageCaptured && (
+        <div>
+          <video ref={videoRef} />
+          <div className="flex gap-5 items-center justify-center">
+            <Btn btnFunc={startCamera} bgColor="pink" text="촬영시작" />
+            <Btn btnFunc={capturePicture} bgColor="pink" text="찰칵" />
+          </div>
+        </div>
+      )}
 
       {isPreviewing && (
         <div>
