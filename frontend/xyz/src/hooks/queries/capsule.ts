@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const CAPSULE = API.capsule;
 
+// 아지트 타임캡슐 조회
 export const useAztCapsuleList = (aztSeq: number) => {
   return useQuery<CapsuleAztTypes[]>({
     queryKey: queryKeys.capsule.aztCapsuleList(aztSeq),

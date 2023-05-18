@@ -66,7 +66,7 @@ export default function TimecapsuleList() {
                   </div>
                 )}
 
-                <ProfileImg imgSrc={list.aztImage as string} />
+                <ProfileImg imgSrc={list.aztImage as string} isAzt />
                 <div>{getDayDiff(list.openStart as Date)}</div>
               </div>
             );
