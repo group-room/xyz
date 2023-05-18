@@ -37,6 +37,7 @@ module.exports = {
         7: "url('/images/background/bg (7).png')",
         8: "url('/images/background/bg (8).png')",
         9: "url('/images/background/bg (9).png')",
+        10: "url('/images/background/bg (10).png')",
       }),
     },
   },
@@ -55,5 +56,6 @@ module.exports = {
     "bg-7",
     "bg-8",
     "bg-9",
+    "bg-10",
   ],
 };

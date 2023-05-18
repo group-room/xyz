@@ -33,4 +33,5 @@ export const RandomBg: RandomBgType = {
   7: "bg-7",
   8: "bg-8",
   9: "bg-9",
+  10: "bg-10",
 };

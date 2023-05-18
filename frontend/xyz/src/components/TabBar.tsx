@@ -11,8 +11,8 @@ import { bgRandomNumber } from "@/utils/bgUtils";
 function TabBar() {
   const pathname = usePathname();
 
-  const textColorWhite = [5, 6, 7, 8, 9];
-  const highlightColorNotPink = [2, 3];
+  const textColorWhite = [3, 5, 6, 7, 9];
+  const highlightColorNotPink = [2, 3, 8];
 
   const isTextColorWhite = textColorWhite.some(
     (color) => bgRandomNumber === color
