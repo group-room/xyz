@@ -66,13 +66,13 @@ function ProfileBtn({ btnUserSeq }: Props) {
     return (
       <div className="flex justify-start items-start relative gap-[15px]">
         <Btn
-          className="w-[168px] h-[50px]"
+          className="w-[168px] h-[50px] text-xl "
           bgColor="blue"
           text="친구"
           btnFunc={PushtoProfileFriend}
         />
         <Btn
-          className="w-[168px] h-[50px]"
+          className="w-[168px] h-[50px] text-xl"
           bgColor="blue"
           text="나의 활동"
           btnFunc={PushtoProfileMypage}
@@ -83,9 +83,10 @@ function ProfileBtn({ btnUserSeq }: Props) {
     return (
       <>
         <Btn
+          className="text-xl"
           width="300"
           bgColor="blue"
-          text={`친구 된 지 ${userList.friendTime}일 째`.toString()}
+          text={`˚ ༘༘♡⋆｡˚ 친구 된 지 ${userList.friendTime}일 째... .•✰.*•﻿`.toString()}
           btnFunc={() => {}}
           // 추후에 축하합니다 css 같은거 three.js 로 넣을 수 있으면 더 좋음
         />
@@ -94,8 +95,15 @@ function ProfileBtn({ btnUserSeq }: Props) {
   } else if (userList?.friendRequest === true) {
     return (
       <>
-        <Btn width="168" bgColor="blue" text="수락 대기중" btnFunc={() => {}} />
         <Btn
+          className="text-xl"
+          width="168"
+          bgColor="blue"
+          text="수락 대기중"
+          btnFunc={() => {}}
+        />
+        <Btn
+          className="text-xl"
           width="168"
           bgColor="blue"
           text="친구 요청 취소"
@@ -108,6 +116,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
     return (
       <>
         <Btn
+          className="text-xl"
           width="300"
           bgColor="blue"
           text="친구요청 수락하기"
@@ -121,7 +130,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         <button
           type="button"
           onClick={() => setIsModal(true)}
-          className={`${300} bg-blue rounded px-3 py-1 drop-shadow-md border border-black`}
+          className={`${300} bg-blue rounded px-3 py-1 drop-shadow-md border border-black text-xl`}
         >
           친구 신청하기
         </button>
