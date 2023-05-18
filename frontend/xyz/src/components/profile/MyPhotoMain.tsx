@@ -16,6 +16,11 @@ import Img7 from "../../../public/images/background/bg (7).png";
 import Img8 from "../../../public/images/background/bg (8).png";
 import Img9 from "../../../public/images/background/bg (9).png";
 import Img10 from "../../../public/images/background/bg (10).png";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteMyPhoto } from "@/app/api/myphoto";
+import { queryKeys } from "@/constants/queryKeys";
+import LogoImg from "../../../public/images/logo.svg";
+import Image from "next/image";
 
 interface MyPhotoMainProps {
   userSeq: number;
@@ -30,41 +35,64 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
   const { data: myPhotoList, isLoading: isMyPhotoLoading } =
     useMyPhoto(userSeq);
   const { data: myPhotoFilter } = useMyPhotoFilter(userSeq);
+
   const PushToMyPhotoCreate = () => {
     router.push(`profile/${userSeq}/myphoto/create`);
   };
+  const queryClient = useQueryClient();
+  const useDeleteMyPhotoMutation = useMutation({
+    mutationFn: () => deleteMyPhoto(),
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKeys.myroom.myroomList());
+      alert("사진이 삭제되었습니다.");
+    },
+  });
+  const DeleteMyPhoto = () => {
+    useDeleteMyPhotoMutation.mutate();
+  };
+
   const backgroundImgIdx = myPhotoFilter?.data;
 
   return (
-    <div className=" w-full h-full border-black border-x border-b min-h-[300px] pt-10">
-      <div className="w-full h-full">
-        {myPhotoFilter?.data ? (
-          <div className="h-full w-full">
-            <div className="h-full w-full flex items-center justify-center object-cover relative">
-              <img src={images[backgroundImgIdx!].src} height="full" />
-              <div className="absolute p-4">
+    <div className="  border-black border-x border-b p-1">
+      <div>
+        {myPhotoFilter?.data && myPhotoList?.data ? (
+          <div className=" w-full">
+            <div className=" flex items-center justify-center object-cover relative">
+              <img src={images[backgroundImgIdx!].src} />
+              <div className="absolute p-5 max-w-[80%]">
                 <img src={myPhotoList?.data} />
+              </div>
+              <div className="absolute">
+                <Image
+                  src={LogoImg}
+                  alt="xyz 로고"
+                  width="0"
+                  height="0"
+                  className="w-[80px] h-[24px]"
+                />
               </div>
             </div>
 
             {myUserSeq === userSeqToNumber ? (
-              <div className="flex items-center justify-center w-full pb-6">
+              <div className="flex items-center justify-center w-full py-5 gap-8">
                 <Btn
                   btnFunc={PushToMyPhotoCreate}
                   bgColor="pink"
                   text="사진찍기"
                 />
+                <Btn btnFunc={DeleteMyPhoto} bgColor="blue" text="사진삭제" />
               </div>
             ) : null}
           </div>
         ) : (
-          <div className="flex items-center justify-center w-full h-full min-h-[300px]">
-            <div className="flex flex-col justify-center py-2 w-full text-center">
+          <div className="flex flex-col items-center justify-center w-full min-h-[300px]">
+            <div className="flex flex-col justify-center pb-1 w-full text-center">
               <NotResultLottie />
               대문 사진이 없어요ㅠㅠ
             </div>
             {myUserSeq === userSeqToNumber ? (
-              <div className="flex items-center justify-center w-full pb-6">
+              <div className="flex items-center justify-center w-full pb-3 pt-1">
                 <Btn
                   btnFunc={PushToMyPhotoCreate}
                   bgColor="pink"

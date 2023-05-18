@@ -18,7 +18,7 @@ export default function MyTimecapsuleList() {
   };
 
   return (
-    <div className="flex flex-wrap border-x border-b-2 rounded rounded-t-none border-black p-2">
+    <div className="flex flex-wrap rounded rounded-t-none border-black p-2">
       {myCapsuleList ? (
         myCapsuleList.map((list) => {
           return (

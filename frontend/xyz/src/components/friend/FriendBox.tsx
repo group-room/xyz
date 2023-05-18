@@ -11,7 +11,7 @@ type Props = {
   identify: string;
   relation: string;
   userSeq: number;
-  chatSeq: number;
+  chatSeq?: number;
 };
 
 export default function FriendBox({

@@ -96,8 +96,8 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
   // 여기 모달창 띄워야한다. 친구 끊기 / 차단할때
   return (
     <>
-      <div className={`box-content w-full h-full bg-yellow py-2 px-2`}>
-        <div className="flex flex-row gap-2 items-center justify-center h-full w-full">
+      <div className={`box-content bg-yellow py-2 px-2`}>
+        <div className="flex flex-row gap-2 items-center justify-center ">
           <div className="object-cover h-[90%] w-[90%]">
             <img
               src={profileData?.profileImage}
@@ -161,9 +161,9 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
             />
           </div>
         </div>
-        <div className="border-2 border-black m-1 h-[92px] shadow-lg pb-2">
-          <div className="border-black border-b-2">자기소개 한 마디</div>
-          <div className="">{profileData?.introduce}</div>
+        <div className="border border-black m-1 h-[92px] shadow-lg pb-2">
+          <div className="border-black border-b pl-2">자기소개 한 마디</div>
+          <div className="pl-2 pt-1">{profileData?.introduce}</div>
         </div>
       </div>
       {isModal && (

@@ -33,7 +33,7 @@ function ProfileMypage() {
     } else {
       return (
         <div>
-          <MyTimecapsuleList />;
+          <MyTimecapsuleList />
         </div>
       );
     }

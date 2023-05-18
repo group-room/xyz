@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import ko from "date-fns/locale/ko";
 import Image from "next/image";
-import { confirmSwal, confirmSwalWarning } from "@/utils/swalUtils";
+import { timerSwal, confirmSwalWarning } from "@/utils/swalUtils";
 
 // 한국어 설정
 registerLocale("ko", ko);
