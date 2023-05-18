@@ -35,7 +35,8 @@ function ChatPage() {
       text: string;
       time: string;
     }
-    let chatroomListWithMsg: unionType[] = [];
+    let chatroomListWithMsg: unionType[] = []; // 메시지 있는 채팅방
+    let roomWithoutMsg: unionType[] = []; // 메시지 없는 채팅방
     chatroomList.forEach((chatroom) => {
       if (
         chatroomListRecentMessage.find(
@@ -48,18 +49,24 @@ function ChatPage() {
         const msgData = { text: message.text, time: message.time };
         chatroomListWithMsg.push({ ...chatroom, ...msgData });
       } else {
-        chatroomListWithMsg.push({ ...chatroom, text: "", time: "" });
+        roomWithoutMsg.push({
+          ...chatroom,
+          text: "",
+          time: "",
+        });
       }
     });
+    // 메시지 있는 채팅방 시간순 정렬
     const sortedChatroomListWithMsg = chatroomListWithMsg.sort(
       (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
     );
+    const finalChatroomList = sortedChatroomListWithMsg.concat(roomWithoutMsg); // 메시지 있는 채팅방 뒤에 없는 채팅방 합치기
 
     return (
       <>
         <div className="pt-2">
-          {sortedChatroomListWithMsg.length ? (
-            sortedChatroomListWithMsg.map((chatroom) => {
+          {finalChatroomList.length ? (
+            finalChatroomList.map((chatroom) => {
               return (
                 <ChatRoomItem
                   key={chatroom.sequence}
