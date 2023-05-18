@@ -37,12 +37,19 @@ function ChatPage() {
     }
     let chatroomListWithMsg: unionType[] = [];
     chatroomList.forEach((chatroom) => {
-      chatroomListRecentMessage.forEach((message) => {
-        if (chatroom.sequence === +message.room) {
-          const msgData = { text: message.text, time: message.time };
-          chatroomListWithMsg.push({ ...chatroom, ...msgData });
-        }
-      });
+      if (
+        chatroomListRecentMessage.find(
+          (chatroomMsg) => +chatroomMsg.room === chatroom.sequence
+        ) !== undefined
+      ) {
+        const message = chatroomListRecentMessage.find(
+          (chatroomMsg) => +chatroomMsg.room === chatroom.sequence
+        )!;
+        const msgData = { text: message.text, time: message.time };
+        chatroomListWithMsg.push({ ...chatroom, ...msgData });
+      } else {
+        chatroomListWithMsg.push({ ...chatroom, text: "", time: "" });
+      }
     });
     const sortedChatroomListWithMsg = chatroomListWithMsg.sort(
       (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
