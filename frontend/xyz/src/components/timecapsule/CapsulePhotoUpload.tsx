@@ -85,12 +85,14 @@ export default function CapsulePhotoUpload({
   }, [photos]);
 
   return (
-    <div className="border border-black rounded-md bg-retro p-3">
+    <div className="border border-black rounded-md bg-retro p-2">
       {/* 사진 첨부 영역 */}
       <div className="flex items-center justify-center">
         <label
           htmlFor="input-file"
-          className="flex flex-col w-full py-1 text-center cursor-pointer mb-2"
+          className={`flex flex-col w-full py-1 text-center cursor-pointer ${
+            photos?.length > 0 && "mb-2"
+          }`}
         >
           {photos?.length > 0 ? (
             <div>ヘㅏ진 ㉰시 선택㉭ドブl</div>
