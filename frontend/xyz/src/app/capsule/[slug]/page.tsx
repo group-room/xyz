@@ -17,6 +17,14 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
     console.log(capsuleDetail);
   }
 
+  const formatDate = (dateString: string) => {
+    console.log("dateString -> ", dateString);
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(5, 7);
+    const day = dateString.slice(8, 10);
+    return `${year}년 ${month}월 ${day}일`;
+  };
+
   return (
     <div>
       <h2 className="mb-4 text-lg">타임캡슐 상세 보기</h2>
@@ -27,16 +35,23 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
             alt={"그룹 아이콘"}
             maintext={capsuleDetail.tc.aztName}
             bgColor="pink"
+            maintextClass="text-sm flex justify-center items-center"
           />
           <Textbox
             icon={"/icons/calendar.svg"}
             alt={"캘린더 아이콘"}
-            maintext={capsuleDetail.tc.openedAt}
+            maintext={formatDate(capsuleDetail.tc.openedAt)}
+            maintextClass="text-sm flex justify-center items-center"
           />
           <Textbox
             icon={"/icons/pin.svg"}
             alt={"달력 아이콘"}
+            firstClass={"border border-black flex my-2"}
+            secondClass={
+              "flex items-center justify-center mx-1 pr-1 border-black"
+            }
             maintext={capsuleDetail.tc.location}
+            maintextClass="text-sm flex justify-center items-center border-l border-black"
           />
           <Container
             title
