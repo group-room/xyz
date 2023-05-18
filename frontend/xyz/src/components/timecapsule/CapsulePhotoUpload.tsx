@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import ko from "date-fns/locale/ko";
 import Image from "next/image";
+import { confirmSwal } from "@/utils/swalUtils";
 
 // 한국어 설정
 registerLocale("ko", ko);
@@ -35,6 +36,18 @@ export default function CapsulePhotoUpload({
   setIsPhotoChanged,
 }: Props) {
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const allowedExtensions = ["jpg", "jpeg", "png"]; // 허용할 확장자 목록
+      const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
+      if (fileExtension && !allowedExtensions.includes(fileExtension)) {
+        confirmSwal("지원되지 않는 확장자입니다.");
+        event.target.value = ""; // 선택한 파일 초기화
+        return;
+      }
+    }
+
     // 사진을 편집했다면, 사진 변경 여부를 true로 설정
     if (photos && setIsPhotoChanged) {
       setIsPhotoChanged(true);
@@ -86,7 +99,7 @@ export default function CapsulePhotoUpload({
           <input
             type="file"
             id="input-file"
-            accept="image/*"
+            accept="image/gif, image/jpeg, image/png"
             onChange={handlePhotoChange}
             multiple
             className="hidden"
