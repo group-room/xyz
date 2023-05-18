@@ -78,5 +78,6 @@ export const queryKeys = {
   },
   myroom: {
     myroomList: () => [...KEYS.myroom],
+    myroomFilter: () => [...KEYS.myroom, "filter"],
   },
 };

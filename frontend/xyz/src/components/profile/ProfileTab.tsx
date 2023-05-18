@@ -56,9 +56,9 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
 
   return (
     <>
-      <div className="flex border-t-2 border-l-2 border-r-2 border-black rounded-t-md h-10">
+      <div className="flex border-t border-l border-r border-black rounded-t-md h-10">
         <div
-          className={`flex w-1/2 items-center justify-center border-r-2 border-black bg-yellow ${
+          className={`flex w-1/2 items-center justify-center border-r border-black ${
             isClick ? "" : "border-b-2"
           }`}
           onClick={() => {

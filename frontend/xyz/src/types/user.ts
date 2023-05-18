@@ -44,3 +44,8 @@ export interface VisitorTypes {
 export interface MyPhotoTypes {
   data: string;
 }
+
+//마이포토 필터
+export interface MyPhotoFilterTypes {
+  data: number;
+}
