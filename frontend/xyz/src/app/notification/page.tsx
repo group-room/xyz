@@ -39,6 +39,14 @@ export default function NotificationPage() {
         setName("추억");
       },
     },
+    {
+      name: "프로필",
+      func: () => {
+        setType("MYROOM");
+        setActiveButton(3);
+        setName("프로필");
+      },
+    },
   ];
 
   return (
@@ -47,7 +55,7 @@ export default function NotificationPage() {
         {arr.map((list, idx) => (
           <Btn
             key={idx}
-            width="w-1/3"
+            width="w-1/4"
             bgColor={activeButton === idx ? "bg-pink" : "bg-white"}
             text={list.name}
             btnFunc={list.func}

@@ -94,6 +94,12 @@ export default function Notification({ type, name }: Props) {
                       <div className="text-sm">추억에 댓글을 남겼습니다</div>
                     </>
                   )}
+                  {list.type === "MYROOM" && (
+                    <>
+                      <div className="text-sm">{list.fromUserName}님이</div>
+                      <div className="text-sm">방명록을 남겼습니다</div>
+                    </>
+                  )}
                 </div>
                 <div className="w-2/12 border-l-2 border-black flex items-center justify-center bg-slate-300">
                   <Image
@@ -153,6 +159,14 @@ export default function Notification({ type, name }: Props) {
                       onClick={() => router.push("/memory")}
                     >
                       추억으로
+                    </div>
+                  )}
+                  {list.type === "MYROOM" && (
+                    <div
+                      className="flex items-center justify-center w-1/2 h-10 border-r-2 border-black bg-yellow"
+                      onClick={() => router.push(`/profile/${list.userSeq}`)}
+                    >
+                      내 프로필로
                     </div>
                   )}
                   <div
