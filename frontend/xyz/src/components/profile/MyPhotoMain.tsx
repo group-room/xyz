@@ -16,6 +16,9 @@ import Img7 from "../../../public/images/background/bg (7).png";
 import Img8 from "../../../public/images/background/bg (8).png";
 import Img9 from "../../../public/images/background/bg (9).png";
 import Img10 from "../../../public/images/background/bg (10).png";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteMyPhoto } from "@/app/api/myphoto";
+import { queryKeys } from "@/constants/queryKeys";
 
 interface MyPhotoMainProps {
   userSeq: number;
@@ -33,12 +36,24 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
   const PushToMyPhotoCreate = () => {
     router.push(`profile/${userSeq}/myphoto/create`);
   };
+  const queryClient = useQueryClient();
+  const useDeleteMyPhotoMutation = useMutation({
+    mutationFn: () => deleteMyPhoto(),
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKeys.myroom.myroomList());
+      alert("사진이 삭제되었습니다.");
+    },
+  });
+  const DeleteMyPhoto = () => {
+    useDeleteMyPhotoMutation.mutate();
+  };
+
   const backgroundImgIdx = myPhotoFilter?.data;
 
   return (
     <div className=" w-full h-full border-black border-x border-b min-h-[300px] pt-10">
       <div className="w-full h-full">
-        {myPhotoFilter?.data ? (
+        {myPhotoFilter?.data && myPhotoList?.data ? (
           <div className="h-full w-full">
             <div className="h-full w-full flex items-center justify-center object-cover relative">
               <img src={images[backgroundImgIdx!].src} height="full" />
@@ -54,6 +69,7 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
                   bgColor="pink"
                   text="사진찍기"
                 />
+                <Btn btnFunc={DeleteMyPhoto} bgColor="blue" text="사진삭제" />
               </div>
             ) : null}
           </div>

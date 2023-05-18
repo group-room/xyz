@@ -56,7 +56,6 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
   };
 
   return (
-    //만약에 대문 사진 없다면, 임의의 배경사진 넣어주기 (background img들 중)
     <div className=" w-full h-full ">
       <div className="flex flex-col gap-3 w-full h-full">
         <div className="relative flex items-center justify-center p-4">
