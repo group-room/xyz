@@ -59,7 +59,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
       <div className="flex border-t border-l border-r border-black rounded-t-md h-10">
         <div
           className={`flex w-1/2 items-center justify-center border-r border-black ${
-            isClick ? "bg-pink text-white" : "border-b"
+            isClick ? " " : "border-b bg-neutral-300"
           }`}
           onClick={() => {
             setIsClick(true);
@@ -72,8 +72,10 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           대문사진
         </div>
         <div
-          className={`flex w-1/2 items-center justify-center border-black ${
-            !isClick ? "bg-pink text-white" : "border-b"
+          className={`flex w-1/2 items-center justify-center border-black  ${
+            !isClick
+              ? "bg-pink text-white"
+              : "border-b bg-neutral-300 text-white"
           }`}
           onClick={() => {
             setIsClick(false);
