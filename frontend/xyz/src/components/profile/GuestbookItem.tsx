@@ -30,11 +30,14 @@ function GuestbookItem({ visitor, userSeq }: GuestbookItemProps) {
 
   if (myUserSeq === visitor.userSeq || myUserSeq === userSeqToNumber) {
     return (
-      <div className="border-2 border-white w-90% h-10% m-2 px-2 rounded">
-        <div className=" flex text-white">
-          {visitor.content} <br></br>
-          {visitor.nickname}
-          <button onClick={handleDeleteClick}>삭제</button>
+      <div className="border-2 border-white w-90% h-10% m-2 px-2 rounded flex">
+        <div className=" w-full flex justify-between text-white mr-0">
+          <div className="">
+            {visitor.content} - {visitor.nickname}
+          </div>
+          <div className="" onClick={handleDeleteClick}>
+            x
+          </div>
         </div>
       </div>
     );
