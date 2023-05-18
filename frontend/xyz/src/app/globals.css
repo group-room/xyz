@@ -33,6 +33,6 @@ body {
 ::-webkit-scrollbar-button:start:decrement,
 ::-webkit-scrollbar-button:end:increment {
   display: block;
-  height: 58px;
+  height: 56px;
   /* background-color: #000; */
 }
