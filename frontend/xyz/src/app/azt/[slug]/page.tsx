@@ -50,7 +50,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
           ) : (
             <div className="text-center">
               <NotResultLottie />
-              <p>추억이 없어요 ㅠㅠ</p>
+              <p>추억이 아직 없어요 ㅠㅠ</p>
             </div>
           )}
         </>
@@ -79,7 +79,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
           ) : (
             <div className="text-center">
               <NotResultLottie />
-              <p>타임캡슐이 없어요 ㅠㅠ</p>
+              <p>열린 타임캡슐이 없어요 ㅠㅠ</p>
             </div>
           )}
         </div>

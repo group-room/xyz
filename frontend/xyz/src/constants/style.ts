@@ -7,15 +7,7 @@ type BgColorType = {
 };
 
 type RandomBgType = {
-  one: string;
-  two: string;
-  three: string;
-  four: string;
-  five: string;
-  six: string;
-  seven: string;
-  eight: string;
-  nine: string;
+  [key: number]: string;
 };
 
 export const BgColors: BgColorType = {
@@ -32,13 +24,13 @@ export const TextColors: BgColorType = {
 };
 
 export const RandomBg: RandomBgType = {
-  one: "bg-1",
-  two: "bg-2",
-  three: "bg-3",
-  four: "bg-4",
-  five: "bg-5",
-  six: "bg-6",
-  seven: "bg-7",
-  eight: "bg-8",
-  nine: "bg-9",
+  1: "bg-1",
+  2: "bg-2",
+  3: "bg-3",
+  4: "bg-4",
+  5: "bg-5",
+  6: "bg-6",
+  7: "bg-7",
+  8: "bg-8",
+  9: "bg-9",
 };
