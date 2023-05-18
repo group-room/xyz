@@ -18,6 +18,7 @@ import ModalBtn from "../common/ModalBtn";
 import { useAppSelector } from "@/hooks/redux";
 import { deleteFollow, postBlock } from "@/app/api/friend";
 import { KEYS } from "@/constants/queryKeys";
+import { confirmSwal } from "@/utils/swalUtils";
 
 interface ProfileMainProps {
   userSeq: number;
@@ -48,7 +49,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     mutationFn: () => logOut(),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.user.userList(+userSeq!));
-      alert("로그아웃 완료");
+      confirmSwal("로그아웃 완료");
       deleteUserInfo();
     },
   });
@@ -57,7 +58,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     mutationFn: () => withDraw(),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.user.userList(+userSeq!));
-      alert("회원탈퇴 되었어요 ㅠㅠ");
+      confirmSwal("회원탈퇴 되었어요 ㅠㅠ");
       deleteUserInfo();
     },
   });

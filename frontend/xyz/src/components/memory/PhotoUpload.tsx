@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import Image from "next/image";
 import MultiCarousel from "../timecapsule/MultiCarousel";
+import { timerSwal } from "@/utils/swalUtils";
 
 interface PhotoUploadProps {
   selectedDate: Date;
@@ -47,7 +48,7 @@ function PhotoUpload({
     const fileList: any = event.target.files;
     if (fileList) {
       if (fileList.length > 10) {
-        alert("사진은 최대 10장까지 업로드 가능합니다.");
+        timerSwal("사진은 최대 10장까지 업로드 가능합니다.");
         return;
       }
 

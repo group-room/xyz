@@ -10,11 +10,13 @@ import { LOCAL } from "@/constants/localUrl";
 import { API, queryKeys } from "@/constants/queryKeys";
 import { useAztInfo } from "@/hooks/queries/azt";
 import { SlugProps } from "@/types/common";
+import { confirmSwal } from "@/utils/swalUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 function AztInfoPage({ params: { slug } }: SlugProps) {
   const { data: aztInfoData, isLoading: isAztInfoLoading } = useAztInfo(slug);
@@ -26,7 +28,7 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
     mutationFn: () => withdrawAzt(slug),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.azt.aztInfo(slug));
-      alert("아지트에서 탈퇴되었습니다.");
+      confirmSwal("아지트에서 탈퇴되었습니다.");
       router.push(API.azt);
     },
   });

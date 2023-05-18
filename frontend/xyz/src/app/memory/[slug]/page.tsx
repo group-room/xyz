@@ -19,6 +19,7 @@ import ModalBtn from "@/components/common/ModalBtn";
 import { SlugProps } from "@/types/common";
 import { useAppSelector } from "@/hooks/redux";
 import LoadingLottie from "@/components/lottie/Loading";
+import { confirmSwal } from "@/utils/swalUtils";
 
 function MemoryDetailPage({ params: { slug } }: SlugProps) {
   const router = useRouter();
@@ -28,7 +29,7 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
     mutationFn: () => deleteMemory(slug),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.memory.memoryDetail(slug));
-      alert("추억이 삭제되었어요 ㅠㅠ");
+      confirmSwal("추억이 삭제되었어요 ㅠㅠ");
       router.push("/memory");
     },
   });

@@ -14,6 +14,7 @@ import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
 import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
+import { timerSwal } from "@/utils/swalUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -97,7 +98,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
   const handleSumbitChat = () => {
     if (chatInput.length < 1) {
-      alert("채팅을 입력해주세요");
+      timerSwal("채팅을 입력해주세요");
       return;
     }
     useSendChatMutation.mutate();
