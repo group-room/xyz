@@ -86,13 +86,13 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
             ) : null}
           </div>
         ) : (
-          <div className="flex items-center justify-center w-full min-h-[300px]">
-            <div className="flex flex-col justify-center py-2 w-full text-center">
+          <div className="flex flex-col items-center justify-center w-full min-h-[300px]">
+            <div className="flex flex-col justify-center pb-1 w-full text-center">
               <NotResultLottie />
               대문 사진이 없어요ㅠㅠ
             </div>
             {myUserSeq === userSeqToNumber ? (
-              <div className="flex items-center justify-center w-full pb-6">
+              <div className="flex items-center justify-center w-full pb-3 pt-1">
                 <Btn
                   btnFunc={PushToMyPhotoCreate}
                   bgColor="pink"
