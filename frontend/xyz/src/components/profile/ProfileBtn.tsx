@@ -117,7 +117,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
     );
   } else {
     return (
-      <div className="w-full h-full">
+      <div>
         <button
           type="button"
           onClick={() => setIsModal(true)}

@@ -19,6 +19,8 @@ import Img10 from "../../../public/images/background/bg (10).png";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteMyPhoto } from "@/app/api/myphoto";
 import { queryKeys } from "@/constants/queryKeys";
+import LogoImg from "../../../public/images/logo.svg";
+import Image from "next/image";
 
 interface MyPhotoMainProps {
   userSeq: number;
@@ -33,6 +35,7 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
   const { data: myPhotoList, isLoading: isMyPhotoLoading } =
     useMyPhoto(userSeq);
   const { data: myPhotoFilter } = useMyPhotoFilter(userSeq);
+
   const PushToMyPhotoCreate = () => {
     router.push(`profile/${userSeq}/myphoto/create`);
   };
@@ -51,19 +54,28 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
   const backgroundImgIdx = myPhotoFilter?.data;
 
   return (
-    <div className=" w-full h-full border-black border-x border-b min-h-[300px] pt-10">
-      <div className="w-full h-full">
+    <div className=" w-full  border-black border-x border-b p-1">
+      <div className="w-full ">
         {myPhotoFilter?.data && myPhotoList?.data ? (
-          <div className="h-full w-full">
-            <div className="h-full w-full flex items-center justify-center object-cover relative">
-              <img src={images[backgroundImgIdx!].src} height="full" />
-              <div className="absolute p-4">
+          <div className=" w-full">
+            <div className=" flex items-center justify-center object-cover relative">
+              <img src={images[backgroundImgIdx!].src} />
+              <div className="absolute p-5 max-w-[80%]">
                 <img src={myPhotoList?.data} />
+              </div>
+              <div className="absolute">
+                <Image
+                  src={LogoImg}
+                  alt="xyz 로고"
+                  width="0"
+                  height="0"
+                  className="w-[80px] h-[24px]"
+                />
               </div>
             </div>
 
             {myUserSeq === userSeqToNumber ? (
-              <div className="flex items-center justify-center w-full pb-6">
+              <div className="flex items-center justify-center w-full py-5 gap-8">
                 <Btn
                   btnFunc={PushToMyPhotoCreate}
                   bgColor="pink"
@@ -74,7 +86,7 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
             ) : null}
           </div>
         ) : (
-          <div className="flex items-center justify-center w-full h-full min-h-[300px]">
+          <div className="flex items-center justify-center w-full min-h-[300px]">
             <div className="flex flex-col justify-center py-2 w-full text-center">
               <NotResultLottie />
               대문 사진이 없어요ㅠㅠ

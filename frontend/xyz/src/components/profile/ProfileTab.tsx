@@ -31,13 +31,13 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
   function SelectedContent() {
     if (isClick) {
       return (
-        <div className="w-full h-full">
+        <div className="w-full">
           <MyPhotoMain userSeq={profileTabUserSeq} />
         </div>
       );
     } else {
       return (
-        <div className="w-full h-full">
+        <div className="w-full ">
           {isFriend === true ? (
             <div>
               <Guestbook userSeq={profileTabUserSeq} />
@@ -59,7 +59,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
       <div className="flex border-t border-l border-r border-black rounded-t-md h-10">
         <div
           className={`flex w-1/2 items-center justify-center border-r border-black ${
-            isClick ? "" : "border-b-2"
+            isClick ? "bg-pink text-white" : "border-b"
           }`}
           onClick={() => {
             setIsClick(true);
@@ -72,8 +72,8 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           대문사진
         </div>
         <div
-          className={`flex w-1/2 items-center justify-center border-black bg-pink text-white ${
-            !isClick ? "" : "border-b-2"
+          className={`flex w-1/2 items-center justify-center border-black ${
+            !isClick ? "bg-pink text-white" : "border-b"
           }`}
           onClick={() => {
             setIsClick(false);
@@ -86,7 +86,7 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           방명록
         </div>
       </div>
-      <div className="w-full h-full">
+      <div className="w-full">
         <SelectedContent />
       </div>
     </>
