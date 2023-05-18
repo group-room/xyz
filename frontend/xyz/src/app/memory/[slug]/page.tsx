@@ -93,17 +93,18 @@ function MemoryDetailPage({ params: { slug } }: SlugProps) {
             alt={"그룹 아이콘"}
             maintext={aztName}
             bgColor="pink"
-            // textColor="white"
           />
           <Textbox
             icon={"/icons/calendar.svg"}
             alt={"캘린더 아이콘"}
             maintext={sliceDate(date)}
+            bgColor="blue"
           />
           <Textbox
             icon={"/icons/pin.svg"}
-            alt={"달력 아이콘"}
+            alt={"위치 아이콘"}
             maintext={location}
+            bgColor="retro"
           />
           <Textbox
             icon={"/icons/check.svg"}

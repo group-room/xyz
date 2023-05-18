@@ -22,7 +22,7 @@ function Textbox({
   return (
     <div
       className={`border border-black flex h-8 mb-2 mt-2 ${
-        bgColor ? BgColors[bgColor] : ""
+        bgColor ? (bgColor !== "retro" ? BgColors[bgColor] : "bg-retro") : ""
       } ${textColor ? TextColors[textColor] : ""}`}
     >
       <div className="flex items-center justify-center mx-1 pr-1 border-black border-r h-full">
