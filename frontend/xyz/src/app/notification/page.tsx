@@ -11,6 +11,7 @@ type BtnType = {
 
 export default function NotificationPage() {
   const [type, setType] = useState("ALL");
+  const [name, setName] = useState("전체");
   const [activeButton, setActiveButton] = useState(0);
 
   const arr: BtnType[] = [
@@ -19,6 +20,7 @@ export default function NotificationPage() {
       func: () => {
         setType("ALL");
         setActiveButton(0);
+        setName("전체");
       },
     },
     {
@@ -26,6 +28,7 @@ export default function NotificationPage() {
       func: () => {
         setType("FRIEND");
         setActiveButton(1);
+        setName("친구");
       },
     },
     {
@@ -33,6 +36,7 @@ export default function NotificationPage() {
       func: () => {
         setType("MEMORY");
         setActiveButton(2);
+        setName("추억");
       },
     },
   ];
@@ -52,7 +56,7 @@ export default function NotificationPage() {
         ))}
       </div>
 
-      <Notification type={type} />
+      <Notification type={type} name={name} />
     </div>
   );
 }
