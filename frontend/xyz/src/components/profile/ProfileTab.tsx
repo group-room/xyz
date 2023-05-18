@@ -8,6 +8,7 @@ import Guestbook from "./Guestbook";
 import { useUserList } from "@/hooks/queries/user";
 import GuestbookWrite from "./GuestbookWrite";
 import MyPhotoMain from "./MyPhotoMain";
+import { useAppSelector } from "@/hooks/redux";
 
 type ButtonProps = {
   value: boolean;
@@ -23,6 +24,9 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
   } = useUserList(profileTabUserSeq);
   const [isClick, setIsClick] = useState(true);
   const isFriend = userList?.friend;
+  const state = useAppSelector((state) => state);
+  const userSeq = state.auth.userInfo?.userSeq;
+  const profileTabUserSeqToNumber = +profileTabUserSeq;
 
   const handleChange = (v: boolean) => {
     onChange(v);
@@ -45,8 +49,16 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
             </div>
           ) : (
             <div className="bg-pink text-white">
-              <Guestbook userSeq={profileTabUserSeq} /> 친구가 아니면 방명록을
-              남길 수 없습니다...
+              {profileTabUserSeqToNumber !== userSeq ? (
+                <div>
+                  <Guestbook userSeq={profileTabUserSeq} /> 친구가 아니면
+                  방명록을 남길 수 없습니다...
+                </div>
+              ) : (
+                <div>
+                  <Guestbook userSeq={profileTabUserSeq} />
+                </div>
+              )}
             </div>
           )}
         </div>
