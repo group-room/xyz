@@ -83,10 +83,10 @@ function ProfileBtn({ btnUserSeq }: Props) {
     return (
       <>
         <Btn
-          className="text-xl"
+          className="text-xl h-[50px]"
           width="300"
           bgColor="blue"
-          text={`˚ ༘༘♡⋆｡˚ 친구 된 지 ${userList.friendTime}일 째... .•✰.*•﻿`.toString()}
+          text={`˚ ༘༘♡⋆｡˚ 친구 된 지 ${userList.friendTime}일 째...•✰.*•`.toString()}
           btnFunc={() => {}}
           // 추후에 축하합니다 css 같은거 three.js 로 넣을 수 있으면 더 좋음
         />
@@ -96,14 +96,14 @@ function ProfileBtn({ btnUserSeq }: Props) {
     return (
       <>
         <Btn
-          className="text-xl"
+          className="text-xl h-[50px]"
           width="168"
           bgColor="blue"
           text="수락 대기중"
           btnFunc={() => {}}
         />
         <Btn
-          className="text-xl"
+          className="text-xl h-[50px]"
           width="168"
           bgColor="blue"
           text="친구 요청 취소"
@@ -116,7 +116,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
     return (
       <>
         <Btn
-          className="text-xl"
+          className="text-xl h-[50px]"
           width="300"
           bgColor="blue"
           text="친구요청 수락하기"
@@ -130,7 +130,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
         <button
           type="button"
           onClick={() => setIsModal(true)}
-          className={`${300} bg-blue rounded px-3 py-1 drop-shadow-md border border-black text-xl`}
+          className={`${300} bg-blue rounded px-3 py-1 drop-shadow-md border border-black text-xl h-[50px] w-[300px]`}
         >
           친구 신청하기
         </button>

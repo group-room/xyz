@@ -9,6 +9,7 @@ import { useUserList } from "@/hooks/queries/user";
 import GuestbookWrite from "./GuestbookWrite";
 import MyPhotoMain from "./MyPhotoMain";
 import { useAppSelector } from "@/hooks/redux";
+import LoadingLottie from "@/components/lottie/Loading";
 
 type ButtonProps = {
   value: boolean;
@@ -32,6 +33,14 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     onChange(v);
   };
 
+  if (isUserLoading) {
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
+  }
+
   function SelectedContent() {
     if (isClick) {
       return (
@@ -44,7 +53,9 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
         <div>
           {isFriend === true ? (
             <div>
-              <Guestbook userSeq={profileTabUserSeq} />
+              <div className="border-black border-x border-b p-1">
+                <Guestbook userSeq={profileTabUserSeq} />
+              </div>
               <GuestbookWrite userSeq={profileTabUserSeq} />
             </div>
           ) : (

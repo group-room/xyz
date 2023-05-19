@@ -20,6 +20,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createMyPhotoFilter } from "@/app/api/myphoto";
 import Image from "next/image";
 import LogoImg from "../../../public/images/logo.svg";
+import { confirmSwal } from "@/utils/swalUtils";
 
 interface MyPhotoEditProps {
   userSeq: number;
@@ -45,7 +46,7 @@ function MyPhotoEdit({ userSeq }: MyPhotoEditProps) {
     mutationFn: () => createMyPhotoFilter(selectedImageNumber + 1),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.myroom.myroomFilter());
-      alert("배경사진 변경 완료");
+      confirmSwal("배경사진 변경 완료");
       router.push(`profile`);
     },
   });
