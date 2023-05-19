@@ -30,8 +30,6 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztCapsuleData, isLoading: isAztCapsuleLoading } =
     useAztCapsuleList(slug);
 
-  if (aztCapsuleData) console.log(aztCapsuleData);
-
   const [btnValue, setBtnValue] = useState(true); // true면 추억앨범, false면 타임캡슐
   const handleChange = (selectedBtn: boolean) => {
     setBtnValue(selectedBtn);
