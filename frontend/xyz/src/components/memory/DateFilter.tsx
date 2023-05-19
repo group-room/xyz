@@ -54,7 +54,7 @@ function DateFilter({
           selected={selectedDate}
           onChange={handleDateChange}
           popperClassName="z-10" // 지도에 겹쳐지는 것 방지
-          className=" placeholder:text-black"
+          className="border-none placeholder:text-black"
           placeholderText="날짜 선택하기"
           maxDate={new Date()}
         />
