@@ -42,8 +42,14 @@ function AztFilter({
               : currAzt[0].name
             : "전체 아지트 보기"}
         </div>
-        <div className="flex align-middle px-2 border-l border-black">
-          <Image src={arrowDownIcon} alt="화살표" width={12} />
+        <div className="flex justify-center items-center border-l border-black">
+          <Image
+            src={arrowDownIcon}
+            alt="화살표"
+            width="0"
+            height="0"
+            className={`w-[50%] h-auto`}
+          />
         </div>
       </div>
       {toggle && aztListForDropdown && aztListForDropdown.length > 0 && (
