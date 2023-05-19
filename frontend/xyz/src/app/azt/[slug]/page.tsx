@@ -47,7 +47,6 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
   };
 
   const formatDate = (dateString: string) => {
-    console.log("dateString -> ", dateString);
     const year = dateString.slice(0, 4);
     const month = dateString.slice(5, 7);
     const day = dateString.slice(8, 10);
