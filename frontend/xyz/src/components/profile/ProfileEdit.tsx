@@ -18,7 +18,7 @@ function ProfileEdit() {
     isLoading: isUserLoading,
     error,
   } = useUserList(userSeq!);
-  console.log(userList, "userList-ProfileEdit");
+  // console.log(userList, "userList-ProfileEdit");
   const [ImgUrl, setImgUrl] = useState<string>(userList?.profileImage || "");
   const [ImgFile, setImgFile] = useState<File>();
   const [mainImage, setMainImage] = useState<string | null>(null);
@@ -46,7 +46,7 @@ function ProfileEdit() {
       type: "application/json",
     });
     formData.append("profileRequest", jsonData);
-    console.log(formData, "formData");
+    // console.log(formData, "formData");
 
     if (isProfileImgChanged) {
       formData.append("profileImage", ImgFile as Blob);
@@ -54,7 +54,7 @@ function ProfileEdit() {
 
     useUpdateProfileMutation.mutate(formData, {
       onSuccess: (data) => {
-        console.log(data, "data");
+        // console.log(data, "data");
         router.push("/profile");
       },
     });

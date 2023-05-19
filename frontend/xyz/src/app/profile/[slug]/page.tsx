@@ -3,7 +3,7 @@
 import React from "react";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
-
+import LoadingLottie from "@/components/lottie/Loading";
 import ProfilePage from "../page";
 import ProfileBtn from "@/components/profile/ProfileBtn";
 import ProfileDropDown from "@/components/profile/ProfileDropdown";
@@ -26,7 +26,11 @@ function ProfileUserPage({ params: { slug } }: Props) {
   const slugToNumber = +slug;
 
   if (isUserLoading) {
-    return <div>로딩중...</div>;
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
   } else if (slugToNumber === userSeq) {
     return (
       <div className="w-full">

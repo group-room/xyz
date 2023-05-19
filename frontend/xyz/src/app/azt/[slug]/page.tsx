@@ -70,6 +70,7 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
         break;
       case "OPENABLE":
         statusText = "투표중";
+        break;
       case "LOCKED":
         statusText = "오픈대기중";
         break;
