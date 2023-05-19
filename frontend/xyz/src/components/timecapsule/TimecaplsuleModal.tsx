@@ -54,12 +54,12 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
     usePostOpenCapsuleMutation.mutate(tcSeq);
   };
 
-  const repeatCnt = (repeat: number) => {
+  const repeatCnt = (repeat: number, bgColor: string) => {
     const repeatArr = [];
     if (repeat !== 0) {
       for (let i = 0; i < repeat; i++) {
         repeatArr.push(
-          <div key={i} className="w-10 h-10 bg-pink rounded-full"></div>
+          <div key={i} className={`w-5 h-5 ${bgColor} rounded-full`}></div>
         );
       }
     }
@@ -75,9 +75,20 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
       {detail.openStatus === "OPENABLE" && (
         <>
           <Image className="mb-8" src={capsuleImg} alt="capsuleImg"></Image>
-          {detail.openCnt && detail.openCnt !== 0 ? (
-            <div className="flex mb-8 gap-2">{repeatCnt(detail.openCnt)}</div>
-          ) : null}
+          <div className="flex gap-2">
+            {detail.openCnt && detail.openCnt !== 0 ? (
+              <div className="flex mb-8 gap-2">
+                {repeatCnt(detail.openCnt, "bg-pink")}
+              </div>
+            ) : null}
+            {detail.requiredCnt &&
+            detail.requiredCnt !== 0 &&
+            detail.openCnt ? (
+              <div className="flex mb-8 gap-2">
+                {repeatCnt(detail.requiredCnt - detail.openCnt, "bg-gray-400")}
+              </div>
+            ) : null}
+          </div>
           <Btn
             bgColor="blue"
             text="타임캡슐 열기"
