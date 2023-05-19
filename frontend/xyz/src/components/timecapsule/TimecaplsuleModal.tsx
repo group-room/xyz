@@ -55,7 +55,6 @@ export default function AbleTimecaplsuleModal({ detail }: Props) {
   };
 
   const repeatCnt = (repeat: number) => {
-    console.log("repeat", repeat);
     const repeatArr = [];
     if (repeat !== 0) {
       for (let i = 0; i < repeat; i++) {

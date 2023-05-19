@@ -53,14 +53,6 @@ function Header() {
 
       const fetchSse = async () => {
         try {
-          // //sse 최초 연결되었을 때
-          // eventSource.onopen = () => {
-          //   console.log("open");
-          // };
-
-          // eventSource.addEventListener("connect", (event: any) => {
-          //   console.log(event.data);
-          // });
           eventSource.addEventListener("newNotification", (event: any) => {
             setIsAlert(true);
           });
@@ -72,7 +64,7 @@ function Header() {
             }
           };
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
       };
       fetchSse();
