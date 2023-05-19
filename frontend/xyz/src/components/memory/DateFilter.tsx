@@ -38,7 +38,7 @@ function DateFilter({
   return (
     // <div className="w-3/6 border border-black drop-shadow-md">
     <div className="flex basis-7/12 shadow-md">
-      <div className="flex justify-center items-center px-2 border border-r border-black">
+      <div className="flex justify-center items-center px-2 border border-r border-black w-1/2">
         <Image
           src={calendarIcon}
           alt="캘린더 아이콘"
@@ -47,7 +47,7 @@ function DateFilter({
           className={`w-full h-auto`}
         />
       </div>
-      <div className="flex justify-center items-center border border-black text-center py-1 cursor-pointer w-full">
+      <div className="flex justify-center items-center border border-black text-center py-1 cursor-pointer w-1/2">
         <DatePicker
           locale={ko}
           dateFormat="yyyy년 MM월 dd일"
