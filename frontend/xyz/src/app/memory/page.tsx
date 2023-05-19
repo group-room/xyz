@@ -73,7 +73,7 @@ function MemoryPage() {
 
   return (
     <section>
-      <div className="flex flex-row justify-between gap-2 mb-3">
+      <div className="flex gap-2 mb-3">
         <DateFilter
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
