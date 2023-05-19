@@ -37,28 +37,26 @@ function DateFilter({
 
   return (
     // <div className="w-3/6 border border-black drop-shadow-md">
-    <div className="flex basis-7/12 shadow-md">
-      <div className="flex justify-center items-center px-2 border border-r border-black w-1/2">
+    <div className="flex shadow-md w-1/2 border border-black ">
+      <div className="flex justify-center items-center px-2 border-r border-black">
         <Image
           src={calendarIcon}
           alt="캘린더 아이콘"
           width="0"
           height="0"
-          className={`w-full h-auto`}
+          className={`w-[100%] h-auto`}
         />
       </div>
-      <div className="flex justify-center items-center border border-black text-center py-1 cursor-pointer w-1/2">
-        <DatePicker
-          locale={ko}
-          dateFormat="yyyy년 MM월 dd일"
-          selected={selectedDate}
-          onChange={handleDateChange}
-          popperClassName="z-10" // 지도에 겹쳐지는 것 방지
-          className="border-none placeholder:text-black"
-          placeholderText="날짜 선택하기"
-          maxDate={new Date()}
-        />
-      </div>
+      <DatePicker
+        locale={ko}
+        dateFormat="yyyy년 MM월 dd일"
+        selected={selectedDate}
+        onChange={handleDateChange}
+        popperClassName="z-10" // 지도에 겹쳐지는 것 방지
+        className="flex justify-center items-center text-center w-full py-1 cursor-pointer placeholder:text-black"
+        placeholderText="날짜 선택하기"
+        maxDate={new Date()}
+      />
     </div>
     /*{ <DatePicker
       renderCustomHeader={({
