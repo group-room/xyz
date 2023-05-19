@@ -47,16 +47,18 @@ function DateFilter({
           className={`w-full h-auto`}
         />
       </div>
-      <DatePicker
-        locale={ko}
-        dateFormat="yyyy년 MM월 dd일"
-        selected={selectedDate}
-        onChange={handleDateChange}
-        popperClassName="z-10" // 지도에 겹쳐지는 것 방지
-        className="flex justify-center items-center border border-black text-center py-1 cursor-pointer w-full placeholder:text-black"
-        placeholderText="날짜 선택하기"
-        maxDate={new Date()}
-      />
+      <div className="flex justify-center items-center border border-black text-center py-1 cursor-pointer w-full">
+        <DatePicker
+          locale={ko}
+          dateFormat="yyyy년 MM월 dd일"
+          selected={selectedDate}
+          onChange={handleDateChange}
+          popperClassName="z-10" // 지도에 겹쳐지는 것 방지
+          className=" placeholder:text-black"
+          placeholderText="날짜 선택하기"
+          maxDate={new Date()}
+        />
+      </div>
     </div>
     /*{ <DatePicker
       renderCustomHeader={({
