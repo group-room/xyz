@@ -13,9 +13,6 @@ export default function FriendList({ isBlock }: Props) {
   const router = useRouter();
 
   const { data: friendList, isLoading } = useFriendList(isBlock);
-  if (friendList) {
-    console.log(friendList);
-  }
   return (
     <div>
       {isBlock ? (

@@ -53,7 +53,6 @@ export default function TimeCapsuleCreatePage({ params: { slug } }: Props) {
     useCreateCapsuleMutation.mutate(formData, {
       onSuccess: (data) => {
         const tcSeq = data.data.data.tcSeq;
-        console.log(tcSeq);
         router.push(`/capsule`);
       },
     });

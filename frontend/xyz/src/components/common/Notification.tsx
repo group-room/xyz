@@ -50,10 +50,6 @@ export default function Notification({ type, name }: Props) {
     },
   });
 
-  if (notiList) {
-    console.log(notiList);
-  }
-
   return (
     <div>
       {notiList && notiList.length !== 0 ? (

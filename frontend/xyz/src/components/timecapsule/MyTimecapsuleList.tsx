@@ -8,10 +8,6 @@ export default function MyTimecapsuleList() {
   const router = useRouter();
 
   const { data: myCapsuleList, isLoading } = useMyCapsuleList();
-  if (myCapsuleList) {
-    console.log("my capsule list");
-    console.log(myCapsuleList);
-  }
 
   const moveToDetail = (tcSeq: number) => {
     router.push(`/capsule/${tcSeq}`);

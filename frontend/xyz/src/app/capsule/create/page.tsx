@@ -89,7 +89,6 @@ export default function TimeCapsuleCreatePage() {
       useCreateCapsuleMutation.mutate(formData, {
         onSuccess: (data) => {
           const tcSeq = data.data.data.tcSeq;
-          console.log(tcSeq);
           router.push(`/capsule`);
         },
       });
@@ -97,14 +96,9 @@ export default function TimeCapsuleCreatePage() {
   };
 
   const openModal = () => {
-    console.log("모달이다");
     timerSwal("생성된 아지트가 없습니다😥\n아지트를 생성해주세요");
     router.push(`/capsule`);
   };
-
-  if (aztListData) {
-    console.log(aztListData);
-  }
 
   return (
     <div>

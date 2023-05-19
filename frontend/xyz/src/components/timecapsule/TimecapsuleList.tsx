@@ -18,10 +18,6 @@ export default function TimecapsuleList() {
     detail: {},
   });
 
-  if (capsuleList) {
-    console.log(capsuleList);
-  }
-
   const handleClick = (list: CapsuleAztTypes) => {
     setIsModal({ is: true, detail: list });
   };
