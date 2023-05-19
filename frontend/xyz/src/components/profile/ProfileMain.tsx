@@ -28,7 +28,7 @@ interface ProfileMainProps {
 function ProfileMain({ userSeq }: ProfileMainProps) {
   const { data: profileData, isLoading: isProfilMainLoading } =
     useUserList(userSeq);
-  console.log(profileData, "profileData");
+  // console.log(profileData, "profileData");
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
 
