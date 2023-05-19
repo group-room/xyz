@@ -44,7 +44,7 @@ function DateFilter({
           alt="캘린더 아이콘"
           width="0"
           height="0"
-          className={`w-[100%] h-auto`}
+          className={`w-[18px] h-auto`}
         />
       </div>
       <DatePicker
