@@ -107,4 +107,38 @@ public class MyRoomServiceImpl implements MyRoomService {
     public List<MyRoomResponse> findMyRoomByUserSeq(Long userSeq) {
         return userStickerRepository.selectMyRoomByUserSeq(userSeq);
     }
+
+    @Override
+    @Transactional
+    public void modifyMyRoomPhoto(Long userSeq, String imagePath) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+
+        user.changeMyRoomImage(imagePath);
+
+    }
+
+    @Override
+    public String findMyRoomPhotoByUserSeq(Long userSeq) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+        return user.getMyRoomImage();
+    }
+
+    @Override
+    public Integer findMyRoomBackgroundByUserSeq(Long userSeq) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+        return user.getMyRoomBackground();
+    }
+
+    @Override
+    @Transactional
+    public void modifyMyRoomBackground(Long userSeq, Integer background) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+
+        user.changeMyRoomBackground(background);
+
+    }
 }

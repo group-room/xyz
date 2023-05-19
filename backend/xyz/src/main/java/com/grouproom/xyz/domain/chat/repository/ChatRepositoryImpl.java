@@ -4,8 +4,10 @@ import com.grouproom.xyz.domain.chat.dto.response.RoomDetailResponse;
 import com.grouproom.xyz.domain.chat.dto.response.RoomResponse;
 import com.grouproom.xyz.domain.user.entity.User;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -43,26 +45,36 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
                         )
                 )
                 .from(friend)
-                .where(friend.fromUser.sequence.eq(loginSeq).or(friend.toUser.sequence.eq(loginSeq)))
+                .where(
+                        friend.fromUser.sequence.eq(loginSeq).or(friend.toUser.sequence.eq(loginSeq))
+                        ,
+                        friend.isAccepted.eq(true),
+                        friend.isCanceled.eq(false),
+                        friend.isDeleted.eq(false)
+                        )
                 .fetch();
 
+        SubQueryExpression<Long> countSubQuery = JPAExpressions
+                .select(aztMember.count())
+                .from(aztMember)
+                .where(aztMember.azt.eq(azt));
+
         List<RoomResponse> aztChat = jpaQueryFactory
-                .select(Projections.fields(RoomResponse.class,
-                        azt.chatSeq.sequence.as("sequence"),
-                        azt.aztImage.as("image"),
-                        azt.aztName.as("name"),
-                        Expressions.as(Expressions.constant("azt"), "type"),
-                        aztMember.count().as("count"),
-                        azt.sequence.as("aztSeq")
-                        )
-                )
+                .select(Projections.constructor(
+                        RoomResponse.class,
+                        azt.chatSeq.sequence,
+                        azt.aztImage,
+                        azt.aztName,
+                        Expressions.constant("azt"),
+                        countSubQuery,
+                        azt.sequence
+                ))
                 .from(azt)
                 .join(aztMember)
                 .on(azt.eq(aztMember.azt))
                 .where(aztMember.user.sequence.eq(loginSeq),
                         aztMember.isDeleted.eq(isDeleted),
                         azt.isDeleted.eq(isDeleted))
-                .groupBy(aztMember.azt)
                 .fetch();
         List<RoomResponse> rooms = new ArrayList<>();
         rooms.addAll(friendChat);

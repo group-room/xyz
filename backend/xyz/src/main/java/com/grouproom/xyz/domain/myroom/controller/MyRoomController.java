@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.myroom.controller;
 
+import com.grouproom.xyz.domain.myroom.dto.request.MyRoomBackgroundRequest;
 import com.grouproom.xyz.domain.myroom.service.MyRoomService;
 import com.grouproom.xyz.domain.myroom.dto.request.StickerRequest;
 import com.grouproom.xyz.global.model.BaseResponse;
@@ -7,6 +8,7 @@ import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -80,4 +82,48 @@ public class MyRoomController {
         }
     }
 
+
+    @GetMapping("/photo")
+    public BaseResponse myRoomPhotoDetails(@RequestParam Long userSeq){
+        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSeq));
+    }
+
+    @PostMapping("/photo")
+    public BaseResponse updateMyRoomPhoto(@RequestPart MultipartFile photoImage){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        String photoImagePath = s3UploadService.upload(photoImage, "user");
+        myRoomService.modifyMyRoomPhoto(userSequence,photoImagePath);
+
+        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSequence));
+    }
+
+    @DeleteMapping("/photo")
+    public BaseResponse removeMyRoomPhoto(){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.modifyMyRoomPhoto(userSequence,null);
+
+        return new BaseResponse(null);
+    }
+
+
+    @GetMapping("/background")
+    public BaseResponse myRoomBackgroundDetails(@RequestParam Long userSeq){
+        return new BaseResponse(myRoomService.findMyRoomBackgroundByUserSeq(userSeq));
+    }
+
+    @PostMapping("/background")
+    public BaseResponse updateMyRoomBackground(@RequestBody MyRoomBackgroundRequest myRoomBackgroundRequest){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.modifyMyRoomBackground(userSequence,myRoomBackgroundRequest.getBackground());
+
+        return new BaseResponse(null);
+    }
+
+    @DeleteMapping("/background")
+    public BaseResponse removeMyRoomBackground(){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.modifyMyRoomBackground(userSequence,null);
+
+        return new BaseResponse(null);
+    }
 }

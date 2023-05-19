@@ -44,7 +44,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         logger.info("findUserByNickname 호출");
 
         List<UserResponse> userResponseList = new ArrayList<>();
-        List<User> users = userRepository.findByNicknameContaining(nickname);
+        List<User> users = userRepository.findByNicknameContainingAndSequenceIsNot(nickname, loginSeq);
         for (User user : users) {
             UserResponse userResponse = new UserResponse();
             userResponse.setUserSeq(user.getSequence());
@@ -93,7 +93,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         logger.info("findUserByIdentify 호출");
 
         List<UserResponse> userResponses = new ArrayList<>();
-        List<User> users = userRepository.findByIdentifyContaining(identify);
+        List<User> users = userRepository.findByIdentifyContainingAndSequenceIsNot(identify, loginSeq);
         if (users.isEmpty()) {
             logger.severe("사용자 없음");
             throw new ErrorResponse(HttpStatus.BAD_REQUEST, "사용자 없음");
@@ -161,12 +161,14 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
         Friend friend = friendRepository.findByFromUserOrToUser(loginSeq, userSeq);
         if (null == friend) {
             logger.info("최초 요청");
+            Chat chat = chatRepository.save(Chat.builder().build());
             Friend newFriend = Friend.builder()
                     .fromUser(userRepository.findBySequence(loginSeq))
                     .toUser(userRepository.findBySequence(userSeq))
                     .isAccepted(false)
                     .isCanceled(false)
                     .isDeleted(false)
+                    .chatSeq(chat)
                     .build();
             friendRepository.save(newFriend);
         } else {
@@ -174,7 +176,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
                 if (friend.getFromUser().getSequence().equals(loginSeq) && friend.getToUser().getSequence().equals(userSeq)) {
                     logger.info("요청 취소 상태 또는 친구 삭제 상태 : 과거 신청 주체가 로그인 유저");
                     friend.setCreatedAt(LocalDateTime.now());
-                    friend.setUpdatedAt(null);
+                    friend.setUpdatedAt(LocalDateTime.now());
                     friend.setIsAccepted(false);
                     friend.setIsCanceled(false);
                     friend.setIsDeleted(false);
@@ -189,7 +191,7 @@ public class FriendRegisterServiceImpl implements FriendRegisterService {
                             .chatSeq(friend.getChatSeq())
                             .build();
                     friendRepository.save(newFriend);
-                    friendRepository.delete(friend);
+                    friendRepository.deleteByFromUser_SequenceAndToUser_Sequence(userSeq, loginSeq);
                 }
             } else {
                 logger.severe("친구 요청 후 수락 대기 상태 혹은 친구 상태");

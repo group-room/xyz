@@ -1,5 +1,7 @@
 package com.grouproom.xyz.domain.azt.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grouproom.xyz.domain.azt.dto.request.*;
 import com.grouproom.xyz.domain.azt.dto.response.AztListResponse;
 import com.grouproom.xyz.domain.azt.dto.response.AztResponse;
@@ -9,7 +11,6 @@ import com.grouproom.xyz.domain.azt.entity.Azt;
 import com.grouproom.xyz.domain.azt.entity.AztMember;
 import com.grouproom.xyz.domain.azt.repository.AztMemberRepository;
 import com.grouproom.xyz.domain.azt.repository.AztRepository;
-import com.grouproom.xyz.domain.chat.entity.Chat;
 import com.grouproom.xyz.domain.chat.repository.ChatRepository;
 import com.grouproom.xyz.domain.friend.dto.response.FriendListResponse;
 import com.grouproom.xyz.domain.friend.dto.response.FriendUserResponse;
@@ -20,14 +21,19 @@ import com.grouproom.xyz.global.exception.ErrorResponse;
 import com.grouproom.xyz.global.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.sql.Types;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 @RequiredArgsConstructor
@@ -41,6 +47,7 @@ public class AztServiceImpl implements AztService {
     private final ChatRepository chatRepository;
     private final FriendManageService friendManageService;
     private final S3UploadService s3UploadService;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public AztListResponse findAztList(Long loginSeq) {
@@ -69,10 +76,10 @@ public class AztServiceImpl implements AztService {
         for (AztMember aztMember:aztMembers) {
             User user = aztMember.getUser();
             memberResponses.add(MemberResponse.builder()
-                            .userSeq(user.getSequence())
-                            .nickname(user.getNickname())
-                            .identify(user.getIdentify())
-                            .profileImage(user.getProfileImage())
+                    .userSeq(user.getSequence())
+                    .nickname(user.getNickname())
+                    .identify(user.getIdentify())
+                    .profileImage(user.getProfileImage())
                     .build());
         }
         logger.info("아지트 정보");
@@ -112,39 +119,43 @@ public class AztServiceImpl implements AztService {
             imagePath = s3UploadService.upload(image, "azt");
         }
 
-        Chat chat = chatRepository.save(Chat.builder().build());
-        logger.info("채팅방 생성 성공");
-
-        Azt azt = aztRepository.save(Azt.builder()
-                        .aztName(addAztRequest.getName())
-                        .aztImage(imagePath)
-                        .isDeleted(false)
-                        .chatSeq(chat)
-                .build());
-        logger.info("아지트 생성 성공");
-
-        User loginUser = userRepository.findBySequence(loginSeq);
-        aztMemberRepository.save(AztMember.builder()
-                .azt(azt)
-                .user(loginUser)
-                .isDeleted(false)
-                .build());
-        logger.info("본인 가입 성공");
-
-        if(null == addAztRequest.getMembers()) {
-            logger.info("멤버 없음");
-        } else {
-            for (MemberRequest member : addAztRequest.getMembers()) {
-                User user = userRepository.findBySequence(member.getUserSeq());
-                aztMemberRepository.save(AztMember.builder()
-                                .azt(azt)
-                                .user(user)
-                                .isDeleted(false)
-                        .build());
-                logger.info(user.getSequence() + " 멤버 가입 성공");
+        String membersJson = "[]"; // 기본값으로 빈 JSON 배열 설정
+        if (null != addAztRequest.getMembers()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                membersJson = objectMapper.writeValueAsString(addAztRequest.getMembers());
+                logger.info("membersJson : " + membersJson);
+            } catch (JsonProcessingException e) {
+                throw new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
             }
         }
-        return findAzt(loginSeq, azt.getSequence());
+
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
+                .withProcedureName("usp_ins_azt")
+                .declareParameters(
+                        new SqlParameter("loginSeq", Types.BIGINT),
+                        new SqlParameter("name", Types.VARCHAR),
+                        new SqlParameter("imagePath", Types.VARCHAR),
+                        new SqlParameter("members", Types.VARCHAR),
+                        new SqlParameter("createdAt", Types.TIMESTAMP),
+                        new SqlParameter("updatedAt", Types.TIMESTAMP),
+                        new SqlOutParameter("outAztSeq", Types.BIGINT));
+
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("loginSeq", loginSeq)
+                .addValue("name", addAztRequest.getName())
+                .addValue("imagePath", imagePath)
+                .addValue("members", membersJson)
+                .addValue("createdAt", LocalDateTime.now())
+                .addValue("updatedAt", LocalDateTime.now())
+                ;
+
+        logger.info("프로시저 호출");
+        Map<String, Object> result = jdbcCall.execute(paramMap);
+        Long aztSeq = (Long) result.get("outAztSeq");
+        logger.info("aztSeq: " + aztSeq);
+
+        return findAzt(loginSeq, aztSeq);
     }
 
     @Override
@@ -161,7 +172,12 @@ public class AztServiceImpl implements AztService {
                 logger.severe("삭제된 아지트");
                 throw new ErrorResponse(HttpStatus.BAD_REQUEST, "삭제된 아지트");
             } else {
-                azt.setAztName(modifyAztRequest.getName());
+                if (null == modifyAztRequest.getName()) {
+                    logger.info("이름 없음");
+                } else {
+                    logger.info("이름 변경");
+                    azt.setAztName(modifyAztRequest.getName());
+                }
                 if(image.isEmpty()) {
                     logger.info("사진 변경 안함");
                 } else {
@@ -225,11 +241,11 @@ public class AztServiceImpl implements AztService {
             } else {
                 logger.info(friend.getUserSeq() + " 초대 가능");
                 memberResponses.add(MemberResponse.builder()
-                                .userSeq(friend.getUserSeq())
-                                .profileImage(friend.getProfileImage())
-                                .identify(friend.getIdentify())
-                                .nickname(friend.getNickname())
-                                .chatSeq(friend.getChatSeq())
+                        .userSeq(friend.getUserSeq())
+                        .profileImage(friend.getProfileImage())
+                        .identify(friend.getIdentify())
+                        .nickname(friend.getNickname())
+                        .chatSeq(friend.getChatSeq())
                         .build());
             }
         }

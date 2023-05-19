@@ -22,6 +22,7 @@ public class ChatController {
 
         model.addAttribute("room", roomName);
         model.addAttribute("name", Integer.toString(new SecureRandom().nextInt(10000) * 100));
+//        model.addAttribute("name", "testHuman");
         return "chattingRoom2";
     }
 }

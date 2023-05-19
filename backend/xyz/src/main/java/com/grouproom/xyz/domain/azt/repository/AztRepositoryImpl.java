@@ -32,6 +32,7 @@ public class AztRepositoryImpl implements AztRepositoryCustom {
                 .where(aztMember.user.sequence.eq(loginseq),
                         aztMember.isDeleted.eq(isDeleted),
                         azt.isDeleted.eq(false))
+                .orderBy(azt.createdAt.desc())
                 .fetch();
     }
 }

@@ -9,7 +9,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.security.SecureRandom;
-import java.util.Random;
 
 /**
  * packageName    : com.grouproom.xyz.domain.user.entity
@@ -63,6 +62,12 @@ public class User extends BaseTimeEntity {
     @Column(name = "identify", length = 500)
     private String identify;
 
+    @Column(name = "myroom_image", length = 500)
+    private String myRoomImage;
+
+    @Column(name = "myroom_Background")
+    private Integer myRoomBackground;
+
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
@@ -83,7 +88,7 @@ public class User extends BaseTimeEntity {
     }
 
     public void changeIsDeleted(Boolean isDeleted) {
-        this.socialIdentify = this.socialIdentify + "delete";
+        this.socialIdentify = "delete";
         this.isDeleted = isDeleted;
     }
 
@@ -98,7 +103,15 @@ public class User extends BaseTimeEntity {
         if (introduce != null) this.introduce = introduce;
     }
 
-    public void changeToken(String token){
+    public void changeMyRoomImage(String myRoomImage) {
+        this.myRoomImage = myRoomImage;
+    }
+
+    public void changeMyRoomBackground(Integer myRoomBackground) {
+        this.myRoomBackground = myRoomBackground;
+    }
+
+    public void changeToken(String token) {
         this.token = token;
     }
 }

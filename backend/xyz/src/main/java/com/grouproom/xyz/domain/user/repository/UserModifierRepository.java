@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserModifierRepository extends JpaRepository<UserModifier, Long> {
+public interface UserModifierRepository extends JpaRepository<UserModifier, Long>,UserModifierRepositoryCustom {
     UserModifier findByUser_SequenceAndModifier_Sequence(Long userSeq,Long modifierSeq);
 }

@@ -1,6 +1,5 @@
 package com.grouproom.xyz.domain.chat.controller;
 
-import com.grouproom.xyz.domain.chat.dto.request.ChatDetailRequest;
 import com.grouproom.xyz.domain.chat.service.ChatService;
 import com.grouproom.xyz.global.model.BaseResponse;
 import io.swagger.annotations.ApiOperation;
@@ -27,10 +26,10 @@ public class ChatController {
     }
 
     @ApiOperation(value = "채팅 상세 조회", notes = "채팅 상세 정보를 반환한다.")
-    @PostMapping
-    public BaseResponse<?> chatDetail(@RequestBody ChatDetailRequest chatDetailRequest) {
+    @GetMapping
+    public BaseResponse<?> chatDetail(@RequestParam Long chatSeq) {
         logger.info("chatDetail 호출");
         Long loginSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        return new BaseResponse<>(chatService.findChat(loginSeq, chatDetailRequest));
+        return new BaseResponse<>(chatService.findChat(loginSeq, chatSeq));
     }
 }
