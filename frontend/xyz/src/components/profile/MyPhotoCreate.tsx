@@ -47,7 +47,7 @@ const MyPhotoCreate = () => {
           videoRef.current.play();
         }
       } catch (error) {
-        console.error("Error accessing camera:", error);
+        // console.error("Error accessing camera:", error);
       }
     }
   };
@@ -85,7 +85,7 @@ const MyPhotoCreate = () => {
     useCreateMyPhotoMutation.mutate(formData, {
       onSuccess: () => {
         setIsCaptured(true);
-        console.log("사진 전송 완료");
+        // console.log("사진 전송 완료");
         // router.push(`/profile/${userSeq}/myphoto/edit`);
         setIsPhotoEdit(true);
       },
@@ -94,7 +94,7 @@ const MyPhotoCreate = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       const photoDataUrl = reader.result as string;
-      console.log("Saved photo:", photoDataUrl);
+      // console.log("Saved photo:", photoDataUrl);
     };
     reader.readAsDataURL(photoBlob);
   };
@@ -110,23 +110,49 @@ const MyPhotoCreate = () => {
     return (
       <div>
         {!isPreviewing && !isImageCaptured && (
-          <div>
-            <video ref={videoRef} />
-            <div className="flex gap-5 items-center justify-center">
-              <Btn btnFunc={startCamera} bgColor="pink" text="촬영시작" />
-              <Btn btnFunc={capturePicture} bgColor="pink" text="찰칵" />
+          <>
+            {videoRef && (
+              <div className="pt-5">
+                <video ref={videoRef} />
+              </div>
+            )}
+            <div className="flex gap-10 items-center justify-center pt-8">
+              <Btn
+                btnFunc={startCamera}
+                bgColor="pink"
+                text="촬영"
+                className="text-xl py-2 px-4"
+              />
+              <Btn
+                btnFunc={capturePicture}
+                bgColor="pink"
+                text="찰칵"
+                className="text-xl py-2 px-4"
+              />
             </div>
-          </div>
+          </>
         )}
 
         {isPreviewing && (
           <div>
             {capturedPhoto && (
-              <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
+              <div className="pt-5">
+                <img src={URL.createObjectURL(capturedPhoto)} alt="Captured" />
+              </div>
             )}
-            <div className="flex gap-5 items-center justify-center">
-              <Btn btnFunc={handleSavePhoto} bgColor="pink" text="저장하기" />
-              <Btn btnFunc={retakePicture} bgColor="pink" text="재촬영!" />
+            <div className="flex gap-10 items-center justify-center pt-8">
+              <Btn
+                btnFunc={handleSavePhoto}
+                bgColor="pink"
+                text="꾸미기"
+                className="text-xl py-2 px-4"
+              />
+              <Btn
+                btnFunc={retakePicture}
+                bgColor="pink"
+                text="재촬영!"
+                className="text-xl py-2 px-4"
+              />
             </div>
           </div>
         )}

@@ -40,7 +40,7 @@ function GuestbookWrite({ userSeq }: GuestbookWriteProps) {
   };
 
   return (
-    <div className="flex w-full gap-x-2 border-t border-white p-2">
+    <div className="flex w-full gap-x-2 border border-black p-1 mt-1">
       <input
         type="text"
         className="grow"

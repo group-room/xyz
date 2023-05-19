@@ -34,9 +34,9 @@ function ProfilePage() {
   } = useUserList(userSeq!);
 
   // 나중에 state 에서 userSeq 가져와서 넣을 자리 : useUserList(userSeq)
-  if (!isUserLoading && userList) {
-    console.log(userList, "userList-ProfilePage");
-  }
+  // if (!isUserLoading && userList) {
+  //   console.log(userList, "userList-ProfilePage");
+  // }
 
   return (
     <div className="w-full">

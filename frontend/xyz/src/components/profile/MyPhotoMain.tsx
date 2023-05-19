@@ -21,6 +21,7 @@ import { deleteMyPhoto } from "@/app/api/myphoto";
 import { queryKeys } from "@/constants/queryKeys";
 import LogoImg from "../../../public/images/logo.svg";
 import Image from "next/image";
+import { confirmSwal } from "@/utils/swalUtils";
 
 interface MyPhotoMainProps {
   userSeq: number;
@@ -44,7 +45,7 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
     mutationFn: () => deleteMyPhoto(),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.myroom.myroomList());
-      alert("사진이 삭제되었습니다.");
+      confirmSwal("사진이 삭제되었습니다.");
     },
   });
   const DeleteMyPhoto = () => {
@@ -54,16 +55,19 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
   const backgroundImgIdx = myPhotoFilter?.data;
 
   return (
-    <div className="  border-black border-x border-b p-1">
+    <div className="  border-black border-x border-b">
       <div>
         {myPhotoFilter?.data && myPhotoList?.data ? (
-          <div className=" w-full">
-            <div className=" flex items-center justify-center object-cover relative">
-              <img src={images[backgroundImgIdx!].src} />
-              <div className="absolute p-5 max-w-[80%]">
+          <div>
+            <div className=" flex justify-center object-cover relative">
+              <img
+                src={images[backgroundImgIdx! - 1].src}
+                className="h-[238px] items-center"
+              />
+              <div className="absolute pt-2 max-w-[72%]">
                 <img src={myPhotoList?.data} />
               </div>
-              <div className="absolute">
+              <div className=" fixed bottom-[18%]">
                 <Image
                   src={LogoImg}
                   alt="xyz 로고"
@@ -75,7 +79,7 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
             </div>
 
             {myUserSeq === userSeqToNumber ? (
-              <div className="flex items-center justify-center w-full py-5 gap-8">
+              <div className="flex items-center justify-center w-full pt-3 pb-3 gap-10">
                 <Btn
                   btnFunc={PushToMyPhotoCreate}
                   bgColor="pink"
