@@ -30,6 +30,8 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
   const { data: aztCapsuleData, isLoading: isAztCapsuleLoading } =
     useAztCapsuleList(slug);
 
+  if (aztCapsuleData) console.log(aztCapsuleData);
+
   const [btnValue, setBtnValue] = useState(true); // true면 추억앨범, false면 타임캡슐
   const handleChange = (selectedBtn: boolean) => {
     setBtnValue(selectedBtn);
@@ -47,7 +49,6 @@ function AzitDetailPage({ params: { slug } }: SlugProps) {
   };
 
   const formatDate = (dateString: string) => {
-    console.log("dateString -> ", dateString);
     const year = dateString.slice(0, 4);
     const month = dateString.slice(5, 7);
     const day = dateString.slice(8, 10);

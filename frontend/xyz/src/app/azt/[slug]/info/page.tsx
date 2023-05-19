@@ -119,9 +119,9 @@ function AztInfoPage({ params: { slug } }: SlugProps) {
               </div>
               <div className="flex flex-col gap-y-2 my-2">
                 <p>아지트 멤버</p>
-                <div className="flex text-center gap-x-3 justify-center">
+                <div className="flex flex-wrap text-center gap-x-3 gap-y-3 justify-center">
                   {aztMembers.map(({ userSeq, profileImage }) => (
-                    <div key={userSeq}>
+                    <div key={userSeq} className="flex-none w-30">
                       <Link href={`/${LOCAL.profile}/${userSeq}`}>
                         <ProfileImg imgSrc={profileImage} />
                       </Link>
