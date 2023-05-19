@@ -38,8 +38,14 @@ function DateFilter({
   return (
     // <div className="w-3/6 border border-black drop-shadow-md">
     <div className="flex basis-7/12 shadow-md">
-      <div className="flex align-middle px-2 border border-r-0 border-black">
-        <Image src={calendarIcon} alt="캘린더 아이콘" width={15} />
+      <div className="flex justify-center items-center px-2 border border-r-0 border-black">
+        <Image
+          src={calendarIcon}
+          alt="캘린더 아이콘"
+          width="0"
+          height="0"
+          className={`w-full h-auto`}
+        />
       </div>
       <DatePicker
         locale={ko}
