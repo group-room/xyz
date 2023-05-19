@@ -70,7 +70,6 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
     eventSource.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      console.log(chatData.concat(message));
       const sortedChatData = chatData
         .concat(message)
         .sort((a, b) => a.id - b.id);
