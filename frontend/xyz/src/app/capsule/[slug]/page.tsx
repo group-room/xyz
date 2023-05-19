@@ -67,8 +67,11 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
           </Container>
           {capsuleDetail.contents.map((item, idx) => {
             return (
-              <div className="mt-2 border border-black rounded-sm p-2 mb-2">
-                <div key={idx}>{item.content}</div>
+              <div
+                key={idx}
+                className="mt-2 border border-black rounded-sm p-2 mb-2"
+              >
+                <div>{item.content}</div>
               </div>
             );
           })}
