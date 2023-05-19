@@ -15,7 +15,7 @@ function Guestbook({ userSeq }: GuestbookProps) {
   const { data: visitorList, isLoading: isVisitorLoading } =
     useVisitorList(userSeq);
 
-  console.log(visitorList, "visitorList333333");
+  // console.log(visitorList, "visitorList333333");
 
   return (
     <section>

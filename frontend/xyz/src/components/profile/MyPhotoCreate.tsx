@@ -47,7 +47,7 @@ const MyPhotoCreate = () => {
           videoRef.current.play();
         }
       } catch (error) {
-        console.error("Error accessing camera:", error);
+        // console.error("Error accessing camera:", error);
       }
     }
   };
@@ -85,7 +85,7 @@ const MyPhotoCreate = () => {
     useCreateMyPhotoMutation.mutate(formData, {
       onSuccess: () => {
         setIsCaptured(true);
-        console.log("사진 전송 완료");
+        // console.log("사진 전송 완료");
         // router.push(`/profile/${userSeq}/myphoto/edit`);
         setIsPhotoEdit(true);
       },
@@ -94,7 +94,7 @@ const MyPhotoCreate = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       const photoDataUrl = reader.result as string;
-      console.log("Saved photo:", photoDataUrl);
+      // console.log("Saved photo:", photoDataUrl);
     };
     reader.readAsDataURL(photoBlob);
   };
