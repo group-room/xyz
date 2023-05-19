@@ -9,9 +9,6 @@ import LoadingLottie from "@/components/lottie/Loading";
 
 export default function TimecapsuleRamdomDetailPage() {
   const { data: randomDetail, isLoading } = useRandomCapsule();
-  if (randomDetail) {
-    console.log(randomDetail);
-  }
 
   return (
     <div>

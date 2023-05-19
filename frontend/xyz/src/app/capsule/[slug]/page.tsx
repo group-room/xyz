@@ -13,9 +13,6 @@ type Props = {
 
 export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
   const { data: capsuleDetail, isLoading } = useDetailCapsule(slug);
-  if (capsuleDetail) {
-    console.log(capsuleDetail);
-  }
 
   const formatDate = (dateString: string) => {
     const year = dateString.slice(0, 4);

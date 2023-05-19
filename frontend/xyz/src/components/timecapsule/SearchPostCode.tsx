@@ -37,7 +37,6 @@ export default function SearchPostCode({
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
-    console.log(fullAddress);
     setAddress(fullAddress);
   };
 
