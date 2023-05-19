@@ -19,7 +19,10 @@ import SelectOpenDay from "@/components/timecapsule/SelectOpenDay";
 export default function TimeCapsuleCreatePage() {
   const router = useRouter();
   const today: Date = new Date();
-  const after7Days: Date = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const tomorrow: Date = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+  const after7Days: Date = new Date(
+    tomorrow.getTime() + 7 * 24 * 60 * 60 * 1000
+  );
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
   const [content, setContent] = useState<string>("");
@@ -27,9 +30,9 @@ export default function TimeCapsuleCreatePage() {
   const [aztList, setAztList] = useState<AztTypes[]>([]);
   const [address, setAddress] = useState("");
   const [position, setPosition] = useState<positionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
-  const [openStart, setOpenStart] = useState(today);
+  const [openStart, setOpenStart] = useState(tomorrow);
   const [openEnd, setOpenEnd] = useState(after7Days);
-  const [updateEnd, setUpdateEnd] = useState(yesterday);
+  const [updateEnd, setUpdateEnd] = useState(today);
 
   const queryClient = useQueryClient();
   const useCreateCapsuleMutation = useMutation({
