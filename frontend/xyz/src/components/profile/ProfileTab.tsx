@@ -9,6 +9,7 @@ import { useUserList } from "@/hooks/queries/user";
 import GuestbookWrite from "./GuestbookWrite";
 import MyPhotoMain from "./MyPhotoMain";
 import { useAppSelector } from "@/hooks/redux";
+import LoadingLottie from "@/components/lottie/Loading";
 
 type ButtonProps = {
   value: boolean;
@@ -32,6 +33,14 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
     onChange(v);
   };
 
+  if (isUserLoading) {
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
+  }
+
   function SelectedContent() {
     if (isClick) {
       return (
@@ -44,7 +53,9 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
         <div>
           {isFriend === true ? (
             <div>
-              <Guestbook userSeq={profileTabUserSeq} />
+              <div className="border-black border-x border-b p-1">
+                <Guestbook userSeq={profileTabUserSeq} />
+              </div>
               <GuestbookWrite userSeq={profileTabUserSeq} />
             </div>
           ) : (
@@ -68,10 +79,12 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
 
   return (
     <>
-      <div className="flex border-t border-l border-r border-black rounded-t-md h-10">
+      <div className="flex rounded h-10">
         <div
-          className={`flex w-1/2 items-center justify-center border-r border-black ${
-            isClick ? " " : "border-b bg-neutral-300"
+          className={`flex w-1/2 items-center justify-center rounded rounded-b-none cursor-pointer ${
+            isClick
+              ? "border border-b-0 border-black "
+              : "border-b bg-neutral-300 border-black"
           }`}
           onClick={() => {
             setIsClick(true);
@@ -84,10 +97,10 @@ function ProfileTab({ value, onChange, profileTabUserSeq }: ButtonProps) {
           대문사진
         </div>
         <div
-          className={`flex w-1/2 items-center justify-center border-black  ${
+          className={`flex w-1/2 items-center justify-center rounded rounded-b-none cursor-pointer  ${
             !isClick
-              ? "bg-pink text-white"
-              : "border-b bg-neutral-300 text-white"
+              ? "bg-pink text-white border border-b-0 border-black"
+              : "border-b bg-neutral-300 text-white border-black"
           }`}
           onClick={() => {
             setIsClick(false);

@@ -19,7 +19,7 @@ function Guestbook({ userSeq }: GuestbookProps) {
 
   return (
     <section>
-      <div className="w-full h-[280px] bg-cover bg-pink flex flex-col overflow-y-auto">
+      <div className="w-full h-[250px] bg-cover bg-pink flex flex-col overflow-y-auto ">
         {visitorList && visitorList.length > 0 ? (
           visitorList.map((visitor) => (
             <GuestbookItem
