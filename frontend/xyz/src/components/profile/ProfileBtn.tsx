@@ -14,7 +14,7 @@ import { KEYS } from "@/constants/queryKeys";
 type Props = { btnUserSeq: number };
 
 function ProfileBtn({ btnUserSeq }: Props) {
-  console.log(typeof btnUserSeq);
+  // console.log(typeof btnUserSeq);
   const queryClient = useQueryClient();
 
   const state = useAppSelector((state) => state);
@@ -47,7 +47,7 @@ function ProfileBtn({ btnUserSeq }: Props) {
     mutationFn: () => putCancelFollow(btnUserSeq),
     onSuccess: () => {
       queryClient.invalidateQueries(KEYS.friend);
-      console.log("친구 요청 취소");
+      // console.log("친구 요청 취소");
     },
   });
 

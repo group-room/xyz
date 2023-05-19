@@ -52,8 +52,8 @@ function ProfilePhotoEdit({
     reader.readAsDataURL(ImgFile);
   };
 
-  console.log(ImgUrl, "ImgUrl");
-  console.log(userList?.profileImage, "userList?.profileImage");
+  // console.log(ImgUrl, "ImgUrl");
+  // console.log(userList?.profileImage, "userList?.profileImage");
   return (
     <div>
       프로필사진
