@@ -92,7 +92,7 @@ export default function SelectOpenDay({
           alt="calendarIconImg"
           width="0"
           height="0"
-          className="w-[7%] h-auto mr-2"
+          className="w-[20px] h-auto mr-2"
         />
         <div className="flex justify-center items-center text-center w-full h-9 border border-black rounded-md">
           <div className="flex w-11/12 justify-center items-center h-9 text-sm border-r border-black">
@@ -116,7 +116,7 @@ export default function SelectOpenDay({
           alt="calendarIconImg"
           width="0"
           height="0"
-          className="w-[7%] h-auto mr-2"
+          className="w-[20px] h-auto mr-2"
         />
         <div className="flex justify-center items-center text-center w-full h-9 border border-black rounded-md">
           <div className="flex w-11/12 justify-center items-center h-9 text-sm border-r border-black">
@@ -140,7 +140,7 @@ export default function SelectOpenDay({
           alt="calendarIconImg"
           width="0"
           height="0"
-          className="w-[7%] h-auto mr-2"
+          className="w-[20px] h-auto mr-2"
         />
         <div className="flex justify-center items-center text-center w-full h-9 border border-black rounded-md">
           <div className="flex w-11/12 justify-center items-center h-9 text-sm border-r border-black">
