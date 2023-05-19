@@ -41,13 +41,9 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
           />
           <Textbox
             icon={"/icons/pin.svg"}
-            alt={"달력 아이콘"}
-            firstClass={"border border-black flex my-2"}
-            secondClass={
-              "flex items-center justify-center mx-1 pr-1 border-black"
-            }
+            alt={"위치 아이콘"}
             maintext={capsuleDetail.tc.location}
-            maintextClass="text-sm flex justify-center items-center border-l border-black"
+            maintextClass="text-sm flex justify-center items-center"
           />
           <Container
             title
