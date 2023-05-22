@@ -62,18 +62,22 @@ function ProfileEdit() {
 
   return (
     <div>
-      <form action="" onSubmit={handleBtnClick}>
+      <form
+        action=""
+        onSubmit={handleBtnClick}
+        className="flex flex-col justify-center align-middle gap-y-5 mt-5 "
+      >
         <textarea
           placeholder="닉네임"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          className="border-2 border-black"
+          className="border border-black rounded p-1 resize-none"
         ></textarea>
         <textarea
           placeholder="자기소개 한마디"
           value={introduce}
           onChange={(e) => setIntroduce(e.target.value)}
-          className="border-2 border-black"
+          className="border border-black rounded p-1 resize-none"
         ></textarea>
         <ProfilePhotoEdit
           setImgUrl={setImgUrl}
@@ -86,7 +90,7 @@ function ProfileEdit() {
         <Btn
           width="w-full"
           bgColor="blue"
-          text="수정"
+          text="수&nbsp;&nbsp;정"
           btnFunc={handleBtnClick}
         />
       </form>
