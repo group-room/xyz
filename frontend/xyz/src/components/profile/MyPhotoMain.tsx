@@ -62,12 +62,12 @@ function MyPhotoMain({ userSeq }: MyPhotoMainProps) {
             <div className=" flex justify-center object-cover relative">
               <img
                 src={images[backgroundImgIdx! - 1].src}
-                className="h-[238px] items-center"
+                className="min-h-[238px] items-center"
               />
-              <div className="absolute pt-2 max-w-[72%]">
+              <div className="absolute pt-2 max-w-[65%]">
                 <img src={myPhotoList?.data} />
               </div>
-              <div className=" fixed bottom-[18%]">
+              <div className=" absolute bottom-[5%]">
                 <Image
                   src={LogoImg}
                   alt="xyz 로고"
