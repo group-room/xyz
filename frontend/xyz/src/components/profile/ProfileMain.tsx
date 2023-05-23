@@ -26,6 +26,7 @@ interface ProfileMainProps {
 }
 
 function ProfileMain({ userSeq }: ProfileMainProps) {
+  const [isBgmPlaying, setIsBgmPlaying] = useState(false);
   const { data: profileData, isLoading: isProfilMainLoading } =
     useUserList(userSeq);
   // console.log(profileData, "profileData");
@@ -92,6 +93,10 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
 
   const handleClickBlock = () => {
     usePostBlockMutation.mutate();
+  };
+
+  const handleClickBgm = () => {
+    setIsBgmPlaying(!isBgmPlaying);
   };
 
   const userSeqToNumber = +userSeq;
@@ -171,6 +176,20 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               maintext={profileData?.visitCount}
               firstClass="border border-black flex my-2 items-center bg-retro py-1"
             />
+            <Textbox
+              icon="/icons/user.svg"
+              alt="visitor"
+              text="bgm"
+              maintext={profileData?.bgms.map((bgm) => bgm.bgmTitle).join(",")}
+              firstClass="border border-black flex my-2 items-center bg-retro py-1"
+            >
+              <button
+                onClick={handleClickBgm}
+                className="flex-none w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center"
+              >
+                {isBgmPlaying ? "Pause" : "Play"}
+              </button>
+            </Textbox>
           </div>
         </div>
         <div className="border border-black h-[92px] shadow-lg pb-2 mt-1 bg-retro">
@@ -185,6 +204,15 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
           text="정말 탈퇴할까요 ㅠㅠ?"
         />
       )}
+
+      {isBgmPlaying &&
+        profileData?.bgms.map((bgm) =>
+          bgm.bgmLink ? (
+            <audio src={bgm.bgmLink} autoPlay controls>
+              Your browser does not support the audio element.
+            </audio>
+          ) : null
+        )}
     </>
   );
 }
