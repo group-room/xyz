@@ -13,9 +13,13 @@ type Props = {
 
 export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
   const { data: capsuleDetail, isLoading } = useDetailCapsule(slug);
-  if (capsuleDetail) {
-    console.log(capsuleDetail);
-  }
+
+  const formatDate = (dateString: string) => {
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(5, 7);
+    const day = dateString.slice(8, 10);
+    return `${year}년 ${month}월 ${day}일`;
+  };
 
   return (
     <div>
@@ -31,12 +35,15 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
           <Textbox
             icon={"/icons/calendar.svg"}
             alt={"캘린더 아이콘"}
-            maintext={capsuleDetail.tc.openedAt}
+            maintext={formatDate(capsuleDetail.tc.openedAt)}
           />
           <Textbox
             icon={"/icons/pin.svg"}
-            alt={"달력 아이콘"}
+            alt={"위치 아이콘"}
             maintext={capsuleDetail.tc.location}
+            firstClass={"border border-black flex my-2 h-auto"}
+            secondClass={"flex items-center justify-center mx-1 h-auto"}
+            maintextClass={"border-l border-black pl-1"}
           />
           <Container
             title
@@ -54,11 +61,16 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
               </MultiCarousel>
             </div>
           </Container>
-          <div className="mt-2 border border-black rounded-sm p-2">
-            {capsuleDetail.contents.map((item, idx) => {
-              return <div key={idx}>{item.content}</div>;
-            })}
-          </div>
+          {capsuleDetail.contents.map((item, idx) => {
+            return (
+              <div
+                key={idx}
+                className="mt-2 border border-black rounded-sm p-2 mb-2"
+              >
+                <div>{item.content}</div>
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div>로딩중</div>

@@ -10,6 +10,7 @@ export type CapsuleAztTypes = {
   location?: string;
   requiredCnt?: number;
   openCnt?: number | null;
+  openedAt?: string;
 };
 
 export type CoordinateTypes = {
@@ -30,12 +31,12 @@ export type CoordinateTypes = {
 export type positionTypes = {
   lat: number;
   lng: number;
-}
+};
 
 export type datialFilesType = {
   fileType: string;
   filePath: string;
-}
+};
 
 export type detailContentTypes = {
   userSeq: number;
@@ -43,7 +44,7 @@ export type detailContentTypes = {
   profileImage: string;
   content: string;
   files: datialFilesType[];
-}
+};
 
 export type capsuleDetailTypes = {
   tc: {
@@ -55,6 +56,6 @@ export type capsuleDetailTypes = {
     latitude: number;
     longitude: number;
     location: string;
-  },
+  };
   contents: detailContentTypes[];
-}
+};

@@ -12,9 +12,10 @@ import NotResultLottie from "../lottie/NotResult";
 
 type Props = {
   type: string;
+  name: string;
 };
 
-export default function Notification({ type }: Props) {
+export default function Notification({ type, name }: Props) {
   const { data: notiList, isLoading } = useNotifiacationList(type);
   const router = useRouter();
 
@@ -60,24 +61,52 @@ export default function Notification({ type }: Props) {
             >
               <div className="flex border-b-2 border-black h-10 w-full">
                 <div className="flex items-center justify-center w-2/12 border-r-2 border-black bg-slate-300">
-                  <p>{list.type}</p>
+                  <p>{list.type === "FRIEND" ? "친구" : "추억"}</p>
                 </div>
                 <div className="w-8/12 flex flex-col items-center justify-center text-center py-2">
-                  <div>{list.content}</div>
                   {list.content === "NEW FRIEND ASK" && (
-                    <div className="text-sm">FROM {list.fromUserName}</div>
+                    <>
+                      <div className="text-sm">
+                        {list.fromUserName}님으로 부터
+                      </div>
+                      <div className="text-sm">친구요청이 왔습니다</div>
+                    </>
+                  )}
+                  {list.content === "FRIEND ASK ACCEPTED" && (
+                    <>
+                      <div className="text-sm">{list.fromUserName}님이</div>
+                      <div className="text-sm">친구 신청을 받았습니다</div>
+                    </>
+                  )}
+                  {list.content === "NEW MEMORY LIKE" && (
+                    <>
+                      <div className="text-sm">{list.fromUserName}님이</div>
+                      <div className="text-sm">추억을 좋아합니다</div>
+                    </>
+                  )}
+                  {list.content === "NEW MEMORY COMMENT" && (
+                    <>
+                      <div className="text-sm">{list.fromUserName}님이</div>
+                      <div className="text-sm">추억에 댓글을 남겼습니다</div>
+                    </>
+                  )}
+                  {list.type === "MYROOM" && (
+                    <>
+                      <div className="text-sm">{list.fromUserName}님이</div>
+                      <div className="text-sm">방명록을 남겼습니다</div>
+                    </>
                   )}
                 </div>
                 <div className="w-2/12 border-l-2 border-black flex items-center justify-center bg-slate-300">
                   <Image
                     src="/icons/check.svg"
                     alt="checkImg"
-                    width={20}
-                    height={20}
+                    width="10"
+                    height="10"
                   />
                 </div>
               </div>
-              {list.type === "FRIEND" ? (
+              {list.type === "FRIEND" && list.content === "NEW FRIEND ASK" ? (
                 <div className="flex">
                   <div
                     className="flex items-center justify-center w-1/3 h-10 border-r-2 border-black bg-yellow"
@@ -98,7 +127,7 @@ export default function Notification({ type }: Props) {
                     거절
                   </div>
                   <div
-                    className="flex items-center justify-center w-1/3 bg-slate-100 h-10"
+                    className="flex items-center justify-center w-1/3 h-10 bg-slate-100"
                     onClick={() => {
                       list.targetSeq &&
                         usePostBlockMutation.mutate(list.targetSeq);
@@ -109,6 +138,17 @@ export default function Notification({ type }: Props) {
                 </div>
               ) : (
                 <div className="flex">
+                  {list.type === "FRIEND" &&
+                    list.content === "FRIEND ASK ACCEPTED" && (
+                      <div
+                        className="flex items-center justify-center w-1/2 h-10 border-r-2 border-black bg-yellow"
+                        onClick={() =>
+                          router.push(`/profile/${list.targetSeq}`)
+                        }
+                      >
+                        친구 프로필로
+                      </div>
+                    )}
                   {list.type === "MEMORY" && (
                     <div
                       className="flex items-center justify-center w-1/2 h-10 border-r-2 border-black bg-yellow"
@@ -117,13 +157,12 @@ export default function Notification({ type }: Props) {
                       추억으로
                     </div>
                   )}
-                  {/* 마이룸 경로 변경 가능 */}
                   {list.type === "MYROOM" && (
                     <div
                       className="flex items-center justify-center w-1/2 h-10 border-r-2 border-black bg-yellow"
-                      onClick={() => router.push("/profile/myroom")}
+                      onClick={() => router.push(`/profile/${list.userSeq}`)}
                     >
-                      마이룸으로
+                      내 프로필로
                     </div>
                   )}
                   <div
@@ -142,7 +181,7 @@ export default function Notification({ type }: Props) {
       ) : (
         <div className="flex flex-col justify-center items-center mt-[10vh]">
           <NotResultLottie />
-          <div className="mt-8"> {type} 리스트가 없습니다. </div>
+          <div className="mt-8"> {name} 알림이 없습니다. </div>
         </div>
       )}
     </div>

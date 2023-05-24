@@ -37,9 +37,15 @@ function DateFilter({
 
   return (
     // <div className="w-3/6 border border-black drop-shadow-md">
-    <div className="flex basis-7/12 shadow-md">
-      <div className="flex align-middle px-2 border border-r-0 border-black">
-        <Image src={calendarIcon} alt="캘린더 아이콘" width={15} />
+    <div className="flex shadow-md w-1/2 border border-black ">
+      <div className="flex justify-center items-center px-2 border-r border-black">
+        <Image
+          src={calendarIcon}
+          alt="캘린더 아이콘"
+          width="0"
+          height="0"
+          className={`w-[18px] h-auto`}
+        />
       </div>
       <DatePicker
         locale={ko}
@@ -47,7 +53,7 @@ function DateFilter({
         selected={selectedDate}
         onChange={handleDateChange}
         popperClassName="z-10" // 지도에 겹쳐지는 것 방지
-        className="flex align-middle border border-black text-center py-1 cursor-pointer w-full placeholder:text-black"
+        className="flex justify-center items-center text-center w-full py-1 cursor-pointer placeholder:text-black"
         placeholderText="날짜 선택하기"
         maxDate={new Date()}
       />

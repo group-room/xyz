@@ -3,6 +3,7 @@
 import { useUserList } from "@/hooks/queries/user";
 import React, { useEffect, useState, SetStateAction, Dispatch } from "react";
 import { useAppSelector } from "@/hooks/redux";
+import { timerSwal } from "@/utils/swalUtils";
 
 interface ProfilePhotoEditProps {
   ImgUrl: string | undefined;
@@ -42,7 +43,7 @@ function ProfilePhotoEdit({
   };
 
   const handleImgPreview = () => {
-    if (!ImgFile) return alert("이미지가 선택되지 않았습니다");
+    if (!ImgFile) return timerSwal("이미지가 선택되지 않았습니다");
     const reader = new FileReader();
     reader.onloadend = () => {
       const previewUrl = reader.result as string;
@@ -51,8 +52,8 @@ function ProfilePhotoEdit({
     reader.readAsDataURL(ImgFile);
   };
 
-  console.log(ImgUrl, "ImgUrl");
-  console.log(userList?.profileImage, "userList?.profileImage");
+  // console.log(ImgUrl, "ImgUrl");
+  // console.log(userList?.profileImage, "userList?.profileImage");
   return (
     <div>
       프로필사진

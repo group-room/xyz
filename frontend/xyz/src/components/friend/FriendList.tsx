@@ -13,8 +13,6 @@ export default function FriendList({ isBlock }: Props) {
   const router = useRouter();
 
   const { data: friendList, isLoading } = useFriendList(isBlock);
-  if (friendList) {
-  }
   return (
     <div>
       {isBlock ? (
@@ -26,19 +24,20 @@ export default function FriendList({ isBlock }: Props) {
       {friendList && friendList.length !== 0 ? (
         friendList.map((list) => {
           return (
-              <FriendBox
+            <FriendBox
               key={list.identify}
-                imgSrc={list.profileImage}
-                nickname={list.nickname}
-                identify={list.identify}
-                relation={list.relation as string}
-                userSeq={list.userSeq}
-              />
+              imgSrc={list.profileImage}
+              nickname={list.nickname}
+              identify={list.identify}
+              relation={list.relation as string}
+              userSeq={list.userSeq}
+              chatSeq={list.chatSeq}
+            />
           );
         })
       ) : (
         <div className="flex flex-col justify-center items-center mt-[10vh]">
-          <NotResultLottie />
+          <NotResultLottie width="90%" height="90%" />
           <div className="mt-8"> 친구 리스트가 없습니다. </div>
         </div>
       )}

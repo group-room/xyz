@@ -4,6 +4,7 @@ import { sendChat } from "@/app/api/chatting";
 import ChatBubble from "@/components/chatting/ChatBubble";
 import ChatHeader from "@/components/chatting/ChatHeader";
 import ChatInput from "@/components/chatting/ChatInput";
+import LoadingLottie from "@/components/lottie/Loading";
 import { queryKeys } from "@/constants/queryKeys";
 import {
   useChattingDetail,
@@ -13,6 +14,7 @@ import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
 import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
+import { timerSwal } from "@/utils/swalUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { is } from "date-fns/locale";
 import { useRouter } from "next/navigation";
@@ -99,7 +101,6 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
     eventSource.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      console.log(chatData.concat(message));
       const sortedChatData = chatData
         .concat(message)
         .sort((a, b) => a.id - b.id);
@@ -127,13 +128,18 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
 
   const handleSumbitChat = () => {
     if (chatInput.length < 1) {
-      alert("채팅을 입력해주세요");
+      timerSwal("채팅을 입력해주세요");
       return;
     }
     useSendChatMutation.mutate();
   };
 
-  if (!chatroomDetailData) return <div>로딩중...</div>;
+  if (!chatroomDetailData)
+    return (
+      <div className="flex justify-center align-middle py-60">
+        <LoadingLottie />
+      </div>
+    );
 
   if (chatroomDetailData && chatData) {
     const { name, type, aztSeq, userSeq, members } = chatroomDetailData;

@@ -8,6 +8,7 @@ import { queryKeys } from "@/constants/queryKeys";
 import ProfileImg from "../common/ProfileImg";
 import ModalBtn from "../common/ModalBtn";
 import { useAppSelector } from "@/hooks/redux";
+import { confirmSwal } from "@/utils/swalUtils";
 
 interface CommentItemProps {
   commentSeq: number;
@@ -35,7 +36,7 @@ function CommentItem({
     mutationFn: () => deleteMemoryComment(commentSeq),
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.memory.memoryDetail(memorySeq));
-      alert("댓글이 삭제되었어요.");
+      confirmSwal("댓글이 삭제되었어요.");
     },
   });
 

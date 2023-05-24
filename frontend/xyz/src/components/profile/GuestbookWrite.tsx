@@ -7,6 +7,7 @@ import { createGuestbook } from "@/app/api/user";
 import { useVisitorList } from "@/hooks/queries/user";
 import useInput from "@/hooks/useInput";
 import Btn from "../common/Btn";
+import { timerSwal } from "@/utils/swalUtils";
 
 type GuestbookWriteProps = {
   userSeq: number;
@@ -32,14 +33,14 @@ function GuestbookWrite({ userSeq }: GuestbookWriteProps) {
 
   const handleGuestbookCreateClick = () => {
     if (contentInput === "") {
-      alert("방명록 내용을 작성해주세요");
+      timerSwal("방명록 내용을 작성해주세요");
       return;
     }
     useCreateGuestbookMutation.mutate();
   };
 
   return (
-    <div className="flex w-full gap-x-2 border-t border-white p-2">
+    <div className="flex w-full gap-x-2 border border-black p-1 mt-1">
       <input
         type="text"
         className="grow"

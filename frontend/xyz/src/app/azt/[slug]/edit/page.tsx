@@ -10,6 +10,7 @@ import { useAztInfo } from "@/hooks/queries/azt";
 import { useAppSelector } from "@/hooks/redux";
 import { SlugProps } from "@/types/common";
 import { UserTypes } from "@/types/user";
+import { timerSwal } from "@/utils/swalUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -56,7 +57,7 @@ function AzitEditPage({ params: { slug } }: SlugProps) {
 
   const handleEditAzt = () => {
     if (!aztNameInput) {
-      alert("아지트 이름을 입력해주세요!");
+      timerSwal("아지트 이름을 입력해주세요!");
       return;
     }
     let membersArr: { userSeq: number }[] = [];
@@ -115,7 +116,7 @@ function AzitEditPage({ params: { slug } }: SlugProps) {
             <input
               type="file"
               id="input-file"
-              accept="image/*"
+              accept="image/jpeg, image/png"
               onChange={handlePhotoChange}
               className="hidden"
             />
@@ -138,7 +139,6 @@ function AzitEditPage({ params: { slug } }: SlugProps) {
             ))}
           </div>
           <div className="my-3 mx-auto">
-            {/* TODO: 멤버 초대하기 링크 연결 */}
             <Btn
               bgColor="blue"
               text="멤버 초대하기"

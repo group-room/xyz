@@ -8,17 +8,13 @@ export default function MyTimecapsuleList() {
   const router = useRouter();
 
   const { data: myCapsuleList, isLoading } = useMyCapsuleList();
-  if (myCapsuleList) {
-    console.log("my capsule list");
-    console.log(myCapsuleList);
-  }
 
   const moveToDetail = (tcSeq: number) => {
     router.push(`/capsule/${tcSeq}`);
   };
 
   return (
-    <div className="flex flex-wrap border-x border-b-2 rounded rounded-t-none border-black p-2">
+    <div className="flex flex-wrap rounded rounded-t-none border-black p-2">
       {myCapsuleList ? (
         myCapsuleList.map((list) => {
           return (

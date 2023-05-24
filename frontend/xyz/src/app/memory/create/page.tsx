@@ -13,6 +13,7 @@ import { KEYS } from "@/constants/queryKeys";
 import { convertDate } from "@/utils/dateUtils";
 import { useAztList } from "@/hooks/queries/azt";
 import { AztTypes } from "@/types/azt";
+import { timerSwal } from "@/utils/swalUtils";
 
 function MemoryCreatePage() {
   const router = useRouter();
@@ -51,6 +52,15 @@ function MemoryCreatePage() {
 
   const handleSubmitMemory = (e?: React.FormEvent): void => {
     e!.preventDefault();
+    if (currAzt.length === 0) {
+      timerSwal("아지트를 먼저 생성해주세요.");
+      return;
+    }
+
+    if (content.length === 0 && photos.length === 0) {
+      timerSwal("추억을 입력해주세요.");
+      return;
+    }
 
     const formData = new FormData();
     const stringifiedData = JSON.stringify({

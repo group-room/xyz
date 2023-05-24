@@ -55,12 +55,16 @@ function DropDown({
     handleToggle();
   };
 
-  console.log(currAzt);
-
   return (
     <div className="flex items-center w-full gap-3">
       <div className="flex-none">
-        <img src={iconSrc} alt="화살표" width={20} />
+        <Image
+          src={iconSrc}
+          alt="people"
+          width="0"
+          height="0"
+          className="w-[17px] h-auto"
+        />
       </div>
       <div className="relative grow rounded border border-black cursor-pointer">
         <div
@@ -88,7 +92,13 @@ function DropDown({
                 isAzt ? "bg-yellow" : "bg-blue"
               } flex align-middle px-2 border-l border-black`}
             >
-              <Image src={arrowDownIcon} alt="화살표" width={15} />
+              <Image
+                src={arrowDownIcon}
+                alt="화살표"
+                width="0"
+                height="0"
+                className="w-[17px] h-auto"
+              />
             </div>
           )}
         </div>

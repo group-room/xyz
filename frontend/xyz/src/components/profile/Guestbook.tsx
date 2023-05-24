@@ -15,11 +15,11 @@ function Guestbook({ userSeq }: GuestbookProps) {
   const { data: visitorList, isLoading: isVisitorLoading } =
     useVisitorList(userSeq);
 
-  console.log(visitorList, "visitorList333333");
+  // console.log(visitorList, "visitorList333333");
 
   return (
-    <section className="w-full h-full">
-      <div className="w-full h-full min-h-[300px] bg-cover bg-pink flex flex-col">
+    <section>
+      <div className="w-full h-[250px] bg-cover bg-pink flex flex-col overflow-y-auto ">
         {visitorList && visitorList.length > 0 ? (
           visitorList.map((visitor) => (
             <GuestbookItem

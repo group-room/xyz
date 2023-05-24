@@ -13,6 +13,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { API } from "@/constants/queryKeys";
 import { LOCAL } from "@/constants/localUrl";
 import { useUnreadNotifiacation } from "@/hooks/queries/notification";
+import { bgRandomNumber } from "@/utils/bgUtils";
+import { RandomBg } from "@/constants/style";
 
 function Header() {
   const pathname = usePathname();
@@ -51,14 +53,6 @@ function Header() {
 
       const fetchSse = async () => {
         try {
-          // //sse 최초 연결되었을 때
-          // eventSource.onopen = () => {
-          //   console.log("open");
-          // };
-
-          // eventSource.addEventListener("connect", (event: any) => {
-          //   console.log(event.data);
-          // });
           eventSource.addEventListener("newNotification", (event: any) => {
             setIsAlert(true);
           });
@@ -70,7 +64,7 @@ function Header() {
             }
           };
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
       };
       fetchSse();
@@ -80,7 +74,9 @@ function Header() {
 
   return (
     <header>
-      <nav className="fixed flex items-center justify-between top-0 left-0 right-0 bg-white px-5 py-4 shadow-sm shadow-slate-50 h-14 z-50">
+      <nav
+        className={`fixed ${RandomBg[bgRandomNumber]} bg-no-repeat bg-cover flex items-center justify-between top-0 left-0 right-0 bg-white/8 px-5 py-4 shadow-sm shadow-slate-50 h-14 z-50`}
+      >
         {mainPathnameWithLogo.find((path) => path === currPathname) ? (
           <Link href={"/memory"}>
             <Image
@@ -92,7 +88,7 @@ function Header() {
             />
           </Link>
         ) : (
-          <div onClick={() => router.back()}>
+          <div onClick={() => router.back()} className="cursor-pointer">
             <Image src={ArrowLeft} alt="xyz 로고" width={13} height={13} />
           </div>
         )}

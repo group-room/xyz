@@ -9,6 +9,10 @@ type TextboxProps = {
   maintext?: string | number;
   bgColor?: string;
   textColor?: string;
+  firstClass?: string;
+  secondClass?: string;
+  textClass?: string;
+  maintextClass?: string;
 };
 
 function Textbox({
@@ -18,18 +22,38 @@ function Textbox({
   maintext,
   bgColor,
   textColor,
+  firstClass,
+  secondClass,
+  textClass,
+  maintextClass,
 }: TextboxProps) {
   return (
     <div
-      className={`border border-black flex h-8 mb-2 mt-2 ${
-        bgColor ? BgColors[bgColor] : ""
-      } ${textColor ? TextColors[textColor] : ""}`}
+      className={` ${
+        firstClass ? firstClass : " border border-black flex my-2 h-8"
+      } ${
+        bgColor ? (bgColor !== "retro" ? BgColors[bgColor] : "bg-retro") : ""
+      } ${textColor ? TextColors[textColor] : ""} `}
     >
-      <div className="flex items-center justify-center mx-1 pr-1 border-black border-r h-full">
+      <div
+        className={` ${
+          secondClass
+            ? secondClass
+            : "flex items-center justify-center mx-1 pr-1 border-black border-r h-full"
+        } `}
+      >
         <Image src={icon} alt={alt} width={16} height={16} />
-        {text && <div className="ml-1">{text}</div>}
+        {text && (
+          <div className={` ${textClass ? textClass : "ml-1"} `}>{text}</div>
+        )}
       </div>
-      <div className={`flex items-center justify-center px-1 h-full`}>
+      <div
+        className={` ${
+          maintextClass
+            ? maintextClass
+            : "flex items-center justify-center px-1 h-auto"
+        } `}
+      >
         {maintext}
       </div>
     </div>

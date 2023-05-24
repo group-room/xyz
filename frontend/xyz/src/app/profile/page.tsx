@@ -15,6 +15,7 @@ import ProfilePhotoEdit from "@/components/profile/ProfilePhotoEdit";
 import Myroom from "@/components/profile/Myroom";
 import ProfileBtn from "@/components/profile/ProfileBtn";
 import { useAppSelector } from "@/hooks/redux";
+import LoadingLottie from "@/components/lottie/Loading";
 
 function ProfilePage() {
   const userSeq = useAppSelector((state) => state.auth.userInfo?.userSeq);
@@ -33,12 +34,12 @@ function ProfilePage() {
   } = useUserList(userSeq!);
 
   // 나중에 state 에서 userSeq 가져와서 넣을 자리 : useUserList(userSeq)
-  if (!isUserLoading && userList) {
-    console.log(userList, "userList-ProfilePage");
-  }
+  // if (!isUserLoading && userList) {
+  //   console.log(userList, "userList-ProfilePage");
+  // }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       {userSeq ? (
         <>
           <ProfileMain userSeq={userSeq} />
@@ -53,7 +54,9 @@ function ProfilePage() {
           />
         </>
       ) : (
-        <div>로딩중...</div>
+        <div className="flex justify-center align-middle py-60">
+          <LoadingLottie />
+        </div>
       )}
     </div>
   );

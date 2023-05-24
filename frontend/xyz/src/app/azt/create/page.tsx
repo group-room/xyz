@@ -8,6 +8,7 @@ import { API } from "@/constants/queryKeys";
 import { useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
 import { UserTypes } from "@/types/user";
+import { timerSwal } from "@/utils/swalUtils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -45,7 +46,7 @@ function AzitCreatePage() {
 
   const handleClickCreate = () => {
     if (!aztNameInput) {
-      alert("아지트 이름을 입력해주세요!");
+      timerSwal("아지트 이름을 입력해주세요!");
       return;
     }
     let membersArr: { userSeq: number }[] = [];
@@ -116,7 +117,7 @@ function AzitCreatePage() {
                 <input
                   type="file"
                   id="input-file"
-                  accept="image/*"
+                  accept="image/jpeg, image/png"
                   onChange={handlePhotoChange}
                   className="hidden"
                 />

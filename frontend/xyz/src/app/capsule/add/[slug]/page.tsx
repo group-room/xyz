@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { KEYS } from "@/constants/queryKeys";
 import { postContentCapsule } from "@/app/api/capsule";
 import { useRouter } from "next/navigation";
+import { confirmSwal } from "../../../../utils/swalUtils";
 
 type Props = {
   params: {
@@ -53,7 +54,7 @@ export default function TimeCapsuleCreatePage({ params: { slug } }: Props) {
     useCreateCapsuleMutation.mutate(formData, {
       onSuccess: (data) => {
         const tcSeq = data.data.data.tcSeq;
-        console.log(tcSeq);
+        confirmSwal("타임캡슐 내용이 추가되었습니다!");
         router.push(`/capsule`);
       },
     });
