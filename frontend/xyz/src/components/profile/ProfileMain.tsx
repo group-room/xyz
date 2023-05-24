@@ -20,6 +20,7 @@ import { deleteFollow, postBlock } from "@/app/api/friend";
 import { KEYS } from "@/constants/queryKeys";
 import { confirmSwal } from "@/utils/swalUtils";
 import LoadingLottie from "@/components/lottie/Loading";
+import { BgmTypes } from "@/types/user";
 
 interface ProfileMainProps {
   userSeq: number;
@@ -29,6 +30,8 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
   const [isBgmPlaying, setIsBgmPlaying] = useState(false);
   const { data: profileData, isLoading: isProfilMainLoading } =
     useUserList(userSeq);
+  const bgms = profileData?.bgms || [];
+  const [currentBgm, setCurrentBgm] = useState<BgmTypes | null>(null);
   // console.log(profileData, "profileData");
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
@@ -97,6 +100,23 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
 
   const handleClickBgm = () => {
     setIsBgmPlaying(!isBgmPlaying);
+  };
+
+  const getRandomBgm = () => {
+    if (bgms.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * bgms.length);
+    return bgms[randomIndex];
+  };
+
+  const randomBgm = getRandomBgm();
+
+  const handleBgmPlay = () => {
+    setIsBgmPlaying(true);
+    setCurrentBgm(randomBgm);
+  };
+
+  const handleBgmPause = () => {
+    setIsBgmPlaying(false);
   };
 
   const userSeqToNumber = +userSeq;
@@ -180,11 +200,11 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               icon="/icons/user.svg"
               alt="visitor"
               text="bgm"
-              maintext={profileData?.bgms.map((bgm) => bgm.bgmTitle).join(",")}
+              maintext={currentBgm ? currentBgm.bgmTitle : ""}
               firstClass="border border-black flex my-2 items-center bg-retro py-1"
             >
               <button
-                onClick={handleClickBgm}
+                onClick={isBgmPlaying ? handleBgmPause : handleBgmPlay}
                 className="flex-none w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center"
               >
                 {isBgmPlaying ? "Pause" : "Play"}
@@ -205,14 +225,16 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
         />
       )}
 
-      {isBgmPlaying &&
-        profileData?.bgms.map((bgm) =>
-          bgm.bgmLink ? (
-            <audio src={bgm.bgmLink} autoPlay controls>
-              Your browser does not support the audio element.
-            </audio>
-          ) : null
-        )}
+      {isBgmPlaying && randomBgm && (
+        <audio
+          src={randomBgm.bgmLink}
+          autoPlay
+          controls
+          onEnded={handleBgmPause}
+        >
+          Your browser does not support the audio element.
+        </audio>
+      )}
     </>
   );
 }
