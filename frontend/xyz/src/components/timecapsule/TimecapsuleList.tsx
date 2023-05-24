@@ -39,7 +39,7 @@ export default function TimecapsuleList() {
     <div className="flex">
       <Link
         href={"/capsule/create"}
-        className="flex flex-col items-center justify-center w-[30%] mr-2"
+        className="flex relative flex-col items-center justify-center shrink-0 mr-2"
       >
         <div className="flex items-center justify-center rounded-full w-[55px] h-[55px] border-rose-100">
           <div className="flex items-center justify-center rounded-full w-[50px] h-[50px] bg-rose-100">
