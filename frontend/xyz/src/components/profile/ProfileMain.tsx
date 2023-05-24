@@ -205,7 +205,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
             >
               <button
                 onClick={isBgmPlaying ? handleBgmPause : handleBgmPlay}
-                className="flex-none w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center"
+                className="flex-none w-6 h-6 rounded-full bg-blue-500 text-blue flex items-center justify-center"
               >
                 {isBgmPlaying ? "Pause" : "Play"}
               </button>
@@ -226,14 +226,16 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
       )}
 
       {isBgmPlaying && randomBgm && (
-        <audio
-          src={randomBgm.bgmLink}
-          autoPlay
-          controls
-          onEnded={handleBgmPause}
-        >
-          Your browser does not support the audio element.
-        </audio>
+        <div style={{ display: "none" }}>
+          <audio
+            src={randomBgm.bgmLink}
+            autoPlay
+            controls
+            onEnded={handleBgmPause}
+          >
+            Your browser does not support the audio element.
+          </audio>
+        </div>
       )}
     </>
   );
