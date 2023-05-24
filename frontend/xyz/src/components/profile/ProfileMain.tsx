@@ -1,7 +1,7 @@
 "use client";
 import Textbox from "../common/Textbox";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,7 @@ import { KEYS } from "@/constants/queryKeys";
 import { confirmSwal } from "@/utils/swalUtils";
 import LoadingLottie from "@/components/lottie/Loading";
 import { BgmTypes } from "@/types/user";
+import "./ProfileMain.css";
 
 interface ProfileMainProps {
   userSeq: number;
@@ -119,6 +120,31 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     setIsBgmPlaying(false);
   };
 
+  const bgmTextRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (bgmTextRef.current) {
+      const textElement = bgmTextRef.current;
+      const textContainer = textElement.parentElement;
+
+      if (
+        textContainer &&
+        textElement.offsetWidth < textContainer.offsetWidth
+      ) {
+        return;
+      }
+
+      const animationDuration = textElement.offsetWidth / 50; // Adjust the scroll speed as desired
+      textElement.style.animationDuration = `${animationDuration}s`;
+    }
+  }, [currentBgm]);
+
+  useEffect(() => {
+    if (isBgmPlaying && randomBgm) {
+      setCurrentBgm(randomBgm);
+    }
+  }, [isBgmPlaying]);
+
   const userSeqToNumber = +userSeq;
 
   if (isProfilMainLoading) {
@@ -197,18 +223,29 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               firstClass="border border-black flex my-2 items-center bg-retro py-1"
             />
             <Textbox
-              icon="/icons/user.svg"
+              icon="/icons/music.svg"
               alt="visitor"
               text="bgm"
-              maintext={currentBgm ? currentBgm.bgmTitle : ""}
+              // maintext={currentBgm ? currentBgm.bgmTitle : ""}
               firstClass="border border-black flex my-2 items-center bg-retro py-1"
             >
               <button
                 onClick={isBgmPlaying ? handleBgmPause : handleBgmPlay}
-                className="flex-none w-6 h-6 rounded-full bg-blue-500 text-blue flex items-center justify-center"
+                className="flex-none w-6 h-6 rounded-full first-letter flex items-center justify-center"
               >
-                {isBgmPlaying ? "Pause" : "Play"}
+                <img
+                  src={isBgmPlaying ? "/icons/pause.svg" : "/icons/play.svg"}
+                  alt="play"
+                />
               </button>
+
+              {currentBgm && (
+                <div className="bgm-title-container">
+                  <div ref={bgmTextRef} className="bgm-title-scroll">
+                    <div className="bgm-title-text">{currentBgm.bgmTitle}</div>
+                  </div>
+                </div>
+              )}
             </Textbox>
           </div>
         </div>
