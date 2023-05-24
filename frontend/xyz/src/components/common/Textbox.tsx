@@ -51,7 +51,7 @@ function Textbox({
         className={` ${
           maintextClass
             ? maintextClass
-            : "flex items-center justify-center px-1 h-full"
+            : "flex items-center justify-center px-1 h-auto"
         } `}
       >
         {maintext}
