@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import ProfileImg from "./../common/ProfileImg";
 import Image from "next/image";
-import Plus from "../../../public/icons/plus.svg";
+import Plus from "../../../public/icons/suffix.svg";
 import Link from "next/link";
 import { useWaitingCapsuleList } from "@/hooks/queries/capsule";
 import Modal from "@/components/common/Modal";
@@ -37,13 +37,16 @@ export default function TimecapsuleList() {
 
   return (
     <div className="flex">
-      <Link href={"/capsule/create"} className="mr-2">
-        <div className="flex flex-col items-center justify-center w-[60px]">
-          <div className="flex items-center justify-center bg-pink rounded-full w-[55px] h-[55px]">
+      <Link
+        href={"/capsule/create"}
+        className="flex relative flex-col items-center justify-center shrink-0 mr-2"
+      >
+        <div className="flex items-center justify-center rounded-full w-[55px] h-[55px] border-rose-100">
+          <div className="flex items-center justify-center rounded-full w-[50px] h-[50px] bg-rose-100">
             <Image src={Plus} alt="btn" />
           </div>
-          <p className="text-sm mt-2">캡슐생성</p>
         </div>
+        <div className="text-sm mt-1">캡슐생성</div>
       </Link>
       <div className="flex overflow-x-auto scrollbar-hide ">
         {capsuleList &&
