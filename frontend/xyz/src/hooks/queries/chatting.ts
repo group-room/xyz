@@ -57,27 +57,26 @@ export const useChattingDetail = (chatSeq: number) => {
 // };
 
 // 채팅방 채팅 기록 조회 (react query 무한 스크롤)
-export const useChattingHistory = (room: string, id: number | null) => {
+export const useChattingHistory = (room: string) => {
   return useInfiniteQuery<{
     result: ChatDataTypes[];
     prevId: number | null;
     isLast: boolean;
   }>({
     queryKey: queryKeys.chatting.chatHistory(room),
-    queryFn: async () => {
-      const params = id ? { room, id } : { room };
+    queryFn: async ({ pageParam }) => {
       const res = await axiosChatInstance.get(`${API.chat}/history`, {
-        params: params,
+        params: { room: room, id: pageParam },
       });
       return {
-        result: res.data,
-        prevId: res.data[0].id,
-        isLast: res.data.length === 0,
+        result: res.data, // 실제 데이터
+        prevId: res.data[0].id, // 마지막으로 가져온 데이터의 id를 prevId로 리턴
+        isLast: res.data.length === 0, // 가져온 데이터가 없으면 isLast를 true로 리턴
       };
     },
     getPreviousPageParam: (firstPage) => {
-      firstPage.prevId;
+      if (firstPage.isLast) return undefined;
+      return firstPage.prevId;
     }, //getPreviousPageParam 함수가 undefined가 아닌 다른 값을 반환하면 hasPreviousPage는 true
-    // getNextPAgeParam 는 추가적으로 데이터를 fetch 하는 경우에, 두 번째 인수였던 콜백 함수가 반환한 값을 가져와서 사용할 수 있습니다. 따라서 위의 예제에서는 nextPage 를 객체에 담아서 반환했으므로, lastPage.nextPage 로 사용할 수 있습니다.
   });
 };

@@ -16,7 +16,6 @@ import { ChatDataTypes } from "@/types/chatting";
 import { SlugProps } from "@/types/common";
 import { timerSwal } from "@/utils/swalUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { is } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -28,17 +27,14 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     (state) => state.auth.userInfo?.userSeq
   );
   const chatDataRef = useRef() as React.MutableRefObject<HTMLDivElement>; // 바닥으로 스크롤 위한 Ref
-  const isFirstRendered = useRef(true); // 처음 렌더링 여부
+  const isSecondRendered = useRef(false); // 처음 렌더링 여부
   const scrollToBottom = () => {
     if (chatDataRef.current) chatDataRef.current.scrollIntoView();
   };
   const router = useRouter();
 
   const [chatTopRef, inView] = useInView(); // 무한 스크롤 위한 Ref'
-
-  const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const [lastId, setLastId] = useState<number | null>(null); // 마지막 페이지
-  const [isLast, setIsLast] = useState<boolean>(false); // 마지막 페이지인지 여부
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // 채팅방 정보 조회
   const { data: chatroomDetailData } = useChattingDetail(slug);
@@ -50,10 +46,10 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     fetchPreviousPage,
     hasPreviousPage,
     isFetchingPreviousPage,
-  } = useChattingHistory(chatroomSeq, lastId);
+  } = useChattingHistory(chatroomSeq);
 
-  // 채팅방에 속한 유저 아닐 시 채팅방 목록으로 이동
-  useLayoutEffect(() => {
+  useEffect(() => {
+    // 채팅방에 속한 유저 아닐 시 채팅방 목록으로 이동
     if (
       chatroomDetailData &&
       chatroomDetailData.members.find(
@@ -62,36 +58,53 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     ) {
       router.push("/chatting");
     }
-  }, []);
 
-  // 처음 페이지 진입시 스크롤 최하단으로 이동
-  useEffect(() => {
-    if (isFirstRendered.current) {
-      scrollToBottom();
-      isFirstRendered.current = false;
+    if (chatHistoryData) {
+      if (isSecondRendered.current === false) {
+        isSecondRendered.current = true;
+      }
+      setChatData((prev) => [...chatHistoryData.pages[0].result, ...prev]);
     }
   }, []);
 
   useEffect(() => {
-    console.log(chatHistoryData, hasPreviousPage);
+    // 처음 페이지 진입시 스크롤 최하단으로 이동
+    if (isSecondRendered.current && chatContainerRef.current) {
+      // scrollToBottom();
+      console.log("최초 렌더링");
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+      isSecondRendered.current = false;
+    }
+  }, [chatContainerRef.current]);
 
-    if (inView && hasPreviousPage && !isFetchingPreviousPage) {
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll); //clean up
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    if (inView && hasPreviousPage) {
       console.log("상단 스크롤");
+
       fetchPreviousPage();
+      if (chatHistoryData) {
+        const currChatData: ChatDataTypes[] = [];
+        chatHistoryData.pages[0].result.forEach((chat) => {
+          if (
+            chatData.find((chatData) => chatData.id === chat.id) === undefined
+          ) {
+            currChatData.push(chat);
+          }
+        });
+
+        setChatData((prev) => [...currChatData, ...prev]);
+      }
+      console.log(chatHistoryData);
     }
-    //   if (
-    //     !isLast &&
-    //     inView &&
-    //     chatHistoryData &&
-    //     chatHistoryData.pages[0].result.length > 0
-    //   ) {
-    //     setChatData(chatHistoryData.pages[0].result);
-    //     setLastId(chatHistoryData.pages[0].prevId);
-    //     fetchPreviousPage();
-    //   } else {
-    //     setIsLast(false);
-    //   }
-  }, [inView]);
+  }, [chatHistoryData, inView, hasPreviousPage, fetchPreviousPage]);
 
   // 채팅 실시간 조회 - SSE
   useEffect(() => {
@@ -145,7 +158,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     const { name, type, aztSeq, userSeq, members } = chatroomDetailData;
 
     return (
-      <div className="w-full">
+      <div className="w-full" ref={chatContainerRef}>
         <ChatHeader
           name={name}
           type={type}
@@ -155,7 +168,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
         />
         <div className="pt-14">
           <div ref={chatTopRef} />
-          {chatHistoryData?.pages[0].result.map((chat, idx) => (
+          {chatData?.map((chat, idx) => (
             <ChatBubble
               key={idx}
               chat={chat}
