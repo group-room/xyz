@@ -27,7 +27,7 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
     (state) => state.auth.userInfo?.userSeq
   );
   const chatDataRef = useRef() as React.MutableRefObject<HTMLDivElement>; // 바닥으로 스크롤 위한 Ref
-  const isSecondRendered = useRef(false); // 처음 렌더링 여부
+  const isSecondRendered = useRef(false); //  두번째 렌더링 여부
   const scrollToBottom = () => {
     if (chatDataRef.current) chatDataRef.current.scrollIntoView();
   };
@@ -59,36 +59,32 @@ function ChattingRoomPage({ params: { slug } }: SlugProps) {
       router.push("/chatting");
     }
 
-    if (chatHistoryData) {
-      if (isSecondRendered.current === false) {
-        isSecondRendered.current = true;
-      }
-      setChatData((prev) => [...chatHistoryData.pages[0].result, ...prev]);
+    if (!isSecondRendered.current) {
+      isSecondRendered.current = true;
     }
   }, []);
 
   useEffect(() => {
-    // 처음 페이지 진입시 스크롤 최하단으로 이동
-    if (isSecondRendered.current && chatContainerRef.current) {
-      // scrollToBottom();
-      console.log("최초 렌더링");
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+    // 스크롤 바닥으로 내리기 (두번째 렌더링때)
+    if (isSecondRendered.current && chatData && chatContainerRef.current) {
+      console.log(chatData);
+      scrollToBottom();
+      console.log(isSecondRendered.current);
       isSecondRendered.current = false;
     }
-  }, [chatContainerRef.current]);
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll); //clean up
-  //   };
-  // }, []);
+  }, [chatData]);
 
   useEffect(() => {
-    if (inView && hasPreviousPage) {
-      console.log("상단 스크롤");
+    // 채팅 기록 조회 후 채팅 데이터에 추가
+    if (chatHistoryData && isSecondRendered.current) {
+      setChatData((prev) => [...chatHistoryData.pages[0].result, ...prev]);
+    }
+  }, [isSecondRendered.current, chatHistoryData]);
 
+  useEffect(() => {
+    // 최상단 스크롤했을 때 이전 채팅 기록 조회 (무한스크롤)
+    if (inView && hasPreviousPage && !isSecondRendered.current) {
+      console.log("상단 스크롤");
       fetchPreviousPage();
       if (chatHistoryData) {
         const currChatData: ChatDataTypes[] = [];
