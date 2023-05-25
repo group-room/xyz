@@ -17,7 +17,7 @@ import { bgRandomNumber } from "@/utils/bgUtils";
 import { RandomBg } from "@/constants/style";
 
 function Header() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
   const currPathname = pathname.slice(1, pathname.length);
   const router = useRouter();
   const mainPathnameWithLogo = [

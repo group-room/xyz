@@ -15,7 +15,7 @@ function AuthProvider({ children }: PropsWithChildren) {
 
   const pathname = usePathname();
   const router = useRouter();
-  if (pathname !== "/" && !pathname.includes("login")) {
+  if (pathname && pathname !== "/" && !pathname.includes("login")) {
     if (!isLogin || accessToken === "") router.push("/");
   } else {
     if (isLogin && accessToken !== "") router.push(`/${API.memory}`);

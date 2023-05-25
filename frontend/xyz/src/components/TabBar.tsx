@@ -34,7 +34,7 @@ function TabBar() {
       <Link
         href={`/${API.memory}`}
         className={
-          pathname.includes(`/${API.memory}`) ? highlightTextColor : ""
+          pathname?.includes(`/${API.memory}`) ? highlightTextColor : ""
         }
       >
         추억
@@ -42,21 +42,21 @@ function TabBar() {
       <Link
         href={`/${LOCAL.capsule}`}
         className={
-          pathname.includes(`/${LOCAL.capsule}`) ? highlightTextColor : ""
+          pathname?.includes(`/${LOCAL.capsule}`) ? highlightTextColor : ""
         }
       >
         캡슐
       </Link>
       <Link
         href={`/${API.azt}`}
-        className={pathname.includes(`/${API.azt}`) ? highlightTextColor : ""}
+        className={pathname?.includes(`/${API.azt}`) ? highlightTextColor : ""}
       >
         아지트
       </Link>
       <Link
         href={`/${LOCAL.chatting}`}
         className={
-          pathname.includes(`/${LOCAL.chatting}`) ? highlightTextColor : ""
+          pathname?.includes(`/${LOCAL.chatting}`) ? highlightTextColor : ""
         }
       >
         채팅
@@ -64,7 +64,7 @@ function TabBar() {
       <Link
         href={`/${LOCAL.profile}`}
         className={
-          pathname.includes(`/${LOCAL.profile}`) ? highlightTextColor : ""
+          pathname?.includes(`/${LOCAL.profile}`) ? highlightTextColor : ""
         }
       >
         프로필
