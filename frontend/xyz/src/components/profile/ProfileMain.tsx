@@ -125,19 +125,22 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
   useEffect(() => {
     if (bgmTextRef.current) {
       const textElement = bgmTextRef.current;
-      const textContainer = textElement.parentElement;
 
-      if (
-        textContainer &&
-        textElement.offsetWidth < textContainer.offsetWidth
-      ) {
-        return;
-      }
-
-      const animationDuration = textElement.offsetWidth / 50; // Adjust the scroll speed as desired
+      const animationDuration = textElement.offsetWidth / 30; // Adjust the scroll speed as desired
       textElement.style.animationDuration = `${animationDuration}s`;
+      textElement.style.animationIterationCount = "infinite";
     }
   }, [currentBgm]);
+
+  // ... rest of your component code ...
+
+  const truncateBgmTitle = (title: string, maxLength: number): string => {
+    if (title.length <= maxLength) {
+      return title;
+    } else {
+      return title.slice(0, maxLength) + "...";
+    }
+  };
 
   useEffect(() => {
     if (isBgmPlaying && randomBgm) {
@@ -169,7 +172,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
             />
           </div>
           {/* 유저 본인일 때 이 드롭다운이 보이게 하기 */}
-          <div>
+          <div className="w-[60%]">
             <div className="flex gap-10 item-center">
               {profileData?.identify}
               {userSeqToNumber === myUserSeq ? (
@@ -242,7 +245,15 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               {currentBgm && (
                 <div className="bgm-title-container">
                   <div ref={bgmTextRef} className="bgm-title-scroll">
-                    <div className="bgm-title-text">{currentBgm.bgmTitle}</div>
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
                   </div>
                 </div>
               )}
