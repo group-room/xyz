@@ -41,6 +41,7 @@ export default function MultiCarousel({ children }) {
         customDot={<CustomDot />}
         responsive={responsive}
         itemClass="flex justify-center items-center"
+        className="z-0"
       >
         {children}
       </Carousel>
