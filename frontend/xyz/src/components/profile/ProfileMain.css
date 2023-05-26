@@ -1,0 +1,22 @@
+.bgm-title-container {
+  overflow: hidden;
+}
+
+.bgm-title-scroll {
+  white-space: nowrap;
+  animation: marquee linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.bgm-title-text {
+  display: inline-block;
+  /* padding: 0 1rem; */
+}

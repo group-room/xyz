@@ -56,16 +56,25 @@ function ProfilePhotoEdit({
   // console.log(userList?.profileImage, "userList?.profileImage");
   return (
     <div>
-      프로필사진
-      <img src={ImgUrl} />
-      <div className="flex">
-        <input
-          type="file"
-          id="profile-edit"
-          accept="image/*"
-          onChange={handleImgChange}
-        />
-        <div onClick={handleImgPreview}>사진 미리보기</div>
+      <div>프로필사진</div>
+      <div className="flex flex-col gap-1 items-center">
+        <div className="w-[80%]">
+          <img src={ImgUrl} />
+        </div>
+        <div className="flex flex-row m-2 w-full">
+          <input
+            type="file"
+            id="profile-edit"
+            accept="image/*"
+            onChange={handleImgChange}
+          />
+          <div
+            onClick={handleImgPreview}
+            className=" text-right border border-black bg-pink rounded py-1 whitespace-nowrap px-1"
+          >
+            사진 미리보기
+          </div>
+        </div>
       </div>
     </div>
   );

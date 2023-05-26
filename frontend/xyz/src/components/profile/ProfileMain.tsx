@@ -1,7 +1,7 @@
 "use client";
 import Textbox from "../common/Textbox";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useUserList } from "@/hooks/queries/user";
 import { useRouter } from "next/navigation";
@@ -20,14 +20,19 @@ import { deleteFollow, postBlock } from "@/app/api/friend";
 import { KEYS } from "@/constants/queryKeys";
 import { confirmSwal } from "@/utils/swalUtils";
 import LoadingLottie from "@/components/lottie/Loading";
+import { BgmTypes } from "@/types/user";
+import "./ProfileMain.css";
 
 interface ProfileMainProps {
   userSeq: number;
 }
 
 function ProfileMain({ userSeq }: ProfileMainProps) {
+  const [isBgmPlaying, setIsBgmPlaying] = useState(false);
   const { data: profileData, isLoading: isProfilMainLoading } =
     useUserList(userSeq);
+  const bgms = profileData?.bgms || [];
+  const [currentBgm, setCurrentBgm] = useState<BgmTypes | null>(null);
   // console.log(profileData, "profileData");
   const state = useAppSelector((state) => state);
   const myUserSeq = state.auth.userInfo?.userSeq;
@@ -94,6 +99,60 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     usePostBlockMutation.mutate();
   };
 
+  const handleClickBgm = () => {
+    setIsBgmPlaying(!isBgmPlaying);
+  };
+
+  const getRandomBgm = () => {
+    if (bgms.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * bgms.length);
+    return bgms[randomIndex];
+  };
+
+  const randomBgm = getRandomBgm();
+
+  const handleBgmPlay = () => {
+    setIsBgmPlaying(true);
+    setCurrentBgm(randomBgm);
+  };
+
+  const handleBgmPause = () => {
+    setIsBgmPlaying(false);
+  };
+
+  const bgmTextRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (bgmTextRef.current) {
+      const textElement = bgmTextRef.current;
+
+      if (isBgmPlaying) {
+        const animationDuration = textElement.offsetWidth / 30; // Adjust the scroll speed as desired
+        textElement.style.animationDuration = `${animationDuration}s`;
+        textElement.style.animationIterationCount = "infinite";
+      } else {
+        textElement.style.animationDuration = "0s";
+        textElement.style.animationIterationCount = "1";
+      }
+    }
+  }, [isBgmPlaying]);
+
+  // ... rest of your component code ...
+
+  const truncateBgmTitle = (title: string, maxLength: number): string => {
+    if (title.length <= maxLength) {
+      return title;
+    } else {
+      return title.slice(0, maxLength) + "...";
+    }
+  };
+
+  useEffect(() => {
+    if (isBgmPlaying && randomBgm) {
+      setCurrentBgm(randomBgm);
+    }
+  }, [isBgmPlaying]);
+
   const userSeqToNumber = +userSeq;
 
   if (isProfilMainLoading) {
@@ -118,7 +177,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
             />
           </div>
           {/* 유저 본인일 때 이 드롭다운이 보이게 하기 */}
-          <div>
+          <div className="w-[60%]">
             <div className="flex gap-10 item-center">
               {profileData?.identify}
               {userSeqToNumber === myUserSeq ? (
@@ -159,7 +218,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               alt="nickname"
               text="닉네임"
               maintext={profileData?.nickname}
-              firstClass="border border-black flex my-3 items-center bg-retro py-1"
+              firstClass="border border-black flex my-2 items-center bg-retro py-1"
               secondClass="flex flex-none items-center justify-center mx-1"
               textClass="whitespace-nowrap ml-1"
               maintextClass="px-1 border-black border-l"
@@ -171,6 +230,38 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               maintext={profileData?.visitCount}
               firstClass="border border-black flex my-2 items-center bg-retro py-1"
             />
+            <Textbox
+              icon="/icons/music.svg"
+              alt="visitor"
+              text="bgm"
+              // maintext={currentBgm ? currentBgm.bgmTitle : ""}
+              firstClass="border border-black flex my-2 items-center bg-retro py-1"
+            >
+              <div className="w-[60%]">
+                {currentBgm && (
+                  <div className="bgm-title-container">
+                    <div ref={bgmTextRef} className="bgm-title-scroll">
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="w-[10%]">
+                <button
+                  onClick={isBgmPlaying ? handleBgmPause : handleBgmPlay}
+                  className="flex-none w-3 h-3 rounded-full first-letter flex items-center justify-center"
+                >
+                  <img
+                    src={isBgmPlaying ? "/icons/pause.svg" : "/icons/play.svg"}
+                    alt="play"
+                  />
+                </button>
+              </div>
+            </Textbox>
           </div>
         </div>
         <div className="border border-black h-[92px] shadow-lg pb-2 mt-1 bg-retro">
@@ -184,6 +275,19 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
           closeModal={() => setIsModal(false)}
           text="정말 탈퇴할까요 ㅠㅠ?"
         />
+      )}
+
+      {isBgmPlaying && randomBgm && (
+        <div style={{ display: "none" }}>
+          <audio
+            src={randomBgm.bgmLink}
+            autoPlay
+            controls
+            onEnded={handleBgmPause}
+          >
+            Your browser does not support the audio element.
+          </audio>
+        </div>
       )}
     </>
   );

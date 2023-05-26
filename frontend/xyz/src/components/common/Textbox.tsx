@@ -13,6 +13,7 @@ type TextboxProps = {
   secondClass?: string;
   textClass?: string;
   maintextClass?: string;
+  children?: React.ReactNode;
 };
 
 function Textbox({
@@ -26,6 +27,7 @@ function Textbox({
   secondClass,
   textClass,
   maintextClass,
+  children,
 }: TextboxProps) {
   return (
     <div
@@ -56,6 +58,7 @@ function Textbox({
       >
         {maintext}
       </div>
+      {children}
     </div>
   );
 }
