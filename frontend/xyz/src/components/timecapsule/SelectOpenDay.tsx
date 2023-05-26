@@ -31,10 +31,10 @@ export default function SelectOpenDay({
 }: Props) {
   const dateToString = (date: Date) => {
     const year = new Date(date).getFullYear();
-    const month = new Date(date).getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줍니다.
+    let month = new Date(date).getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줍니다.
     const day = new Date(date).getDate();
-    const formattedDate = `${year}${month}${day}`;
-    return +formattedDate;
+    const formattedDate = `${year}.${month}.${day}`;
+    return formattedDate;
   };
 
   const today = new Date();
@@ -43,6 +43,8 @@ export default function SelectOpenDay({
     const formattedToday = dateToString(today);
     let openStartDay = dateToString(date);
     if (openStartDay < formattedToday) {
+      console.log("openStartDay", openStartDay);
+      console.log("formattedToday", formattedToday);
       confirmSwalWarning("오픈 시작일은 오늘 이후로 선택해주세요");
       setOpenStart(today);
     } else {

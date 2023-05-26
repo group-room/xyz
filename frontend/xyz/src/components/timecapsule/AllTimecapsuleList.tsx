@@ -30,7 +30,7 @@ export default function AllTimecapsuleList({ openCapsuleList }: Props) {
           openCapsuleList.map((list) => {
             return (
               <div
-                className="flex flex-col justify-center items-center"
+                className="flex flex-col justify-center items-center w-1/3 my-2"
                 key={list.tcSeq}
               >
                 <Image
@@ -38,10 +38,10 @@ export default function AllTimecapsuleList({ openCapsuleList }: Props) {
                   alt="capsuleImg"
                   width="0"
                   height="0"
-                  className="w-1/3 h-auto"
+                  className="w-1/3 h-auto mb-2"
                   onClick={() => moveToDetail(list.tcSeq as number)}
                 />
-                <div className="text-sm">{list.aztName}</div>
+                <div className="text-sm truncate">{list.aztName}</div>
                 <div className="text-sm">
                   {list.openedAt && formatDate(list.openedAt)}
                 </div>
