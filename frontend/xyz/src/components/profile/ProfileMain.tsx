@@ -126,11 +126,16 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
     if (bgmTextRef.current) {
       const textElement = bgmTextRef.current;
 
-      const animationDuration = textElement.offsetWidth / 30; // Adjust the scroll speed as desired
-      textElement.style.animationDuration = `${animationDuration}s`;
-      textElement.style.animationIterationCount = "infinite";
+      if (isBgmPlaying) {
+        const animationDuration = textElement.offsetWidth / 30; // Adjust the scroll speed as desired
+        textElement.style.animationDuration = `${animationDuration}s`;
+        textElement.style.animationIterationCount = "infinite";
+      } else {
+        textElement.style.animationDuration = "0s";
+        textElement.style.animationIterationCount = "1";
+      }
     }
-  }, [currentBgm]);
+  }, [isBgmPlaying]);
 
   // ... rest of your component code ...
 
@@ -213,7 +218,7 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               alt="nickname"
               text="닉네임"
               maintext={profileData?.nickname}
-              firstClass="border border-black flex my-3 items-center bg-retro py-1"
+              firstClass="border border-black flex my-2 items-center bg-retro py-1"
               secondClass="flex flex-none items-center justify-center mx-1"
               textClass="whitespace-nowrap ml-1"
               maintextClass="px-1 border-black border-l"
@@ -232,31 +237,30 @@ function ProfileMain({ userSeq }: ProfileMainProps) {
               // maintext={currentBgm ? currentBgm.bgmTitle : ""}
               firstClass="border border-black flex my-2 items-center bg-retro py-1"
             >
-              <button
-                onClick={isBgmPlaying ? handleBgmPause : handleBgmPlay}
-                className="flex-none w-6 h-6 rounded-full first-letter flex items-center justify-center"
-              >
-                <img
-                  src={isBgmPlaying ? "/icons/pause.svg" : "/icons/play.svg"}
-                  alt="play"
-                />
-              </button>
-
-              {currentBgm && (
-                <div className="bgm-title-container">
-                  <div ref={bgmTextRef} className="bgm-title-scroll">
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
-                    {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+              <div className="w-[60%]">
+                {currentBgm && (
+                  <div className="bgm-title-container">
+                    <div ref={bgmTextRef} className="bgm-title-scroll">
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                      {currentBgm.bgmTitle} &nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              <div className="w-[10%]">
+                <button
+                  onClick={isBgmPlaying ? handleBgmPause : handleBgmPlay}
+                  className="flex-none w-3 h-3 rounded-full first-letter flex items-center justify-center"
+                >
+                  <img
+                    src={isBgmPlaying ? "/icons/pause.svg" : "/icons/play.svg"}
+                    alt="play"
+                  />
+                </button>
+              </div>
             </Textbox>
           </div>
         </div>
