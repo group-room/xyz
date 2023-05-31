@@ -31,19 +31,19 @@ export default function TimeCapsuleDetailPage({ params: { slug } }: Props) {
             alt={"그룹 아이콘"}
             maintext={capsuleDetail.tc.aztName}
             bgColor="pink"
-            maintextClass="text-sm flex justify-center items-center"
           />
           <Textbox
             icon={"/icons/calendar.svg"}
             alt={"캘린더 아이콘"}
             maintext={formatDate(capsuleDetail.tc.openedAt)}
-            maintextClass="text-sm flex justify-center items-center"
           />
           <Textbox
             icon={"/icons/pin.svg"}
             alt={"위치 아이콘"}
             maintext={capsuleDetail.tc.location}
-            maintextClass="text-sm flex justify-center items-center"
+            firstClass={"border border-black flex my-2 h-auto"}
+            secondClass={"flex items-center justify-center mx-1 h-auto"}
+            maintextClass={"border-l border-black pl-1"}
           />
           <Container
             title

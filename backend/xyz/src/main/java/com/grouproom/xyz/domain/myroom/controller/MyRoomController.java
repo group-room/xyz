@@ -1,5 +1,6 @@
 package com.grouproom.xyz.domain.myroom.controller;
 
+import com.grouproom.xyz.domain.myroom.dto.request.MyRoomBackgroundRequest;
 import com.grouproom.xyz.domain.myroom.service.MyRoomService;
 import com.grouproom.xyz.domain.myroom.dto.request.StickerRequest;
 import com.grouproom.xyz.global.model.BaseResponse;
@@ -83,9 +84,8 @@ public class MyRoomController {
 
 
     @GetMapping("/photo")
-    public BaseResponse myRoomPhotoDetails(){
-        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSequence));
+    public BaseResponse myRoomPhotoDetails(@RequestParam Long userSeq){
+        return new BaseResponse(myRoomService.findMyRoomPhotoByUserSeq(userSeq));
     }
 
     @PostMapping("/photo")
@@ -101,6 +101,28 @@ public class MyRoomController {
     public BaseResponse removeMyRoomPhoto(){
         Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         myRoomService.modifyMyRoomPhoto(userSequence,null);
+
+        return new BaseResponse(null);
+    }
+
+
+    @GetMapping("/background")
+    public BaseResponse myRoomBackgroundDetails(@RequestParam Long userSeq){
+        return new BaseResponse(myRoomService.findMyRoomBackgroundByUserSeq(userSeq));
+    }
+
+    @PostMapping("/background")
+    public BaseResponse updateMyRoomBackground(@RequestBody MyRoomBackgroundRequest myRoomBackgroundRequest){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.modifyMyRoomBackground(userSequence,myRoomBackgroundRequest.getBackground());
+
+        return new BaseResponse(null);
+    }
+
+    @DeleteMapping("/background")
+    public BaseResponse removeMyRoomBackground(){
+        Long userSequence = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        myRoomService.modifyMyRoomBackground(userSequence,null);
 
         return new BaseResponse(null);
     }

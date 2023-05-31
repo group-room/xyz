@@ -13,7 +13,11 @@ import { postCapsule } from "@/app/api/capsule";
 import { useRouter } from "next/navigation";
 import { positionTypes } from "@/types/capsule";
 import LoadingLottie from "@/components/lottie/Loading";
-import { confirmSwalWarning, timerSwal } from "../../../utils/swalUtils";
+import {
+  confirmSwal,
+  confirmSwalWarning,
+  timerSwal,
+} from "../../../utils/swalUtils";
 import SelectOpenDay from "@/components/timecapsule/SelectOpenDay";
 
 export default function TimeCapsuleCreatePage() {
@@ -92,6 +96,7 @@ export default function TimeCapsuleCreatePage() {
       useCreateCapsuleMutation.mutate(formData, {
         onSuccess: (data) => {
           const tcSeq = data.data.data.tcSeq;
+          confirmSwal("타임캡슐이 생성되었습니다!");
           router.push(`/capsule`);
         },
       });

@@ -112,7 +112,7 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Transactional
     public void modifyMyRoomPhoto(Long userSeq, String imagePath) {
         User user = userRepository.findById(userSeq)
-                .orElseThrow( () -> new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다."));
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
 
         user.changeMyRoomImage(imagePath);
 
@@ -121,7 +121,24 @@ public class MyRoomServiceImpl implements MyRoomService {
     @Override
     public String findMyRoomPhotoByUserSeq(Long userSeq) {
         User user = userRepository.findById(userSeq)
-                .orElseThrow( () -> new ErrorResponse(HttpStatus.UNAUTHORIZED,"로그인 되어 있지 않습니다."));
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
         return user.getMyRoomImage();
+    }
+
+    @Override
+    public Integer findMyRoomBackgroundByUserSeq(Long userSeq) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+        return user.getMyRoomBackground();
+    }
+
+    @Override
+    @Transactional
+    public void modifyMyRoomBackground(Long userSeq, Integer background) {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow( () -> new ErrorResponse(HttpStatus.BAD_REQUEST,"해당 유저가 없습니다."));
+
+        user.changeMyRoomBackground(background);
+
     }
 }
