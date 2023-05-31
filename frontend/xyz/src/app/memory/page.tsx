@@ -5,143 +5,85 @@ import DateFilter from "@/components/memory/DateFilter";
 import AztFilter from "@/components/memory/AztFilter";
 import KakaoMap from "@/components/memory/KakaoMap";
 import MemoryCreateBtn from "@/components/memory/MemoryCreateBtn";
-import { AztTypes, MemoriesTypes, PositionTypes } from "@/types/memory";
+import { MemoriesTypes, PositionTypes } from "@/types/memory";
+import MemoryItem from "@/components/memory/MemoryItem";
+import { useMemoryList } from "../../hooks/queries/memory";
+import { convertDate } from "@/utils/dateUtils";
+import { useAztList } from "@/hooks/queries/azt";
+import { AztTypes } from "@/types/azt";
+import LoadingLottie from "@/components/lottie/Loading";
+import NotResultLottie from "@/components/lottie/NotResult";
 
 function MemoryPage() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [aztList, setAztList] = useState<AztTypes[]>([
-    {
-      aztSeq: 0,
-      image: "대표사진 경로",
-      name: "그룹 이름1",
-      createdAt: "생성시간",
-      updatedAt: "수정시간",
-      chatSeq: "채팅방시퀀스",
-    },
-    {
-      aztSeq: 1,
-      image: "대표사진 경로",
-      name: "그룹 이름2",
-      createdAt: "생성시간",
-      updatedAt: "수정시간",
-      chatSeq: "채팅방시퀀스",
-    },
-    {
-      aztSeq: 2,
-      image: "대표사진 경로",
-      name: "그룹 이름33333333333333333333333333333333333333333333333333333333333333333333",
-      createdAt: "생성시간",
-      updatedAt: "수정시간",
-      chatSeq: "채팅방시퀀스",
-    },
-  ]);
-
-  // 전체보기 옵션
-  const seeAllOption = [{ name: "전체 아지트 보기", aztSeq: null }];
-  // 셀렉트박스 내 들어갈 초기값 설정
-  const [currAzt, setCurrAzt] = useState<AztTypes[]>(seeAllOption);
-  // 토글설정은 false 로 셀렉트 박스를 닫아놓기
+  // 달력에서 선택된 날짜
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // 아지트 목록
+  const [aztList, setAztList] = useState<AztTypes[]>([]);
+  // 아지트 필터 토글 설정
   const [toggle, setToggle] = useState<boolean>(false);
-
+  // 아지트 전체보기 옵션
+  const seeAllOption = [{ name: "전체 아지트 보기", aztSeq: null }];
+  // 아지트 셀렉트박스 내 들어갈 초기값 설정
+  const [currAzt, setCurrAzt] = useState<AztTypes[]>(seeAllOption);
+  // 현재 위치
   const [currLocation, setCurrLocation] = useState<PositionTypes>({
     lat: 0,
     lng: 0,
-  }); // 현재 위치
-  const [position, setPosition] = useState<PositionTypes>({ lat: 0, lng: 0 }); // 마커 찍는 위치
-  const [address, setAddress] = useState<string>(""); // 현재 위치 or 마커 위치 주소로 변환
-  const [memories, setMemories] = useState<MemoriesTypes[]>([
-    {
-      memorySeq: 0,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "PUBLIC",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 37.513,
-      longitude: 127.02929,
-      location: "카카오",
-    },
-    {
-      memorySeq: 1,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 37.514,
-      longitude: 127.0293,
-      location: "생태연못",
-    },
-    {
-      memorySeq: 2,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 37.515,
-      longitude: 127.02931,
-      location: "생태연못",
-    },
-    {
-      memorySeq: 3,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 37.516,
-      longitude: 127.02932,
-      location: "텃밭",
-    },
-    {
-      memorySeq: 4,
-      memoryImage:
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      accessibility: "GROUP",
-      aztSeq: 0,
-      aztName: "그룹명",
-      date: "날짜",
-      latitude: 37.517,
-      longitude: 127.02933,
-      location: "근린공원",
-    },
-  ]);
+  });
+  // 마커 찍는 위치
+  const [position, setPosition] = useState<PositionTypes>({ lat: 0, lng: 0 });
+  // 현재 위치 or 마커 위치 주소로 변환한 것
+  const [address, setAddress] = useState<string>("");
+  // 조회된 추억 목록
+  const [memories, setMemories] = useState<MemoriesTypes[]>([]);
 
-  const handleTitleClick = () => setToggle((prev) => !prev);
+  const handleToggle = () => setToggle((prev) => !prev);
   const handleItemClick = (currAztSeq: number | null) => {
+    // 전체 아지트 보기가 디폴트
     if (currAztSeq == null) {
       setCurrAzt(seeAllOption);
     } else {
       setCurrAzt(aztList.filter((azt) => azt.aztSeq === currAztSeq));
     }
-    handleTitleClick();
+    handleToggle();
   };
-  const handleMarkerChange = (date: Date) => setSelectedDate(date);
+  const handleDateChange = (date: Date) => setSelectedDate(date);
+
+  const {
+    data: memoryList,
+    isLoading: isMemoryLoading,
+    error,
+  } = useMemoryList({
+    date: convertDate(selectedDate),
+    aztSeq: currAzt[0].aztSeq!,
+    latitude: +position.lat.toFixed(7),
+    longitude: +position.lng.toFixed(7),
+  });
+
+  const { data: aztData, isLoading: isAztLoading } = useAztList();
 
   useEffect(() => {
-    // TODO: 그룹 목록 불러오기
-    // TODO: 추억 목록 불러오기
-    // TODO: 선택 날짜 / currAzt / 현재 or 마커 위치 변경되면 추억 목록 다시 조회하기
-  }, []);
+    if (!isAztLoading && aztData) {
+      setAztList(aztData);
+    }
+    if (memoryList) {
+      setMemories(memoryList);
+    }
+  }, [selectedDate, currAzt, position, aztData, memoryList]); // 선택 날짜 / currAzt / 현재 or 마커 위치 변경되면 추억 목록 다시 조회
 
   return (
     <section>
-      <div className="flex flex-row justify-between gap-2 mb-3">
+      <div className="flex gap-2 mb-3">
         <DateFilter
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
-          handleMarkerChange={handleMarkerChange}
+          handleDateChange={handleDateChange}
         />
         <AztFilter
           aztList={aztList}
           currAzt={currAzt}
           toggle={toggle}
-          handleTitleClick={handleTitleClick}
+          handleToggle={handleToggle}
           handleItemClick={handleItemClick}
           seeAllOption={seeAllOption}
         />
@@ -156,6 +98,19 @@ function MemoryPage() {
         locations={memories}
       />
       <MemoryCreateBtn />
+      {!memoryList ? (
+        <LoadingLottie />
+      ) : memoryList.length === 0 ? (
+        <div className="py-5 text-center">
+          <NotResultLottie />볼 수 있는 추억이 없어요 ㅠㅠ
+        </div>
+      ) : (
+        <div className="flex flex-col mt-4 gap-y-4">
+          {memoryList?.map((memory, idx) => {
+            return <MemoryItem memory={memory} key={idx} />;
+          })}
+        </div>
+      )}
     </section>
   );
 }

@@ -3,13 +3,13 @@
 import React from "react";
 import arrowDownIcon from "../../../public/icons/arrow-down.svg";
 import Image from "next/image";
-import { AztTypes } from "@/types/memory";
+import { AztTypes } from "@/types/azt";
 
 interface AztFilterProps {
   aztList: AztTypes[];
   currAzt: AztTypes[];
   toggle: boolean;
-  handleTitleClick: () => void;
+  handleToggle: () => void;
   handleItemClick: (currAztSeq: number | null) => void;
   seeAllOption: AztTypes[];
 }
@@ -18,7 +18,7 @@ function AztFilter({
   aztList,
   currAzt,
   toggle,
-  handleTitleClick,
+  handleToggle,
   handleItemClick,
   seeAllOption,
 }: AztFilterProps) {
@@ -30,10 +30,10 @@ function AztFilter({
           .filter((azt) => azt.aztSeq !== currAzt[0]?.aztSeq);
 
   return (
-    <div className="relative basis-8/12 border border-black shadow-md">
+    <div className="relative border border-black shadow-md cursor-pointer w-1/2">
       <div
         className="flex w-full h-full truncate leading-8 text-center"
-        onClick={handleTitleClick}
+        onClick={handleToggle}
       >
         <div className="grow">
           {currAzt.length === 1
@@ -42,11 +42,17 @@ function AztFilter({
               : currAzt[0].name
             : "전체 아지트 보기"}
         </div>
-        <div className="flex align-middle px-2 border-l border-black">
-          <Image src={arrowDownIcon} alt="화살표" width={15} />
+        <div className="flex justify-center items-center border-l border-black">
+          <Image
+            src={arrowDownIcon}
+            alt="화살표"
+            width="0"
+            height="0"
+            className={`w-[50%] h-auto`}
+          />
         </div>
       </div>
-      {toggle && (
+      {toggle && aztListForDropdown && aztListForDropdown.length > 0 && (
         <div className="absolute top-10 left-0 border border-black w-full bg-white z-10 divide-y divide-slate-700 shadow-md">
           {/* <DropDown /> */}
           {aztListForDropdown?.map((item, idx) => {

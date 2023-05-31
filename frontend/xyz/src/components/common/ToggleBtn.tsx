@@ -27,10 +27,12 @@ export default function ToggleBtn({
   };
 
   return (
-    <div className="flex border-2 border-black rounded-md h-10">
+    <div className="flex rounded h-10">
       <div
-        className={`flex w-1/2 items-center justify-center border-r-2 border-black ${
-          isClick ? "bg-yellow" : ""
+        className={`flex w-1/2 items-center justify-center rounded rounded-b-none cursor-pointer  ${
+          isClick
+            ? "border border-b-0 border-black"
+            : "bg-neutral-100 border-b border-black"
         }`}
         onClick={() => {
           setIsClick(true);
@@ -39,7 +41,13 @@ export default function ToggleBtn({
       >
         {imgL ? (
           <div className="mr-2">
-            <Image src={imgL} alt="이미지" width={20} height={20} />
+            <Image
+              src={imgL}
+              alt="이미지"
+              width="0"
+              height="0"
+              className="w-full h-auto"
+            />
           </div>
         ) : (
           ""
@@ -47,8 +55,10 @@ export default function ToggleBtn({
         {textL}
       </div>
       <div
-        className={`flex w-1/2 items-center justify-center border-black ${
-          !isClick ? "bg-yellow" : ""
+        className={`flex w-1/2 items-center justify-center rounded rounded-b-none cursor-pointer ${
+          !isClick
+            ? "border border-b-0 border-black"
+            : "bg-neutral-100 border-b border-black"
         }`}
         onClick={() => {
           setIsClick(false);
@@ -56,8 +66,14 @@ export default function ToggleBtn({
         }}
       >
         {imgR ? (
-          <div className="mr-2">
-            <Image src={imgR} alt="이미지" width={20} height={20} />
+          <div className="mr-[6px]">
+            <Image
+              src={imgR}
+              alt="이미지"
+              width="0"
+              height="0"
+              className="w-full h-auto"
+            />
           </div>
         ) : (
           ""

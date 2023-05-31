@@ -1,18 +1,12 @@
-export type AztTypes = {
-  aztSeq?: number | null;
-  name: string;
-  image?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  chatSeq?: string;
+export type MemoryListParams = {
+  date: string | null;
+  aztSeq?: number;
+  latitude?: number;
+  longitude?: number;
 };
 
-export type PositionTypes = {
-  lat: number;
-  lng: number;
-};
-
-export type MemoriesTypes = {
+// 추억 메인 피드
+export interface MemoriesTypes {
   memorySeq: number;
   memoryImage: string;
   accessibility: string;
@@ -22,7 +16,49 @@ export type MemoriesTypes = {
   latitude: number;
   longitude: number;
   location: string;
-};
+  likeCnt: number;
+  isLiked: boolean;
+  commentCnt: number;
+  // userName: string;
+}
+
+// 추억 상세
+export interface MemoryTypes extends MemoriesTypes {
+  files: {
+    filePath: string;
+    fileType: string;
+  }[];
+  content: string;
+  userNickname: string;
+  userSeq: number;
+  comments: MemoryCommentTypes[];
+}
+
+// 추억 댓글
+export interface MemoryCommentTypes {
+  commentSeq: number;
+  userSeq: number;
+  nickname: string;
+  profileImage: string;
+  content: string;
+  createdAt: string;
+}
+
+// 내 추억 목록
+export interface MyMemoriesTypes {
+  memorySeq: number;
+  memoryImage: string;
+  aztSeq: number;
+  aztName: string;
+  userName: string;
+  date: string;
+  latitude: number;
+  longitude: number;
+  location: string;
+  isLiked: boolean;
+  likeCnt: number;
+  commentCnt: number;
+}
 
 export interface KakaoMapProps {
   height?: number;
@@ -34,11 +70,7 @@ export interface KakaoMapProps {
   setAddress: React.Dispatch<React.SetStateAction<string>>;
   locations?: MemoriesTypes[];
   isPhotoUpload?: boolean;
-}
-
-export interface Photo {
-  file: File;
-  preview: string;
+  isPhotoEdit?: boolean;
 }
 
 export type PhotoMetadata = {
@@ -47,4 +79,9 @@ export type PhotoMetadata = {
     longitude: number;
   };
   dateTaken: string;
+};
+
+export type PositionTypes = {
+  lat: number;
+  lng: number;
 };
